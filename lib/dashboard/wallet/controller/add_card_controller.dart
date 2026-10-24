@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:flutter_google_maps_webservices/geocoding.dart';
@@ -13,6 +12,7 @@ import 'package:thegreenmall/dashboard/home/model/get_state_model.dart';
 import 'package:thegreenmall/dashboard/offers/model/get_user_detail_model.dart';
 import 'package:thegreenmall/dashboard/wallet/model/wallet_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
+import 'package:thegreenmall/utils/stripe_error_mapper.dart';
 import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
@@ -202,7 +202,7 @@ class AddCardController extends GetxController with GlobalVarMixin{
         storage.clearData();
         isLoading.value= false;
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
                isLoading.value= false;
         Utility.showAlertMessage(value?.body['message'].toString());
@@ -210,8 +210,6 @@ class AddCardController extends GetxController with GlobalVarMixin{
     });
   }
 
-  String token1 =
-      "Basic cGtfdGVzdF81MU1uYUpkRlZuTW1IaGtHWW55ZFp2bENoMVhXMlhzNUllczhVc3hiajdNWVhQcUdQTkRuV3BBaDIzR1cyTUg3WUcxRnhjM0p6M2pUYjZkZlRuMjRsSjE0VTAwU3hETEJwSnI6";
 
   bool validateAndSave() {
     final form = formKey1.currentState;
@@ -295,8 +293,17 @@ class AddCardController extends GetxController with GlobalVarMixin{
   validateAndSavePayOut() {
     if (validateAndSave2()) {
       try {
+        final double? amount =
+            double.tryParse(payoutAmountTextController.text.trim());
         if (selectedStore.value.isEmpty) {
           Utility.showAlertMessage(AlertStringConstants.pleaseSelectStore);
+        } else if (userStripeBankId!.value.isEmpty) {
+          //NO BANK CONNECTED/SELECTED YET - PAYOUT HAS NOWHERE TO GO
+          Utility.showAlertMessage(
+              AlertStringConstants.pleaseSelectBankAccountText);
+        } else if (amount == null || amount <= 0) {
+          Utility.showAlertMessage(
+              AlertStringConstants.pleaseEnterValidAmountText);
         } else {
           apiCreatePayout();
         }
@@ -351,7 +358,7 @@ class AddCardController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
                isLoading.value= false;
         Utility.showAlertMessage(value?.body['message']);
@@ -392,7 +399,7 @@ class AddCardController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();isLoading.value= false;
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {isLoading.value= false;
         Utility.showAlertMessage(value?.body['message']);
       }
@@ -445,7 +452,7 @@ class AddCardController extends GetxController with GlobalVarMixin{
             Utility.showAlertMessage(value?.body['message']);
             storage.clearData();
             Get.parameters.clear();
-            await Get.offAll(const StartJourneyScreen());
+            Utility.handle401Error();
           }
         }
       } else {isLoading.value= false;
@@ -456,21 +463,24 @@ class AddCardController extends GetxController with GlobalVarMixin{
     });
   }
 
-  ///Create Stripe Token
+  ///Create Stripe Token - Send card details to backend instead of direct Stripe call
   Future<void> apiCreateStripeToken(context) async {
-    isLoading.value= true;
+    print('🟢 DEBUG: apiCreateStripeToken called');
     var str = expiryDate.value;
     var parts = str.split('/');
     var month = parts[0].trim();
     var year = parts[1].trim();
     try {
       isLoading.value = true;
+      print('🟢 DEBUG: About to call Stripe API');
       var headers = {
-        StringConstants.authorizationText: token1,
+        StringConstants.authorizationText:
+            'Bearer ${ServerCommunicator.stripePublishableKey}',
         'Content-Type': 'application/x-www-form-urlencoded'
       };
       var request = http.Request(
           'POST', Uri.parse(ServerCommunicator.createStripeToken));
+      request.followRedirects = true;
       request.bodyFields = {
         'card[number]': cardNumber.value,
         'card[exp_month]': month,
@@ -484,25 +494,26 @@ class AddCardController extends GetxController with GlobalVarMixin{
         'card[address_country]': selectedCountry.value
       };
       request.headers.addAll(headers);
+      print('🟢 DEBUG: Stripe URL: ${ServerCommunicator.createStripeToken}');
+      print('🟢 DEBUG: Stripe request body: ${request.bodyFields}');
       http.StreamedResponse response = await request.send();
+      print('🟢 DEBUG: Stripe response status: ${response.statusCode}');
       var streamResponse = await http.Response.fromStream(response);
-                           if (response.statusCode == 200) {
-        isLoading.value = false;
+      print('🟢 DEBUG: Stripe response body: ${streamResponse.body}');
+      if (response.statusCode == 200) {
         var parsed = jsonDecode(streamResponse.body);
         stripeToken.value = parsed['id'].toString();
-                 await apiUpdateUserDetail();
         await apiCreateCard();
-        str = "";
-        parts = [];
-        month = "";
-        year = "";
-      } else if (response.statusCode == 402) {isLoading.value = false;
-        Utility.showAlertMessage(AlertStringConstants.pleaseEnterValidCardText);
-      } else {isLoading.value = false;
-               }
+      } else {
+        isLoading.value = false;
+        Utility.showAlertMessage(StripeErrorMapper.fromResponseBody(
+            streamResponse.body,
+            fallback: StripeErrorMapper.defaultCardMessage));
+      }
     } catch (error) {
       isLoading.value = false;
-           }
+      Utility.showAlertMessage(StripeErrorMapper.defaultCardMessage);
+    }
   }
 
   ///Update User Detail Api
@@ -642,7 +653,7 @@ class AddCardController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();isLoading.value= false;
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {isLoading.value= false;
         if (value?.body['message']
                 .toString()
@@ -657,8 +668,14 @@ class AddCardController extends GetxController with GlobalVarMixin{
 
   /// Add Money to stripe wallet
   apiAddMoneyToWallet() {
+    final String finalStripeCardId = userStripeCardId?.value.toString().trim() ?? "";
+    if (finalStripeCardId.isEmpty) {
+      Utility.showAlertMessage(AlertStringConstants.pleaseSelectCardText);
+      return;
+    }
+
          Map body = {
-      "user_stripe_card_id": userStripeCardId!.value,
+      "user_stripe_card_id": finalStripeCardId,
       "amount": amountTextController.text.trim()
     };
          isLoading.value= true;
@@ -702,9 +719,22 @@ class AddCardController extends GetxController with GlobalVarMixin{
   }
 
   apiAddMoneyToOwnerWallet({String ownerStoreId = ""}) {
+    final String finalStoreId = ownerStoreId.toString().trim();
+    final String finalStripeCardId = userStripeCardId?.value.toString().trim() ?? "";
+
+    if (finalStoreId.isEmpty || finalStoreId == "0") {
+      Utility.showAlertMessage(AlertStringConstants.pleaseSelectStore);
+      return;
+    }
+
+    if (finalStripeCardId.isEmpty) {
+      Utility.showAlertMessage(AlertStringConstants.pleaseSelectCardText);
+      return;
+    }
+
          Map body = {
-      "store_id": int.parse(ownerStoreId),
-      "user_stripe_card_id": userStripeCardId!.value,
+      "store_id": int.parse(finalStoreId),
+      "user_stripe_card_id": finalStripeCardId,
       "amount": ownerAmountTextController.text.trim()
     };isLoading.value= true;
     Map<String, String> headers = {
@@ -773,7 +803,7 @@ class AddCardController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -810,7 +840,7 @@ class AddCardController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {isLoading.value= false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -839,12 +869,27 @@ class AddCardController extends GetxController with GlobalVarMixin{
           value?.body["status"] == ApiConstants.statusCode201) {
         bankAccountListModel = BankAccountListModel.fromJson(value?.body);
         bankAccountList.value = bankAccountListModel.data?.banks ?? [];
+        //KEEP THE HIGHLIGHTED ROW AND THE ID WE POST IN SYNC - THE PAYOUT SCREEN
+        //SHOWS THE FIRST ACCOUNT AS SELECTED, SO SEED IT HERE INSTEAD OF DURING BUILD
+        if (bankAccountList.isEmpty) {
+          selectedBankAccountIndex!.value = 0;
+          userStripeBankId!.value = "";
+        } else {
+          if (selectedBankAccountIndex!.value < 0 ||
+              selectedBankAccountIndex!.value >= bankAccountList.length) {
+            selectedBankAccountIndex!.value = 0;
+          }
+          userStripeBankId!.value = bankAccountList[
+                  selectedBankAccountIndex!.value]
+              .userStripeBankId
+              .toString();
+        }
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
         if (value?.body['message']
                 .toString()
@@ -859,10 +904,26 @@ class AddCardController extends GetxController with GlobalVarMixin{
 
   ///Api create payout
   Future apiCreatePayout() async {
+    final int? storeIdValue = int.tryParse(selectedStore.value);
+    final int? bankIdValue = int.tryParse(userStripeBankId!.value);
+    final double? amountValue =
+        double.tryParse(payoutAmountTextController.text.trim());
+    if (storeIdValue == null) {
+      Utility.showAlertMessage(AlertStringConstants.pleaseSelectStore);
+      return;
+    }
+    if (bankIdValue == null) {
+      Utility.showAlertMessage(AlertStringConstants.pleaseSelectBankAccountText);
+      return;
+    }
+    if (amountValue == null || amountValue <= 0) {
+      Utility.showAlertMessage(AlertStringConstants.pleaseEnterValidAmountText);
+      return;
+    }
          Map body = {
-      "store_id": int.parse(selectedStore.value),
-      "user_stripe_bank_id": int.parse(userStripeBankId!.value),
-      "amount": double.parse(payoutAmountTextController.text.trim())
+      "store_id": storeIdValue,
+      "user_stripe_bank_id": bankIdValue,
+      "amount": amountValue
     };
          isLoading.value= true;
     Map<String, String> headers = {
@@ -893,7 +954,7 @@ class AddCardController extends GetxController with GlobalVarMixin{
           Utility.showAlertMessage(value.body['message']);
           storage.clearData();
           Get.parameters.clear();
-          Get.offAll(const StartJourneyScreen());
+          Utility.handle401Error();
         } else if (value.body["status"] == ApiConstants.statusCode409) {isLoading.value= false;
           Utility.showAlertMessage(value.body['message']);
         } else {isLoading.value= false;
@@ -935,7 +996,7 @@ class AddCardController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();isLoading.value= false;
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {isLoading.value= false;
         String msg = value?.body["message"].toString().toLowerCase() ?? "";
         if (msg.contains("store not found")) {
@@ -977,14 +1038,16 @@ class AddCardController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);isLoading.value = false;
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {isLoading.value = false;
-        String msg = value!.body["message"].toString().toLowerCase();
+        //DON'T KEEP SHOWING THE PREVIOUS STORE'S BALANCE WHEN THIS ONE FAILED TO LOAD
+        ownerWalletBalance!.value = "0.00";
+        String msg = value?.body["message"].toString().toLowerCase() ?? "";
         if (msg.contains("store not found")) {
           Utility.showAlertMessage("Please select store");
         } else {
-          if (value.body['message'] != null) {
-            Utility.showAlertMessage(value.body['message']);
+          if (value?.body['message'] != null) {
+            Utility.showAlertMessage(value?.body['message']);
           }
         }
       }
@@ -1017,7 +1080,7 @@ class AddCardController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
         Utility.showAlertMessage(value?.body['message']);
       }
@@ -1031,18 +1094,6 @@ class AddCardController extends GetxController with GlobalVarMixin{
       "payment_service_name": type,
       "amount": double.parse(amountTextController.text) * 100
     };
-
-    if (amountTextController.text.split(".").length == 1) {
-      if (kDebugMode) {
-               }
-    } else {
-      if (amountTextController.text.split(".")[1].length == 1) {
-                          if (kDebugMode) {}
-      } else {
-        if (kDebugMode) {
-                   }
-      }
-    }
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:

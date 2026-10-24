@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:thegreenmall/authentication/login/view/login_screen.dart';
 import 'package:thegreenmall/dashboard/home/controller/user_inbox_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/inbox/user_Inbox/user_inbox_detail_screen.dart';
+import 'package:thegreenmall/utils/guest_access_modal.dart';
 import 'package:thegreenmall/utils/utils.dart';
+import 'package:thegreenmall/utils/brand_image.dart';
 
 class UserInboxScreen extends StatefulWidget {
   const UserInboxScreen({Key? key}) : super(key: key);
@@ -14,6 +17,26 @@ class UserInboxScreen extends StatefulWidget {
 class _UserInboxScreenState extends State<UserInboxScreen> with GlobalVarMixin{
   final UserInboxController userInboxController =
       Get.put(UserInboxController());
+
+  @override
+  void initState() {
+    // Check if user is guest - show modal for account-based features
+    if (isGuest.value == true) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        GuestAccessModal.show(
+          title: StringConstants.loginRequiredText,
+          message: StringConstants.loginToAccessInboxText,
+          onContinueAsGuest: () {
+            // Allow guest to continue - just close modal and go back
+            Get.back();
+          },
+        );
+      });
+      super.initState();
+      return;
+    }
+    super.initState();
+  }
 
   Container _messageTab() {
     return Container(
@@ -175,13 +198,18 @@ class _UserInboxScreenState extends State<UserInboxScreen> with GlobalVarMixin{
                                   children: [
                                     Row(
                                       children: [
+                                        Image.asset(
+                                          ImageConstants.homeMall,
+                                          scale: 4,
+                                        ),
+                                        width10SizedBox,
                                         IconButton(
                                           padding: EdgeInsets.all(5),
                                           constraints: const BoxConstraints(),
                                           onPressed: () {
                                             Get.back(id: pageIdApp.value);
                                           },
-                                          icon: const Icon(
+                                          icon: Icon(
                                             Icons.arrow_back,
                                             color: AppColors.black,
                                             size: 24.0,
@@ -190,17 +218,13 @@ class _UserInboxScreenState extends State<UserInboxScreen> with GlobalVarMixin{
                                         width10SizedBox,
                                         Text(
                                           StringConstants.inboxText,
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                               fontSize: 22,
                                               color: AppColors.black,
                                               fontWeight: FontWeight.w600),
                                         ),
                                       ],
                                     ),
-                                    Image.asset(
-                                      ImageConstants.homeMall,
-                                      scale: 4,
-                                    )
                                   ]),
                             ],
                           )),
@@ -220,7 +244,7 @@ class _UserInboxScreenState extends State<UserInboxScreen> with GlobalVarMixin{
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Center(
-                              child: Image.asset(
+                              child: BrandImage.asset(
                                 ImageConstants.nodata,
                                 scale: 8,
                                 color: AppColors.primary,
@@ -246,7 +270,7 @@ class _UserInboxScreenState extends State<UserInboxScreen> with GlobalVarMixin{
                               return Container(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 10, vertical: 10),
-                                decoration: const BoxDecoration(
+                                decoration: BoxDecoration(
                                     color: AppColors.greyLight,
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(8.0),
@@ -312,7 +336,7 @@ class _UserInboxScreenState extends State<UserInboxScreen> with GlobalVarMixin{
                                                               .store
                                                               ?.storeName ??
                                                               "",
-                                                          style: const TextStyle(
+                                                          style: TextStyle(
                                                               fontSize: 16.0,
                                                               color: AppColors.black,
                                                               fontWeight:
@@ -365,7 +389,7 @@ class _UserInboxScreenState extends State<UserInboxScreen> with GlobalVarMixin{
                                                           //         ""
                                                           //     : "Order: "
                                                           //         "#${userInboxController.inboxList[index].orderId}",
-                                                          style: const TextStyle(
+                                                          style: TextStyle(
                                                               fontSize: 16.0,
                                                               color: AppColors.black,
                                                               fontWeight:
@@ -428,7 +452,7 @@ class _UserInboxScreenState extends State<UserInboxScreen> with GlobalVarMixin{
                                               //     : "Order: "
                                               //         "#${userInboxController.inboxList[index].orderId}",
                                               textAlign: TextAlign.justify,
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                   fontSize: 16.0,
                                                   color: AppColors.black,
                                                   fontWeight: FontWeight.w500),
@@ -487,7 +511,7 @@ class _UserInboxScreenState extends State<UserInboxScreen> with GlobalVarMixin{
                                                   padding: const EdgeInsets.fromLTRB(
                                                       16.0, 8.0, 16.0, 8.0),
                                                   shape: RoundedRectangleBorder(
-                                                    side: const BorderSide(
+                                                    side: BorderSide(
                                                         width: 1.0,
                                                         color: AppColors.primary),
                                                     borderRadius:
@@ -533,7 +557,7 @@ class _UserInboxScreenState extends State<UserInboxScreen> with GlobalVarMixin{
                                                     const EdgeInsets.fromLTRB(
                                                         18.0, 8.0, 18.0, 8.0),
                                                     shape: RoundedRectangleBorder(
-                                                      side: const BorderSide(
+                                                      side: BorderSide(
                                                           width: 1.0,
                                                           color: AppColors.primary),
                                                       borderRadius:
@@ -542,7 +566,7 @@ class _UserInboxScreenState extends State<UserInboxScreen> with GlobalVarMixin{
                                                     fillColor: AppColors.white,
                                                     child: Text(
                                                       StringConstants.removeText,
-                                                      style: const TextStyle(
+                                                      style: TextStyle(
                                                           fontWeight: FontWeight.w500,
                                                           fontSize: 14.0,
                                                           color: AppColors.black),
@@ -570,7 +594,7 @@ class _UserInboxScreenState extends State<UserInboxScreen> with GlobalVarMixin{
               return userInboxController.isLoading.value
                   ? Container(
                 color: Colors.black.withOpacity(0.2),
-                child: const Center(
+                child: Center(
                   child: CircularProgressIndicator(color: AppColors.primary),
                 ),)
                   : const SizedBox.shrink();

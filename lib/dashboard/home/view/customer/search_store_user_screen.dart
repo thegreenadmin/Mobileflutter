@@ -11,12 +11,16 @@ import 'package:thegreenmall/dashboard/home/view/customer/filter_option_screen.d
 import 'package:thegreenmall/dashboard/home/view/customer/nearby_store_list_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/previous_store_list_screen.dart';
 import 'package:thegreenmall/utils/google_place_autocompleted.dart';
+import 'package:thegreenmall/utils/guest_access_modal.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
 class SearchStoreUserScreen extends StatefulWidget {
   final String? firstName;
   final String? lastName;
-  const SearchStoreUserScreen({Key? key, this.firstName, this.lastName}) : super(key: key);
+  // Optional store category filter (e.g. Munchies / Herbs) selected from the
+  // home screen pills. Null means show all stores.
+  final String? category;
+  const SearchStoreUserScreen({Key? key, this.firstName, this.lastName, this.category}) : super(key: key);
 
   @override
   State<SearchStoreUserScreen> createState() => _SearchStoreUserScreenState();
@@ -25,6 +29,8 @@ class SearchStoreUserScreen extends StatefulWidget {
 class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
     with TickerProviderStateMixin, WidgetsBindingObserver, GlobalVarMixin{
   TabController? _tabController;
+  // Tracks the last tab index that a guest is allowed to be on (always 0).
+  int _lastAllowedTabIndex = 0;
   SearchStoreUserController searchStoreUserController =
   Get.isRegistered<SearchStoreUserController>()
       ? Get.find<SearchStoreUserController>()
@@ -43,6 +49,15 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
 
     searchStoreUserController.miles.value = "50";
     searchStoreUserController.clearNearbyPArms();
+    // Map the home pill label to the backend store_type filter; always set
+    // (not just when present) so a previous category doesn't leak into a
+    // plain Stores visit.
+    searchStoreUserController.storeTypeFilter.value =
+        widget.category == StringConstants.munchiesText
+            ? "munchies"
+            : widget.category == StringConstants.herbsText
+                ? "herbs"
+                : "";
     searchStoreUserController.updateCurrentLocation();
     searchStoreUserController.apiActiveCartApi();
   }
@@ -82,7 +97,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
               return searchStoreUserController.isLoading.value
                   ? Container(
                 color: Colors.black.withValues(alpha: 0.2),
-                child: const Center(
+                child: Center(
                   child: CircularProgressIndicator(color: AppColors.primary),
                 ),)
                   : const SizedBox.shrink();
@@ -120,6 +135,19 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                   labelStyle: const TextStyle(fontWeight: FontWeight.w600),
                   isScrollable: false,
                   onTap: (i) async {
+                    // Flutter calls animateTo(i) before onTap fires, so
+                    // _tabController!.index is already i at this point.
+                    // We counter-animate back to _lastAllowedTabIndex instead.
+                    if (isGuest.value == true && (i == 1 || i == 2)) {
+                      _tabController?.animateTo(_lastAllowedTabIndex);
+                      GuestAccessModal.show(
+                        title: StringConstants.loginRequiredText,
+                        message: StringConstants.loginToAccessPreviousAndFavoriteStoresText,
+                      );
+                      return;
+                    }
+
+                    _lastAllowedTabIndex = i;
                     searchStoreUserController.storeAddresses.clear();
                     searchStoreUserController.previousStore.clear();
                     searchStoreUserController.favouriteStore.clear();
@@ -263,9 +291,9 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                           searchStoreUserController.zipCodeTextController.text =
                               getComponent('postal_code') ?? '';
                           searchStoreUserController.placeId.value =
-                              place.id.toString() ?? "";
+                              place.id ?? "";
                           searchStoreUserController.lat.value = place.latLng?.lat??0.0;
-                          searchStoreUserController.lng.value =place.latLng?.lat??0.0;
+                          searchStoreUserController.lng.value =place.latLng?.lng??0.0;
                           searchStoreUserController.updateMap(place.latLng?.lat??0.0,
                               place.latLng?.lng??0.0,isSearchVal: true);
                         },
@@ -321,7 +349,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                             ),
                           ),
                         ),
-                        textStyle: const TextStyle(
+                        textStyle: TextStyle(
                             color: AppColors.primary,
                             fontSize: 14,
                             fontWeight: FontWeight.w400),
@@ -554,6 +582,11 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
+                                  Image.asset(
+                                    ImageConstants.homeMall,
+                                    scale: 4,
+                                  ),
+                                  width10SizedBox,
                                   IconButton(
                                     padding: EdgeInsets.zero,
                                     constraints: const BoxConstraints(),
@@ -561,7 +594,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                                       Get.back(id: pageIdApp.value);
 
                                     },
-                                    icon: const Icon(
+                                    icon: Icon(
                                       Icons.arrow_back,
                                       color: AppColors.black,
                                       size: 24.0,
@@ -573,9 +606,9 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                    Text(
-                                              'Hi, ${widget.firstName ??""} ${widget.lastName}',
+                                              'Hi, ${widget.firstName ??""}',
                                               overflow: TextOverflow.ellipsis,
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                               fontSize: 18,
                                               color: AppColors.black,
                                               fontWeight: FontWeight.w600),
@@ -583,7 +616,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
 
                                       Text(
                                         StringConstants.searchForStoreText,
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                             fontSize: 16,
                                             color: AppColors.black,
                                             fontWeight: FontWeight.w400),
@@ -675,10 +708,6 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                                       ),
                                     ),
                                   ),
-                                  Image.asset(
-                                    ImageConstants.homeMall,
-                                    scale: 4,
-                                  ),
                                 ],
                               )
                             ]),
@@ -687,7 +716,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                           searchStoreUserController.miles.value != ""
                               ? "Nearby stores are shown from ${searchStoreUserController.miles.value} miles radius"
                               : StringConstants.nearByLabelForMilesText,
-                          style: const TextStyle(
+                          style: TextStyle(
                               fontSize: 12, color: AppColors.black),
                         )),
                         height4SizedBox,

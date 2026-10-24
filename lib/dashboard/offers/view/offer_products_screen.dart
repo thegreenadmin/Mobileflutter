@@ -7,19 +7,43 @@ import 'package:thegreenmall/dashboard/home/view/customer/store_home_main_screen
 import 'package:thegreenmall/dashboard/offers/controller/offers_controller.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
-class OfferProductScreen extends StatelessWidget {
+class OfferProductScreen extends StatefulWidget {
   final bool isFromStore;
   final offer.Offer? offerObj;
   final String? storeId;
 
-   OfferProductScreen({
+  const OfferProductScreen({
     super.key,
     this.isFromStore = false,
     this.offerObj,
     this.storeId,
   });
 
+  @override
+  State<OfferProductScreen> createState() => _OfferProductScreenState();
+}
+
+class _OfferProductScreenState extends State<OfferProductScreen> {
   final OffersController offersController = Get.put(OffersController());
+
+  bool get isFromStore => widget.isFromStore;
+  offer.Offer? get offerObj => widget.offerObj;
+  String? get storeId => widget.storeId;
+
+  @override
+  void initState() {
+    super.initState();
+    // Safety net: ensure offer products load even if the pre-fetch from the
+    // offers list didn't populate them (e.g. guest -> customer transition, or
+    // the screen is reached with a stale/empty controller instance).
+    if (offerObj?.isOfferForStore != true &&
+        offersController.featuredUserProductList.isEmpty) {
+      offersController.apiGetOffersProducts(
+        offerId: offerObj?.offerId?.toString() ?? "",
+        storeId: storeId ?? "",
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,13 +63,18 @@ class OfferProductScreen extends StatelessWidget {
                               children: [
                                 Row(
                                   children: [
+                                    Image.asset(
+                                      ImageConstants.homeMall,
+                                      scale: 4,
+                                    ),
+                                    width10SizedBox,
                                     IconButton(
                                       padding: EdgeInsets.zero,
                                       constraints: const BoxConstraints(),
                                       onPressed: () {
                                         Get.back(id: pageIdApp.value);
                                       },
-                                      icon: const Icon(
+                                      icon: Icon(
                                         Icons.arrow_back,
                                         color: AppColors.black,
                                         size: 24.0,
@@ -54,15 +83,11 @@ class OfferProductScreen extends StatelessWidget {
                                     width10SizedBox,
                                     Text(
                                       StringConstants.offerDetailText,
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                           fontSize: 22, color: AppColors.black, fontWeight: FontWeight.w600),
                                     ),
                                   ],
                                 ),
-                                Image.asset(
-                                  ImageConstants.homeMall,
-                                  scale: 4,
-                                )
                               ]),
                         ],
                       )),
@@ -76,33 +101,23 @@ class OfferProductScreen extends StatelessWidget {
               children: <Widget>[
                 InkWell(
                   onTap: () async {
-                      // Get.parameters["isFromHome"] = "false";
-                      // Get.parameters["isFromFav"] = "false";
-                      // Get.parameters["isFromMenu"] = "true";
-                      // Get.parameters["isFromOptions"] = "false";
-                      //
-                      // Get.parameters["storeId"] = storeId ?? "";
-                      //
-                      // if(  offerObj?.isOfferForStore == true){
-                      //
-                      //   Get.parameters["invokedIndex"] = "0";
-                      // }else{
-                      //   Get.parameters["productId"] =
-                      //       offersController.featuredUserProductList[0].productId ?? "";
-                      //   Get.parameters["storeId"] =
-                      //       offersController.featuredUserProductList[0].storeId ?? "";
-                      //   Get.parameters["invokedIndex"] = "2";
-                      // }
+                      final bool isStoreOffer = offerObj?.isOfferForStore == true;
+                      final products = offersController.featuredUserProductList;
+                      // For a product offer we deep-link to the first product,
+                      // but fall back to the store view if the product list
+                      // hasn't loaded (guards against a RangeError on an empty list).
+                      final bool hasProduct = !isStoreOffer && products.isNotEmpty;
 
                       await Get.to(
                         () =>  StoreHomeMainScreen(
                             args:  StoreHomeMainArgs(
-                              storeId: offerObj?.isOfferForStore == true? storeId ?? "" : offersController.featuredUserProductList[0].storeId ?? "",
-
-                              productId: offerObj?.isOfferForStore == true
-                                  ? null
-                                  : offersController.featuredUserProductList[0].productId ?? "",
-                              invokedIndex: offerObj?.isOfferForStore == true?0:2,
+                              storeId: hasProduct
+                                  ? products[0].storeId ?? ""
+                                  : storeId ?? "",
+                              productId: hasProduct
+                                  ? products[0].productId ?? ""
+                                  : null,
+                              invokedIndex: hasProduct ? 2 : 0,
                               isFromMenu: true,isFromFav: false,
                               isFromHome: false, isFromOptions: false,
                             )
@@ -149,7 +164,7 @@ class OfferProductScreen extends StatelessWidget {
                             Text(
                               offerObj?.offerType != null && offerObj!.offerType.toString().contains("per")
                                   ? "${StringConstants.offerPriceText}: ${offerObj?.offerValue}%"
-                                  : "${StringConstants.offerPriceText}: \$${offerObj?.offerValue}",
+                                  : "${StringConstants.offerPriceText}: $currencySign${offerObj?.offerValue}",
                               style: const TextStyle(color: Colors.black, fontSize: 12),
                             ),
                           ],
@@ -260,7 +275,7 @@ class OfferProductScreen extends StatelessWidget {
                                                 ),
                                                 height4SizedBox, */
                                               Text(
-                                                "${StringConstants.priceText}: \$${offersController.featuredUserProductList[index].offerPrice.toStringAsFixed(2)}",
+                                                "${StringConstants.priceText}: $currencySign${offersController.featuredUserProductList[index].offerPrice.toStringAsFixed(2)}",
                                                 style: const TextStyle(color: Colors.black, fontSize: 12),
                                               ),
                                               height4SizedBox,

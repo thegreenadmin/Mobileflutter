@@ -1,3 +1,6 @@
+import 'dart:math' as math;
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/search_store_owner_controller.dart';
@@ -129,7 +132,7 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> with Glob
             ignoring: false, // tap blocked only when loading
                 child: Container(
                               color: Colors.black.withOpacity(0.2),
-                              child: const Center(
+                              child: Center(
                   child: CircularProgressIndicator(color: AppColors.primary),
                               ),),
               )
@@ -144,7 +147,8 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> with Glob
       alignment: Alignment.bottomCenter,
       children: [
         Obx(() => Container(
-          height: WidgetConstants.screenHeight * 0.28,
+          // 28% of a short screen (e.g. Pixel 2) can't fit the store info.
+          height: math.max(WidgetConstants.screenHeight * 0.28, 240.0),
               decoration: BoxDecoration(
                 image: DecorationImage(
                   fit: BoxFit.cover,
@@ -155,7 +159,7 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> with Glob
                       ? const AssetImage(
                           ImageConstants.nopicfound,
                         ) as ImageProvider
-                      : NetworkImage(ownerStoresController
+                      : CachedNetworkImageProvider(ownerStoresController
                           .editStoreImageDynamicLinkFromServer.value),
                 ),
               ),
@@ -216,6 +220,26 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> with Glob
                                         color: AppColors.white,
                                         fontSize: 18,
                                         fontWeight: FontWeight.w600),
+                                  )),
+                              height6SizedBox,
+                              // Store-type badge so the owner can tell which
+                              // vertical this store belongs to.
+                              Obx(() => Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8, vertical: 2),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.white,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Text(
+                                      StringConstants.storeTypeLabel(
+                                          ownerStoresController
+                                              .storeTypeValue.value),
+                                      style: TextStyle(
+                                          color: AppColors.primary,
+                                          fontSize: 11,
+                                          fontWeight: FontWeight.w600),
+                                    ),
                                   )),
                               height6SizedBox,
                               Row(

@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:thegreenmall/authentication/login/view/login_screen.dart';
 import 'package:thegreenmall/dashboard/home/model/model.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/cart_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/components/store_home_main_args.dart';
@@ -8,6 +9,7 @@ import 'package:thegreenmall/dashboard/home/view/customer/store_home_main_screen
 import 'package:thegreenmall/dashboard/home/view/inbox/user_Inbox/user_inbox_detail_screen.dart';
 import 'package:thegreenmall/dashboard/orders/view/order_confirmation_screen.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
+import 'package:thegreenmall/utils/guest_access_modal.dart';
 import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
@@ -52,6 +54,12 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
   RxInt selectedIndex = 0.obs;
   RxInt invokedIndex = 0.obs;
   RxInt lastSelectedIndex = 0.obs;
+
+  // Guards against re-entrant product taps. The tap handlers await network
+  // calls before showing the detail screen; without this guard a second tap
+  // (or a double-fired InkWell) during those awaits would advance invokedIndex
+  // past the detail screen into build()'s default branch (StoreHomeScreen).
+  bool _isOpeningProduct = false;
   RxInt popUpIndex = 1.obs;
   RxInt activeStep = 0.obs;
   RxInt pageId = 0.obs;
@@ -76,6 +84,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
   RxString storeIdValue = "0".obs;
   RxBool isLoading = false.obs;
   RxBool showLoading = true.obs;
+  bool _isFetchingLocation = false; // guard against concurrent getCurrentLocation calls
   RxBool isPlaceOrder = true.obs;
   RxBool isFromOptions = false.obs;
   RxBool isFromAddProduct = false.obs;
@@ -106,24 +115,34 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
       element.storePageContent?.dynamicUrl != null &&
       listIndex.value < 4);
 
-  @override
-  void onInit() {
-    super.onInit();
-    _initializeParams();
-  }
-
-
-
   String? _lastArgsKey;
 
   void applyArgs(StoreHomeMainArgs args) {
     final newKey =
         '${args.storeId}_${args.productId}_${args.invokedIndex}_${args.categoryId}';
 
-    if (_lastArgsKey == newKey) return;
+    // Debug logging
+    print("=== APPLY ARGS DEBUG ===");
+    print("New storeId from args: ${args.storeId}");
+    print("New productId from args: ${args.productId}");
+    print("New invokedIndex from args: ${args.invokedIndex}");
+    print("Current storeId: ${storeId.value}");
+    print("Current productId: ${productId.value}");
+    print("Last args key: $_lastArgsKey");
+    print("New args key: $newKey");
+    print("Is switching stores: ${storeId.value != (args.storeId ?? "0")}");
+    print("========================");
+
+    if (_lastArgsKey == newKey) {
+      print("Returning early - same args key");
+      return;
+    }
 
     _lastArgsKey = newKey;
 
+    final bool isSwitchingStore = storeId.value != (args.storeId ?? "0");
+
+    // Assign new values first
     storeId.value = args.storeId ?? "0";
     invokedIndex.value = args.invokedIndex ?? 0;
     productId.value = args.productId ?? "";
@@ -132,25 +151,93 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
     isFromHome.value = args.isFromHome ?? false;
     isFromFav.value = args.isFromFav ?? false;
     isFromMenu.value = args.isFromMenu ?? false;
+    isFromOptions.value = args.isFromOptions ?? false;
+
+    // Clear old store data if switched (API will be called by handleInitialFlow)
+    if (isSwitchingStore) {
+      print("Clearing old store data for: ${storeId.value}");
+      storeDetailsResponse.value = StoreDetailsResponse();
+      listIndex.value = 2;
+    }
+
+    // Refresh store details for authenticated users when navigating to store
+    if (!isGuest.value && storeId.value.isNotEmpty && storeId.value != "0") {
+      getCurrentLocation();
+    }
   }
 
 
   void handleInitialFlow() {
+    print("=== HANDLE INITIAL FLOW DEBUG ===");
+    print("storeId: ${storeId.value}");
+    print("isGuest: ${isGuest.value}");
+    print("isFromMenu: ${isFromMenu.value}");
+    print("isFromFav: ${isFromFav.value}");
+    print("isFromHome: ${isFromHome.value}");
+    print("===================================");
+
     if (storeId.value.isNotEmpty) {
       getCurrentLocation();
     }
 
+    // Skip JWT-required API calls for guest users, but allow public data
+    if (isGuest.value == true) {
+      print("Guest user flow");
+      if (isFromMenu.value) {
+        selectedIndex.value = 1;
+        apiGetStoreCategoriesApi();
+        if (productId.value.isNotEmpty && productId.value != "0") {
+          print("Calling product detail API for guest from menu, productId: ${productId.value}");
+          apiGetShopProductDetailApi();
+        }
+      } else if (isFromFav.value) {
+        selectedIndex.value = 2;
+        apiFeatureProductListApi(isFeaturedProduct: true);
+        if (productId.value.isNotEmpty && productId.value != "0") {
+          print("Calling product detail API for guest from fav, productId: ${productId.value}");
+          apiGetShopProductDetailApi();
+        }
+      } else if (isFromHome.value) {
+        selectedIndex.value = 0;
+        apiGetStoreOffersApi();
+        apiFeatureProductListApi(isFeaturedProduct: true);
+        if (productId.value.isNotEmpty && productId.value != "0") {
+          print("Calling product detail API for guest from home, productId: ${productId.value}");
+          apiGetShopProductDetailApi();
+        }
+      } else {
+        print("No navigation flags set, calling onIndexChange(0)");
+        onIndexChange(0);
+      }
+      return;
+    }
+
+    print("Authenticated user flow");
     if (isFromMenu.value) {
       selectedIndex.value = 1;
       apiGetStoreCategoriesApi();
+      if (productId.value.isNotEmpty && productId.value != "0") {
+        print("Calling product detail API from menu flow, productId: ${productId.value}");
+        apiGetShopProductDetailApi();
+      }
     } else if (isFromFav.value) {
       selectedIndex.value = 2;
       apiFeatureProductListApi(isFeaturedProduct: true);
+      if (productId.value.isNotEmpty && productId.value != "0") {
+        print("Calling product detail API from fav flow, productId: ${productId.value}");
+        apiGetShopProductDetailApi();
+      }
     } else if (isFromHome.value) {
       selectedIndex.value = 0;
+      print("Calling store offers and featured products APIs");
       apiGetStoreOffersApi();
       apiFeatureProductListApi(isFeaturedProduct: true);
+      if (productId.value.isNotEmpty && productId.value != "0") {
+        print("Calling product detail API from home flow, productId: ${productId.value}");
+        apiGetShopProductDetailApi();
+      }
     } else {
+      print("No navigation flags set, calling onIndexChange(0)");
       onIndexChange(0);
     }
 
@@ -158,10 +245,28 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
   }
 
 
-  @override
-  void onReady() {
-    super.onReady();
-    _loadInitialData();
+
+  // Loads product detail data then shows the AddToOrder screen by setting
+  // invokedIndex to an ABSOLUTE target (never ++), and ignores re-entrant
+  // taps while the network calls are in flight. Both prevent invokedIndex
+  // from overshooting into build()'s default branch (StoreHomeScreen).
+  Future<void> openProductDetail({
+    required int targetInvokedIndex,
+    required Future<void> Function() loadData,
+  }) async {
+    if (_isOpeningProduct) return;
+    _isOpeningProduct = true;
+    // Always reset quantity to 1 when opening a new product so the count
+    // from a previously viewed product doesn't carry over.
+    itemsCount.value = 1;
+    try {
+      await loadData();
+      invokedIndex.value = targetInvokedIndex;
+    } catch (e) {
+      Utility.showToast(AlertStringConstants.somethingWentWrongText);
+    } finally {
+      _isOpeningProduct = false;
+    }
   }
 
   void openProductFromFav(int index) async {
@@ -175,16 +280,16 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
     Get.parameters["isFromMenu"] = "false";
     Get.parameters["isFromOptions"] = "false";
 
-    await apiGetShopProductDetailApi();
-    await apiGetCartListApi();
-    await apiGetUserDetailsApi();
-
-    if (storeId.value.isNotEmpty && productId.value.isNotEmpty) {
-      await apiGetShopProductDetailApi();
-    }
-
-    await apiGetUserWalletBalance();
-    invokedIndex.value++;
+    await openProductDetail(
+      targetInvokedIndex: 1,
+      // Run all independent calls in parallel (removed duplicate apiGetShopProductDetailApi)
+      loadData: () => Future.wait([
+        apiGetShopProductDetailApi(),
+        apiGetCartListApi(),
+        apiGetUserDetailsApi(),
+        apiGetUserWalletBalance(),
+      ]),
+    );
   }
 
 
@@ -192,6 +297,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
   // --- Params Setup ---
   void _initializeParams() {
     storeId.value = Get.parameters["storeId"] ?? "";
+    productId.value = Get.parameters["productId"] ?? "";
     invokedIndex.value = int.tryParse(Get.parameters["invokedIndex"] ?? "0") ?? 0;
     isFromHome.value = Get.parameters["isFromHome"] == "true";
     isFromFav.value = Get.parameters["isFromFav"] == "true";
@@ -201,6 +307,71 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
 
   // --- Initial Data Load ---
   Future<void> _loadInitialData() async {
+    print("=== LOAD INITIAL DATA DEBUG ===");
+    print("isGuest: ${isGuest.value}");
+    print("isFromMenu: ${isFromMenu.value}");
+    print("isFromHome: ${isFromHome.value}");
+    print("isFromFav: ${isFromFav.value}");
+    print("productId: ${productId.value}");
+    print("storeId: ${storeId.value}");
+    print("_hasStore: $_hasStore");
+    print("invokedIndex: ${invokedIndex.value}");
+    print("=============================");
+
+    // For guest users, load only public data (skip user-specific data)
+    if (isGuest.value == true) {
+      if (isFromAddProduct.value) {
+        selectedIndex.value = 0;
+        lastSelectedIndex.value = 0;
+      }
+      // Respect navigation flags for guests, same as handleInitialFlow
+      try {
+        if (isFromMenu.value) {
+          selectedIndex.value = 1;
+          if (_hasStore) {
+            await getCurrentLocation();
+            await apiGetStoreDetailsApi();
+            await apiGetStoreCategoriesApi();
+            if (productId.value.isNotEmpty && productId.value != "0") {
+              print("Calling product detail API for guest from menu");
+              await apiGetShopProductDetailApi();
+            }
+          }
+        } else if (isFromFav.value) {
+          selectedIndex.value = 2;
+          if (_hasStore) {
+            await getCurrentLocation();
+            await apiGetStoreDetailsApi();
+            await apiFeatureProductListApi(isFeaturedProduct: true);
+          }
+        } else if (isFromHome.value) {
+          selectedIndex.value = 0;
+          if (_hasStore) {
+            await getCurrentLocation();
+            await apiGetStoreDetailsApi();
+            await apiGetStoreOffersApi();
+            await apiFeatureProductListApi(isFeaturedProduct: true);
+            if (productId.value.isNotEmpty && productId.value != "0") {
+              print("Calling product detail API for guest from home");
+              await apiGetShopProductDetailApi();
+            }
+          }
+        } else {
+          // Default: load store home tab
+          selectedIndex.value = 0;
+          if (_hasStore) {
+            await getCurrentLocation();
+            await apiGetStoreDetailsApi();
+            await apiGetStoreOffersApi();
+            await apiFeatureProductListApi(isFeaturedProduct: true);
+          }
+        }
+      } catch (e) {
+        // Log error for debugging but don't crash the app
+        print('Error loading initial data for guest user: $e');
+      }
+      return;
+    }
     if (isFromAddProduct.value) {
       selectedIndex.value = 0;
       lastSelectedIndex.value = 0;
@@ -214,6 +385,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
     await apiGetUserDetailsApi();
 
     if (_hasStore) {
+      print("Calling product detail API for authenticated user");
       await apiGetShopProductDetailApi();
     }
 
@@ -228,18 +400,36 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
       _handleFromOptions();
     }
 
+    // apiGetUserWalletBalance internally calls apiActiveCartApi() on success,
+    // which in turn calls apiGetCartListApi(). No need to call apiActiveCartApi separately.
     await apiGetUserWalletBalance();
-    await apiActiveCartApi();
   }
 
   // --- Location ---
   Future<void> getCurrentLocation() async {
-    final currentLocation = await Utility.fetchCurrentLocation();
-    lat = currentLocation.latitude;
-    lng = currentLocation.longitude;
+    // Prevent concurrent duplicate location fetches (e.g. called from both
+    // applyArgs() and handleInitialFlow() in the same frame).
+    if (_isFetchingLocation) return;
+    _isFetchingLocation = true;
+    // Nashville default — used when GPS is unavailable (e.g. simulator, denied
+    // service, or a timed-out fix) so store details still load instead of the
+    // fetch throwing an unhandled TimeoutException and skipping the call.
+    lat = 36.1627;
+    lng = -86.7816;
+    try {
+      try {
+        final currentLocation = await Utility.fetchCurrentLocation();
+        lat = currentLocation.latitude;
+        lng = currentLocation.longitude;
+      } catch (e) {
+        print("DEBUG: getCurrentLocation fallback to Nashville: $e");
+      }
 
-    if (_hasStore) {
-      await apiGetStoreDetailsApi(latitude: lat, longitude: lng);
+      if (_hasStore) {
+        await apiGetStoreDetailsApi(latitude: lat, longitude: lng);
+      }
+    } finally {
+      _isFetchingLocation = false;
     }
   }
 
@@ -280,12 +470,6 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
     switch (i) {
       case 0:
         await apiGetPreviousOrders();
-        break;
-      case 1:
-        await apiGetStoreCategoriesApi();
-        if (Get.parameters["categoryId"]?.isNotEmpty == true) {
-          await apiFeatureProductListApi(categoryId: Get.parameters["categoryId"] ?? "0");
-        }
         break;
       case 2:
         _checkStorePage("privacy", StringConstants.noPrivacyFoundText);
@@ -337,13 +521,30 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
 
     if (!hasPage) {
       Utility.showToast(noResultMessage);
-    } else {
-      // TODO: Navigate to privacy/terms page if needed
     }
+    // Note: Navigation to PDF view is handled reactively in build() based on popUpIndex
   }
 
   // --- Helpers ---
   bool get _hasStore => storeId.value.isNotEmpty && storeId.value != "0";
+
+  StoreHomeMainController() {
+    // Reload store details when user switches from guest to authenticated mode
+    ever(isGuest, (bool guestStatus) async {
+      if (!guestStatus && _hasStore) {
+        // User just logged in from guest mode, reload store details
+        await getCurrentLocation();
+      }
+    });
+
+    // Reload store details when user switches role (e.g., store owner to customer)
+    ever(roleApp, (String role) async {
+      if (_hasStore) {
+        // Role changed, reload store details
+        await getCurrentLocation();
+      }
+    });
+  }
 /*
   @override
   void onInit() {
@@ -359,51 +560,60 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
       // isFromFav.value = Get.parameters["isFromFav"] == "true";
       // isFromMenu.value = Get.parameters["isFromMenu"] == "true";
 
-      if (storeId.value != "0" && storeId.value != ""  ) {
-        getCurrentLocation();
-      }
-        apiGetUserDetailsApi();
-        if (storeId.value != "0" && storeId.value != "" ) {
+      final bool hasStore = storeId.value != "0" && storeId.value != "";
 
-          await apiGetShopProductDetailApi();
-        }
-
+      // Set UI state immediately (no async needed)
       if (isFromMenu.value) {
-          selectedIndex.value = 1;
-          invokedIndex.value = 2;
-          lastSelectedIndex.value = 1;
-        }
-        if (isFromFav.value) {
-          selectedIndex.value = 2;
-          lastSelectedIndex.value = 2;
-          showLoading.value = false;
-          if(storeId.value != "0" && storeId.value != "") {
-            await  apiFeatureProductListApi(isFavouriteProducts: true);
-          }
-        }
-        if (isFromHome.value) {
-          selectedIndex.value = 0;
-          lastSelectedIndex.value = 0;
-          showLoading.value = false;
-          invokedIndex.value = 0;
-          if(storeId.value != "0" && storeId.value != ""){
-            await apiGetStoreOffersApi();
-            await  apiFeatureProductListApi(isFeaturedProduct: true);
-          }
-        }
-        if (isFromOptions.value) {
-          selectedIndex.value = 3;
-          lastSelectedIndex.value = 3;
-          showLoading.value = false;
-        }
-      await apiGetUserWalletBalance();
+        selectedIndex.value = 1;
+        invokedIndex.value = 2;
+        lastSelectedIndex.value = 1;
+      } else if (isFromFav.value) {
+        selectedIndex.value = 2;
+        lastSelectedIndex.value = 2;
+        showLoading.value = false;
+      } else if (isFromHome.value) {
+        selectedIndex.value = 0;
+        lastSelectedIndex.value = 0;
+        showLoading.value = false;
+        invokedIndex.value = 0;
+      } else if (isFromOptions.value) {
+        selectedIndex.value = 3;
+        lastSelectedIndex.value = 3;
+        showLoading.value = false;
+      }
+
+      // Build parallel API calls based on navigation context
+      final List<Future> parallelCalls = [
+        apiGetUserDetailsApi(),
+        apiGetUserWalletBalance(),
+        // NOTE: getCurrentLocation() is already called in updateArgs() when navigating to a store.
+        // Calling it here again causes duplicate store/details API requests. Commented out (Fix 1).
+        // if (hasStore) getCurrentLocation(),
+        if (hasStore) apiGetShopProductDetailApi(),
+        if (hasStore && isFromFav.value) apiFeatureProductListApi(isFavouriteProducts: true),
+        if (hasStore && isFromHome.value) ...[
+          apiGetStoreOffersApi(),
+          apiFeatureProductListApi(isFeaturedProduct: true),
+        ],
+      ];
+
+      await Future.wait(parallelCalls);
     });
   }
 
   getCurrentLocation() async {
-    Position currentLocation = await Utility.fetchCurrentLocation();
-    lat = currentLocation.latitude;
-    lng = currentLocation.longitude;
+    // Nashville default — used when GPS is unavailable (e.g. simulator, denied
+    // service, or a timed-out fix) so store details still load instead of the
+    // fetch throwing an unhandled TimeoutException and skipping the call.
+    lat = 36.1627;
+    lng = -86.7816;
+    try {
+      Position currentLocation = await Utility.fetchCurrentLocation();
+      lat = currentLocation.latitude;
+      lng = currentLocation.longitude;
+    } catch (e) {
+      print("DEBUG: getCurrentLocation fallback to Nashville: $e");
+    }
 
     if (storeId.value != "0" && storeId.value != "") {
      await  apiGetStoreDetailsApi(latitude: lat, longitude: lng);
@@ -498,7 +708,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
                 contentType == "terms"
                     ? StringConstants.termsAndConditionsText
                     : StringConstants.privacyPolicyText,
-                style: const TextStyle(
+                style: TextStyle(
                     color: AppColors.black,
                     fontSize: 20,
                     fontWeight: FontWeight.w600),
@@ -533,7 +743,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
                       child: Center(
                         child: Text(
                           StringConstants.okayText,
-                          style: const TextStyle(
+                          style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 14.0,
                               color: AppColors.primary),
@@ -572,7 +782,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
             height12SizedBox,
             Text(
               StringConstants.paymentConfirmationText,
-              style: const TextStyle(
+              style: TextStyle(
                   color: AppColors.black,
                   fontSize: 20,
                   fontWeight: FontWeight.w600),
@@ -580,7 +790,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
             ),
             height15SizedBox,
             Text(
-              "\$$amount ${StringConstants.amountWillBeDeductedText}",
+              "$currencySign$amount ${StringConstants.amountWillBeDeductedText}",
               style: TextStyle(
                   color: AppColors.blackLight,
                   fontSize: 16,
@@ -607,7 +817,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
                     child: Center(
                       child: Text(
                         StringConstants.cancelText,
-                        style: const TextStyle(
+                        style: TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: 14.0,
                             color: AppColors.primary),
@@ -682,7 +892,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
             height10SizedBox,
             Text(
               StringConstants.replaceCartItemsText,
-              style: const TextStyle(
+              style: TextStyle(
                   color: AppColors.black,
                   fontSize: 18,
                   fontWeight: FontWeight.w600),
@@ -691,7 +901,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
             height15SizedBox,
             Text(
               StringConstants.cartItemReplaceText,
-              style: const TextStyle(
+              style: TextStyle(
                   color: AppColors.black,
                   fontSize: 14,
                   height: 1.6,
@@ -765,8 +975,12 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
 
   ///Get Active Cart Api
   Future apiActiveCartApi() async {
+    // Skip API call for guest users
+    if (isGuest.value == true) {
+      return;
+    }
     isLoading.value = true;
-     
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -782,44 +996,65 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
              if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         activeCartModel = ActiveCartModel.fromJson(value?.body);
-                           
-        if (int.parse(activeCartModel.data?.storeId.toString() ?? "0") == 0 &&
+        final String activeStoreId = activeCartModel.data?.storeId.toString().trim() ?? "";
+        final int parsedActiveStoreId = int.tryParse(activeStoreId) ?? 0;
+
+        if (parsedActiveStoreId == 0 &&
             activeCartModel.data!.cartItems!.isEmpty) {
           cartCount.value = 0;
-          storeIdValue.value = activeCartModel.data!.storeId.toString();
-          // storeId.value = activeCartModel.data!.storeId.toString();
+          storeIdValue.value = activeCartModel.data?.storeId?.toString() ?? "0";
         } else {
-          storeIdValue.value = activeCartModel.data!.storeId.toString();
-          cartCount.value = cartListResponse.data?.cartItems?.length ?? 0;
-          if (cartListResponse.data?.cartTotalPrice is int ||
-              cartListResponse.data?.cartTotalPrice is String) {
-            cartTotalPrice.value = double.parse(
-                cartListResponse.data?.cartTotalPrice.toString() ?? "0.0");
-          } else {
-            cartTotalPrice.value = cartListResponse.data?.cartTotalPrice ?? 0.0;
-          }
-
-                     isValidAddress.value = activeCartModel.data!.isValidAddress!;
+          storeIdValue.value = activeCartModel.data?.storeId?.toString() ?? "0";
+          isValidAddress.value = activeCartModel.data!.isValidAddress!;
           isOrderDeliverable.value = activeCartModel.data!.isOrderDeliverable!;
-          // storeId.value = activeCartModel.data!.storeId.toString();
-          await apiGetCartListApi(existingStoreId:activeCartModel.data!.storeId.toString());
+          await apiGetCartListApi(existingStoreId: activeCartModel.data!.storeId.toString());
+          // The cart can be reached without walking through the store page
+          // (tab switch, wallet round-trip), leaving storeDetailsResponse
+          // empty. Store details power the cart's Order Type grid and the
+          // default delivery selection, so without them the grid shows
+          // "No Data" and Pay Now fails with "Please select order type".
+          // Restore them from the active cart's store.
+          if (storeDetailsResponse.value.data?.store == null &&
+              parsedActiveStoreId != 0) {
+            storeId.value = activeStoreId;
+            await apiGetStoreDetailsApi();
+          }
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
 
         storage.clearData();
         Get.parameters.clear();
-        await Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
       }
+    }).catchError((error, stackTrace) {
+      isLoading.value = false;
     });
   }
 
   ///Api Contact store
   Future apiContactStore() async {
+    // Check if user is guest - show modal for login
+    if (isGuest.value == true) {
+      GuestAccessModal.show(
+        title: StringConstants.loginRequiredText,
+        message: StringConstants.loginToContactStoresText,
+        onContinueAsGuest: () {
+          // Allow guest to continue - just close modal
+        },
+      );
+      return;
+    }
+
+    final String finalStoreId = storeId.value.toString().trim();
+    if (finalStoreId.isEmpty || finalStoreId == "0" || finalStoreId.toLowerCase() == "null") {
+      return;
+    }
+
     isLoading.value = true;
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -829,14 +1064,13 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
 
          UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator.baseUrl}${ServerCommunicator.messageStore}?store_id=${storeId.value}",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.messageStore}?store_id=$finalStoreId",
             headers,
             showLoading: false)
         .then((value) async {
       isLoading.value = false;
              if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
-        Get.back(id: pageIdApp.value);
         Get.parameters["storeName"] = value?.body["data"]["store_name"] ?? "";
         Get.parameters["storeId"] = storeId.value;
         // Get.parameters["storeId"] = value?.body["data"]["store_id"] ?? "";
@@ -852,8 +1086,8 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
-        Get.parameters.clear();
-        await Get.offAll(const StartJourneyScreen());
+        Get.parameters.clear(); isLoading.value = false;
+        Utility.handle401Error();
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -864,32 +1098,44 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
 
   ///Get Categories Api
   Future apiGetStoreCategoriesApi() async {
+    final String finalStoreId = storeId.value.toString().trim();
+    if (finalStoreId.isEmpty || finalStoreId == "0" || finalStoreId.toLowerCase() == "null") {
+      isLoading.value = false;
+      return;
+    }
+
     isLoading.value = true;
-     
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      StringConstants.authorizationText:
-          "${StringConstants.bearerText} ${authToken.value}",
     };
+    // Only include authorization header for authenticated users (same pattern as apiGetNearByStores)
+    if (!isGuest.value) {
+      headers[StringConstants.authorizationText] = "${StringConstants.bearerText} ${authToken.value}";
+    }
 
-         UserProvider()
+    UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator.baseUrl}${ServerCommunicator.storeCategoryList}?store_id=${storeId.value}",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.storeCategoryList}?store_id=$finalStoreId",
             headers,
             showLoading: false)
         .then((value) async {
       isLoading.value = false;
 
-             if (value?.body["status"] == ApiConstants.statusCode201 ||
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         categoriesListResponse =
             StoreCategoriesListResponse.fromJson(value?.body);
         categoriesList.value = categoriesListResponse.data?.categories ?? [];
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value?.body['message']);
-        storage.clearData();
-        Get.parameters.clear();
-        await Get.offAll(const StartJourneyScreen());
+        // Guest users should never hit 401 — only clear session for logged-in users
+        if (!isGuest.value) {
+          Utility.showAlertMessage(value?.body['message']);
+          storage.clearData();
+          Get.parameters.clear();
+          isLoading.value = false;
+          Utility.handle401Error();
+        }
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -900,6 +1146,10 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
 
   ///Get User detail Api
   Future apiGetUserDetailsApi() async {
+    // Skip API call for guest users
+    if (isGuest.value == true) {
+      return;
+    }
     isLoading.value = true;
      
     Map<String, String> headers = {
@@ -924,8 +1174,8 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
-        Get.parameters.clear();
-        await Get.offAll(const StartJourneyScreen());
+        Get.parameters.clear(); isLoading.value = false;
+        Utility.handle401Error();
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -943,16 +1193,35 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
           "${StringConstants.bearerText} ${authToken.value}",
     };
 
+    // Ensure storeId is not empty
+    String finalStoreId = (existingStoreId != null && existingStoreId.isNotEmpty && existingStoreId.toLowerCase() != "null" && existingStoreId != "0")
+        ? existingStoreId
+        : (storeId.value.isNotEmpty && storeId.value.toLowerCase() != "null" && storeId.value != "0" ? storeId.value : "0");
+    if (finalStoreId == "0") {
+      isLoading.value = false;
+      return;
+    }
+
+    // Ensure storeDeliveryServiceId is not empty
+    String finalDeliveryServiceId = storeDeliveryServiceId.value.isNotEmpty ? storeDeliveryServiceId.value : "0";
+    // Ensure userAddressId is not empty
+    String? finalUserAddressId = (selectedUserAddress.value.userAddressId != null && selectedUserAddress.value.userAddressId.toString().isNotEmpty)
+        ? selectedUserAddress.value.userAddressId.toString()
+        : null;
+
+    // Build URL with conditional parameters
+    String apiUrl = "${ServerCommunicator.baseUrl}${ServerCommunicator.cartList}?store_id=$finalStoreId";
+    if (finalDeliveryServiceId != "0") {
+      apiUrl += "&store_delivery_service_id=$finalDeliveryServiceId";
+    }
+    if (finalUserAddressId != null && finalUserAddressId.isNotEmpty) {
+      apiUrl += "&user_address_id=$finalUserAddressId";
+    }
+
      try{
     UserProvider()
         .getWithHeadersApi(
-            storeDeliveryServiceId.value.toString() == "0" &&
-                    selectedUserAddress.value.userAddressId == null
-                ? "${ServerCommunicator.baseUrl}${ServerCommunicator.cartList}?store_id=${existingStoreId ?? storeId.value}"
-                : storeDeliveryServiceId.value.toString() != "0" &&
-                        selectedUserAddress.value.userAddressId == null
-                    ? "${ServerCommunicator.baseUrl}${ServerCommunicator.cartList}?store_id=${existingStoreId ?? storeId.value}&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}"
-                    : "${ServerCommunicator.baseUrl}${ServerCommunicator.cartList}?store_id=${existingStoreId ?? storeId.value}&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}&user_address_id=${selectedUserAddress.value.userAddressId.toString()}",
+            apiUrl,
             headers,
             showLoading: false)
         .then((value) async {
@@ -973,6 +1242,11 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
         if (selectedDeliveryService.value.toString() == "2" && cartData.value.isOrderDeliverable == false) {
           Utility.showAlertMessage(AlertStringConstants.orderNotDeliverable);
           isPlaceOrder.value = false;
+        } else {
+          // Re-arm checkout: without this the block above latches and the
+          // payment dialog's Proceed silently no-ops even after the user
+          // switches to a viable order type.
+          isPlaceOrder.value = true;
         }
         if (isDeleteCartItem.value == true &&
             cartListResponse.data!.cartItems!.isEmpty &&
@@ -993,13 +1267,15 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
-        Get.parameters.clear();
-        await Get.offAll(const StartJourneyScreen());
+        Get.parameters.clear(); isLoading.value = false;
+        Utility.handle401Error();
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
       }
+    }).catchError((error, stackTrace) {
+      isLoading.value = false;
     });
      }catch(e){
        Utility.showAlertMessage(AlertStringConstants.somethingWentWrongText);
@@ -1008,6 +1284,18 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
 
   ///Place Order Api
   Future apiPlaceOrder() async {
+    final String finalStoreId = storeId.value.toString().trim();
+    if (finalStoreId.isEmpty || finalStoreId == "0" || finalStoreId.toLowerCase() == "null") {
+      Utility.showAlertMessage(AlertStringConstants.pleaseSelectStore);
+      return;
+    }
+
+    final String finalStoreDeliveryServiceId = storeDeliveryServiceId.value.toString().trim();
+    if (finalStoreDeliveryServiceId.isEmpty || finalStoreDeliveryServiceId == "0" || finalStoreDeliveryServiceId.toLowerCase() == "null") {
+      Utility.showAlertMessage(AlertStringConstants.pleaseSelectOrderTypeText);
+      return;
+    }
+
     isPlaceOrder.value = false;
     isLoading.value = true;
 
@@ -1020,18 +1308,20 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
     List selectedItems = [];
     for (var element in cartItems) {
       selectedItems.add({
-        "cart_item_id": int.parse(element.cartItemId.toString()),
+        "cart_item_id": element.cartItemId?.isNotEmpty == true ? int.parse(element.cartItemId.toString()) : 0,
         "items_count": element.itemsCount,
       });
     }
 
     Map<String, dynamic> data = {
-      "store_id": int.parse(storeId.value.toString()),
-      "store_delivery_service_id": int.parse(storeDeliveryServiceId.value),
-      "user_address_id": selectedDeliveryService.value == "1" &&
+      "store_id": int.parse(finalStoreId),
+      "store_delivery_service_id": int.parse(finalStoreDeliveryServiceId),
+      "user_address_id": selectedDeliveryService.value == "1" ||
               selectedDeliveryService.value == "3"
-          ? int.parse(storeAddressId.value)
-          : selectedUserAddress.value.userAddressId != null
+          ? (storeAddressId.value.isNotEmpty ? int.parse(storeAddressId.value) : 0)
+          : selectedUserAddress.value.userAddressId != null &&
+                  selectedUserAddress.value.userAddressId.toString().trim().isNotEmpty &&
+                  selectedUserAddress.value.userAddressId.toString().toLowerCase() != "null"
               ? int.parse(selectedUserAddress.value.userAddressId.toString())
               : null,
       "cart_items": selectedItems
@@ -1075,8 +1365,8 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
 
         storage.clearData();
-        Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Get.parameters.clear(); isLoading.value = false;
+        Utility.handle401Error();
       } else if (value?.body["status"] == ApiConstants.statusCode409) {
         selectedDeliveryService.value= "0";
         isPlaceOrder.value = true;
@@ -1096,11 +1386,22 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
   }
 
   /// Add To CartApi
-  Future apiAddToCart(
-    BuildContext context,
-  ) async {
+  Future apiAddToCart(BuildContext context) async {
+    if (isGuest.value == true) {
+      Utility.showAlertMessage(StringConstants.loginToAddItemsToCartText);
+      Get.to(() => LoginScreen());
+      return;
+    }
+
+    final productIdStr = productDetailResponse.value.data?.product?.productId ?? "";
+    final parsedProductId = int.tryParse(productIdStr) ?? 0;
+    if (parsedProductId == 0) {
+      Utility.showAlertMessage(AlertStringConstants.somethingWentWrongText);
+      return;
+    }
+
     isLoading.value = true;
-     
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -1108,37 +1409,38 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
     };
 
     Map<String, dynamic> data = {
-      "product_id": int.parse(
-          productDetailResponse.value.data?.product?.productId ?? "0"),
-      "items_count": itemsCount.value
+      "product_id": parsedProductId,
+      "items_count": itemsCount.value,
     };
 
-              UserProvider()
-        .postWithHeadersApi(
-            data,
-            "${ServerCommunicator.baseUrl}${ServerCommunicator.createCart}",
-            headers,
-            showLoading: false)
-        .then((value) async {
+    try {
+      final value = await UserProvider().postWithHeadersApi(
+          data,
+          "${ServerCommunicator.baseUrl}${ServerCommunicator.createCart}",
+          headers,
+          showLoading: false);
       isLoading.value = false;
 
-       
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         itemsCount.value = 1;
-        addToCartDialog(context);
+        // Use overlayContext so the dialog always has a valid context regardless
+        // of widget rebuilds triggered by the isLoading toggle above.
+        addToCartDialog(Get.overlayContext!);
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-
         storage.clearData();
         Get.parameters.clear();
-        await Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
       }
-    });
+    } catch (e) {
+      isLoading.value = false;
+      Utility.showAlertMessage(AlertStringConstants.somethingWentWrongText);
+    }
   }
 
   ///Update Cart Api
@@ -1172,9 +1474,8 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
 
         storage.clearData();
-        Get.parameters.clear();
-        Get.parameters.clear();
-        await Get.offAll(const StartJourneyScreen());
+        Get.parameters.clear(); isLoading.value = false;
+        Utility.handle401Error();
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -1214,8 +1515,8 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
 
         storage.clearData();
-        Get.parameters.clear();
-        await Get.offAll(const StartJourneyScreen());
+        Get.parameters.clear(); isLoading.value = false;
+        Utility.handle401Error();
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -1246,7 +1547,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
             height10SizedBox,
             Text(
               StringConstants.itemAddedInCart,
-              style: const TextStyle(
+              style: TextStyle(
                   color: AppColors.black,
                   fontSize: 25,
                   fontWeight: FontWeight.w600),
@@ -1329,7 +1630,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
                       child: Text(
                         StringConstants.goToCartText,
                         textAlign: TextAlign.center,
-                        style: const TextStyle(
+                        style: TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: 14.0,
                             color: AppColors.primary),
@@ -1348,16 +1649,24 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
   ///Get Store Offers Api
   Future apiGetStoreOffersApi() async {
     offersList.clear();
+    final String finalStoreId = storeId.value.toString().trim();
+    if (finalStoreId.isEmpty || finalStoreId == "0" || finalStoreId.toLowerCase() == "null") {
+      isLoading.value = false;
+      return;
+    }
+
     isLoading.value = true;
-     
-    Map<String, String> headers = {
-      StringConstants.authorizationText:
-          "${StringConstants.bearerText} ${authToken.value}",
-    };
+
+    Map<String, String> headers = {};
+    // Only include authorization header for authenticated users
+    if (!isGuest.value) {
+      headers[StringConstants.authorizationText] =
+          "${StringConstants.bearerText} ${authToken.value}";
+    }
 
          UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator.baseUrl}${ServerCommunicator.storeOffersList}?store_id=${storeId.value}",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.storeOffersList}?store_id=$finalStoreId",
             headers,
             showLoading: false)
         .then((value) async {
@@ -1367,20 +1676,29 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
         offersListResponse = StoreOffersListResponse.fromJson(value?.body);
         offersList.value = offersListResponse.data?.offers ?? [];
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value?.body['message']);
-        storage.clearData();
-        Get.parameters.clear();
-        await Get.offAll(const StartJourneyScreen());
+        if (!isGuest.value) {
+          Utility.showAlertMessage(value?.body['message']);
+          storage.clearData();
+          Get.parameters.clear(); isLoading.value = false;
+          Utility.handle401Error();
+        }
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
       }
+    }).catchError((error, stackTrace) {
+      isLoading.value = false;
+      print('Error fetching offers: $error');
     });
   }
 
   ///Get User Wallet Balance Api
   Future apiGetUserWalletBalance() async {
+    // Skip API call for guest users
+    if (isGuest.value == true) {
+      return;
+    }
     isLoading.value = true;
      
     Map<String, String> headers = {
@@ -1404,37 +1722,43 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
                    } else if (value?.body["data"]["balance"] is double) {
           walletBalance.value = value?.body["data"]["balance"] ?? 0.0;
                    }
+        // apiActiveCartApi() internally calls apiGetCartListApi() when cart has items.
+        // No need to call apiGetCartListApi separately here — avoids duplicate cart fetch.
         await apiActiveCartApi();
-        if (storeId.value != "0" && storeId.value != "" ) {
-
-
-          await apiGetCartListApi(isShowLoading: true);
-        }
-        update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
+
         storage.clearData();
         Get.parameters.clear();
-        await Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
       }
-    });
+    }); 
   }
 
   ///Get Store Details Api
   Future apiGetStoreDetailsApi({dynamic latitude = 0.0, dynamic longitude = 0.0}) async {
+    final String finalStoreId = storeId.value.toString().trim();
+    if (finalStoreId.isEmpty || finalStoreId == "0") {
+      isLoading.value = false;
+      showLoading.value = false;
+      return;
+    }
+
     isLoading.value = true;
-     
-    Map<String, String> headers = {
-      StringConstants.authorizationText:
-          "${StringConstants.bearerText} ${authToken.value}",
-    };
+
+    Map<String, String> headers = {};
+    // Only include authorization header for authenticated users
+    if (!isGuest.value) {
+      headers[StringConstants.authorizationText] =
+          "${StringConstants.bearerText} ${authToken.value}";
+    }
          UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator.baseUrl}${ServerCommunicator.shopStoreDetails}?store_id=${storeId.value}&latitude=$latitude&longitude=$longitude",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.shopStoreDetails}?store_id=$finalStoreId&latitude=$latitude&longitude=$longitude",
             headers,
             showLoading: false)
         .then((value) async {
@@ -1458,26 +1782,32 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
         storeLocation.value =
             "${storeDetailsResponse.value.data?.store?.storeAddresses?.first.addressLine1 ?? ""},${storeDetailsResponse.value.data?.store?.storeAddresses?.first.city ?? ""},"
             "${storeDetailsResponse.value.data?.store?.storeAddresses?.first.state?.stateName ?? ""},${storeDetailsResponse.value.data?.store?.storeAddresses?.first.state?.country?.countryName ?? ""}";
-         
-         
+
+
                  isVerifiedStore.value =
             storeDetailsResponse.value.data?.store?.isVerified ?? false;
         isFavouriteStore.value =
             storeDetailsResponse.value.data?.store?.isFavouriteStore ?? false;
 
-         
+
                } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        if (value?.body['message'] != null) {
-          Utility.showAlertMessage(value?.body['message']);
+        if (!isGuest.value) {
+          if (value?.body['message'] != null) {
+            Utility.showAlertMessage(value?.body['message']);
+          }
+          storage.clearData();
+          Get.parameters.clear();
+          Utility.handle401Error();
         }
-        storage.clearData();
-        Get.parameters.clear();
-        await Get.offAll(const StartJourneyScreen());
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
       }
+    }).catchError((error, stackTrace) {
+      isLoading.value = false;
+      showLoading.value = false;
+      print('Error fetching store details: $error');
     });
   }
   void _prepareImages() {
@@ -1496,18 +1826,26 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
   }
 
   Future<void> apiGetShopProductDetailApi() async {
+    final String finalStoreId = storeId.value.toString().trim();
+    final String finalProductId = productId.value.toString().trim();
+    if (finalStoreId.isEmpty || finalStoreId == "0" || finalStoreId.toLowerCase() == "null" || finalProductId.isEmpty || finalProductId.toLowerCase() == "null") {
+      isLoading.value = false;
+      return;
+    }
+
     isLoading.value = true;
 
-    final headers = {
-      StringConstants.authorizationText:
-      "${StringConstants.bearerText} ${authToken.value}",
-    };
+    final Map<String, String> headers = {};
+    if (!isGuest.value) {
+      headers[StringConstants.authorizationText] =
+          "${StringConstants.bearerText} ${authToken.value}";
+    }
 
     try {
       final response = await UserProvider().getWithHeadersApi(
         "${ServerCommunicator.baseUrl}${ServerCommunicator.shopProductDetails}"
-            "?store_id=${storeId.value}"
-            "&product_id=${productId.value}"
+            "?store_id=$finalStoreId"
+            "&product_id=$finalProductId"
             "&latitude=$lat"
             "&longitude=$lng",
         headers,
@@ -1549,8 +1887,6 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
       }
     } catch (e, s) {
       isLoading.value = false;
-      debugPrint("apiGetShopProductDetailApi error: $e");
-      debugPrintStack(stackTrace: s);
       Utility.showAlertMessage("Something went wrong");
     }
   }
@@ -1574,7 +1910,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
     await storage.clearData();
     Get.parameters.clear();
 
-    Get.offAll(const StartJourneyScreen());
+    Utility.handle401Error();
   }
 
 
@@ -1631,7 +1967,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
         }
         storage.clearData();
         Get.parameters.clear();
-        await Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else if (value?.body["status"] == ApiConstants.statusCode409) {
       } else {
         if (value?.body['message'] != null) {
@@ -1648,24 +1984,33 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
       String orderBy = "1",
       String orderType = "1",
       String categoryId = "0"}) async {
+    final String finalStoreId = storeId.value.toString().trim();
+    if (finalStoreId.isEmpty || finalStoreId == "0" || finalStoreId.toLowerCase() == "null") {
+      isLoading.value = false;
+      return;
+    }
+
     featureProductList.clear();
     isLoading.value = true;
-     
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      StringConstants.authorizationText:
-          "${StringConstants.bearerText} ${authToken.value}",
     };
+    // Only include authorization header for authenticated users
+    if (!isGuest.value) {
+      headers[StringConstants.authorizationText] =
+          "${StringConstants.bearerText} ${authToken.value}";
+    }
 
     Map data = {
       "q": "",
-      "store_id": storeId.value,
+      "store_id": int.parse(finalStoreId),
       "page": 1,
       "page_size": 100,
       "order_by": orderBy == "1" ? "product_id" : "selling_price",
       "order_type": orderType == "1" ? "DESC" : "ASC",
       "category_id": isFeaturedProduct == false && categoryId != "0"
-          ? int.parse(categoryId)
+          ? int.tryParse(categoryId) ?? 0
           : null,
       "is_favourite_products": isFavouriteProducts,
       "filters": isFeaturedProduct
@@ -1696,12 +2041,15 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
             featureProductListResponse.data?.products ?? [];
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        if (value?.body['message'] != null) {
-          Utility.showAlertMessage(value?.body['message']);
+        // Guest users should never hit 401 — only clear session for logged-in users
+        if (!isGuest.value) {
+          if (value?.body['message'] != null) {
+            Utility.showAlertMessage(value?.body['message']);
+          }
+          storage.clearData();
+          Get.parameters.clear();
+          Utility.handle401Error();
         }
-        storage.clearData();
-        Get.parameters.clear();
-        await Get.offAll(const StartJourneyScreen());
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -1738,7 +2086,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
                           Flexible(
                             child: Text(
                               StringConstants.selectLocationText,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.w600,
                                 color: AppColors.black,
@@ -1773,7 +2121,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 10, vertical: 10),
-                                decoration: const BoxDecoration(
+                                decoration: BoxDecoration(
                                     color: AppColors.greyLight,
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(8.0),
@@ -1794,7 +2142,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
                                             child: Text(
                                               "${userAddress[index].addressLine1},${userAddress[index].city},"
                                               "${userAddress[index].state?.stateName},${userAddress[index].state?.country?.countryName},",
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                   fontSize: 14.0,
                                                   color: AppColors.black,
                                                   fontWeight: FontWeight.w500),
@@ -1841,8 +2189,11 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
 
   ///Create Favourite Store Api
   Future apiCreateFavouriteStore(String? id) async {
+    // Guests cannot favourite a store
+    if (isGuest.value == true) return;
+
     isLoading.value = true;
-     
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -1871,7 +2222,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
         }
         storage.clearData();
         Get.parameters.clear();
-        await Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
         isFavouriteStore.value = false;
         if (value?.body['message'] != null) {
@@ -1883,8 +2234,11 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
 
   ///Remove Favourite Store Api
   Future apiRemoveFavouriteStore(String? id) async {
+    // Guests cannot remove a favourite store
+    if (isGuest.value == true) return;
+
     isLoading.value = true;
-     
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -1914,7 +2268,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
         }
         storage.clearData();
         Get.parameters.clear();
-        await Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
         featureProductList.where((p0) => p0.storeId == id ).first.isFavouriteProduct?.value= true;
         isFavouriteStore.value = true;
@@ -1927,6 +2281,18 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
 
   ///Create Favourite Product Api
   Future apiCreateFavouriteProduct(String? id) async {
+    // Check if user is guest - show modal for login
+    if (isGuest.value == true) {
+      GuestAccessModal.show(
+        title: StringConstants.loginRequiredText,
+        message: StringConstants.loginToAddProductsToFavouritesText,
+        onContinueAsGuest: () {
+          // Allow guest to continue - just close modal
+        },
+      );
+      return;
+    }
+
     isLoading.value = true;
      
     Map<String, String> headers = {
@@ -1953,15 +2319,29 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
         // isFavouriteProduct.value = true;
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         isFavouriteProduct.value = false;
-        featureProductList.where((p0) => p0.storeId == id ).first.isFavouriteProduct?.value= false;
+        final matchingProducts = featureProductList.where((p0) => p0.productId == id);
+        if (matchingProducts.isNotEmpty) {
+          matchingProducts.first.isFavouriteProduct?.value = false;
+        }
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
         storage.clearData();
         Get.parameters.clear();
-        await Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
+      } else if (value?.body["status"] == ApiConstants.statusCode409) {
+        // Server already has this favourite (unique-constraint conflict):
+        // sync the UI to the server state instead of showing the raw error.
+        isFavouriteProduct.value = true;
+        final matchingProducts = featureProductList.where((p0) => p0.productId == id);
+        if (matchingProducts.isNotEmpty) {
+          matchingProducts.first.isFavouriteProduct?.value = true;
+        }
       } else { isFavouriteProduct.value = false;
-        featureProductList.where((p0) => p0.storeId == id ).first.isFavouriteProduct?.value= false;
+        final matchingProducts = featureProductList.where((p0) => p0.productId == id);
+        if (matchingProducts.isNotEmpty) {
+          matchingProducts.first.isFavouriteProduct?.value = false;
+        }
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
@@ -1981,6 +2361,18 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
 
   ///Remove Favourite Product Api
   Future apiRemoveFavouriteProduct(String? id,{bool isFromFavS = false}) async {
+    // Check if user is guest - show modal for login
+    if (isGuest.value == true) {
+      GuestAccessModal.show(
+        title: StringConstants.loginRequiredText,
+        message: StringConstants.loginToManageFavouritesText,
+        onContinueAsGuest: () {
+          // Allow guest to continue - just close modal
+        },
+      );
+      return;
+    }
+
     isLoading.value = true;
      
     Map<String, String> headers = {
@@ -2012,7 +2404,17 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
         }
         storage.clearData();
         Get.parameters.clear();
-        await Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
+      } else if (value?.body["status"] == ApiConstants.statusCode404 ||
+          value?.body["status"] == ApiConstants.statusCode409) {
+        // Favourite no longer exists on the server: sync the UI to the
+        // server state instead of showing the raw error.
+        isFavouriteProduct.value = false;
+        final matchingProducts = featureProductList.where((p0) => p0.productId == id);
+        if (matchingProducts.isNotEmpty) {
+          matchingProducts.first.isFavouriteProduct?.value = false;
+        }
+        isFromFavS ? apiFeatureProductListApi(isFavouriteProducts: true) : null;
       } else {
         isFavouriteProduct.value = true;
         if (value?.body['message'] != null) {
@@ -2024,6 +2426,18 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
 
   ///Previous orders ProductList Api
   Future apiGetPreviousOrders() async {
+    // Check if user is guest - show modal for login
+    if (isGuest.value == true) {
+      GuestAccessModal.show(
+        title: StringConstants.loginRequiredText,
+        message: StringConstants.loginToViewPreviousOrdersText,
+        onContinueAsGuest: () {
+          // Allow guest to continue - just close modal
+        },
+      );
+      return;
+    }
+
     isLoading.value = true;
      
     Map<String, String> headers = {
@@ -2069,7 +2483,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
         }
         storage.clearData();
         Get.parameters.clear();
-        await Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -2121,7 +2535,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);

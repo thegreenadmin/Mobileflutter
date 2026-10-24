@@ -2,12 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/authentication/login/view/login_screen.dart';
 import 'package:thegreenmall/authentication/signup/view/signup_screen.dart';
+import 'package:thegreenmall/bottomNavigation/bottom_nav_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/welcome/startjourney/controller/start_journey_controller.dart';
+import 'package:thegreenmall/utils/brand_image.dart';
 
 class StartJourneyScreen extends StatefulWidget {
   const StartJourneyScreen({super.key});
@@ -20,6 +24,26 @@ class _StartJourneyScreenState extends State<StartJourneyScreen> {
   final StartJourneyController startJourneyController =
       Get.put(StartJourneyController());
 
+  void _browseAsGuest() async {
+    print("DEBUG: _browseAsGuest called");
+    // Set user as guest (session-only, not persisted)
+    roleApp.value = Role.customerRoleText;
+    await SharedPreferenceStorage.setData(Role.role, Role.customerRoleText);
+    isGuest.value = true;
+    firstName.value = "Guest";
+    lastName.value = "";
+    print("DEBUG: Guest state set - isGuest: ${isGuest.value}, roleApp: ${roleApp.value}");
+    
+    // Verify role was saved
+    String savedRole = await SharedPreferenceStorage.getData(Role.role) ?? "";
+    print("DEBUG: Verified saved role from shared prefs: $savedRole");
+
+    // Navigate to home screen using named route
+    print("DEBUG: Navigating to BottomNavigation");
+    Get.offAllNamed('/bottomNavigation');
+    print("DEBUG: Navigation called");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,9 +52,9 @@ class _StartJourneyScreenState extends State<StartJourneyScreen> {
         children: [
           Container(
             height: WidgetConstants.screenHeight,
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage(ImageConstants.startJourneyBg),
+                image: brandImageProvider(ImageConstants.startJourneyBg),
                 fit: BoxFit.cover,
               ),
             ),
@@ -39,7 +63,7 @@ class _StartJourneyScreenState extends State<StartJourneyScreen> {
             padding: const EdgeInsets.only(top: 100, left: 20, right: 20),
             child: Column(
               children: [
-                Image.asset(ImageConstants.greenmall420),
+                BrandImage.asset(ImageConstants.greenmall420),
                 height10SizedBox,
                 Padding(
                   padding: const EdgeInsets.only(left: 10.0),
@@ -58,8 +82,23 @@ class _StartJourneyScreenState extends State<StartJourneyScreen> {
               bottom: 60,
               child: Column(
                 children: [
+                  TextButton(
+                    onPressed: () {
+                      _browseAsGuest();
+                    },
+                    child: Text(
+                      StringConstants.continueAsGuestText,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: AppColors.white,
+                        fontWeight: FontWeight.w400,
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
+                  ),
+                  height20SizedBox,
                   CustomButton(
-                    gradient: const LinearGradient(
+                    gradient: LinearGradient(
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
                       colors: [AppColors.primary, AppColors.primary],
@@ -94,7 +133,7 @@ class _StartJourneyScreenState extends State<StartJourneyScreen> {
                     fontWeight: FontWeight.w500,
                     iconL: false,
                   ),
-                  height30SizedBox,
+                  height15SizedBox,
                   InkWell(
                     onTap: () {
                       Get.to(

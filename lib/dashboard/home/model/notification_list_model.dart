@@ -63,6 +63,7 @@ class Notifications {
   bool? isRead;
   String? title;
   String? message;
+  String? type;
   String? status;
   String? createdAt;
   String? updatedAt;
@@ -80,6 +81,7 @@ class Notifications {
       this.isRead,
       this.title,
       this.message,
+      this.type,
       this.status,
       this.createdAt,
       this.updatedAt,
@@ -97,6 +99,7 @@ class Notifications {
     isRead = json['is_read'];
     title = json['title'];
     message = json['message'];
+    type = json['type'];
     status = json['status'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
@@ -118,6 +121,7 @@ class Notifications {
     data['is_read'] = isRead;
     data['title'] = title;
     data['message'] = message;
+    data['type'] = type;
     data['status'] = status;
     data['createdAt'] = createdAt;
     data['updatedAt'] = updatedAt;

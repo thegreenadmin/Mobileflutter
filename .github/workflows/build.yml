@@ -1,0 +1,334 @@
+name: Flutter Mobile CI/CD Pipeline
+
+on:
+  workflow_dispatch:
+    inputs:
+      platform:
+        description: 'Platform to build (ios, android, or both)'
+        required: true
+        default: 'both'
+        type: choice
+        options:
+          - ios
+          - android
+          - both
+      environment:
+        description: 'Deployment environment'
+        required: true
+        default: 'beta'
+        type: choice
+        options:
+          - beta
+          - release
+  push:
+    branches: [main]
+    paths:
+      - 'lib/**'
+      - 'android/**'
+      - 'ios/**'
+      - 'pubspec.yaml'
+
+permissions:
+  contents: read
+  id-token: write
+
+# Serialize runs per ref. Build numbers are derived from "latest TestFlight
+# build + 1" at deploy time, so two concurrent runs could otherwise read the
+# same latest value and collide on upload.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  FLUTTER_VERSION: '3.41.6'
+  RUBY_VERSION: '3.3'
+
+jobs:
+  build-ios:
+    if: github.event.inputs.platform == 'ios' || github.event.inputs.platform == 'both' || github.event.inputs.platform == ''
+    runs-on: macos-26
+    timeout-minutes: 120
+    environment: APP_STORE_CONFIG
+    env:
+      BUILD_ENVIRONMENT: ${{ github.event.inputs.environment || 'beta' }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create environment file from GitHub Secrets
+        env:
+          BASE_URL_WO_API: ${{ env.BUILD_ENVIRONMENT == 'beta' && vars.BASE_URL_WO_API_BETA || vars.BASE_URL_WO_API_RELEASE }}
+          GOOGLE_MAP_KEY: ${{ env.BUILD_ENVIRONMENT == 'beta' && secrets.GOOGLE_MAP_KEY_BETA || secrets.GOOGLE_MAP_KEY_RELEASE }}
+          STRIPE_API_URL: ${{ env.BUILD_ENVIRONMENT == 'beta' && vars.STRIPE_API_URL_BETA || vars.STRIPE_API_URL_RELEASE }}
+          STRIPE_CARD_BASIC_AUTH: ${{ env.BUILD_ENVIRONMENT == 'beta' && secrets.STRIPE_CARD_BASIC_AUTH_BETA || secrets.STRIPE_CARD_BASIC_AUTH_RELEASE }}
+          STRIPE_BANK_BASIC_AUTH: ${{ env.BUILD_ENVIRONMENT == 'beta' && secrets.STRIPE_BANK_BASIC_AUTH_BETA || secrets.STRIPE_BANK_BASIC_AUTH_RELEASE }}
+          STRIPE_PUBLISHABLE_KEY: ${{ env.BUILD_ENVIRONMENT == 'beta' && secrets.STRIPE_PUBLISHABLE_KEY_BETA || secrets.STRIPE_PUBLISHABLE_KEY_RELEASE }}
+        run: |
+          cat > assets/env/api_key.env << EOF
+          # Base URL for the backend API without the /api/v1/ suffix
+          BASE_URL_WO_API=${BASE_URL_WO_API}
+
+          # API version identifier
+          VERSION=v1
+
+          # Google Maps API key for map and geocoding functionality
+          GOOGLE_MAP_KEY=${GOOGLE_MAP_KEY}
+
+          # Stripe API endpoint for creating payment tokens
+          STRIPE_API_URL=${STRIPE_API_URL}
+
+          # Stripe Basic auth token for card-related operations
+          STRIPE_CARD_BASIC_AUTH=${STRIPE_CARD_BASIC_AUTH}
+
+          # Stripe Basic auth token for bank account operations
+          STRIPE_BANK_BASIC_AUTH=${STRIPE_BANK_BASIC_AUTH}
+
+          # Stripe publishable key for client-side payment operations (Google Pay, Apple Pay)
+          STRIPE_PUBLISHABLE_KEY=${STRIPE_PUBLISHABLE_KEY}
+          EOF
+
+      - name: Select Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '26'
+
+      - name: Setup Ruby and Fastlane
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ env.RUBY_VERSION }}
+          bundler-cache: true
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+          cache: true
+
+      - name: Install Flutter dependencies
+        run: flutter pub get
+
+      - name: Cache CocoaPods
+        uses: actions/cache@v4
+        with:
+          path: ios/Pods
+          key: ${{ runner.os }}-pods-${{ hashFiles('ios/Podfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pods-
+
+      - name: Install CocoaPods dependencies
+        working-directory: ios
+        run: pod install
+
+      - name: Build iOS app for beta (TestFlight)
+        if: env.BUILD_ENVIRONMENT == 'beta'
+        env:
+          FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
+          APPLE_TEAM_ID: ${{ vars.APPLE_TEAM_ID }}
+          APP_STORE_CONNECT_API_KEY_KEY_ID: ${{ vars.APP_STORE_CONNECT_API_KEY_KEY_ID }}
+          APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ vars.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}
+          APP_STORE_CONNECT_API_KEY_KEY: ${{ secrets.APP_STORE_CONNECT_API_KEY_KEY }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          MATCH_GIT_URL: ${{ vars.MATCH_GIT_URL }}
+          MATCH_GIT_BASIC_AUTHORIZATION: ${{ secrets.MATCH_GIT_BASIC_AUTHORIZATION }}
+          FASTLANE_USER: ${{ vars.FASTLANE_USER }}
+          OPENSSL_CONF: /dev/null
+        working-directory: ios
+        run: bundle exec fastlane beta
+
+      # Build numbers are derived from App Store Connect at deploy time
+      # (see Fastfile set_next_build_number), so there is no pbxproj change
+      # to commit back to the repo.
+
+      - name: Build iOS app for release (App Store)
+        if: env.BUILD_ENVIRONMENT == 'release'
+        env:
+          FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
+          APPLE_TEAM_ID: ${{ vars.APPLE_TEAM_ID }}
+          APP_STORE_CONNECT_API_KEY_KEY_ID: ${{ vars.APP_STORE_CONNECT_API_KEY_KEY_ID }}
+          APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ vars.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}
+          APP_STORE_CONNECT_API_KEY_KEY: ${{ secrets.APP_STORE_CONNECT_API_KEY_KEY }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          MATCH_GIT_URL: ${{ vars.MATCH_GIT_URL }}
+          MATCH_GIT_BASIC_AUTHORIZATION: ${{ secrets.MATCH_GIT_BASIC_AUTHORIZATION }}
+          FASTLANE_USER: ${{ vars.FASTLANE_USER }}
+          OPENSSL_CONF: /dev/null
+        working-directory: ios
+        run: bundle exec fastlane release
+
+      - name: Upload iOS build artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-build-artifacts
+          path: |
+            ios/build/*.ipa
+            ios/**/*.dSYM.zip
+          retention-days: 30
+
+  build-android:
+    if: github.event.inputs.platform == 'android' || github.event.inputs.platform == 'both' || github.event.inputs.platform == ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    environment: ANDROID_BETA_CONFIG
+    env:
+      BUILD_ENVIRONMENT: ${{ github.event.inputs.environment || 'beta' }}
+      KEYSTORE_FILE: keystore.jks
+      KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+      KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+      KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+      ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create environment file from GitHub Secrets
+        env:
+          BASE_URL_WO_API: ${{ env.BUILD_ENVIRONMENT == 'beta' && vars.BASE_URL_WO_API_BETA || vars.BASE_URL_WO_API_RELEASE }}
+          GOOGLE_MAP_KEY: ${{ env.BUILD_ENVIRONMENT == 'beta' && secrets.GOOGLE_MAP_KEY_BETA || secrets.GOOGLE_MAP_KEY_RELEASE }}
+          STRIPE_API_URL: ${{ env.BUILD_ENVIRONMENT == 'beta' && vars.STRIPE_API_URL_BETA || vars.STRIPE_API_URL_RELEASE }}
+          STRIPE_CARD_BASIC_AUTH: ${{ env.BUILD_ENVIRONMENT == 'beta' && secrets.STRIPE_CARD_BASIC_AUTH_BETA || secrets.STRIPE_CARD_BASIC_AUTH_RELEASE }}
+          STRIPE_BANK_BASIC_AUTH: ${{ env.BUILD_ENVIRONMENT == 'beta' && secrets.STRIPE_BANK_BASIC_AUTH_BETA || secrets.STRIPE_BANK_BASIC_AUTH_RELEASE }}
+          STRIPE_PUBLISHABLE_KEY: ${{ env.BUILD_ENVIRONMENT == 'beta' && secrets.STRIPE_PUBLISHABLE_KEY_BETA || secrets.STRIPE_PUBLISHABLE_KEY_RELEASE }}
+        run: |
+          cat > assets/env/api_key.env << EOF
+          # Base URL for the backend API without the /api/v1/ suffix
+          BASE_URL_WO_API=${BASE_URL_WO_API}
+
+          # API version identifier
+          VERSION=v1
+
+          # Google Maps API key for map and geocoding functionality
+          GOOGLE_MAP_KEY=${GOOGLE_MAP_KEY}
+
+          # Stripe API endpoint for creating payment tokens
+          STRIPE_API_URL=${STRIPE_API_URL}
+
+          # Stripe Basic auth token for card-related operations
+          STRIPE_CARD_BASIC_AUTH=${STRIPE_CARD_BASIC_AUTH}
+
+          # Stripe Basic auth token for bank account operations
+          STRIPE_BANK_BASIC_AUTH=${STRIPE_BANK_BASIC_AUTH}
+
+          # Stripe publishable key for client-side payment operations (Google Pay, Apple Pay)
+          STRIPE_PUBLISHABLE_KEY=${STRIPE_PUBLISHABLE_KEY}
+          EOF
+
+      - name: Setup Ruby and Fastlane
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ env.RUBY_VERSION }}
+          bundler-cache: true
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+          cache: true
+
+      - name: Install Flutter dependencies
+        run: flutter pub get
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'gradle'
+
+      # The runner image already ships the Android SDK. android-actions/setup-android@v3
+      # runs `sdkmanager tools`, a package Google no longer publishes, so it fails.
+      - name: Install required Android SDK components
+        run: |
+          export PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$PATH"
+          yes | sdkmanager --licenses >/dev/null || true
+          sdkmanager "platforms;android-36" "build-tools;36.0.0"
+
+      - name: Decode keystore
+        run: |
+          if [ -z "$ANDROID_KEYSTORE_BASE64" ]; then
+            echo "ANDROID_KEYSTORE_BASE64 is not set"
+            exit 1
+          fi
+
+          printf '%s' "$ANDROID_KEYSTORE_BASE64" | base64 --decode > android/app/keystore.jks
+          chmod 600 android/app/keystore.jks
+
+      - name: Preflight keystore verification
+        env:
+          KEYSTORE_FILE: ${{ github.workspace }}/android/app/keystore.jks
+        run: |
+          set -euo pipefail
+
+          if [ ! -f "$KEYSTORE_FILE" ]; then
+            echo "Keystore file not found: $KEYSTORE_FILE"
+            exit 1
+          fi
+
+          if ! keytool -list -keystore "$KEYSTORE_FILE" -storepass "$KEYSTORE_PASSWORD" -alias "$KEY_ALIAS" >/dev/null 2>&1; then
+            echo "Keystore preflight failed while checking the store password or alias."
+
+            if ! keytool -list -keystore "$KEYSTORE_FILE" -storepass "$KEYSTORE_PASSWORD" >/dev/null 2>&1; then
+              echo "ERROR: wrong store password."
+            else
+              echo "ERROR: wrong alias."
+            fi
+
+            exit 1
+          fi
+
+          tmp_dir=$(mktemp -d)
+          trap 'rm -rf "$tmp_dir"' EXIT
+          tmp_keystore="$tmp_dir/verify.jks"
+
+          if ! keytool -importkeystore \
+            -srckeystore "$KEYSTORE_FILE" \
+            -srcstorepass "$KEYSTORE_PASSWORD" \
+            -srcalias "$KEY_ALIAS" \
+            -srckeypass "$KEY_PASSWORD" \
+            -destkeystore "$tmp_keystore" \
+            -deststoretype JKS \
+            -deststorepass "$KEYSTORE_PASSWORD" \
+            -destkeypass "$KEY_PASSWORD" \
+            -destalias "$KEY_ALIAS" \
+            -noprompt >/dev/null 2>&1; then
+            echo "ERROR: wrong key password."
+            exit 1
+          fi
+
+          echo "Keystore preflight verification passed."
+
+      - name: Decode Google Play Service Account key
+        run: |
+          echo "${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}" | base64 --decode > android/google-play-service-account.json
+
+      - name: Compute next Android version code
+        working-directory: android
+        run: bundle exec fastlane set_version_code
+
+      - name: Build Flutter app bundle
+        run: flutter build appbundle --release --build-number=${ANDROID_VERSION_CODE}
+
+      - name: Verify build output
+        run: ls -la build/app/outputs/bundle/release/*.aab
+
+      - name: Deploy to Google Play Internal Testing (beta)
+        if: env.BUILD_ENVIRONMENT == 'beta'
+        working-directory: android
+        run: bundle exec fastlane beta
+
+      - name: Deploy to Google Play Production
+        if: env.BUILD_ENVIRONMENT == 'release'
+        working-directory: android
+        run: bundle exec fastlane deploy
+
+      - name: Upload Android build artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-build-artifacts
+          path: build/app/outputs/bundle/release/*.aab
+          retention-days: 30

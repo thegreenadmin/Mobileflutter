@@ -68,6 +68,15 @@ class OffersList {
   String? updatedAt;
   Store? store;
 
+  // Advertisement fields (present only when the carousel item is a paid ad).
+  bool? isAd;
+  String? adType;
+  String? mediaType; // 'image' | 'video'
+  String? mediaUrl; // video source / raw creative url
+  String? thumbnailUrl;
+  String? title;
+  String? targetType; // 'store' | 'offer' | 'product' | 'none'
+
   OffersList(
       {this.image,
       this.offerId,
@@ -82,13 +91,21 @@ class OffersList {
       this.expiredAt,
       this.status,
       this.createdAt,
-      this.updatedAt, this.store});
+      this.updatedAt,
+      this.store,
+      this.isAd,
+      this.adType,
+      this.mediaType,
+      this.mediaUrl,
+      this.thumbnailUrl,
+      this.title,
+      this.targetType});
 
   OffersList.fromJson(Map<String, dynamic> json) {
     image = json['image'] != null ? Images.fromJson(json['image']) : null;
-    offerId = json['offer_id'];
-    storeId = json['store_id'];
-    productId = json['product_id'];
+    offerId = json['offer_id']?.toString();
+    storeId = json['store_id']?.toString();
+    productId = json['product_id']?.toString();
     isOfferForStore = json['is_offer_for_store'];
     autoCreated = json['auto_created'];
     offerName = json['offer_name'];
@@ -100,6 +117,13 @@ class OffersList {
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     store = json['store'] != null ? Store.fromJson(json['store']) : null;
+    isAd = json['is_ad'] ?? false;
+    adType = json['ad_type'];
+    mediaType = json['media_type'];
+    mediaUrl = json['media_url'];
+    thumbnailUrl = json['thumbnail_url'];
+    title = json['title'];
+    targetType = json['target_type'];
   }
 
   Map<String, dynamic> toJson() {
@@ -123,6 +147,13 @@ class OffersList {
     if (store != null) {
       data['store'] = store!.toJson();
     }
+    data['is_ad'] = isAd;
+    data['ad_type'] = adType;
+    data['media_type'] = mediaType;
+    data['media_url'] = mediaUrl;
+    data['thumbnail_url'] = thumbnailUrl;
+    data['title'] = title;
+    data['target_type'] = targetType;
     return data;
   }
 }

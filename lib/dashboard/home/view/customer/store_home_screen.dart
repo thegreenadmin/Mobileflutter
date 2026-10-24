@@ -4,7 +4,9 @@ import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/common_models/store_addresses_model.dart'
 as offer;
 import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
+import 'package:thegreenmall/utils/guest_access_modal.dart';
 import 'package:thegreenmall/utils/utils.dart';
+import 'package:thegreenmall/utils/brand_image.dart';
 
 class StoreHomeScreen extends StatefulWidget {
   const StoreHomeScreen({super.key});
@@ -13,7 +15,7 @@ class StoreHomeScreen extends StatefulWidget {
   State<StoreHomeScreen> createState() => _StoreHomeScreenState();
 }
 
-class _StoreHomeScreenState extends State<StoreHomeScreen> {
+class _StoreHomeScreenState extends State<StoreHomeScreen> with GlobalVarMixin {
   final StoreHomeMainController storeHomeMainController = Get.put(StoreHomeMainController());
 
   final CarouselSliderController _controller = CarouselSliderController();
@@ -52,7 +54,7 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                             TextSpan(
                               text:
                               " ${storeHomeMainController.storeDetailsResponse.value.data?.store?.storeName ?? ""}",
-                              style: const TextStyle(
+                              style: TextStyle(
 
                                   overflow: TextOverflow.visible,
                                   fontWeight: FontWeight.w600,
@@ -75,7 +77,7 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                           controller.isLoading.value == false,
                       child: Text(
                         StringConstants.featuredProductsText,
-                        style: const TextStyle(
+                        style: TextStyle(
                             color: AppColors.black,
                             fontWeight: FontWeight.w600,
                             fontSize: 18),
@@ -104,7 +106,7 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset(ImageConstants.nodata, scale: 8),
+              BrandImage.asset(ImageConstants.nodata, scale: 8),
               height4SizedBox,
                Text(
                 StringConstants.noProductFoundText,
@@ -147,18 +149,19 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                       Get.parameters["isFromMenu"] = "false";
                       Get.parameters["isFromOptions"] = "false";
 
-                      debugPrint("STORE HOME SCREEN PRODUCT DETAIL------------------------------");
-                      debugPrint("productId.value ==== ${item.productId.toString()}");
-                      debugPrint("storeId.value ==== ${item.storeId.toString()}");
-                      debugPrint("PRODUCT ==== ${item.productName.toString()}");
-
-                      await storeHomeMainController.apiGetUserDetailsApi();
-                      if (storeHomeMainController.storeId.value != "" &&
-                          storeHomeMainController.productId.value != "") {
-                        await storeHomeMainController.apiGetShopProductDetailApi();
-                      }
-                      await storeHomeMainController.apiGetUserWalletBalance();
-                      storeHomeMainController.invokedIndex.value++;
+                      await storeHomeMainController.openProductDetail(
+                        targetInvokedIndex: 1,
+                        loadData: () async {
+                          await storeHomeMainController.apiGetUserDetailsApi();
+                          if (storeHomeMainController.storeId.value != "" &&
+                              storeHomeMainController.productId.value != "") {
+                            await storeHomeMainController
+                                .apiGetShopProductDetailApi();
+                          }
+                          await storeHomeMainController
+                              .apiGetUserWalletBalance();
+                        },
+                      );
                       storeHomeMainController.update();
                     },
                     child: Container(
@@ -187,8 +190,20 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
 
                                 InkWell(
                                   onTap: () {
-                                    item.isFavouriteProduct!.value = !item.isFavouriteProduct!.value; // Toggle
+                                    // Check if user is guest - show modal and prevent API call
+                                    if (isGuest.value == true) {
+                                      GuestAccessModal.show(
+                                        title: StringConstants.loginRequiredText,
+                                        message: StringConstants.loginToAddProductsToFavouritesText,
+                                        onContinueAsGuest: () {
+                                          // Allow guest to continue - just close modal
+                                        },
+                                      );
+                                      return; // Don't toggle or make API call
+                                    }
+
                                     if (!storeHomeMainController.isLoading.value) {
+                                      item.isFavouriteProduct!.value = !item.isFavouriteProduct!.value; // Toggle
                                       if (item.isFavouriteProduct!.value) {
                                         storeHomeMainController.apiCreateFavouriteProduct(item.productId);
                                       } else {
@@ -250,7 +265,7 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                         Text(
                           item.productName ?? "",
                           overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
+                          style: TextStyle(
                               color: AppColors.black,
                               fontSize: 16,
                               fontWeight: FontWeight.w600),
@@ -272,8 +287,8 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                         ),
                         height4SizedBox,
                         Text(
-                          "${StringConstants.unitPriceText}: \$${item.productPrice ?? ""}",
-                          style: const TextStyle(
+                          "${StringConstants.unitPriceText}: $currencySign${item.productPrice ?? ""}",
+                          style: TextStyle(
                               color: AppColors.black,
                               fontSize: 14,
                               fontWeight: FontWeight.w600),
@@ -366,7 +381,7 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                                           top: 10),
                                       child: Text(
                                         item.offerName ?? "",
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                             color: AppColors.black,
                                             fontWeight: FontWeight.w500,
                                             fontSize: 14),
@@ -443,7 +458,7 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Center(
-            child: Image.asset(
+            child: BrandImage.asset(
               ImageConstants.nodata,
               scale: 8,
               color: AppColors.primary,

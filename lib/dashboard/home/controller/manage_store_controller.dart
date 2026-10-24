@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' show basename;
+import 'package:thegreenmall/dashboard/home/controller/search_store_owner_controller.dart';
 import 'package:thegreenmall/dashboard/home/model/model.dart';
 import 'package:thegreenmall/dashboard/home/model/quantity_list_response_model.dart'
     as quantity_model;
@@ -16,6 +17,12 @@ import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart
 class ManageStoreController extends GetxController with GlobalVarMixin{
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final GlobalKey<FormState> updateFormKey = GlobalKey<FormState>();
+
+  // Shipping dimensions (length/breadth/height/weight) are collected only for
+  // herbs stores; general and munchies products default them to 0.
+  bool get isHerbsStore =>
+      Get.isRegistered<OwnerStoresController>() &&
+      Get.find<OwnerStoresController>().storeTypeValue.value == "herbs";
 
   TextEditingController productNameTextController = TextEditingController();
   TextEditingController quantityTextController = TextEditingController();
@@ -331,7 +338,7 @@ class ManageStoreController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -366,7 +373,7 @@ class ManageStoreController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -407,7 +414,9 @@ class ManageStoreController extends GetxController with GlobalVarMixin{
     product.height = double.parse(heightTextController.text.trim().isEmpty
         ? "0.0"
         : heightTextController.text.trim());
-    product.weight = double.parse(weightTextController.text.trim());
+    product.weight = double.parse(weightTextController.text.trim().isEmpty
+        ? "0.0"
+        : weightTextController.text.trim());
     product.isEnabled = isEnabled.value;
     inputData.product = product;
     List<ProductCategories> listProductCategory = <ProductCategories>[];
@@ -451,7 +460,7 @@ class ManageStoreController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -496,7 +505,7 @@ class ManageStoreController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -622,7 +631,7 @@ class ManageStoreController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -671,7 +680,9 @@ class ManageStoreController extends GetxController with GlobalVarMixin{
     product.height = double.parse(heightTextController.text.trim().isEmpty
         ? "0.0"
         : heightTextController.text.trim());
-    product.weight = double.parse(weightTextController.text.trim());
+    product.weight = double.parse(weightTextController.text.trim().isEmpty
+        ? "0.0"
+        : weightTextController.text.trim());
     product.isEnabled = isEnabled.value;
     inputData.product = product;
     List<ProductCategories> listProductCategory = <ProductCategories>[];
@@ -743,7 +754,7 @@ class ManageStoreController extends GetxController with GlobalVarMixin{
         storage.clearData();
         Get.parameters.clear();
 
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -779,7 +790,7 @@ class ManageStoreController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -815,7 +826,7 @@ class ManageStoreController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);

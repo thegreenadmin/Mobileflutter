@@ -16,7 +16,7 @@ class StringConstants {
   static String acceptText = "Accept";
   static String ageText = "Age";
   static String acknowledgeText =
-      ' and acknowledge the receipts of the green mall Inc’s ';
+      ' and acknowledge the receipts of the green mall LLC ';
   static String accountIdText = "Account ID";
   static String appIconAndSkinUpdateText = "App Icon & Skin Update";
   static String aboutUsText = "About us";
@@ -88,7 +88,7 @@ class StringConstants {
 
   //B
   static String byCheckingText =
-      'By checking this box, you agree to the green mall Inc’s ';
+      'By checking this box, you agree to the green mall LLC ';
   static String breadthText = "Breadth";
   static String bannerImageText = "Banner Image";
   static String backToShoppingText = "Back To Shopping";
@@ -112,8 +112,10 @@ class StringConstants {
   static String createAnAccountText = "Create an account";
   static String createAccountDetailText =
       "Enter your details to create an\naccount";
+  static String continueAsGuestText = "Continue as Guest";
   static String cardAndPaymentsText = "Cards & Payments";
   static String contactUsText = "Contact us";
+  static String contactTgmText = "Contact The Green Mall";
   static String contactUsRequestText = "Contact us request";
   static String countryText = "Country";
   static String closingTimeText = "Closing Time";
@@ -130,7 +132,7 @@ class StringConstants {
   static String categoryNameText = "Category Name";
   static String categoriesText = "Categories";
   static String completedOrders = "Completed Orders";
-  static String contactText = "Contact";
+  static String contactText = "Contact Store";
   static String currentMonthText = "Current Month";
   static String contentsAndStrainsText = "Contents and Strains";
   static String customTimeText = "Custom Time";
@@ -184,7 +186,6 @@ class StringConstants {
   static String deleteText = "Delete";
   static String didNotGetACodeText = "Didn’t get a code?";
   static String decText = "December";
-  static String dobText = "Date of Birth";
   static String detailText = "Detail";
   static String debitMoneyFromWalletText = "Debit money from my wallet";
   static String descriptionOftheIssueText = "Description of the issue/question";
@@ -197,6 +198,11 @@ class StringConstants {
   static String endTimeText = "End Time";
   static String emailIdText = "Email ID";
   static String emailUsText = "Email us";
+  static String emailRequiredTitle = "Email Required";
+  static String emailRequiredMessage =
+      "Please add an email address to your profile to use wallet features. You can add it now or finish later.";
+  static String updateEmailText = "Update Email";
+  static String maybeLaterText = "Maybe Later";
   static String editText = "Edit";
   static String enterMobileNumberText =
       "Enter mobile number to login your\naccount";
@@ -268,6 +274,37 @@ class StringConstants {
   //I
   static String interFamilyText = "Inter";
   static String inboxText = "Inbox";
+  static String payAPersonText = "P2P";
+  static String payABusinessText = "P2B";
+  static String munchiesText = "Munchies";
+  static String herbsText = "Herbs";
+  static String paymentsText = "Payments";
+  static String storeTypeText = "Store Type";
+  static String generalStoreTypeText = "General";
+  // Section headers used when the owner store screens are scoped to a vertical.
+  static String munchiesStoresText = "Munchies Stores";
+  static String herbsStoresText = "Herbs Stores";
+
+  // Maps a backend store_type ("general"/"munchies"/"herbs") to its display
+  // label. Used for badges on the manage/list screens.
+  static String storeTypeLabel(String? storeType) {
+    switch (storeType) {
+      case "munchies":
+        return munchiesText;
+      case "herbs":
+        return herbsText;
+      default:
+        return generalStoreTypeText;
+    }
+  }
+
+  // Maps the home-pill category ("Munchies"/"Herbs"/null) to the list-screen
+  // header title.
+  static String storeListTitle(String? category) {
+    if (category == munchiesText) return munchiesStoresText;
+    if (category == herbsText) return herbsStoresText;
+    return searchForStoreText;
+  }
   static String inStoreText = "In-store";
   static String itemAddedInCart = "Item added in cart";
   static String itemsText = "Items";
@@ -300,6 +337,8 @@ class StringConstants {
   static String mondayText = "Monday";
 
   static String messageText = "Message";
+  static String messageRatesDisclaimerText =
+      '. Message and data rates may apply.';
   static String moreText = "More";
   static String manageText = "Manage";
   static String menuText = "Menu";
@@ -535,6 +574,14 @@ class StringConstants {
   static String searchText = "Search";
   static String storeProfileText = "Store Profile";
   static String shortDescriptionText = "Short Description";
+  static String searchOrdersHintText = "Search by order ID or customer name";
+  static String scanOrderBarcodeText = "Scan Order Barcode";
+  static String showOrderQRText = "Pickup / QR code";
+  static String showQrAtStoreText =
+      "Show this code at the store to pull up your order";
+  static String alignOrderCodeText = "Align the order QR within the frame";
+  static String uploadFromGalleryText = "Upload from Gallery";
+  static String selectAllText = "Select All";
   static String selectTypeText = "Select Type";
   static String selectDaysText = "Select Days";
   static String selectDeliveryServicesText = "Select Delivery Services";
@@ -657,7 +704,7 @@ class StringConstants {
   static String x4Text = "XXXX XXXX XXXX XXXX";
 
   //Y
-  static String your420MarketPlace = "Your 420 Market Place";
+  static String yourWellnessMarketPlace = "Your Wellness Market Place";
   static String yesText = "Yes";
   static String yearlyPlanText = "Yearly Plan   ";
   static String yourThoughtText = "Your Thoughts";
@@ -667,6 +714,42 @@ class StringConstants {
   //Z
   static String zipCodeText = "Zip Code";
   static String zoneText = "Zone (State or Province)";
+  // Guest prompts
+  static String loginRequiredText = "Login Required";
+  static String exitAppConfirmText = "Click OK to exit the app.";
+  static String loginToAccessPreviousAndFavoriteStoresText = "Please login to access Previous and Favorite stores";
+  static String loginToAccessAccountSettingsText = "Please login to access account settings";
+  static String loginToAccessInboxText = "Please login to access inbox";
+  static String loginToAccessOrderHistoryText = "Please login to access order history";
+  static String loginToAccessThisFeatureText = "Please login to access this feature";
+  static String loginToAccessTransactionHistoryText = "Please login to access transaction history";
+  static String loginToAccessYourCartText = "Please login to access your cart";
+  static String loginToAddItemsToCartText = "Please login to add items to cart";
+  static String loginToAddProductsToFavouritesText = "Please login to add products to favourites";
+  static String loginToAddStoresToFavouritesText = "Please login to add stores to favourites";
+  static String loginToContactStoresText = "Please login to contact stores";
+  static String loginToManageFavouriteStoresText = "Please login to manage favourite stores";
+  static String loginToManageFavouritesText = "Please login to manage favourites";
+  static String loginToSendOrReceivePaymentsText = "Please login to send or receive payments";
+  static String loginToViewFavouriteProductsText = "Please login to view favourite products";
+  static String loginToViewFavouriteStoresText = "Please login to view favourite stores";
+  static String loginToViewNotificationsText = "Please login to view notifications";
+  static String loginToViewPreviousOrdersText = "Please login to view previous orders";
+  static String loginToViewPreviousStoresText = "Please login to view previous stores";
+
+  // App gates & support (driven by admin App behavior settings)
+  static String updateRequiredTitleText = "Update required";
+  static String updateRequiredMessageText =
+      "A new version of The Green Mall is available. Please update the app to continue.";
+  static String updateAvailableTitleText = "Update available";
+  static String updateAvailableMessageText =
+      "A new version of The Green Mall is available with the latest improvements.";
+  static String updateNowText = "Update now";
+  static String maintenanceTitleText = "We'll be right back";
+  static String tryAgainText = "Try again";
+  static String supportEmailText = "Email support";
+  static String supportPhoneText = "Call support";
+  static String followUsText = "Follow us";
 }
 
 //Bottom Tab bar
@@ -696,6 +779,7 @@ class AlertStringConstants {
       "Are you sure you want to accept return request?";
   static String above18Text =
       "The Green mall application is available for 18 years and above only!";
+  static String pleaseConfirmAgeVerification = "Please confirm you are 18 or older";
   //C
   static String closingTimeAlertText =
       "Closing time cannot be same as opening time";
@@ -725,8 +809,13 @@ class AlertStringConstants {
   static String noDataFoundText = "No Data Found";
   static String notAuthorizedToStoreText =
       "Sorry, You are not authorized. Contact your store owner for more info.";
+  static String notAValidOrderCodeText = "This is not a valid order code.";
+  static String noOrderCodeInImageText =
+      "No order code found in the selected image.";
 
   //O
+  static String orderReturnRequestScanText =
+      "This order has a return request. Please open it from the store's orders list.";
   static String openingTimeAlertText =
       "Opening time can not be as closing time";
   static String only5MaximumImagesCanSelectText =
@@ -744,12 +833,16 @@ class AlertStringConstants {
   static String pleaseSelectDiscountTypeText = "Please select discount type";
   static String pleaseEnterFirstNameText = "Please enter first name";
   static String pleaseEnterMobileNoText = "Please enter mobile number";
+  static String pleaseEnterPhoneText = "Please enter phone number";
+  static String cannotPayOwnStoreText =
+      "You can't pay to your own store. Transfers between your own stores aren't allowed.";
   static String pleaseEnterNickNameText = "Please enter nick name";
   static String pleaseEnterLastNameText = "Please enter last name";
   static String pleaseEnterEmployeeNameText = "Please enter employee name";
   static String pleaseEnterMileageText = "Please enter mileage";
   static String pleaseEnterEmailText = "Please enter email";
-  static String pleaseEnterPhoneText = "Please enter phone number";
+  static String pleaseUpdateEmailToContinueText =
+      "Please update your email to continue";
   static String pleaseEnterOtpText = "Please enter Otp";
   static String pleaseEnterValidEmailText = "Please enter valid email";
   static String pleaseEnterValidPhoneText = "Please enter valid Phone number";
@@ -826,6 +919,8 @@ class AlertStringConstants {
   static String pleaseEnterAccountTypeText = "Please enter account type";
   static String pleaseEnterCountry = "Please enter country";
   static String pleaseSelectStore = "Please select store";
+  static String pleaseSelectBankAccountText = "Please select a bank account";
+  static String pleaseEnterValidAmountText = "Please enter a valid amount";
   static String pleaseEnterStoreTermsText = "Please enter store terms";
   static String pleaseEnterStorePrivacyText = "Please enter store privacy";
   static String pleaseEnterFrequencyText = "Please enter frequency";

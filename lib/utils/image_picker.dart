@@ -25,7 +25,6 @@ class ImagePickerClass {
             imageFile.add(value.elementAt(i).path);
           }
         }).catchError((error) {
-          debugPrint(error.toString());
         });
 
         // await MultiImagePicker.pickImages(
@@ -51,7 +50,6 @@ class ImagePickerClass {
       picker.pickImage(source: ip.ImageSource.camera).then((value) {
         imageFile.add(value!.path);
       }).catchError((error) {
-        debugPrint(error.toString());
       });
 
       // await ImagesPicker.openCamera(

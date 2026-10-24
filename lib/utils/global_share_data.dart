@@ -1,7 +1,35 @@
 import 'dart:convert';
 
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
+/// Shared observer for the bottom-nav nested navigators. Screens can mix in
+/// [RouteAware] and subscribe to this so they can refresh when a route pushed
+/// above them is popped and they become visible again (e.g. re-fetch an order's
+/// status after returning from a notification screen).
+final RouteObserver<PageRoute<dynamic>> appRouteObserver =
+    RouteObserver<PageRoute<dynamic>>();
+
+/// A [NavigatorObserver] may only be attached to one [Navigator], but each
+/// bottom-nav tab has its own. Give every tab one of these; it forwards route
+/// events to [appRouteObserver] so [RouteAware] subscribers still get them.
+class TabRouteObserverProxy extends NavigatorObserver {
+  @override
+  void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) =>
+      appRouteObserver.didPush(route, previousRoute);
+
+  @override
+  void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) =>
+      appRouteObserver.didPop(route, previousRoute);
+
+  @override
+  void didRemove(Route<dynamic> route, Route<dynamic>? previousRoute) =>
+      appRouteObserver.didRemove(route, previousRoute);
+
+  @override
+  void didReplace({Route<dynamic>? newRoute, Route<dynamic>? oldRoute}) =>
+      appRouteObserver.didReplace(newRoute: newRoute, oldRoute: oldRoute);
+}
 
 mixin GlobalVarMixin {
   RxString _roleApp = "".obs;
@@ -121,6 +149,23 @@ RxBool hasStoreAccess = false.obs;
 RxBool isStoreOwner = false.obs;
 RxBool forFirstTimeCustomer = false.obs;
 RxBool forFirstTimeOwner = false.obs;
+RxBool isGuest = false.obs;
+// Session-only: set true once the guest confirms they are 18+ on the home
+// screen, so the age gate is shown only once per guest session.
+RxBool guestAgeVerified = false.obs;
+
+// Country feature gating, resolved server-side from call metadata via
+// GET utils/app/config (refreshed on startup, login and app resume).
+// Defaults match the backend's fail-closed policy for unresolved countries:
+// herbs hidden, everything else available.
+RxBool munchiesEnabled = true.obs;
+RxBool herbsEnabled = false.obs;
+RxBool paymentsEnabled = true.obs;
+RxBool isHerbsLicensee = false.obs;
+// When the caller's country has exactly one herbs store, the backend returns
+// its id here so the Herbs pill deep-links straight to that store instead of
+// the store search. Empty when there are 0 or many herbs stores (→ search).
+RxString herbsStoreId = "".obs;
 GetPermissionsModel getPermissionsModel = GetPermissionsModel();
 RxList<PermissionStore> permissionStoreList = <PermissionStore>[].obs;
 

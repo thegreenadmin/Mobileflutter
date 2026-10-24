@@ -1,0 +1,450 @@
+# Fastfile for iOS deployment
+# This file contains all the lanes for building and deploying the iOS app
+
+default_platform(:ios)
+
+platform :ios do
+  before_all do
+    # App Store Connect authentication reads the .p8 EC key (P-256, PKCS#8) and
+    # signs a JWT. The brittle part is the PEM formatting of the secret:
+    #   * Spaceship calls OpenSSL::PKey::EC.new(key); OpenSSL 3.x (on current CI
+    #     runner images) throws "invalid curve name" when the base64 body isn't
+    #     wrapped at 64 columns, has literal "\n", or is otherwise flattened.
+    #   * altool likewise reports NSCocoaErrorDomain Code=259 on a malformed key.
+    # So we rebuild a canonical PEM from the base64 body and parse-test it locally
+    # before handing it off, turning silent downstream failures into clear errors.
+    key_id = ENV['APP_STORE_CONNECT_API_KEY_KEY_ID']
+    key_content = ENV['APP_STORE_CONNECT_API_KEY_KEY']
+    issuer_id = ENV['APP_STORE_CONNECT_API_KEY_ISSUER_ID']
+
+    if key_id && !key_id.empty? && key_content && !key_content.empty?
+      require 'base64'
+      require 'openssl'
+
+      raw = key_content.strip
+      # The secret may hold raw PEM, PEM with literal "\n", or base64 of the whole
+      # .p8 file. Normalize literal escapes first, then decode if it isn't yet PEM.
+      raw = raw.gsub('\\n', "\n") if raw.include?('\\n') && !raw.include?("\n")
+      unless raw.include?('BEGIN PRIVATE KEY')
+        decoded = Base64.decode64(raw)
+        raw = decoded if decoded.include?('BEGIN PRIVATE KEY')
+      end
+
+      # Pull out just the base64 body between the PKCS#8 markers and re-wrap it at
+      # 64 columns so OpenSSL 3.x parses the curve correctly regardless of how the
+      # secret was stored (single line, unwrapped, stray whitespace, etc.).
+      body = raw[/-----BEGIN PRIVATE KEY-----(.+?)-----END PRIVATE KEY-----/m, 1]
+      if body.nil?
+        UI.user_error!("APP_STORE_CONNECT_API_KEY_KEY is not a valid .p8 PEM key. " \
+                       "Store it as the raw contents of AuthKey_#{key_id}.p8 " \
+                       "(or its base64 encoding via `base64 -i AuthKey_#{key_id}.p8`).")
+      end
+      # Keep ONLY valid base64 characters before re-wrapping. A plain /\s+/ strip
+      # leaves non-breaking spaces, zero-width spaces and other invisible bytes that
+      # GitHub's secret editor can silently introduce. OpenSSL's lenient PEM decoder
+      # may tolerate those bytes when parsing the in-memory string yet choke on the
+      # same content once it is written out and read back, which surfaces downstream
+      # as the cryptic "invalid curve name".
+      b64 = body.gsub(%r{[^A-Za-z0-9+/=]}, '')
+      pem = "-----BEGIN PRIVATE KEY-----\n#{b64.scan(/.{1,64}/).join("\n")}\n-----END PRIVATE KEY-----\n"
+
+      # Re-emit the key through OpenSSL to obtain canonical bytes and to validate
+      # that it is a parseable P-256 EC key before handing it to spaceship.
+      begin
+        key_obj = OpenSSL::PKey.read(pem)
+        pem = key_obj.private_to_pem if key_obj.respond_to?(:private_to_pem)
+        OpenSSL::PKey::EC.new(pem)
+      rescue OpenSSL::PKey::PKeyError, OpenSSL::PKey::ECError => e
+        UI.user_error!("App Store Connect .p8 key failed to parse as an EC key (#{e.message}). " \
+                       "Re-export AuthKey_#{key_id}.p8 from App Store Connect and re-store the secret " \
+                       "as its raw contents (or `base64 -i AuthKey_#{key_id}.p8`).")
+      end
+
+      # Clear the raw secret env vars so fastlane's automatic ASC key loading
+      # (via APP_STORE_CONNECT_API_KEY_KEY etc.) does not attempt to re-parse the
+      # original malformed value and hit "invalid curve name" in spaceship.
+      ENV.delete('APP_STORE_CONNECT_API_KEY_KEY')
+      ENV.delete('APP_STORE_CONNECT_API_KEY_KEY_ID')
+      ENV.delete('APP_STORE_CONNECT_API_KEY_ISSUER_ID')
+
+      # Build the api_key configuration Hash (the same shape returned/set by the
+      # app_store_connect_api_key action). We set this Hash into the lane context
+      # so that downstream actions like `match` see a proper Hash for `api_key`
+      # instead of a Token object. We also create the Token from this hash using
+      # our already-validated canonical PEM and activate it for Spaceship.
+      # This avoids calling the app_store_connect_api_key action (which can still
+      # surface "invalid curve name" if it ever sees the raw secret) while keeping
+      # full compatibility with the rest of fastlane's ASC key handling.
+      api_key = {
+        key_id: key_id,
+        issuer_id: issuer_id,
+        key: pem,
+        is_key_content_base64: false,
+        in_house: false
+      }
+
+      require 'spaceship'
+      token = Spaceship::ConnectAPI::Token.create(**api_key)
+      Spaceship::ConnectAPI.token = token
+
+      if defined?(Actions) && defined?(SharedValues)
+        Actions.lane_context[SharedValues::APP_STORE_CONNECT_API_KEY] = api_key
+      end
+    end
+  end
+
+  # Derive the next build number from App Store Connect instead of the local
+  # project.pbxproj. The committed pbxproj value drifts out of sync across
+  # branches/runners, which causes altool to reject the upload with
+  # "bundle version ... has already been used". Querying the latest TestFlight
+  # build (which reflects every uploaded build for the app) and adding 1
+  # guarantees a strictly higher, conflict-free build number on every run.
+  def set_next_build_number
+    latest = latest_testflight_build_number(
+      app_identifier: "com.thegreenmall",
+      api_key: lane_context[SharedValues::APP_STORE_CONNECT_API_KEY]
+    )
+    increment_build_number(
+      build_number: latest + 1,
+      xcodeproj: "Runner.xcodeproj"
+    )
+  end
+
+  desc "Push a new beta build to TestFlight"
+  lane :beta do
+    setup_ci if ENV['CI']
+    match(type: "appstore", readonly: is_ci, git_basic_authorization: ENV['MATCH_GIT_BASIC_AUTHORIZATION'])
+    set_next_build_number
+    build_app(
+      workspace: "Runner.xcworkspace",
+      scheme: "Runner",
+      export_method: "app-store",
+      clean: true,
+      output_directory: "./build",
+      output_name: "Runner",
+      xcargs: "DEVELOPMENT_TEAM=#{ENV['APPLE_TEAM_ID']} CODE_SIGN_STYLE=Manual CODE_SIGN_IDENTITY='Apple Distribution'",
+      export_options: {
+        signingStyle: "manual",
+        provisioningProfiles: {
+          "com.thegreenmall" => "match AppStore com.thegreenmall"
+        },
+        teamID: ENV['APPLE_TEAM_ID'],
+        uploadBitcode: false,
+        uploadSymbols: true
+      }
+    )
+    upload_to_testflight(
+      skip_waiting_for_build_processing: true,
+      distribute_external: false
+    )
+  end
+
+  desc "Build and release a new version to the App Store"
+  lane :release do
+    setup_ci if ENV['CI']
+    set_next_build_number
+    match(type: "appstore", readonly: is_ci, git_basic_authorization: ENV['MATCH_GIT_BASIC_AUTHORIZATION'])
+    build_app(
+      workspace: "Runner.xcworkspace",
+      scheme: "Runner",
+      export_method: "app-store",
+      clean: true,
+      output_directory: "./build",
+      output_name: "Runner",
+      xcargs: "DEVELOPMENT_TEAM=#{ENV['APPLE_TEAM_ID']} CODE_SIGN_STYLE=Manual CODE_SIGN_IDENTITY='Apple Distribution'",
+      export_options: {
+        signingStyle: "manual",
+        provisioningProfiles: {
+          "com.thegreenmall" => "match AppStore com.thegreenmall"
+        },
+        teamID: ENV['APPLE_TEAM_ID']
+      }
+    )
+    upload_to_app_store(
+      submit_for_review: false,
+      automatic_release: false,
+      force: true,
+      skip_metadata: true,
+      skip_screenshots: true,
+      precheck_include_in_app_purchases: false,
+      submission_information: {
+        add_id_info_uses_idfa: false
+      }
+    )
+  end
+
+  desc "Build a development build"
+  lane :dev do
+    match(type: "development", readonly: is_ci, git_basic_authorization: ENV['MATCH_GIT_BASIC_AUTHORIZATION'])
+    build_app(
+      workspace: "Runner.xcworkspace",
+      scheme: "Runner",
+      export_method: "development",
+      clean: true
+    )
+  end
+
+  desc "Build an ad-hoc build for testing"
+  lane :adhoc do
+    match(type: "adhoc", readonly: is_ci, git_basic_authorization: ENV['MATCH_GIT_BASIC_AUTHORIZATION'])
+    build_app(
+      workspace: "Runner.xcworkspace",
+      scheme: "Runner",
+      export_method: "ad-hoc",
+      clean: true
+    )
+  end
+
+  desc "Build only for CI testing"
+  lane :build_only do
+    setup_ci if ENV['CI']
+    match(type: "appstore", readonly: is_ci, git_basic_authorization: ENV['MATCH_GIT_BASIC_AUTHORIZATION'])
+    build_app(
+      workspace: "Runner.xcworkspace",
+      scheme: "Runner",
+      clean: true,
+      export_method: "app-store",
+      configuration: "Release",
+      xcargs: "DEVELOPMENT_TEAM=#{ENV['APPLE_TEAM_ID']} CODE_SIGN_STYLE=Manual CODE_SIGN_IDENTITY='Apple Distribution'",
+      export_options: {
+        signingStyle: "manual",
+        provisioningProfiles: {
+          "com.thegreenmall" => "match AppStore com.thegreenmall"
+        },
+        teamID: ENV['APPLE_TEAM_ID']
+      }
+    )
+  end
+
+  desc "Register new devices for ad-hoc testing"
+  lane :register_devices do |options|
+    register_devices(
+      devices_file: "./fastlane/devices.txt"
+    )
+    match(type: "adhoc", force_for_new_devices: true, git_basic_authorization: ENV['MATCH_GIT_BASIC_AUTHORIZATION'])
+  end
+
+  desc "Sync signing certificates"
+  lane :sync_signing do
+    setup_ci if ENV['CI']
+    match(type: "appstore", readonly: is_ci, git_basic_authorization: ENV['MATCH_GIT_BASIC_AUTHORIZATION'])
+  end
+
+  desc "Enable Associated Domains on the App ID and force-regenerate the App Store profile"
+  # One-off maintenance lane. Run when a new entitlement (e.g. Associated Domains
+  # for universal links) is added: the existing match profile predates the
+  # capability, so build_app fails with "provisioning profile doesn't include the
+  # ... capability". This enables the capability on the App ID (idempotent, via the
+  # App Store Connect API key set up in before_all) and force-regenerates the
+  # appstore profile, pushing it back to the certificates repo. The certificate is
+  # left untouched (no force_for_new_certificates) and the new profile is a
+  # superset, so existing signing keeps working.
+  lane :refresh_appstore_signing do
+    setup_ci if ENV['CI']
+
+    begin
+      require 'spaceship'
+      bundle_id = Spaceship::ConnectAPI::BundleId.all.find { |b| b.identifier == "com.thegreenmall" }
+      if bundle_id.nil?
+        UI.important("Could not find bundle id com.thegreenmall via ASC API — assuming Associated Domains is already enabled in the portal.")
+      else
+        caps = bundle_id.get_capabilities
+        already = caps.any? { |c| c.id.to_s.include?("ASSOCIATED_DOMAINS") || c.capability_type.to_s.include?("ASSOCIATED_DOMAINS") }
+        if already
+          UI.message("Associated Domains capability already enabled on com.thegreenmall.")
+        else
+          bundle_id.create_capability(Spaceship::ConnectAPI::BundleIdCapability::Type::ASSOCIATED_DOMAINS)
+          UI.success("Enabled Associated Domains capability on com.thegreenmall.")
+        end
+      end
+    rescue => e
+      UI.important("Automatic capability enable skipped (#{e.message}). If the rebuild still fails on the capability, enable Associated Domains for com.thegreenmall in the Apple Developer portal, then re-run this lane.")
+    end
+
+    match(type: "appstore", readonly: false, force: true, git_basic_authorization: ENV['MATCH_GIT_BASIC_AUTHORIZATION'])
+  end
+
+  desc "Create signing certificates (run once to initialize, not for CI)"
+  lane :create_signing do
+    match(type: "development", readonly: false, git_basic_authorization: ENV['MATCH_GIT_BASIC_AUTHORIZATION'])
+    match(type: "adhoc", readonly: false, git_basic_authorization: ENV['MATCH_GIT_BASIC_AUTHORIZATION'])
+    match(type: "appstore", readonly: false, git_basic_authorization: ENV['MATCH_GIT_BASIC_AUTHORIZATION'])
+  end
+
+  desc "Run tests"
+  lane :test do
+    run_tests(
+      workspace: "Runner.xcworkspace",
+      scheme: "Runner",
+      devices: ["iPhone 15"]
+    )
+  end
+
+  desc "Take screenshots"
+  lane :screenshots do
+    capture_screenshots(
+      workspace: "Runner.xcworkspace",
+      scheme: "Runner"
+    )
+  end
+
+  desc "Download dSYM files from App Store Connect"
+  lane :download_dsyms do
+    download_dsyms(
+      version: "latest"
+    )
+    upload_symbols_to_crashlytics(
+      dsym_path: "./Runner.app.dSYM.zip",
+      gsp_path: "./Runner/GoogleService-Info.plist"
+    )
+  end
+
+  desc "Increment build number only (for manual version bump)"
+  lane :increment_build_number_only do
+    increment_build_number(xcodeproj: "Runner.xcodeproj")
+    UI.success("iOS build number incremented")
+  end
+
+  desc "Bump major version (e.g., 1.0.0 -> 2.0.0)"
+  lane :bump_major_version do
+    # Get project root directory
+    project_root = File.expand_path("../..")
+    pubspec_path = File.join(project_root, "pubspec.yaml")
+
+    # Read current pubspec.yaml
+    pubspec_content = File.read(pubspec_path)
+
+    # Extract current version
+    version_line = pubspec_content.match(/^version:\s*(\d+)\.(\d+)\.(\d+)\+(\d+)/)
+    if version_line.nil?
+      UI.error("Could not find version line in pubspec.yaml")
+      return
+    end
+
+    major = version_line[1].to_i
+    minor = version_line[2].to_i
+    patch = version_line[3].to_i
+    build = version_line[4].to_i
+
+    # Bump major version, reset minor and patch to 0, reset build to 1
+    new_major = major + 1
+    new_minor = 0
+    new_patch = 0
+    new_build = 1
+
+    # Update version line
+    new_version_line = "version: #{new_major}.#{new_minor}.#{new_patch}+#{new_build}"
+    updated_content = pubspec_content.sub(/^version:\s*\d+\.\d+\.\d+\+\d+/, new_version_line)
+
+    # Write back to pubspec.yaml
+    File.write(pubspec_path, updated_content)
+
+    UI.success("Version bumped from #{major}.#{minor}.#{patch}+#{build} to #{new_major}.#{new_minor}.#{new_patch}+#{new_build}")
+
+    # Update Xcode project
+    increment_version_number(
+      xcodeproj: "Runner.xcodeproj",
+      bump_type: "major"
+    )
+    increment_build_number(xcodeproj: "Runner.xcodeproj")
+
+    UI.success("iOS major version bumped")
+  end
+
+  desc "Bump minor version (e.g., 1.0.0 -> 1.1.0)"
+  lane :bump_minor_version do
+    # Get project root directory
+    project_root = File.expand_path("../..")
+    pubspec_path = File.join(project_root, "pubspec.yaml")
+
+    # Read current pubspec.yaml
+    pubspec_content = File.read(pubspec_path)
+
+    # Extract current version
+    version_line = pubspec_content.match(/^version:\s*(\d+)\.(\d+)\.(\d+)\+(\d+)/)
+    if version_line.nil?
+      UI.error("Could not find version line in pubspec.yaml")
+      return
+    end
+
+    major = version_line[1].to_i
+    minor = version_line[2].to_i
+    patch = version_line[3].to_i
+    build = version_line[4].to_i
+
+    # Bump minor version, reset patch to 0, reset build to 1
+    new_major = major
+    new_minor = minor + 1
+    new_patch = 0
+    new_build = 1
+
+    # Update version line
+    new_version_line = "version: #{new_major}.#{new_minor}.#{new_patch}+#{new_build}"
+    updated_content = pubspec_content.sub(/^version:\s*\d+\.\d+\.\d+\+\d+/, new_version_line)
+
+    # Write back to pubspec.yaml
+    File.write(pubspec_path, updated_content)
+
+    UI.success("Version bumped from #{major}.#{minor}.#{patch}+#{build} to #{new_major}.#{new_minor}.#{new_patch}+#{new_build}")
+
+    # Update Xcode project
+    increment_version_number(
+      xcodeproj: "Runner.xcodeproj",
+      bump_type: "minor"
+    )
+    increment_build_number(xcodeproj: "Runner.xcodeproj")
+
+    UI.success("iOS minor version bumped")
+  end
+
+  desc "Bump patch version (e.g., 1.0.0 -> 1.0.1)"
+  lane :bump_patch_version do
+    # Get project root directory
+    project_root = File.expand_path("../..")
+    pubspec_path = File.join(project_root, "pubspec.yaml")
+
+    # Read current pubspec.yaml
+    pubspec_content = File.read(pubspec_path)
+
+    # Extract current version
+    version_line = pubspec_content.match(/^version:\s*(\d+)\.(\d+)\.(\d+)\+(\d+)/)
+    if version_line.nil?
+      UI.error("Could not find version line in pubspec.yaml")
+      return
+    end
+
+    major = version_line[1].to_i
+    minor = version_line[2].to_i
+    patch = version_line[3].to_i
+    build = version_line[4].to_i
+
+    # Bump patch version, reset build to 1
+    new_major = major
+    new_minor = minor
+    new_patch = patch + 1
+    new_build = 1
+
+    # Update version line
+    new_version_line = "version: #{new_major}.#{new_minor}.#{new_patch}+#{new_build}"
+    updated_content = pubspec_content.sub(/^version:\s*\d+\.\d+\.\d+\+\d+/, new_version_line)
+
+    # Write back to pubspec.yaml
+    File.write(pubspec_path, updated_content)
+
+    UI.success("Version bumped from #{major}.#{minor}.#{patch}+#{build} to #{new_major}.#{new_minor}.#{new_patch}+#{new_build}")
+
+    # Update Xcode project
+    increment_version_number(
+      xcodeproj: "Runner.xcodeproj",
+      bump_type: "patch"
+    )
+    increment_build_number(xcodeproj: "Runner.xcodeproj")
+
+    UI.success("iOS patch version bumped")
+  end
+
+  # Error block
+  error do |lane, exception|
+    UI.error("Error in lane #{lane}: #{exception.message}")
+  end
+end

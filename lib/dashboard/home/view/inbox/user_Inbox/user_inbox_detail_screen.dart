@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -7,7 +8,9 @@ import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/user_inbox_detail_controller.dart';
 import 'package:thegreenmall/dashboard/home/model/user_message_list_model.dart';
 import 'package:thegreenmall/dashboard/home/view/inbox/user_Inbox/image_preview_screen.dart';
+import 'package:thegreenmall/utils/guest_access_modal.dart';
 import 'package:thegreenmall/utils/utils.dart';
+import 'package:thegreenmall/utils/brand_image.dart';
 
 class UserInboxDetailScreen extends StatefulWidget {
   final String? storeName;
@@ -30,6 +33,22 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> with Globa
 
   @override
   void initState() {
+    // Check if user is guest - show modal for account-based features
+    if (isGuest.value == true) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        GuestAccessModal.show(
+          title: StringConstants.loginRequiredText,
+          message: StringConstants.loginToAccessInboxText,
+          onContinueAsGuest: () {
+            // Allow guest to continue - just close modal and go back
+            Get.back();
+          },
+        );
+      });
+      super.initState();
+      return;
+    }
+    
     userInboxDetailController.storeId.value = widget.storeId ?? "";
     userInboxDetailController.storeName.value = widget.storeName ?? "";
     userInboxDetailController.messageHeadId.value = widget.messageHeadId ?? "";
@@ -60,7 +79,7 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> with Globa
                 borderRadius: BorderRadius.circular(10),
                 image: DecorationImage(
                   fit: BoxFit.cover,
-                  image: NetworkImage(userInboxDetailController
+                  image: CachedNetworkImageProvider(userInboxDetailController
                       .userSelectedImageDynamicLinkFromServer.value),
                 ),
               ),
@@ -97,7 +116,7 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> with Globa
           children: [
             Expanded(
               child: Container(
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                       color: AppColors.greyLight,
                       borderRadius: BorderRadius.all(
                         Radius.circular(50),
@@ -129,7 +148,7 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> with Globa
                               userInboxDetailController
                                   .showSelectionDialog(context);
                             },
-                            child: const Icon(
+                            child: Icon(
                               Icons.image,
                               color: AppColors.primary,
                               size: 24.0,
@@ -170,7 +189,6 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> with Globa
                         .isNotEmpty) {
                   // FocusScope.of(context).requestFocus(FocusNode());
                   await userInboxDetailController.apiSendMessage();
-                  debugPrint("C1 *****");
                 } else if (userInboxDetailController
                     .messageTextController.text.isEmpty) {
                   Fluttertoast.showToast(
@@ -180,7 +198,6 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> with Globa
                       backgroundColor: AppColors.primary,
                       textColor: AppColors.white,
                       fontSize: 14.0);
-                  debugPrint("C2 *****");
                 } else if (userInboxDetailController
                         .messageTextController.text.isNotEmpty &&
                     userInboxDetailController
@@ -189,7 +206,6 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> with Globa
                         .isEmpty) {
                   // FocusScope.of(context).requestFocus(FocusNode());
                   await userInboxDetailController.apiSendMessage();
-                  debugPrint("C3 *****");
                 } else if (userInboxDetailController
                         .messageTextController.text.isNotEmpty &&
                     userInboxDetailController
@@ -198,10 +214,9 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> with Globa
                         .isNotEmpty) {
                   // FocusScope.of(context).requestFocus(FocusNode());
                   await userInboxDetailController.apiSendMessage();
-                  debugPrint("C4 *****");
                 }
               },
-              child: const Center(
+              child: Center(
                 child: Icon(
                   Icons.send_outlined,
                   color: AppColors.primary,
@@ -366,7 +381,7 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> with Globa
                                     ),
                                     secFormat: '',
                                   ).toString(),
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 10,
                                     color: AppColors.black,
                                     fontWeight: FontWeight.w400,
@@ -465,7 +480,7 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> with Globa
                                     ),
                               height10SizedBox,
                               Text(messageList[index].message ?? "",
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 14,
                                     color: AppColors.primary,
                                     fontWeight: FontWeight.w300,
@@ -631,13 +646,18 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> with Globa
                                   children: [
                                     Row(
                                       children: [
+                                        Image.asset(
+                                          ImageConstants.homeMall,
+                                          scale: 4,
+                                        ),
+                                        width10SizedBox,
                                         IconButton(
                                           padding: EdgeInsets.all(5),
                                           constraints: const BoxConstraints(),
                                           onPressed: () {
                                             Get.back(id: pageIdApp.value);
                                           },
-                                          icon: const Icon(
+                                          icon: Icon(
                                             Icons.arrow_back,
                                             color: AppColors.black,
                                             size: 24.0,
@@ -646,17 +666,13 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> with Globa
                                         width10SizedBox,
                                         Obx(() => Text(
                                           userInboxDetailController.storeName.value,
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                               fontSize: 22,
                                               color: AppColors.black,
                                               fontWeight: FontWeight.w600),
                                         )),
                                       ],
                                     ),
-                                    Image.asset(
-                                      ImageConstants.homeMall,
-                                      scale: 4,
-                                    )
                                   ]),
                             ],
                           )),
@@ -674,14 +690,14 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> with Globa
                                       : Column(
                                           children: [
                                             height20SizedBox,
-                                            Image.asset(
+                                            BrandImage.asset(
                                               ImageConstants.nodata,
                                               color: AppColors.primary,
                                               scale: 8,
                                             ),
                                             Text(
                                               StringConstants.noMessagesYetText,
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.w600,
                                                 color: AppColors.primary,
@@ -735,6 +751,9 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> with Globa
                     )),
                 _buildMessageComposer(),
                 GetBuilder<UserInboxDetailController>(
+                    init: Get.isRegistered<UserInboxDetailController>()
+                        ? Get.find<UserInboxDetailController>()
+                        : UserInboxDetailController(),
                     builder: (userInboxDetailController) =>
                         userInboxDetailController
                                 .userSelectedImageDynamicLinkFromServer
@@ -746,7 +765,7 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> with Globa
                   return userInboxDetailController.isLoading.value
                       ? Container(
                     color: Colors.black.withOpacity(0.2),
-                    child: const Center(
+                    child: Center(
                       child: CircularProgressIndicator(color: AppColors.primary),
                     ),)
                       : const SizedBox.shrink();

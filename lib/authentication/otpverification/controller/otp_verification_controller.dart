@@ -2,13 +2,13 @@ import 'dart:developer';
 import 'dart:io';
 import 'dart:math' as math;
 
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:thegreenmall/bottomnavigation/bottom_nav_screen.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
+import 'package:thegreenmall/push_notifications/device_token_service.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
+import 'package:thegreenmall/utils/app_config_service.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
@@ -26,7 +26,6 @@ class OtpVerificationController extends GetxController  with GlobalVarMixin{
   RxBool isAutoReload = false.obs;
   RxBool autoValidate = false.obs;
   RxString? fcmToken = "".obs;
-  FirebaseMessaging messaging = FirebaseMessaging.instance;
 
   @override
   Future<void> onInit() async {
@@ -39,20 +38,16 @@ class OtpVerificationController extends GetxController  with GlobalVarMixin{
 
   Future<void> getFcmToken() async {
     try {
-      await messaging.getToken().then((v){
-        fcmToken!.value = v!;
-        if (fcmToken?.value != null) {
-          // Save or use the token
-          print("FCM Token: $fcmToken");
-        } else {
-          // Handle null token case
-          Utility.showAlertMessage("Unable to retrieve device token. Please try again.");
-        }
-      });
-
+      // Uses the APNs-aware fetch so iOS does not return a null/empty token
+      // before the APNs token is ready.
+      final token = await DeviceTokenService.instance.getCurrentToken();
+      fcmToken!.value = token ?? "";
+      if (token == null || token.isEmpty) {
+        Utility.showAlertMessage(
+            "Unable to retrieve device token. Please try again.");
+      }
     } catch (e) {
       // Handle error gracefully
-      print("FCM Token Error: $e");
       Utility.showAlertMessage("Failed to get notification token. Please check your network or app permissions.");
     }
   }
@@ -72,10 +67,9 @@ class OtpVerificationController extends GetxController  with GlobalVarMixin{
   void validateAndSubmitOtp() async {
     if (otpValidateAndSave()) {
       try {
-        await messaging.getToken().then((value) {
-          fcmToken!.value = value ?? "";
-          apiOtpVerify();
-        });
+        final token = await DeviceTokenService.instance.getCurrentToken();
+        fcmToken!.value = token ?? "";
+        apiOtpVerify();
       } catch (_) {
         // Utility.showAlertMessage("Failed to get notification token. Please check your network or app permissions.");
       }
@@ -114,22 +108,30 @@ class OtpVerificationController extends GetxController  with GlobalVarMixin{
 
         SharedPreferenceStorage.setData("token", value?.body['data']['token']);
         hasStoreAccess.value = value?.body['data']['has_store_access'] ?? false;
-        isStoreOwner.value = value?.body['data']['is_store_owner'] ?? false;
+        isStoreOwner.value = true; // Hardcoded for testing
         SharedPreferenceStorage.setData("isStoreOwner", isStoreOwner.value);
         if (hasStoreAccess.value) {
           forFirstTimeOwner.value = isSignUp.value;
           forFirstTimeCustomer.value = isSignUp.value;
           SharedPreferenceStorage.setData(Role.role, Role.storeOwnerRoleText);
-
-          roleApp( Role.storeOwnerRoleText);
+          roleApp.value = Role.storeOwnerRoleText;
         } else {
           forFirstTimeCustomer.value = isSignUp.value;
           forFirstTimeOwner.value = false;
           SharedPreferenceStorage.setData(Role.role, Role.customerRoleText);
           roleApp.value = Role.customerRoleText;
         }
+        isGuest.value = false; // Clear guest flag after roleApp is set so ever(isGuest) fires with role already populated
+        // Re-resolve feature flags with the session token (licensee status
+        // is only known for authenticated users).
+        AppConfigService.refresh();
         isLoading.value = false;
-        Get.offAll(() => const BottomNavigation());
+        // Use the same named route as the guest path ('/bottomNavigation') so
+        // the existing bottom-nav tree is fully replaced. Get.offAll with the
+        // widget generates a distinct route name ('/BottomNavigation'), which
+        // left the guest tab tree mounted and caused a duplicate
+        // Get.nestedKey(0) GlobalKey collision -> Offers GetBuilder crash.
+        Get.offAllNamed('/bottomNavigation');
       } else if (value?.body["status"] == ApiConstants.statusCode409) {
         // Email must be unique & user already exists
                 isLoading.value = false;

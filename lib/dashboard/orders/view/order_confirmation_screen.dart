@@ -1,13 +1,19 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_stepper/easy_stepper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
+import 'package:qr_flutter/qr_flutter.dart';
+import 'package:thegreenmall/authentication/login/view/login_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/components/store_home_main_args.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/store_home_main_screen.dart';
 import 'package:thegreenmall/dashboard/orders/controller/orders_controller.dart';
+import 'package:thegreenmall/dashboard/orders/order_link.dart';
+import 'package:thegreenmall/utils/guest_access_modal.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
 import '../view/component/order_status_enum.dart';
+import 'package:thegreenmall/utils/brand_image.dart';
 
 class OrderConfirmationScreen extends StatefulWidget {
   final String? orderId;
@@ -23,11 +29,27 @@ class OrderConfirmationScreen extends StatefulWidget {
       _OrderConfirmationScreenState();
 }
 
-class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with GlobalVarMixin{
+class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with GlobalVarMixin, RouteAware {
   final OrdersController ordersController = Get.put(OrdersController());
 
   @override
   void initState() {
+    // Check if user is guest - show modal for account-based features
+    if (isGuest.value == true) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        GuestAccessModal.show(
+          title: StringConstants.loginRequiredText,
+          message: StringConstants.loginToAccessOrderHistoryText,
+          onContinueAsGuest: () {
+            // Allow guest to continue - just close modal and go back
+            Get.back();
+          },
+        );
+      });
+      super.initState();
+      return;
+    }
+    
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ordersController.isFromNotification.value =
          widget.isFromNotification??false;
@@ -48,6 +70,37 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
       }
     });
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Subscribe to the nested navigator's route observer so didPopNext fires
+    // when a screen pushed above this one is popped.
+    final route = ModalRoute.of(context);
+    if (route is PageRoute) {
+      appRouteObserver.subscribe(this, route);
+    }
+  }
+
+  @override
+  void dispose() {
+    appRouteObserver.unsubscribe(this);
+    super.dispose();
+  }
+
+  @override
+  void didPopNext() {
+    // We navigated back to this screen (e.g. after tapping a popup
+    // notification). The order's status may have changed in the meantime
+    // (a pickup order can be completed elsewhere), so re-fetch the details so
+    // stale action buttons like "here for pickup" reflect the current status.
+    if (isGuest.value == true) {
+      return;
+    }
+    if (ordersController.orderStatus.value != "") {
+      ordersController.apiGetOrderDetailsApi();
+    }
   }
 
   @override
@@ -81,20 +134,19 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                           fit: BoxFit.cover,
                           colorFilter: const ColorFilter.mode(
                               Colors.black45, BlendMode.darken),
-                          image: ordersController.storeDetailsResponse.value
-                                          .data!.store!.image!.dynamicUrl ==
-                                      null ||
-                                  ordersController.storeDetailsResponse.value
-                                      .data!.store!.image!.dynamicUrl!.isEmpty
-                              ? const AssetImage(ImageConstants.storeicon)
-                                  as ImageProvider
-                              : NetworkImage(ordersController
-                                  .storeDetailsResponse
-                                  .value
-                                  .data!
-                                  .store!
-                                  .image!
-                                  .dynamicUrl!),
+                          image: () {
+                                final url = ordersController
+                                    .storeDetailsResponse
+                                    .value
+                                    .data
+                                    ?.store
+                                    ?.image
+                                    ?.dynamicUrl;
+                                return (url == null || url.isEmpty)
+                                    ? const AssetImage(ImageConstants.storeicon)
+                                        as ImageProvider
+                                    : CachedNetworkImageProvider(url);
+                              }(),
                         ),
                       ),
                       child: Padding(
@@ -398,7 +450,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                         height8SizedBox,
                         Text(
                           StringConstants.orderConfirmedText,
-                          style: const TextStyle(
+                          style: TextStyle(
                               fontWeight: FontWeight.w600,
                               fontSize: 20,
                               color: AppColors.black),
@@ -406,7 +458,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                         height8SizedBox,
                         Text(
                           StringConstants.thankOrderText,
-                          style: const TextStyle(
+                          style: TextStyle(
                               fontWeight: FontWeight.w400,
                               fontSize: 16,
                               color: AppColors.black),
@@ -426,7 +478,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                   children: [
                     Text(
                       StringConstants.orderIDText,
-                      style: const TextStyle(
+                      style: TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 16,
                           color: AppColors.black),
@@ -434,7 +486,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                     Obx(
                       () => Text(
                         ordersController.orderStatus.value,
-                        style: const TextStyle(
+                        style: TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: 16,
                             color: AppColors.primary),
@@ -448,7 +500,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                   children: [
                     Text(
                       StringConstants.orderStatusText,
-                      style: const TextStyle(
+                      style: TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 16,
                           color: AppColors.black),
@@ -457,7 +509,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                       () => Text(
                         ordersController.orderStatusTypeName.value
                             .toTitleCase(),
-                        style: const TextStyle(
+                        style: TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: 16,
                             color: AppColors.green),
@@ -471,15 +523,15 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                   children: [
                     Text(
                       StringConstants.orderAmountText,
-                      style: const TextStyle(
+                      style: TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 16,
                           color: AppColors.black),
                     ),
                     Obx(
                       () => Text(
-                        "\$${ordersController.totalAmount.value.toStringAsFixed(2)}",
-                        style: const TextStyle(
+                        "$currencySign${ordersController.totalAmount.value.toStringAsFixed(2)}",
+                        style: TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: 16,
                             color: AppColors.primary),
@@ -493,7 +545,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                   children: [
                     Text(
                       StringConstants.orderDateText,
-                      style: const TextStyle(
+                      style: TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 16,
                           color: AppColors.black),
@@ -506,7 +558,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                                 firstFormat: "yyyy-MM-dd HH:mm:ss",
                                 secFormat: "dd MMM yyyy")
                             : "",
-                        style: const TextStyle(
+                        style: TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: 16,
                             color: AppColors.primary),
@@ -529,7 +581,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                     child: Column(
                       children: [
                         CustomButton(
-                          gradient: const LinearGradient(
+                          gradient: LinearGradient(
                             begin: Alignment.topCenter,
                             end: Alignment.bottomCenter,
                             colors: [AppColors.primary, AppColors.primary],
@@ -563,7 +615,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                     child: Column(
                       children: [
                         CustomButton(
-                          gradient: const LinearGradient(
+                          gradient: LinearGradient(
                             begin: Alignment.topCenter,
                             end: Alignment.bottomCenter,
                             colors: [AppColors.primary, AppColors.primary],
@@ -593,6 +645,37 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                           iconL: false,
                           fontSize: 16,
                         ),
+                        Obx(
+                          () => Visibility(
+                            visible: ordersController.orderType.value != "2",
+                            child: Column(
+                              children: [
+                                height20SizedBox,
+                                CustomButton(
+                                  border:
+                                      Border.all(color: AppColors.primary),
+                                  gradient: const LinearGradient(
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: [
+                                      AppColors.white,
+                                      AppColors.white
+                                    ],
+                                  ),
+                                  onTap: showOrderQrDialog,
+                                  height: 50,
+                                  width: WidgetConstants.screenWidth * 0.5,
+                                  text: StringConstants.showOrderQRText,
+                                  textColor: AppColors.primary,
+                                  borderRadius: 12,
+                                  fontWeight: FontWeight.w500,
+                                  iconL: false,
+                                  fontSize: 16,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
                         height20SizedBox,
                       ],
                     ),
@@ -601,6 +684,78 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                 buildOrderItems()
               ],
             ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  /// The store side scans this from Orders > Scan Order Barcode to open the
+  /// fulfil screen for this order (see OrderBarcodeScannerScreen). The QR
+  /// carries a universal link (not raw JSON) so a native-camera scan opens the
+  /// order instead of a Google search — see [OrderLink] and T2-452.
+  void showOrderQrDialog() {
+    final payload = OrderLink.build(
+      storeId: ordersController.storeId.value,
+      orderId: ordersController.orderStatus.value,
+    );
+    showDialog(
+      context: Get.context!,
+      builder: (_) => AlertDialog(
+        icon: Align(
+          alignment: Alignment.topRight,
+          child: InkWell(
+            onTap: () {
+              Get.back();
+            },
+            child: Icon(
+              Icons.clear,
+              color: AppColors.primary,
+              size: 24.0,
+            ),
+          ),
+        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        // AlertDialog measures its content with IntrinsicWidth, which
+        // QrImageView's internal LayoutBuilder can't answer — the tight
+        // SizedBoxes below keep intrinsic measurement from reaching it.
+        content: SizedBox(
+          width: 260,
+          child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: AppColors.white,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: AppColors.greyLight),
+              ),
+              child: SizedBox(
+                width: 220,
+                height: 220,
+                child: QrImageView(
+                  data: payload,
+                  version: QrVersions.auto,
+                  size: 220,
+                ),
+              ),
+            ),
+            height12SizedBox,
+            Text(
+              "${StringConstants.orderIDText}: #${ordersController.orderStatus.value}",
+              style: TextStyle(
+                  color: AppColors.black,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16),
+            ),
+            height8SizedBox,
+            Text(
+              StringConstants.showQrAtStoreText,
+              style: TextStyle(color: AppColors.blackLight, fontSize: 13),
+              textAlign: TextAlign.center,
+            ),
+          ],
           ),
         ),
       ),
@@ -660,7 +815,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                             customTitle: Text(
                               ordersController.stepInd[index].name ?? "",
                               textAlign: TextAlign.center,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   overflow: TextOverflow.visible,
                                   fontWeight: FontWeight.w600,
                                   fontSize: 12,
@@ -686,7 +841,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
           children: [
             Text(
               StringConstants.itemsText,
-              style: const TextStyle(
+              style: TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 18,
                   color: AppColors.black),
@@ -737,7 +892,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Center(
-                              child: Image.asset(
+                              child: BrandImage.asset(
                                 ImageConstants.nodata,
                                 scale: 8,
                                 color: AppColors.primary,
@@ -765,7 +920,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                         return Container(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 10, vertical: 10),
-                          decoration: const BoxDecoration(
+                          decoration: BoxDecoration(
                               color: AppColors.primaryLight,
                               borderRadius: BorderRadius.all(
                                 Radius.circular(10.0),
@@ -824,7 +979,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                                                     .product?.productName
                                                     ?.toCapitalized() ??
                                                 "",
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                                 fontWeight: FontWeight.w500,
                                                 fontSize: 16,
                                                 color: AppColors.black),
@@ -851,7 +1006,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                                                               fontSize: 14)),
                                                       TextSpan(
                                                         text:
-                                                            "\$${ordersController.orderItems[i].offerPrice?.toStringAsFixed(2) ?? "0.00"}",
+                                                            "$currencySign${ordersController.orderItems[i].offerPrice?.toStringAsFixed(2) ?? "0.00"}",
                                                         style: TextStyle(
                                                             fontWeight:
                                                                 FontWeight.w600,
@@ -1069,11 +1224,33 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                                                     .isEmpty &&
                                                 ordersController
                                                         .activeStep.value ==
-                                                    3 &&
+                                                    2 &&
                                                 ordersController
                                                     .orderItems[i]
                                                     .returnOrderItems!
                                                     .isEmpty &&
+                                                ordersController
+                                                        .orderStatusTypeName
+                                                        .value !=
+                                                    OrderStatusEnum
+                                                        .cancelled.statusName &&
+                                                ordersController
+                                                        .orderStatusTypeName
+                                                        .value !=
+                                                    OrderStatusEnum
+                                                        .cancellationRequest
+                                                        .statusName &&
+                                                ordersController
+                                                        .orderStatusTypeName
+                                                        .value !=
+                                                    OrderStatusEnum
+                                                        .cancelRequest
+                                                        .statusName &&
+                                                ordersController
+                                                        .orderStatusTypeName
+                                                        .value !=
+                                                    OrderStatusEnum
+                                                        .failed.statusName &&
                                                 (ordersController
                                                             .orderStatusTypeName
                                                             .value !=
@@ -1199,7 +1376,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                                           Visibility(
                                             visible: ordersController
                                                         .activeStep.value ==
-                                                    3 &&
+                                                    2 &&
                                                 ordersController.orderItems[i]
                                                         .enableReturnButton ==
                                                     true &&
@@ -1247,7 +1424,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                                               },
                                               child: Text(
                                                 StringConstants.returnOrderText,
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                     fontWeight: FontWeight.w600,
                                                     fontSize: 14,
                                                     color: AppColors.red),
@@ -1481,7 +1658,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                                                                 .orderItems[i]
                                                                 .returnOrderItems!
                                                                 .isNotEmpty
-                                                        ? "\$${ordersController.orderItems[i].returnOrderItems?.first.totalAmountReversed?.toStringAsFixed(2) ?? ""}"
+                                                        ? "$currencySign${ordersController.orderItems[i].returnOrderItems?.first.totalAmountReversed?.toStringAsFixed(2) ?? ""}"
                                                         : "",
                                                     style: TextStyle(
                                                         fontWeight:

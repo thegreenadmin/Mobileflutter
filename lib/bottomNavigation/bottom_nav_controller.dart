@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
-import 'package:thegreenmall/dashboard/home/controller/home_controller.dart';
+import 'package:thegreenmall/authentication/login/view/login_screen.dart';
 import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
 import 'package:thegreenmall/dashboard/home/model/get_store_list_model.dart';
 import 'package:thegreenmall/dashboard/more/controller/more_controller.dart';
@@ -14,6 +14,7 @@ import 'package:thegreenmall/dashboard/wallet/controller/wallet_controller.dart'
 import 'package:thegreenmall/main.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/push_notifications/push_notifications.dart';
+import 'package:thegreenmall/utils/guest_access_modal.dart';
 import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
@@ -41,7 +42,11 @@ class BottomNavController extends GetxController with GlobalVarMixin{
           Get.parameters["currentIndex"] != null
               ? int.parse(Get.parameters["currentIndex"].toString())
               : 0;
-      Future.delayed(Duration.zero, () {
+      Future.delayed(Duration.zero, () async {
+        // Skip initialization for guest users
+        if (isGuest.value == true) {
+          return;
+        }
         getRole();
         apiGetPermissions();
       });
@@ -51,8 +56,18 @@ class BottomNavController extends GetxController with GlobalVarMixin{
 
   getRole() async {
     var roleData = await SharedPreferenceStorage.getData(Role.role) ??"";
-    roleApp.value = roleData;
-    if (roleData == Role.customerRoleText) {
+    // Skip API call for guest users
+    if (isGuest.value == true) {
+      roleApp.value = Role.customerRoleText;
+      storeList.clear();
+      return;
+    }
+    // Only update roleApp if we got a valid non-empty role from SharedPrefs
+    // Avoids overwriting the correctly-set global roleApp during a race condition
+    if (roleData.isNotEmpty) {
+      roleApp.value = roleData;
+    }
+    if ((roleData.isNotEmpty ? roleData : roleApp.value) == Role.customerRoleText) {
       storeList.clear();
     } else {
       isLoading.value = true;
@@ -62,6 +77,10 @@ class BottomNavController extends GetxController with GlobalVarMixin{
 
   ///Get Store List Api
   apiGetStoreList() async {
+    // Skip API call for guest users
+    if (isGuest.value == true) {
+      return;
+    }
           isLoading.value = true;
           Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -90,7 +109,7 @@ class BottomNavController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -101,6 +120,10 @@ class BottomNavController extends GetxController with GlobalVarMixin{
 
   ///GET STORE PERMISSIONS
   Future apiGetPermissions() async {
+    // Skip API call for guest users
+    if (isGuest.value == true) {
+      return;
+    }
           Map<String, String> headers = {
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}"
@@ -117,6 +140,10 @@ class BottomNavController extends GetxController with GlobalVarMixin{
         getPermissionsModel = GetPermissionsModel.fromJson(value?.body);
         permissionStoreList.value = getPermissionsModel.data!.stores!;
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        // Skip alert and redirect for guest users
+        if (isGuest.value == true) {
+          return;
+        }
         Utility.showAlertMessage(value?.body['message']);
       } else {
         if (value?.body['message'] != null) {
@@ -128,8 +155,26 @@ class BottomNavController extends GetxController with GlobalVarMixin{
 
 
   onItemTapped(int index) async {
+    // Block account-restricted tabs (Wallet/Orders) for guest users
+    // Allow guests to access More tab
+    if (isGuest.value == true && (index == 1 || index == 2)) {
+      GuestAccessModal.show(
+        title: StringConstants.loginRequiredText,
+        message: StringConstants.loginToAccessThisFeatureText,
+        onContinueAsGuest: () {
+          // Allow guest to continue - just close modal and stay on current tab
+          // Don't navigate to the restricted tab
+        },
+      );
+      return;
+    }
     var roleData = await SharedPreferenceStorage.getData(Role.role) ??"";
-    roleApp.value = roleData;
+    if (isGuest.value == true) {
+      roleApp.value = Role.customerRoleText;
+    } else if (roleData.isNotEmpty) {
+      // Only update if non-empty to avoid overwriting during SharedPrefs write race condition
+      roleApp.value = roleData;
+    }
     Get.delete<StoreHomeMainController>();
     if (!isLoading.value) {
       getRole();
@@ -147,13 +192,23 @@ class BottomNavController extends GetxController with GlobalVarMixin{
         selectedIndex.value = index;
       }
 
-      Get.until((route) => route.isFirst, id: pageIdApp.value);
+      // Reset the previously-active nested navigator back to its root before
+      // switching tabs. This can throw "Route id not found" / a contextless
+      // navigation error when the nested navigator for `pageIdApp` has no
+      // GetX-registered route yet (e.g. right after a guest is converted to a
+      // store-owner and the nav stack is rebuilt). If it throws here it aborts
+      // the rest of this method, so the tapped tab's `pageIdApp` and its
+      // controllers never get initialised and the tab renders a blank/white
+      // screen. Guard it so tab setup always proceeds.
+      try {
+        Get.until((route) => route.isFirst, id: pageIdApp.value);
+      } catch (e) {
+        AppLogger.error("onItemTapped Get.until skipped: $e");
+      }
       SharedPreferenceStorage.removeData("pageId");
       if (selectedIndex.value == 0) {
-
           Future.delayed(Duration.zero, () {
             pageIdApp.value = 0;
-            Get.put(HomeController()).onInit();
           });
 
       } else if (selectedIndex.value == 1) {
@@ -161,7 +216,7 @@ class BottomNavController extends GetxController with GlobalVarMixin{
 
           Future.delayed(Duration.zero, () {
             pageIdApp.value = 1;
-            Get.put(WalletController()).onInit();
+            Get.put(WalletController()).refreshWallet();
           });
 
       } else if (selectedIndex.value == 2) {

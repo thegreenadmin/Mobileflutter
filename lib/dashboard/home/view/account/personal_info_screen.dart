@@ -102,7 +102,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> with GlobalVarM
               return accountController.isLoading.value
                   ? Container(
                 color: Colors.black.withOpacity(0.2),
-                child: const Center(
+                child: Center(
                   child: CircularProgressIndicator(color: AppColors.primary),
                 ),
               )
@@ -120,7 +120,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> with GlobalVarM
                             children: [
                               Text(
                                 StringConstants.personalDetailText,
-                                style: const TextStyle(
+                                style: TextStyle(
                                     color: AppColors.black,
                                     fontWeight: FontWeight.w600,
                                     fontSize: 20),
@@ -133,7 +133,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> with GlobalVarM
                                       id: pageIdApp.value);
                                 },
                                 child: Text(StringConstants.editText,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         decoration: TextDecoration.underline,
                                         fontWeight: FontWeight.w500,
                                         fontSize: 18,
@@ -152,7 +152,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> with GlobalVarM
             fontWeight: FontWeight.w400,
             fontSize: 16),),
         height10SizedBox,
-        Text(value,   style: const TextStyle(
+        Text(value,   style: TextStyle(
             color: AppColors.black,
             fontWeight: FontWeight.w500,
             fontSize: 16),),
@@ -176,13 +176,18 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> with GlobalVarM
                   children: [
                     Row(
                       children: [
+                        Image.asset(
+                          ImageConstants.homeMall,
+                          scale: 4,
+                        ),
+                        width10SizedBox,
                         IconButton(
                           padding: EdgeInsets.zero,
                           constraints: const BoxConstraints(),
                           onPressed: () {
                             Get.back(id: pageIdApp.value);
                           },
-                          icon: const Icon(
+                          icon: Icon(
                             Icons.arrow_back,
                             color: AppColors.black,
                             size: 24.0,
@@ -191,17 +196,13 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> with GlobalVarM
                         width10SizedBox,
                         Text(
                           StringConstants.personalInformationText,
-                          style: const TextStyle(
+                          style: TextStyle(
                               fontSize: 20,
                               color: AppColors.black,
                               fontWeight: FontWeight.w600),
                         ),
                       ],
                     ),
-                    Image.asset(
-                      ImageConstants.homeMall,
-                      scale: 5,
-                    )
                   ]),
             ],
           )),

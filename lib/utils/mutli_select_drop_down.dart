@@ -60,7 +60,7 @@ class _MultiCustomDropDownState extends State<MultiCustomDropDown> {
 
         },
         readOnly: true,
-        style: const TextStyle(
+        style: TextStyle(
             color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w500),
         textInputAction: TextInputAction.next,
         keyboardType: TextInputType.visiblePassword,
@@ -185,7 +185,7 @@ class _MultiSelectState extends State<MultiSelect> {
     return AlertDialog(
       title: Text(
         widget.title.toString(),
-        style: const TextStyle(
+        style: TextStyle(
             color: AppColors.black, fontWeight: FontWeight.w600, fontSize: 20),
       ),
       content: SingleChildScrollView(

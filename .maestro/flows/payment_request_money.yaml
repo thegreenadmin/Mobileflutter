@@ -1,0 +1,19 @@
+appId: com.thegreenmall
+tags:
+  - customer-only
+---
+# Payments -> Receive -> Request money (customers only; owners don't get this
+# option). Checks the form; nothing is generated or sent.
+- runFlow: helpers/login.yaml
+- tapOn: "Payments"
+- extendedWaitUntil:
+    visible: "Receive"
+    timeout: 10000
+- tapOn: "Receive"
+- tapOn: "Request money.*"
+- extendedWaitUntil:
+    visible: "Mobile number"
+    timeout: 8000
+- assertVisible: "Amount"
+- assertVisible: "Generate barcode"
+- takeScreenshot: request_money_screen

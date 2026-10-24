@@ -7,6 +7,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:thegreenmall/dashboard/more/view/webview_page_screen.dart';
 import 'package:thegreenmall/dashboard/wallet/controller/add_card_controller.dart';
 import 'package:thegreenmall/utils/utils.dart';
+import 'package:thegreenmall/utils/brand_image.dart';
 
 class PayOutScreen extends StatefulWidget {
   const PayOutScreen({
@@ -31,6 +32,8 @@ class PayOutScreenState extends State<PayOutScreen> with GlobalVarMixin{
           .selectedStore.value = widget.selectedStore!;
     }
 
+    //THE CONTROLLER IS A SINGLETON, SO CLEAR ANY AMOUNT LEFT OVER FROM A PREVIOUS VISIT
+    addCardController.payoutAmountTextController.clear();
     addCardController.apiGetBankAccountList();
   }
 
@@ -53,13 +56,18 @@ class PayOutScreenState extends State<PayOutScreen> with GlobalVarMixin{
                         children: [
                           Row(
                             children: [
+                              Image.asset(
+                                ImageConstants.homeMall,
+                                scale: 4,
+                              ),
+                              width10SizedBox,
                               IconButton(
                                 padding: EdgeInsets.zero,
                                 constraints: const BoxConstraints(),
                                 onPressed: () {
                                   Get.back(result:addCardController.selectedStore.value,id: pageIdApp.value);
                                 },
-                                icon: const Icon(
+                                icon: Icon(
                                   Icons.arrow_back,
                                   color: AppColors.black,
                                   size: 24.0,
@@ -68,17 +76,13 @@ class PayOutScreenState extends State<PayOutScreen> with GlobalVarMixin{
                               width10SizedBox,
                               Text(
                                 StringConstants.payoutText,
-                                style: const TextStyle(
+                                style: TextStyle(
                                     fontSize: 20,
                                     color: AppColors.black,
                                     fontWeight: FontWeight.w600),
                               ),
                             ],
                           ),
-                          Image.asset(
-                            ImageConstants.homeMall,
-                            scale: 4,
-                          )
                         ])),
               ),
               Expanded(
@@ -124,7 +128,7 @@ class PayOutScreenState extends State<PayOutScreen> with GlobalVarMixin{
                                             addCardController.storeList.length == 1
                                                 ? StringConstants.storeNameText
                                                 : StringConstants.selectStoreText,
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                                 color: AppColors.black, fontSize: 16),
                                           ),
                                         ),
@@ -134,7 +138,7 @@ class PayOutScreenState extends State<PayOutScreen> with GlobalVarMixin{
                                               ? Text(
                                                   addCardController.storeList[0].storeName
                                                       .toString(),
-                                                  style: const TextStyle(
+                                                  style: TextStyle(
                                                       color: AppColors.black,
                                                       fontSize: 16,
                                                       fontWeight: FontWeight.w500))
@@ -163,7 +167,7 @@ class PayOutScreenState extends State<PayOutScreen> with GlobalVarMixin{
                                                     border: UnderlineInputBorder(
                                                       borderRadius:
                                                           BorderRadius.circular(5.0),
-                                                      borderSide: const BorderSide(
+                                                      borderSide: BorderSide(
                                                         color: AppColors.primary,
                                                         width: 1.0,
                                                       ),
@@ -171,7 +175,7 @@ class PayOutScreenState extends State<PayOutScreen> with GlobalVarMixin{
                                                     focusedBorder: UnderlineInputBorder(
                                                       borderRadius:
                                                           BorderRadius.circular(5.0),
-                                                      borderSide: const BorderSide(
+                                                      borderSide: BorderSide(
                                                         color: AppColors.primary,
                                                         width: 1.0,
                                                       ),
@@ -179,7 +183,7 @@ class PayOutScreenState extends State<PayOutScreen> with GlobalVarMixin{
                                                     errorBorder: UnderlineInputBorder(
                                                       borderRadius:
                                                           BorderRadius.circular(5.0),
-                                                      borderSide: const BorderSide(
+                                                      borderSide: BorderSide(
                                                         color: AppColors.primary,
                                                         width: 1.0,
                                                       ),
@@ -197,7 +201,7 @@ class PayOutScreenState extends State<PayOutScreen> with GlobalVarMixin{
                                                       value: value.storeId,
                                                       child: Text(
                                                         value.storeName,
-                                                        style: const TextStyle(
+                                                        style: TextStyle(
                                                             color: AppColors.black,
                                                             fontSize: 16,
                                                             fontWeight: FontWeight.w500),
@@ -211,6 +215,10 @@ class PayOutScreenState extends State<PayOutScreen> with GlobalVarMixin{
                                                         value.toString();
                                                     addCardController.selectedStore
                                                         .value = value.toString();
+                                                    //THE AMOUNT BELONGS TO THE PREVIOUS STORE'S BALANCE
+                                                    addCardController
+                                                        .payoutAmountTextController
+                                                        .clear();
                                                     addCardController
                                                         .apiGetOwnerWalletBalance();
                                                     addCardController
@@ -228,7 +236,7 @@ class PayOutScreenState extends State<PayOutScreen> with GlobalVarMixin{
                                   flex: 4,
                                   child: Text(
                                     StringConstants.availableBalanceText,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         color: AppColors.black,
                                         fontSize: 16,
                                         fontWeight: FontWeight.w400),
@@ -247,8 +255,8 @@ class PayOutScreenState extends State<PayOutScreen> with GlobalVarMixin{
                                     : Expanded(
                                         flex: 6,
                                         child: Text(
-                                            "\$${addCardController.ownerWalletBalance?.value ?? "0.00"}",
-                                            style: const TextStyle(
+                                            "$currencySign${addCardController.ownerWalletBalance?.value ?? "0.00"}",
+                                            style: TextStyle(
                                                 color: AppColors.black,
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.w500)))),
@@ -261,7 +269,7 @@ class PayOutScreenState extends State<PayOutScreen> with GlobalVarMixin{
                                   flex: 4,
                                   child: Text(
                                     StringConstants.amountText,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         color: AppColors.black,
                                         fontSize: 16,
                                         fontWeight: FontWeight.w400),
@@ -282,7 +290,7 @@ class PayOutScreenState extends State<PayOutScreen> with GlobalVarMixin{
                                       onChanged: (value) {},
                                       textInputAction: TextInputAction.next,
                                       autofocus: false,
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                           color: AppColors.black,
                                           fontSize: 16,
                                           fontWeight: FontWeight.w400),
@@ -297,30 +305,30 @@ class PayOutScreenState extends State<PayOutScreen> with GlobalVarMixin{
                                       },
                                       textCapitalization: TextCapitalization.words,
                                       decoration: InputDecoration(
-                                        prefixText: "\$ ",
+                                        prefixText: "$currencySign ",
                                         prefixStyle:
-                                            const TextStyle(color: AppColors.black),
+                                            TextStyle(color: AppColors.black),
                                         isDense: true,
-                                        hintText: "eg \$100.00",
+                                        hintText: "eg ${currencySign}100.00",
                                         hintStyle: const TextStyle(color: AppColors.grey),
                                         fillColor: Colors.white,
                                         border: UnderlineInputBorder(
                                           borderRadius: BorderRadius.circular(5.0),
-                                          borderSide: const BorderSide(
+                                          borderSide: BorderSide(
                                             color: AppColors.primary,
                                             width: 1.0,
                                           ),
                                         ),
                                         errorBorder: UnderlineInputBorder(
                                           borderRadius: BorderRadius.circular(5.0),
-                                          borderSide: const BorderSide(
+                                          borderSide: BorderSide(
                                             color: AppColors.primary,
                                             width: 1.0,
                                           ),
                                         ),
                                         focusedBorder: UnderlineInputBorder(
                                           borderRadius: BorderRadius.circular(5.0),
-                                          borderSide: const BorderSide(
+                                          borderSide: BorderSide(
                                             color: AppColors.primary,
                                             width: 1.0,
                                           ),
@@ -337,33 +345,37 @@ class PayOutScreenState extends State<PayOutScreen> with GlobalVarMixin{
                               ],
                             ),
                             height20SizedBox,
-                            addCardController.payoutAmountTextController.text.isEmpty
-                                ? height0SizedBox
-                                : Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Image.asset(
-                                            ImageConstants.greencheck,
-                                            scale: 22,
-                                          ),
-                                          width10SizedBox,
-                                          Text(
-                                            "${StringConstants.withdrawAll} \$${addCardController.payoutAmountTextController.text}",
-                                            style: const TextStyle(
-                                                color: AppColors.black,
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
+                            ValueListenableBuilder<TextEditingValue>(
+                              valueListenable:
+                                  addCardController.payoutAmountTextController,
+                              builder: (_, amount, __) => amount.text.trim().isEmpty
+                                  ? height0SizedBox
+                                  : Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Image.asset(
+                                              ImageConstants.greencheck,
+                                              scale: 22,
+                                            ),
+                                            width10SizedBox,
+                                            Text(
+                                              "${StringConstants.withdrawAll} $currencySign${amount.text}",
+                                              style: TextStyle(
+                                                  color: AppColors.black,
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                            ),
                             height30SizedBox,
                             Text(
                               StringConstants.bankAccountsText,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   color: AppColors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400),
@@ -381,7 +393,7 @@ class PayOutScreenState extends State<PayOutScreen> with GlobalVarMixin{
                                                   CrossAxisAlignment.center,
                                               children: [
                                                 Center(
-                                                  child: Image.asset(
+                                                  child: BrandImage.asset(
                                                     ImageConstants.nodata,
                                                     scale: 8,
                                                     color: AppColors.primary,
@@ -400,7 +412,7 @@ class PayOutScreenState extends State<PayOutScreen> with GlobalVarMixin{
                                                 Align(
                                                   alignment: Alignment.bottomRight,
                                                   child: CustomButton(
-                                                    gradient: const LinearGradient(
+                                                    gradient: LinearGradient(
                                                       begin: Alignment.topCenter,
                                                       end: Alignment.bottomCenter,
                                                       colors: [
@@ -450,15 +462,7 @@ class PayOutScreenState extends State<PayOutScreen> with GlobalVarMixin{
                                           shrinkWrap: true,
                                           physics: const NeverScrollableScrollPhysics(),
                                           itemBuilder: (BuildContext context, int index) {
-                                            if (addCardController
-                                                .userStripeBankId!.value.isEmpty) {
-                                              addCardController.userStripeBankId!.value =
-                                                  addCardController
-                                                      .bankAccountList[0].userStripeBankId
-                                                      .toString();
-                                              debugPrint(addCardController
-                                                  .userStripeBankId!.value);
-                                            }
+                                            //DEFAULT SELECTION IS SEEDED IN apiGetBankAccountList
                                             return Container(
                                               padding: const EdgeInsets.only(
                                                   left: 0,
@@ -484,9 +488,6 @@ class PayOutScreenState extends State<PayOutScreen> with GlobalVarMixin{
                                                             .bankAccountList[index]
                                                             .userStripeBankId
                                                             .toString();
-
-                                                    debugPrint(addCardController
-                                                        .userStripeCardId!.value);
                                                   });
                                                 },
                                                 child: Row(
@@ -549,7 +550,7 @@ class PayOutScreenState extends State<PayOutScreen> with GlobalVarMixin{
                                 )),
                             height20SizedBox,
                             CustomButton(
-                              gradient: const LinearGradient(
+                              gradient: LinearGradient(
                                 begin: Alignment.topCenter,
                                 end: Alignment.bottomCenter,
                                 colors: [AppColors.primary, AppColors.primary],
@@ -580,7 +581,7 @@ class PayOutScreenState extends State<PayOutScreen> with GlobalVarMixin{
             return addCardController.isLoading.value
                 ? Container(
               color: Colors.black.withOpacity(0.2),
-              child: const Center(
+              child: Center(
                 child: CircularProgressIndicator(color: AppColors.primary),
               ),)
                 : const SizedBox.shrink();

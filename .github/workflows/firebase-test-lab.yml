@@ -1,0 +1,309 @@
+name: Firebase Test Lab
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ['ci/*']
+    # Maestro-only changes run in maestro.yml; don't spend Test Lab quota.
+    paths-ignore:
+      - '.maestro/**'
+      - '.github/workflows/maestro.yml'
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+  id-token: write
+
+# Keyed on the branch, not the ref: a push to a branch with an open PR
+# triggers both a push and a pull_request run, and the newer one cancels the
+# older before it reaches Test Lab, so each change uses the daily device quota
+# once.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+env:
+  FLUTTER_VERSION: '3.41.6'
+
+jobs:
+  integration-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    environment: ANDROID_BETA_CONFIG
+    env:
+      KEYSTORE_FILE: keystore.jks
+      KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+      KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+      KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+      ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create environment file from GitHub Secrets
+        env:
+          BASE_URL_WO_API: ${{ vars.BASE_URL_WO_API_BETA }}
+          GOOGLE_MAP_KEY: ${{ secrets.GOOGLE_MAP_KEY_BETA }}
+          STRIPE_API_URL: ${{ vars.STRIPE_API_URL_BETA }}
+          STRIPE_CARD_BASIC_AUTH: ${{ secrets.STRIPE_CARD_BASIC_AUTH_BETA }}
+          STRIPE_BANK_BASIC_AUTH: ${{ secrets.STRIPE_BANK_BASIC_AUTH_BETA }}
+          STRIPE_PUBLISHABLE_KEY: ${{ secrets.STRIPE_PUBLISHABLE_KEY_BETA }}
+        run: |
+          cat > assets/env/api_key.env << EOF
+          BASE_URL_WO_API=${BASE_URL_WO_API}
+          VERSION=v1
+          GOOGLE_MAP_KEY=${GOOGLE_MAP_KEY}
+          STRIPE_API_URL=${STRIPE_API_URL}
+          STRIPE_CARD_BASIC_AUTH=${STRIPE_CARD_BASIC_AUTH}
+          STRIPE_BANK_BASIC_AUTH=${STRIPE_BANK_BASIC_AUTH}
+          STRIPE_PUBLISHABLE_KEY=${STRIPE_PUBLISHABLE_KEY}
+          EOF
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'gradle'
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+          cache: true
+
+      - name: Install Flutter dependencies
+        run: flutter pub get
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          # Default also installs the removed 'tools' package, which fails sdkmanager.
+          packages: 'platform-tools'
+
+      - name: Install required Android SDK components
+        run: |
+          yes | sdkmanager --licenses >/dev/null || true
+          sdkmanager "platforms;android-36" "build-tools;36.0.0"
+
+      - name: Decode keystore
+        run: |
+          if [ -z "$ANDROID_KEYSTORE_BASE64" ]; then
+            echo "ANDROID_KEYSTORE_BASE64 is not set"
+            exit 1
+          fi
+
+          printf '%s' "$ANDROID_KEYSTORE_BASE64" | base64 --decode > android/app/keystore.jks
+          chmod 600 android/app/keystore.jks
+
+      - name: Build app and test APKs
+        run: |
+          flutter build apk --debug --target=integration_test/app_test.dart
+          cd android
+          ./gradlew app:assembleAndroidTest
+          ./gradlew app:assembleDebug -Ptarget="$(pwd)/../integration_test/app_test.dart"
+
+      - name: Authenticate with GCP
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.FIREBASE_TEST_LAB_SA_JSON }}
+
+      - name: Setup gcloud CLI
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Run integration tests on Firebase Test Lab
+        env:
+          FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+        run: |
+          # Without pipefail, tee masks gcloud errors (e.g. TEST_QUOTA_EXCEEDED)
+          # and the step goes green without any test having run.
+          set -o pipefail
+          gcloud firebase test android run \
+            --type=instrumentation \
+            --app=build/app/outputs/apk/debug/app-debug.apk \
+            --test=build/app/outputs/apk/androidTest/debug/app-debug-androidTest.apk \
+            --device model=Pixel2.arm,version=33,locale=en,orientation=portrait \
+            --timeout=35m \
+            --results-dir="ftl-integration-${GITHUB_RUN_ID}" \
+            --project="${FIREBASE_PROJECT_ID}" \
+            2>&1 | tee test-lab-output.txt
+
+      - name: Extract results bucket
+        if: always()
+        run: |
+          # gcloud prints the bucket as a console URL, not a gs:// path.
+          BUCKET_PATH=$(grep -oP 'storage/browser/\K[^ \]]+' test-lab-output.txt | head -1 || true)
+          if [ -n "$BUCKET_PATH" ]; then
+            mkdir -p test-lab-results
+            gsutil -m cp -r "gs://${BUCKET_PATH}*" test-lab-results/ || true
+          fi
+
+      - name: Show journey log from device
+        if: always()
+        run: |
+          find test-lab-results -name 'logcat' -exec grep -hE '\[journey\]|EXCEPTION CAUGHT|Test failed|══' {} + || true
+
+      - name: Fail unless the journey passed
+        run: |
+          if grep -qE '│ (Failed|Inconclusive|Skipped) ' test-lab-output.txt; then
+            echo "::error::Firebase Test Lab did not pass"
+            exit 1
+          fi
+          # Test Lab reports "Passed" when the runner records 0 tests (e.g. a
+          # Dart-side hang), so also require the journey's closing line.
+          # grep -r (not find -exec) so a missing logcat counts as a failure.
+          if ! grep -rqs --include=logcat '\[journey\] ALL STEPS PASSED' test-lab-results; then
+            echo "::error::Integration journey did not complete (see 'Show journey log from device')"
+            exit 1
+          fi
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: firebase-test-lab-integration-results
+          path: |
+            test-lab-results/
+            test-lab-output.txt
+          retention-days: 30
+
+  robo-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    environment: ANDROID_BETA_CONFIG
+    env:
+      KEYSTORE_FILE: keystore.jks
+      KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+      KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+      KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+      ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create environment file from GitHub Secrets
+        env:
+          BASE_URL_WO_API: ${{ vars.BASE_URL_WO_API_BETA }}
+          GOOGLE_MAP_KEY: ${{ secrets.GOOGLE_MAP_KEY_BETA }}
+          STRIPE_API_URL: ${{ vars.STRIPE_API_URL_BETA }}
+          STRIPE_CARD_BASIC_AUTH: ${{ secrets.STRIPE_CARD_BASIC_AUTH_BETA }}
+          STRIPE_BANK_BASIC_AUTH: ${{ secrets.STRIPE_BANK_BASIC_AUTH_BETA }}
+          STRIPE_PUBLISHABLE_KEY: ${{ secrets.STRIPE_PUBLISHABLE_KEY_BETA }}
+        run: |
+          cat > assets/env/api_key.env << EOF
+          BASE_URL_WO_API=${BASE_URL_WO_API}
+          VERSION=v1
+          GOOGLE_MAP_KEY=${GOOGLE_MAP_KEY}
+          STRIPE_API_URL=${STRIPE_API_URL}
+          STRIPE_CARD_BASIC_AUTH=${STRIPE_CARD_BASIC_AUTH}
+          STRIPE_BANK_BASIC_AUTH=${STRIPE_BANK_BASIC_AUTH}
+          STRIPE_PUBLISHABLE_KEY=${STRIPE_PUBLISHABLE_KEY}
+          EOF
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'gradle'
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+          cache: true
+
+      - name: Install Flutter dependencies
+        run: flutter pub get
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          # Default also installs the removed 'tools' package, which fails sdkmanager.
+          packages: 'platform-tools'
+
+      - name: Install required Android SDK components
+        run: |
+          yes | sdkmanager --licenses >/dev/null || true
+          sdkmanager "platforms;android-36" "build-tools;36.0.0"
+
+      - name: Decode keystore
+        run: |
+          if [ -z "$ANDROID_KEYSTORE_BASE64" ]; then
+            echo "ANDROID_KEYSTORE_BASE64 is not set"
+            exit 1
+          fi
+
+          printf '%s' "$ANDROID_KEYSTORE_BASE64" | base64 --decode > android/app/keystore.jks
+          chmod 600 android/app/keystore.jks
+
+      - name: Build debug APK
+        run: flutter build apk --debug
+
+      - name: Authenticate with GCP
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.FIREBASE_TEST_LAB_SA_JSON }}
+
+      - name: Setup gcloud CLI
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Run Firebase Test Lab Robo test
+        env:
+          FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+          ROBO_DIRECTIVES_TEMPLATE: ${{ secrets.ROBO_DIRECTIVES_TEMPLATE }}
+        run: |
+          # Without pipefail, tee masks gcloud errors (e.g. TEST_QUOTA_EXCEEDED)
+          # and the step goes green without any test having run.
+          set -o pipefail
+          gcloud firebase test android run \
+            --type=robo \
+            --app=build/app/outputs/flutter-apk/app-debug.apk \
+            --robo-directives="${ROBO_DIRECTIVES_TEMPLATE}" \
+            --robo-script=.github/robo/login_start.json \
+            --device model=Pixel2.arm,version=33,locale=en,orientation=portrait \
+            --timeout=300s \
+            --results-dir="ftl-results-${GITHUB_RUN_ID}" \
+            --project="${FIREBASE_PROJECT_ID}" \
+            2>&1 | tee test-lab-output.txt
+
+      - name: Extract results bucket
+        if: always()
+        run: |
+          # gcloud prints the bucket as a console URL, not a gs:// path.
+          BUCKET_PATH=$(grep -oP 'storage/browser/\K[^ \]]+' test-lab-output.txt | head -1 || true)
+          if [ -n "$BUCKET_PATH" ]; then
+            mkdir -p test-lab-results
+            gsutil -m cp -r "gs://${BUCKET_PATH}*" test-lab-results/ || true
+          fi
+
+      - name: Check Robo actually crawled
+        run: |
+          # Robo reports "Passed" even when it gives up on the splash screen
+          # after a couple of blind taps, so require a real, logged-in crawl.
+          ACTIONS=$(find test-lab-results -name actions.json -exec jq '.events | length' {} + | head -1)
+          echo "Robo performed ${ACTIONS:-0} actions"
+          if [ "${ACTIONS:-0}" -lt 20 ]; then
+            echo "::error::Robo only performed ${ACTIONS:-0} actions; it never got into the app"
+            exit 1
+          fi
+          # The Robo script logs in with the demo account; make sure it did.
+          if ! grep -rqs --include=logcat 'Logged in successfully' test-lab-results; then
+            echo "::error::Robo script did not log in (no 'Logged in successfully' in logcat)"
+            exit 1
+          fi
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: firebase-test-lab-results
+          path: |
+            test-lab-results/
+            test-lab-output.txt
+          retention-days: 30
