@@ -761,19 +761,24 @@ void main() {
       await _switchRole(tester, toCustomer: false);
       await _openOwnerOrderQueue(tester);
       final row = find.text('#$fulfilledOrderId');
-      await _showOwnerOrders(
-          tester, StringConstants.receivedText, fulfilledOrderId);
-      await _tap(tester, row);
-      // Received items start unticked.
-      await _selectAllItems(tester);
-      await _advanceOrder(tester, [
-        StringConstants.readyForPickUpText,
-        StringConstants.prepareOrderText,
-      ]);
+      // Picks up wherever the order is, so a retry after a forced logout
+      // doesn't look for it on a tab it has already left.
+      if (await _ownerOrderShows(
+          tester, StringConstants.receivedText, fulfilledOrderId)) {
+        await _tap(tester, row);
+        // Received items start unticked.
+        await _selectAllItems(tester);
+        await _advanceOrder(tester, [
+          StringConstants.readyForPickUpText,
+          StringConstants.prepareOrderText,
+        ]);
+      }
       // Every item on the Pickup tab moves on together.
       for (var i = 0; i < 2; i++) {
-        await _showOwnerOrders(
-            tester, StringConstants.pickupText, fulfilledOrderId);
+        if (!await _ownerOrderShows(
+            tester, StringConstants.pickupText, fulfilledOrderId)) {
+          break;
+        }
         await _tap(tester, row);
         final done = await _advanceOrder(tester, [
           StringConstants.orderShippedText,
@@ -793,14 +798,16 @@ void main() {
       if (cancelledOrderId.isEmpty) throw TestFailure('no order to cancel');
       await _switchRole(tester, toCustomer: false);
       await _openOwnerOrderQueue(tester);
-      await _showOwnerOrders(
-          tester, StringConstants.receivedText, cancelledOrderId);
-      await _tap(tester, find.text('#$cancelledOrderId'));
-      await _selectAllItems(tester);
-      final cancel = find.text(StringConstants.cancelOrderText);
-      await _tap(tester, cancel);
-      await _tap(tester, find.text(StringConstants.yesText));
-      await _waitGone(tester, cancel, timeout: const Duration(seconds: 45));
+      // A retry after a forced logout may find it already cancelled.
+      if (await _ownerOrderShows(
+          tester, StringConstants.receivedText, cancelledOrderId)) {
+        await _tap(tester, find.text('#$cancelledOrderId'));
+        await _selectAllItems(tester);
+        final cancel = find.text(StringConstants.cancelOrderText);
+        await _tap(tester, cancel);
+        await _tap(tester, find.text(StringConstants.yesText));
+        await _waitGone(tester, cancel, timeout: const Duration(seconds: 45));
+      }
       await _showOwnerOrders(
           tester, StringConstants.completedText, cancelledOrderId);
       await _backToHome(tester);
@@ -1425,6 +1432,24 @@ Future<void> _showOwnerOrders(
   await _enterField(tester, StringConstants.searchOrdersHintText, orderId);
   FocusManager.instance.primaryFocus?.unfocus();
   await _waitFor(tester, find.text('#$orderId'));
+}
+
+/// Like [_showOwnerOrders], but reports whether [orderId] is on [tab]
+/// instead of failing when it isn't.
+Future<bool> _ownerOrderShows(
+    WidgetTester tester, String tab, String orderId) async {
+  try {
+    await _tap(tester, find.text(tab));
+    await _pumpFor(tester, const Duration(seconds: 1));
+    await _enterField(tester, StringConstants.searchOrdersHintText, orderId);
+    FocusManager.instance.primaryFocus?.unfocus();
+    await _waitFor(tester, find.text('#$orderId'),
+        timeout: const Duration(seconds: 12));
+    return true;
+  } on TestFailure {
+    debugPrint('[journey]   order $orderId not under $tab');
+    return false;
+  }
 }
 
 /// Customer: orders one [productName] from the account's own store, paid
