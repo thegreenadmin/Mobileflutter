@@ -37,16 +37,23 @@ import 'package:integration_test/integration_test.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:thegreenmall/authentication/signup/controller/signup_controller.dart';
+import 'package:thegreenmall/dashboard/home/controller/account_controller.dart';
+import 'package:thegreenmall/dashboard/home/controller/add_new_category_controller.dart';
 import 'package:thegreenmall/dashboard/home/controller/manage_store_controller.dart';
+import 'package:thegreenmall/dashboard/home/controller/notification_list_controller.dart';
 import 'package:thegreenmall/dashboard/home/controller/search_store_owner_controller.dart';
 import 'package:thegreenmall/dashboard/home/controller/search_store_user_controller.dart';
 import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/components/store_home_main_args.dart';
+import 'package:thegreenmall/dashboard/home/view/customer/components/user_store_order_appbar.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/store_home_main_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/user_product_list_screen.dart';
 import 'package:thegreenmall/dashboard/offers/controller/add_offer_controller.dart';
+import 'package:thegreenmall/dashboard/offers/controller/offers_controller.dart';
 import 'package:thegreenmall/dashboard/offers/view/add_offer_screen.dart';
+import 'package:thegreenmall/dashboard/offers/view/offer_products_screen.dart';
 import 'package:thegreenmall/dashboard/orders/controller/orders_controller.dart';
 import 'package:thegreenmall/dashboard/orders/controller/transaction_controller.dart';
 import 'package:thegreenmall/dashboard/wallet/controller/wallet_controller.dart';
@@ -59,6 +66,7 @@ import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 const _testPhone = '0000000000';
 const _testOtp = '0000';
@@ -173,6 +181,17 @@ void main() {
       expect(find.text(StringConstants.createAnAccountText), findsWidgets);
     }, critical: true);
 
+    // signup_owner_validation: "Own a Store? Register Here" opens the owner
+    // variant of sign-up; an empty submit shows the field errors.
+    await step('owner sign-up form validation', () async {
+      await _tap(tester, find.text(StringConstants.registerHereText));
+      await _submit(tester, find.text(StringConstants.signUpText).last);
+      await _waitFor(
+          tester, find.text(AlertStringConstants.pleaseEnterFirstNameText));
+      await _tap(tester, find.byIcon(Icons.chevron_left));
+      await _waitFor(tester, find.text(StringConstants.continueAsGuestText));
+    });
+
     // guest_navigation
     await step('guest home', () async {
       await _tap(tester, find.text(StringConstants.continueAsGuestText));
@@ -182,6 +201,63 @@ void main() {
       // Munchies / Herbs / Payments are country-gated pills; staging has them.
       expect(find.text('Payments'), findsWidgets);
     }, critical: true);
+
+    // guest_gates: every members-only entry on the home screen and the store
+    // search asks a guest to log in, and Continue as Guest closes it.
+    await step('guest login prompts', () async {
+      final gates = <Finder, String>{
+        find.text(BottomNavStringConstants.walletText):
+            StringConstants.loginToAccessThisFeatureText,
+        find.text(BottomNavStringConstants.ordersText):
+            StringConstants.loginToAccessThisFeatureText,
+        _asset(ImageConstants.message): StringConstants.loginToAccessInboxText,
+        _asset(ImageConstants.user):
+            StringConstants.loginToAccessAccountSettingsText,
+        find.byIcon(Icons.notifications_active):
+            StringConstants.loginToViewNotificationsText,
+      };
+      for (final gate in gates.entries) {
+        await _expectLoginGate(tester, gate.key, gate.value);
+      }
+      await _tap(tester, _storesPill);
+      await _waitFor(tester, find.text(StringConstants.searchForStoreText));
+      for (final tab in [
+        StringConstants.previousText,
+        StringConstants.favoriteText,
+      ]) {
+        await _expectLoginGate(tester, find.text(tab),
+            StringConstants.loginToAccessPreviousAndFavoriteStoresText);
+      }
+      await _backToHome(tester);
+    });
+
+    // more_pages: About, FAQ, Terms and Privacy open in a web view; the
+    // Contact form refuses an empty submit (it is never sent).
+    await step('more screen pages', () async {
+      await _tapUntil(tester, find.text(BottomNavStringConstants.moreText),
+          find.text(StringConstants.contactTgmText));
+      for (final page in [
+        StringConstants.aboutUsText,
+        StringConstants.faqText,
+        StringConstants.termsOfServiceText,
+        StringConstants.privacyPolicyText,
+      ]) {
+        await _scrollTo(tester, find.text(page));
+        await _tap(tester, find.text(page));
+        await _waitFor(tester, find.byType(WebViewWidget));
+        await _tap(tester, find.byIcon(Icons.arrow_back));
+        await _waitFor(tester, find.text(StringConstants.contactTgmText));
+      }
+      await _scrollTo(tester, find.text(StringConstants.contactTgmText));
+      await _tap(tester, find.text(StringConstants.contactTgmText));
+      await _submit(tester, find.text(StringConstants.sendMessageText));
+      await _waitFor(
+          tester, find.text(AlertStringConstants.pleaseEnterNameText));
+      await _tap(tester, find.byIcon(Icons.arrow_back));
+      await _waitFor(tester, find.text(StringConstants.contactTgmText));
+      await _tapUntil(tester, find.text(BottomNavStringConstants.homeText),
+          _storesPill.hitTestable());
+    });
 
     // login_navigation, reached the way a guest would: a members-only
     // feature prompts for login.
@@ -291,6 +367,7 @@ void main() {
       if (_isCustomer) {
         await _tap(tester, find.text('Show my code'));
         await _waitFor(tester, find.textContaining('My Payment Code'));
+        await _waitFor(tester, find.byType(QrImageView));
         await _tap(tester, find.byIcon(Icons.arrow_back));
         await _tap(tester, find.text('Request money'));
         await _waitFor(tester, find.text('Generate barcode'));
@@ -300,7 +377,14 @@ void main() {
         await _tap(tester, find.text('Receive to my business'));
         // Opening the screen does not generate a code; that needs a tap.
         await _waitFor(tester, find.textContaining('Generate a payment code'));
-        expect(find.text('Generate code'), findsWidgets);
+        // An owner with several stores picks one first.
+        final pick = find.text('Choose a store').hitTestable();
+        if (pick.evaluate().isNotEmpty) await _pickFirst(tester, pick);
+        await _enterNear(tester, 'Amount to receive', '1');
+        FocusManager.instance.primaryFocus?.unfocus();
+        await _submit(tester, find.text('Generate code'));
+        await _waitFor(tester, find.byType(QrImageView));
+        await _waitFor(tester, find.textContaining('Expires in'));
       }
       await _backToHome(tester);
     });
@@ -364,6 +448,17 @@ void main() {
       await _submit(tester, find.text(StringConstants.addOfferText).last);
       await _waitFor(tester, find.text(offerName));
 
+      // offer_edit: change the discount value through the card's edit icon.
+      await _tap(
+          tester, _near(find.text(offerName), _asset(ImageConstants.edit)));
+      await _waitFor(tester, find.text(StringConstants.updateOfferText));
+      await _pumpFor(tester, const Duration(seconds: 2));
+      await _enterField(tester, StringConstants.enterValueText, '6');
+      await _submit(tester, find.text(StringConstants.saveText).last);
+      await _waitGone(tester, find.text(StringConstants.updateOfferText),
+          timeout: const Duration(seconds: 45));
+      await _waitFor(tester, find.text(offerName));
+
       await _swipeDelete(tester, find.text(offerName));
       await _waitGone(tester, find.text(offerName));
     });
@@ -392,6 +487,105 @@ void main() {
       await _backToHome(tester);
       await _openProductList(tester);
       await _scrollUntilBuilt(tester, find.text(productName));
+    });
+
+    // product_edit: raise this run's product to $2 from its edit screen.
+    await step('owner product edit', () async {
+      if (!productCreated) throw TestFailure('no product to edit');
+      await _switchRole(tester, toCustomer: false);
+      await _openProductList(tester);
+      await _scrollUntilBuilt(tester, find.text(productName));
+      await _tap(tester, find.text(productName));
+      final name = find.byWidgetPredicate(
+          (w) =>
+              w is TextField &&
+              w.decoration?.hintText == StringConstants.enterProductNameText &&
+              w.controller?.text == productName,
+          description: 'loaded product name field');
+      await _waitFor(tester, name);
+      await _enterField(tester, StringConstants.enterPriceText, '2');
+      await _submit(tester, find.text(StringConstants.saveText).last);
+      await _waitGone(tester, name, timeout: const Duration(seconds: 45));
+      await _scrollUntilBuilt(tester, find.text(productName));
+      await _waitFor(
+          tester, _near(find.text(productName), find.textContaining('2.00')));
+      await _backToHome(tester);
+    });
+
+    // category_create, category_delete: a new category (image + name) opens
+    // its add-product screen; back on the list it is swiped away.
+    await step('owner category create and delete', () async {
+      await _switchRole(tester, toCustomer: false);
+      await _openCategoryList(tester);
+      await _tap(tester, find.text(StringConstants.addNewCategoriesText));
+      await _waitFor(tester, find.text(StringConstants.saveAndAddProductText));
+      await _tap(tester, _asset(ImageConstants.upload));
+      await _tap(tester, find.text(StringConstants.galleryText));
+      final categories = Get.find<AddNewCategoryController>();
+      await _until(tester, 'category image upload',
+          () => categories.categoryImageDynamicLinkFromServer.value.isNotEmpty);
+      await _enterField(
+          tester, StringConstants.enterCategoryNameText, 'FTL cat $stamp');
+      await _submit(tester, find.text(StringConstants.saveAndAddProductText));
+      // Saving opens the new category's add-product screen.
+      await _waitFor(tester, find.text(StringConstants.enterProductNameText),
+          timeout: const Duration(seconds: 45));
+      for (var i = 0;
+          i < 3 &&
+              find
+                  .text(StringConstants.addNewCategoriesText)
+                  .hitTestable()
+                  .evaluate()
+                  .isEmpty;
+          i++) {
+        await _tap(tester, find.byIcon(Icons.arrow_back));
+        await _pumpFor(tester, const Duration(seconds: 1));
+      }
+      final row = find.text('FTL cat $stamp');
+      await _scrollUntilBuilt(tester, row);
+      await _swipeDelete(tester, row);
+      await _waitGone(tester, row);
+      await _backToHome(tester);
+    });
+
+    // store_settings: the owner's store screens load (read only: nothing is
+    // saved, so the shared test store is left as it is).
+    await step('owner store settings', () async {
+      await _switchRole(tester, toCustomer: false);
+      await _openManageStore(tester);
+      await _tap(tester, find.text(StringConstants.editStoreDetailsText));
+      await _waitFor(
+          tester,
+          find.byWidgetPredicate(
+              (w) =>
+                  w is TextField &&
+                  w.decoration?.hintText == StringConstants.storeNameText &&
+                  (w.controller?.text ?? '').isNotEmpty,
+              description: 'loaded store name field'));
+      await _tap(tester, find.byIcon(Icons.arrow_back));
+      await _tap(tester, find.text(StringConstants.rolesAndPermissionText));
+      await _waitFor(tester, find.text(StringConstants.addNewRoleText));
+      await _tap(tester, find.byIcon(Icons.arrow_back));
+      await _tap(tester, find.text(StringConstants.manageWorkersText));
+      await _waitFor(tester, find.textContaining('ember'));
+      await _backToHome(tester);
+    });
+
+    await step('owner notifications', () async {
+      await _switchRole(tester, toCustomer: false);
+      await _checkNotifications(tester);
+    });
+
+    await step('owner transaction history', () async {
+      await _switchRole(tester, toCustomer: false);
+      await _openTransactions(tester);
+      final tx = Get.find<TransactionController>();
+      debugPrint('[journey]   owner current month: '
+          '${tx.ownerOrderTransactionList?.length ?? 0} transaction(s)');
+      await _tap(tester, find.text(StringConstants.pastOrdersText));
+      await _pumpFor(tester, const Duration(seconds: 1));
+      await _until(tester, 'past transactions', () => !tx.isLoading.value);
+      await _backToHome(tester);
     });
 
     // card_add_valid, card_delete. 4242 is already on the account and the
@@ -575,6 +769,201 @@ void main() {
       await _tap(tester, find.text(StringConstants.currentMonthText));
       await _pumpFor(tester, const Duration(seconds: 1));
       await _until(tester, 'current month again', () => !tx.isLoading.value);
+      await _backToHome(tester);
+    });
+
+    // profile_edit: change the nick name and put it back.
+    await step('customer profile edit', () async {
+      await _switchRole(tester, toCustomer: true);
+      await _openAccount(tester);
+      final info = find.text(StringConstants.personalInformationText);
+      await _scrollTo(tester, info);
+      await _tap(tester, info);
+      await _waitFor(tester, find.text(StringConstants.nickNameText));
+      final account = Get.find<AccountController>();
+      await _until(tester, 'user details',
+          () => !account.isLoading.value && account.uuId!.value.isNotEmpty);
+      final original = account.nickName!.value;
+      Future<void> setNickName(String value) async {
+        await _tap(tester, find.text(StringConstants.editText));
+        await _waitFor(tester, find.text(StringConstants.updateText));
+        await _until(tester, 'edit form',
+            () => account.firstNameTextController.text.isNotEmpty);
+        await _enterField(tester, StringConstants.nickNameText, value);
+        FocusManager.instance.primaryFocus?.unfocus();
+        await _submit(tester, find.text(StringConstants.updateText));
+        await _waitGone(tester, find.text(StringConstants.updateText),
+            timeout: const Duration(seconds: 45));
+      }
+
+      final nick = 'FTL $stamp';
+      await setNickName(nick);
+      // Saving doesn't refresh the cached profile; read it back.
+      account.apiGetUserDetailApi();
+      await _until(
+          tester, 'saved nick name', () => account.nickName!.value == nick,
+          timeout: const Duration(seconds: 20));
+      await setNickName(original);
+      await _backToHome(tester);
+      // account_id: the Account ID screen shows the user's id.
+      await _openAccount(tester);
+      final id = find.text(StringConstants.accountIdText);
+      await _scrollTo(tester, id);
+      await _tap(tester, id);
+      await _waitFor(tester, find.text('${StringConstants.accountIdText}:'));
+      await _backToHome(tester);
+    });
+
+    // notification_preferences: switch inbox message alerts off and back on;
+    // each change is read back from the server.
+    await step('customer notification settings', () async {
+      await _switchRole(tester, toCustomer: true);
+      await _openAccount(tester);
+      final label = find.text(StringConstants.inboxMessages);
+      await _scrollTo(tester, label);
+      final account = Get.find<AccountController>();
+      await _until(tester, 'settings', () => !account.isLoading.value);
+      final before = account.isUserInboxMessagesNotify.value;
+      for (final want in [!before, before]) {
+        await _tap(tester, _near(label, find.byType(FlutterSwitch)));
+        await _pumpFor(tester, const Duration(seconds: 1));
+        await _until(tester, 'setting saved', () => !account.isLoading.value);
+        // Flip the local copy, then let the server's answer set it back.
+        account.isUserInboxMessagesNotify.value = !want;
+        account.apiGetNotificationStatus(false);
+        await _until(tester, 'server setting = $want',
+            () => account.isUserInboxMessagesNotify.value == want,
+            timeout: const Duration(seconds: 20));
+      }
+      await _backToHome(tester);
+    });
+
+    await step('customer notifications', () async {
+      await _switchRole(tester, toCustomer: true);
+      await _checkNotifications(tester);
+    });
+
+    // store_favourite: heart the account's own store from its page, find it
+    // on the search screen's Favorite tab, then remove it again.
+    await step('customer store favourite', () async {
+      if (_ownStoreId.isEmpty) throw TestFailure('no store to favourite');
+      await _switchRole(tester, toCustomer: true);
+      final outline = find.descendant(
+          of: find.byType(UserStoreOrderAppBar),
+          matching: _asset(ImageConstants.favoutline));
+      final liked = find.descendant(
+          of: find.byType(UserStoreOrderAppBar),
+          matching: _asset(ImageConstants.liked));
+      Future<Finder> openStore() async {
+        await _openOwnStore(tester);
+        await _until(
+            tester,
+            'store heart',
+            () =>
+                outline.hitTestable().evaluate().isNotEmpty ||
+                liked.hitTestable().evaluate().isNotEmpty);
+        await _pumpFor(tester, const Duration(seconds: 2));
+        return liked.hitTestable().evaluate().isNotEmpty ? liked : outline;
+      }
+
+      final store = Get.find<StoreHomeMainController>();
+      if (await openStore() == liked) {
+        await _tap(tester, liked);
+        await _until(tester, 'unfavourited', () => !store.isLoading.value);
+      }
+      await _tap(tester, outline);
+      await _waitFor(tester, liked.hitTestable());
+      await _until(tester, 'favourite saved', () => !store.isLoading.value);
+      await _backToHome(tester);
+      await _tap(tester, _storesPill);
+      await _waitFor(tester, find.text(StringConstants.searchForStoreText));
+      final search = Get.find<SearchStoreUserController>();
+      await _tap(tester, find.text(StringConstants.favoriteText));
+      await _pumpFor(tester, const Duration(seconds: 1));
+      await _until(tester, 'favourite stores', () => !search.isLoading.value);
+      await _scrollUntilBuilt(tester, find.text(_ownStoreName));
+      await _tap(tester, find.text(StringConstants.nearbyText));
+      await _backToHome(tester);
+      if (await openStore() != liked) {
+        throw TestFailure('store favourite not saved');
+      }
+      await _tap(tester, liked);
+      await _until(tester, 'favourite removed', () => !store.isLoading.value);
+      await _backToHome(tester);
+      if (await openStore() != outline) {
+        throw TestFailure('store favourite not removed');
+      }
+      await _backToHome(tester);
+    });
+
+    // store_options: the store page's Options menu: previous orders at this
+    // store (this run's order among them) and the store's contact card.
+    await step('customer store options', () async {
+      if (_ownStoreId.isEmpty) throw TestFailure('no store to open');
+      await _switchRole(tester, toCustomer: true);
+      await _openOwnStore(tester);
+      await _tap(tester, find.text(StringConstants.optionsText));
+      await _tap(tester, find.text(StringConstants.previousOrdersText).last);
+      await _waitFor(
+          tester,
+          find.byWidgetPredicate(
+              (w) =>
+                  w is Text &&
+                  ((w.data ?? '').startsWith(StringConstants.unitPriceText) ||
+                      w.data == StringConstants.noOrdersFoundText),
+              description: 'previous orders loaded'),
+          timeout: const Duration(seconds: 45));
+      await _tap(tester, find.text(StringConstants.optionsText));
+      await _tap(tester, find.text(StringConstants.contactText).last);
+      await _waitFor(tester, find.text(StringConstants.welcomeText));
+      await tester.tapAt(const Offset(20, 20));
+      await _pumpFor(tester, const Duration(seconds: 1));
+      if (find.text(StringConstants.welcomeText).evaluate().isNotEmpty) {
+        Get.back();
+        await _pumpFor(tester, const Duration(seconds: 1));
+      }
+      await _backToHome(tester);
+    });
+
+    // offers_browse: the customer Offers tab lists store offers; the first
+    // one opens its product list.
+    await step('customer offers', () async {
+      await _switchRole(tester, toCustomer: true);
+      await _backToHome(tester);
+      await _tap(tester, find.text(BottomNavStringConstants.offersText));
+      final offers = Get.find<OffersController>();
+      await _pumpFor(tester, const Duration(seconds: 2));
+      await _until(tester, 'offers', () => !offers.isLoading.value);
+      debugPrint('[journey]   ${offers.getUserOfferList.length} store(s) '
+          'with offers');
+      if (offers.getUserOfferList.isNotEmpty) {
+        final name =
+            offers.getUserOfferList.first.offers?.first.offerName ?? '';
+        if (name.isNotEmpty) {
+          await _tap(tester, find.text(name));
+          await _waitFor(tester, find.byType(OfferProductScreen));
+        }
+      }
+      await _backToHome(tester);
+    });
+
+    // payment_request_money: a $1 request to the second test account shows
+    // a code to scan (the text-message option is never used).
+    await step('customer request money', () async {
+      await _switchRole(tester, toCustomer: true);
+      await _openPayments(tester);
+      await _tap(tester, find.text('Receive'));
+      await _tap(tester, find.text('Request money'));
+      await _waitFor(tester, find.text('Generate barcode'));
+      await tester.enterText(
+          find.descendant(
+              of: find.byType(IntlPhoneField),
+              matching: find.byType(EditableText)),
+          _secondPhone);
+      await _enterNear(tester, 'Amount', '1');
+      FocusManager.instance.primaryFocus?.unfocus();
+      await _submit(tester, find.text('Generate barcode'));
+      await _waitFor(tester, find.byType(QrImageView));
       await _backToHome(tester);
     });
 
@@ -1041,7 +1430,7 @@ void main() {
           '${failed.join(', ')}');
       fail('Steps failed: ${failed.join(', ')}');
     }
-  }, timeout: const Timeout(Duration(minutes: 25)));
+  }, timeout: const Timeout(Duration(minutes: 40)));
 }
 
 /// Set once the first login succeeds; from then on a step that finds the app
@@ -1383,6 +1772,116 @@ Future<void> _openOwnerOrderQueue(WidgetTester tester) async {
   }
   if (queue.evaluate().isEmpty) await _tap(tester, store);
   await _waitFor(tester, queue);
+}
+
+/// Taps [trigger] as a guest, expects the Login Required sheet saying
+/// [message], and closes it with Continue as Guest.
+Future<void> _expectLoginGate(
+    WidgetTester tester, Finder trigger, String message) async {
+  await _tap(tester, trigger);
+  await _waitFor(tester, find.text(message));
+  expect(find.text(StringConstants.loginRequiredText), findsWidgets);
+  await _tap(tester, find.text('Continue as Guest'));
+  await _waitGone(tester, find.text(message));
+}
+
+/// The first [target] inside the closest ancestor of [anchor] that holds
+/// one, e.g. the edit icon on the card showing a given name.
+Finder _near(Finder anchor, Finder target) {
+  final ancestors = find.ancestor(
+      of: anchor.first, matching: find.byWidgetPredicate((_) => true));
+  final count = ancestors.evaluate().length;
+  for (var i = 0; i < count; i++) {
+    final hit = find.descendant(of: ancestors.at(i), matching: target);
+    if (hit.evaluate().isNotEmpty) return hit.first;
+  }
+  return find.descendant(of: anchor, matching: target);
+}
+
+/// Types [text] into the field in the same column as the label [label].
+Future<void> _enterNear(WidgetTester tester, String label, String text) async {
+  await _waitFor(tester, find.text(label));
+  final field = find.descendant(
+      of: find
+          .ancestor(of: find.text(label), matching: find.byType(Column))
+          .first,
+      matching: find.byType(EditableText));
+  await tester.ensureVisible(field.first);
+  await tester.enterText(field.first, text);
+  await tester.pump(const Duration(milliseconds: 300));
+}
+
+/// The account's own store page, opened the way a store row does.
+Future<void> _openOwnStore(WidgetTester tester) async {
+  await _backToHome(tester);
+  Get.to(
+      () => StoreHomeMainScreen(
+          args: StoreHomeMainArgs(
+              storeId: _ownStoreId,
+              isFromMenu: false,
+              isFromFav: false,
+              isFromHome: true,
+              isFromOptions: false)),
+      id: pageIdApp.value);
+  await _waitFor(tester, find.text(StringConstants.optionsText));
+}
+
+/// Owner: Stores > own store > Manage Store.
+Future<void> _openManageStore(WidgetTester tester) async {
+  await _backToHome(tester);
+  await _tap(tester, _storesPill);
+  await _waitFor(tester, find.text(StringConstants.addANewStoreText));
+  final stores = Get.find<OwnerStoresController>();
+  await _until(tester, 'owner store list', () => stores.storeList.isNotEmpty);
+  await _tap(tester, find.text(_ownStoreName));
+  await _tap(tester, find.text(StringConstants.manageStoreText));
+  await _waitFor(tester, find.text(StringConstants.manageProductsText));
+}
+
+/// Owner: Manage Store > Manage Products, the store's category list.
+Future<void> _openCategoryList(WidgetTester tester) async {
+  await _openManageStore(tester);
+  await _tap(tester, find.text(StringConstants.manageProductsText));
+  await _waitFor(tester, find.text(StringConstants.addNewCategoriesText));
+}
+
+/// Account > Transactions History, loaded.
+Future<void> _openTransactions(WidgetTester tester) async {
+  await _openAccount(tester);
+  final row = find.text(StringConstants.transactionsHistoryText);
+  await _scrollTo(tester, row);
+  await _tap(tester, row);
+  await _waitFor(tester, find.text(StringConstants.currentMonthText));
+  final tx = Get.find<TransactionController>();
+  await _until(tester, 'transactions', () => !tx.isLoading.value);
+}
+
+/// Home > bell: the notification list loads; the newest notification opens
+/// whatever it points at (an order, usually).
+Future<void> _checkNotifications(WidgetTester tester) async {
+  await _backToHome(tester);
+  await _tap(tester, find.byIcon(Icons.notifications_active));
+  await _waitFor(tester, find.text(StringConstants.notificationsText));
+  final list = Get.find<NotificationListController>();
+  await _pumpFor(tester, const Duration(seconds: 1));
+  await _until(tester, 'notifications', () => !list.isLoading.value);
+  debugPrint('[journey]   ${list.notificationList.length} notification(s)');
+  if (list.notificationList.isNotEmpty) {
+    final newest = list.notificationList.first;
+    final text = (newest.title ?? '').isNotEmpty
+        ? newest.title!
+        : (newest.message ?? '');
+    await _tap(tester, find.text(text));
+    await _pumpFor(tester, const Duration(seconds: 3));
+    final opened = find
+        .text(StringConstants.notificationsText)
+        .hitTestable()
+        .evaluate()
+        .isEmpty;
+    debugPrint('[journey]   newest notification '
+        '${opened ? 'opened a screen' : 'has nothing to open'}');
+  }
+  await _backToHome(tester);
 }
 
 /// Owner order screen: ticks every item. Select All only shows for orders
