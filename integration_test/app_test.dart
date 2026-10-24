@@ -29,6 +29,7 @@ import 'dart:io';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
@@ -43,6 +44,7 @@ import 'package:thegreenmall/dashboard/home/controller/account_controller.dart';
 import 'package:thegreenmall/dashboard/home/controller/add_new_category_controller.dart';
 import 'package:thegreenmall/dashboard/home/controller/manage_store_controller.dart';
 import 'package:thegreenmall/dashboard/home/controller/notification_list_controller.dart';
+import 'package:thegreenmall/dashboard/home/controller/owner_inbox_controller.dart';
 import 'package:thegreenmall/dashboard/home/controller/search_store_owner_controller.dart';
 import 'package:thegreenmall/dashboard/home/controller/search_store_user_controller.dart';
 import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
@@ -50,6 +52,7 @@ import 'package:thegreenmall/dashboard/home/view/customer/components/store_home_
 import 'package:thegreenmall/dashboard/home/view/customer/components/user_store_order_appbar.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/store_home_main_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/user_product_list_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/inbox/store_owner_Inbox/owner_inbox_detail_screen.dart';
 import 'package:thegreenmall/dashboard/offers/controller/add_offer_controller.dart';
 import 'package:thegreenmall/dashboard/offers/controller/offers_controller.dart';
 import 'package:thegreenmall/dashboard/offers/view/add_offer_screen.dart';
@@ -425,6 +428,10 @@ void main() {
     var cancelledOrderId = '';
     double? balanceBeforeCancelledOrder;
     var sentToSecondAccount = false;
+    var inboxMessage = '';
+    var inboxReply = '';
+    double? balanceBeforeReturn;
+    var returnRequested = false;
 
     // offer_create, offer_delete
     await step('owner offer create and delete', () async {
@@ -489,7 +496,9 @@ void main() {
       await _enterField(tester, StringConstants.enterPriceText, '1');
       await _pickText(tester, dropdowns.at(2), StringConstants.noText);
       await _enterField(tester, StringConstants.weightText, '1');
-      await _pickText(tester, dropdowns.at(3), StringConstants.noText);
+      // Returnable for a week, so the customer can return its order later.
+      await _pickText(tester, dropdowns.at(3), 'Yes');
+      await _enterField(tester, StringConstants.daysText, '7');
       await _submit(tester, find.text(StringConstants.saveText));
       // Save pops back to the category list; reopen the product list.
       await _waitGone(tester, find.text(StringConstants.enterProductNameText));
@@ -935,6 +944,18 @@ void main() {
       await _backToHome(tester);
     });
 
+    // inbox_customer: Options > Contact Store > Have issue/question? opens a
+    // chat with the store; a message sent there shows in the thread.
+    await step('customer messages the store', () async {
+      if (_ownStoreId.isEmpty) throw TestFailure('no store to message');
+      await _switchRole(tester, toCustomer: true);
+      await _openStoreChat(tester);
+      final message = 'FTL hello $stamp';
+      await _sendChatMessage(tester, message);
+      inboxMessage = message;
+      await _backToHome(tester);
+    });
+
     // offers_browse: the customer Offers tab lists store offers; the first
     // one opens its product list.
     await step('customer offers', () async {
@@ -1212,6 +1233,38 @@ void main() {
       await _backToHome(tester);
     });
 
+    // inbox_owner: the store's inbox has the customer's message; the owner
+    // replies in the same thread.
+    await step('owner replies in the inbox', () async {
+      if (inboxMessage.isEmpty) throw TestFailure('no customer message');
+      await _switchRole(tester, toCustomer: false);
+      await _backToHome(tester);
+      await _tap(tester, _asset(ImageConstants.message));
+      final inbox = Get.find<OwnerInboxController>();
+      await _pumpFor(tester, const Duration(seconds: 1));
+      await _until(tester, 'store inbox',
+          () => !inbox.isLoading.value && inbox.inboxList.isNotEmpty);
+      final head = inbox.inboxList.firstWhere(
+          (h) => h.store?.storeId == _ownStoreId,
+          orElse: () => throw TestFailure('no thread for store $_ownStoreId '
+              'in the store inbox'));
+      // Several threads can carry this account's name, so open the store's
+      // thread directly, the way its row does.
+      Get.to(
+          () => OwnerInboxDetailScreen(
+              storeId: head.store?.storeId ?? '',
+              storeName: head.store?.storeName ?? '',
+              customerName:
+                  ' ${head.user?.firstName} ${head.user?.lastName ?? ''}',
+              messageHeadId: head.messageHeadId ?? ''),
+          id: pageIdApp.value);
+      await _scrollUntilBuilt(tester, find.text(inboxMessage));
+      final reply = 'FTL reply $stamp';
+      await _sendChatMessage(tester, reply);
+      inboxReply = reply;
+      await _backToHome(tester);
+    });
+
     // order_history (customer): the fulfilled order is under Complete, the
     // cancelled one under Cancelled, and its price is back in the wallet.
     await step('customer sees fulfilled and cancelled orders', () async {
@@ -1255,6 +1308,91 @@ void main() {
       }
       if (problems.isNotEmpty) throw TestFailure(problems.join('; '));
       await _backToHome(tester);
+    });
+
+    await step('customer reads the store reply', () async {
+      if (inboxReply.isEmpty) throw TestFailure('no reply to read');
+      await _switchRole(tester, toCustomer: true);
+      await _openStoreChat(tester);
+      await _scrollUntilBuilt(tester, find.text(inboxReply));
+      await _backToHome(tester);
+    });
+
+    // order_rate, order_return: on the fulfilled order the customer leaves a
+    // 5-star review, then asks to return it (the product is returnable).
+    await step('customer rates and returns the order', () async {
+      if (fulfilledOrderId.isEmpty) throw TestFailure('no fulfilled order');
+      await _switchRole(tester, toCustomer: true);
+      balanceBeforeReturn = await _customerBalance(tester);
+      await _openCustomerOrder(tester, fulfilledOrderId);
+      final orders = Get.find<OrdersController>();
+
+      await _submit(tester, find.text(StringConstants.rateNowText));
+      final stars = find.byType(RatingBar);
+      await _waitFor(tester, stars);
+      // Tap the last star.
+      final box = tester.getRect(stars.first);
+      await tester.tapAt(Offset(box.right - 8, box.center.dy));
+      await _pumpFor(tester, const Duration(milliseconds: 500));
+      await _enterField(
+          tester, StringConstants.yourThoughtText, 'FTL review $stamp');
+      FocusManager.instance.primaryFocus?.unfocus();
+      await _submit(tester, find.text(StringConstants.submitText));
+      await _waitGone(tester, stars, timeout: const Duration(seconds: 45));
+      await _until(
+          tester,
+          'review saved',
+          () => orders.orderItems
+              .any((i) => (i.product?.productReviews ?? const []).isNotEmpty),
+          timeout: const Duration(seconds: 20));
+
+      await _submit(tester, find.text(StringConstants.returnOrderText));
+      await _tap(tester, find.text(StringConstants.yesText));
+      await _waitFor(tester, find.text(StringConstants.writeReasonText));
+      await _enterField(
+          tester, StringConstants.yourThoughtText, 'FTL return $stamp');
+      FocusManager.instance.primaryFocus?.unfocus();
+      await _submit(tester, find.text(StringConstants.submitText));
+      await _waitGone(tester, find.text(StringConstants.writeReasonText),
+          timeout: const Duration(seconds: 45));
+      returnRequested = true;
+      await _backToHome(tester);
+    });
+
+    // order_return_accept: the return request waits in the store's Received
+    // queue; the owner accepts it.
+    await step('owner accepts the return', () async {
+      if (!returnRequested) throw TestFailure('no return to accept');
+      await _switchRole(tester, toCustomer: false);
+      await _openOwnerOrderQueue(tester);
+      await _showOwnerOrders(
+          tester, StringConstants.receivedText, fulfilledOrderId);
+      await _tap(tester, find.text('#$fulfilledOrderId'));
+      final accept = find.text(StringConstants.acceptText);
+      await _waitFor(tester, accept);
+      await _selectAllItems(tester);
+      await _tap(tester, accept);
+      await _tap(tester, find.text(StringConstants.yesText));
+      await _waitGone(tester, accept, timeout: const Duration(seconds: 45));
+      await _backToHome(tester);
+    });
+
+    // order_return_refund: the returned order's money is back in the
+    // customer's wallet.
+    await step('customer gets the return refund', () async {
+      final before = balanceBeforeReturn;
+      if (before == null) throw TestFailure('no balance before the return');
+      await _switchRole(tester, toCustomer: true);
+      var now = await _customerBalance(tester);
+      for (var i = 0; i < 3 && now <= before; i++) {
+        await _pumpFor(tester, const Duration(seconds: 5));
+        now = await _customerBalance(tester);
+      }
+      debugPrint('[journey]   wallet after return: $now (was $before)');
+      if (now <= before) {
+        throw TestFailure('returned order $fulfilledOrderId not refunded: '
+            'wallet $now, was $before');
+      }
     });
 
     // payment_p2p_phone: send $1 to the second test account, which sends it
@@ -1894,6 +2032,44 @@ Future<void> _checkNotifications(WidgetTester tester) async {
   await _backToHome(tester);
 }
 
+/// Customer: own store > Options > Contact Store > Have issue/question?,
+/// the chat thread with the store.
+Future<void> _openStoreChat(WidgetTester tester) async {
+  await _openOwnStore(tester);
+  await _tap(tester, find.text(StringConstants.optionsText));
+  await _tap(tester, find.text(StringConstants.contactText).last);
+  await _tap(tester, find.text(StringConstants.haveIssueText));
+  await _waitFor(
+      tester,
+      find.byWidgetPredicate(
+          (w) =>
+              w is TextField &&
+              w.decoration?.hintText == StringConstants.startTypingHereText,
+          description: 'chat input'),
+      timeout: const Duration(seconds: 45));
+}
+
+/// In a chat thread: types [message], sends it and waits for it to show.
+Future<void> _sendChatMessage(WidgetTester tester, String message) async {
+  await _enterField(tester, StringConstants.startTypingHereText, message);
+  await _tap(tester, find.byIcon(Icons.send_outlined));
+  await _scrollUntilBuilt(tester, find.text(message));
+}
+
+/// Customer: Orders > Complete > the order [orderId], opened.
+Future<void> _openCustomerOrder(WidgetTester tester, String orderId) async {
+  await _backToHome(tester);
+  await _tapUntil(tester, find.text(BottomNavStringConstants.ordersText),
+      find.text(StringConstants.cancelledText));
+  await _tap(tester, find.text(StringConstants.completeText));
+  final row =
+      find.text('${StringConstants.orderIDText}: $orderId', findRichText: true);
+  await _scrollUntilBuilt(tester, row);
+  await _tap(tester, row);
+  await _waitFor(tester, find.text(StringConstants.rateNowText),
+      timeout: const Duration(seconds: 45));
+}
+
 /// Owner order screen: ticks every item. Select All only shows for orders
 /// with more than one item; otherwise tick the items' own boxes.
 Future<void> _selectAllItems(WidgetTester tester) async {
@@ -1901,9 +2077,13 @@ Future<void> _selectAllItems(WidgetTester tester) async {
   await _until(tester, 'order items', () => boxes.evaluate().isNotEmpty);
   final all = find.text(StringConstants.selectAllText).hitTestable();
   if (all.evaluate().isNotEmpty) {
-    await tester.tap(all.first);
+    final box = tester.widget<Checkbox>(
+        _near(find.text(StringConstants.selectAllText), find.byType(Checkbox)));
+    if (box.value != true) await tester.tap(all.first);
   } else {
+    // Some screens (returns) start with items ticked; only tick the rest.
     for (var i = 0; i < boxes.evaluate().length; i++) {
+      if (tester.widget<Checkbox>(boxes.at(i)).value == true) continue;
       await tester.tap(boxes.at(i));
       await tester.pump(const Duration(milliseconds: 200));
     }
