@@ -1067,7 +1067,10 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
       children: [
         Obx(() =>
             Container(
-              height: WidgetConstants.screenHeight * 0.24,
+              // A minimum, not a fixed height: on short screens a long address
+              // needs more room than 24% of the screen.
+              constraints: BoxConstraints(
+                  minHeight: WidgetConstants.screenHeight * 0.24),
               decoration: BoxDecoration(
                 color: const Color(0xff7c94b6),
                 image: DecorationImage(
@@ -1173,7 +1176,8 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
                                   child: Text(
                                       ordersHomeMainController
                                           .storeLocation.value,
-                                      overflow: TextOverflow.visible,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
                                       style: const TextStyle(
                                           overflow: TextOverflow.visible,
                                           color: AppColors.white,
