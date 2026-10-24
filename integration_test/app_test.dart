@@ -188,12 +188,22 @@ void main() {
       await _submit(tester, find.text(StringConstants.signUpText).last);
       await _waitFor(
           tester, find.text(AlertStringConstants.pleaseEnterFirstNameText));
-      await _tap(tester, find.byIcon(Icons.chevron_left));
+      // The submit scrolls the form, taking its back chevron off-screen.
+      Get.back();
       await _waitFor(tester, find.text(StringConstants.continueAsGuestText));
     });
 
     // guest_navigation
     await step('guest home', () async {
+      // A failed step before this one may have left a pushed screen up.
+      if (find
+          .text(StringConstants.continueAsGuestText)
+          .hitTestable()
+          .evaluate()
+          .isEmpty) {
+        Get.back();
+        await _pumpFor(tester, const Duration(seconds: 1));
+      }
       await _tap(tester, find.text(StringConstants.continueAsGuestText));
       await _tap(tester, find.text("Yes, I'm 18 or older"),
           timeout: const Duration(seconds: 20));

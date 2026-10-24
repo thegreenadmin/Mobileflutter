@@ -15,8 +15,12 @@ permissions:
   contents: read
   id-token: write
 
+# Keyed on the branch, not the ref: a push to a branch with an open PR
+# triggers both a push and a pull_request run, and the newer one cancels the
+# older before it reaches Test Lab, so each change uses the daily device quota
+# once.
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref_name }}
   cancel-in-progress: true
 
 env:
