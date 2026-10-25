@@ -24,11 +24,15 @@ class _MangeProductScreenState extends State<MangeProductScreen> with GlobalVarM
 
   @override
   initState() {
-    manageStoreController.storeId.value = widget.storeId??"";
-    manageStoreController.storeLocation.value = widget.storeLocation??"";
-    manageStoreController.storeName.value = widget.storeName??"";
-    manageStoreController.productId.value = widget.productId??"";
-    getApiData();
+    // Screens still on the stack observe this shared controller, so changing
+    // its Rx values while this route builds would rebuild them mid-build.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      manageStoreController.storeId.value = widget.storeId ?? "";
+      manageStoreController.storeLocation.value = widget.storeLocation ?? "";
+      manageStoreController.storeName.value = widget.storeName ?? "";
+      manageStoreController.productId.value = widget.productId ?? "";
+      getApiData();
+    });
     super.initState();
 
 
