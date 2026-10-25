@@ -390,9 +390,24 @@ void main() {
         await _tap(tester, find.text('Receive to my business'));
         // Opening the screen does not generate a code; that needs a tap.
         await _waitFor(tester, find.textContaining('Generate a payment code'));
-        // An owner with several stores picks one first.
-        final pick = find.text('Choose a store').hitTestable();
-        if (pick.evaluate().isNotEmpty) await _pickFirst(tester, pick);
+        // Generate code stays disabled until a store is picked; the hint
+        // shows while none is. The form appears once the stores load.
+        await _waitFor(tester, find.text('Select business'));
+        await _pumpFor(tester, const Duration(seconds: 1));
+        final pick = find.text('Choose a store');
+        if (pick.evaluate().isNotEmpty) {
+          await _submit(tester, pick);
+          await _pumpFor(tester, const Duration(milliseconds: 800));
+          final menu = find.byWidgetPredicate(
+              (w) => w.runtimeType.toString().startsWith('_DropdownMenu<'),
+              description: 'open dropdown menu');
+          await _tap(
+              tester,
+              find.descendant(
+                  of: menu, matching: find.byIcon(Icons.storefront_rounded)));
+          await _pumpFor(tester, const Duration(milliseconds: 800));
+          await _waitGone(tester, find.text('Choose a store'));
+        }
         await _enterNear(tester, 'Amount to receive', '1');
         FocusManager.instance.primaryFocus?.unfocus();
         await _submit(tester, find.text('Generate code'));

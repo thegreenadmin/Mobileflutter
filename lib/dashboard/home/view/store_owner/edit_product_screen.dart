@@ -31,12 +31,16 @@ class _EditProductScreenState extends State<EditProductScreen> with GlobalVarMix
 
   @override
   void initState() {
-      manageStoreController.storeId.value = widget.storeId ??"";
-      manageStoreController.productId.value =  widget.productId ??"";
-      manageStoreController.categoryName.value = widget.categoryName ??"";
-       manageStoreController.apiGetCategoriesList();
-       manageStoreController.apiGetQuantityList();
+    // The product list still observes this controller, so changing its Rx
+    // values while this route builds would rebuild that list mid-build.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      manageStoreController.storeId.value = widget.storeId ?? "";
+      manageStoreController.productId.value = widget.productId ?? "";
+      manageStoreController.categoryName.value = widget.categoryName ?? "";
+      manageStoreController.apiGetCategoriesList();
+      manageStoreController.apiGetQuantityList();
       manageStoreController.apiGetProductDetails();
+    });
     super.initState();
   }
 

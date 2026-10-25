@@ -217,7 +217,7 @@ class _EditOfferScreenState extends State<EditOfferScreen>with GlobalVarMixin {
                             autofocus: false,
                             maxLines: null,
                             errorMaxLines: 3,
-                            hintText: StringConstants.enterValueText,
+                            hintText: StringConstants.enterOfferNameText,
                             textCapitalization: TextCapitalization.words,
                             controller: addOffersController.offerNameTextController,
                             validator: (value) {
