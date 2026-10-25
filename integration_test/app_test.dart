@@ -900,6 +900,19 @@ void main() {
           matching: _asset(ImageConstants.liked));
       Future<Finder> openStore() async {
         await _openOwnStore(tester);
+        // The heart sends the id from the store details; tapped before they
+        // load, it sends no store and the server says it is unavailable.
+        await _until(
+            tester,
+            'store details',
+            () =>
+                Get.find<StoreHomeMainController>()
+                    .storeDetailsResponse
+                    .value
+                    .data
+                    ?.store
+                    ?.storeId ==
+                _ownStoreId);
         await _until(
             tester,
             'store heart',
@@ -2120,7 +2133,14 @@ Future<void> _openStoreChat(WidgetTester tester) async {
 Future<void> _sendChatMessage(WidgetTester tester, String message) async {
   await _enterField(tester, StringConstants.startTypingHereText, message);
   await _tap(tester, find.byIcon(Icons.send_outlined));
-  await _scrollUntilBuilt(tester, find.text(message));
+  // The message lands where the list already is once the server has it;
+  // scrolling straight away can carry the list past it.
+  final sent = find.text(message);
+  final end = DateTime.now().add(const Duration(seconds: 15));
+  while (sent.evaluate().isEmpty && DateTime.now().isBefore(end)) {
+    await tester.pump(const Duration(milliseconds: 300));
+  }
+  await _scrollUntilBuilt(tester, sent);
 }
 
 /// Customer: Orders > Complete > the order [orderId], opened.

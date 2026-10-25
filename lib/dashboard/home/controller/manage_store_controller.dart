@@ -149,7 +149,9 @@ class ManageStoreController extends GetxController with GlobalVarMixin{
     // }
 
      /// for edit product -0---
-    await apiGetCategoriesList();
+    // Screens set storeId after their first frame and load the categories
+    // themselves; without a store the request only fails.
+    if (storeId.value.isNotEmpty) await apiGetCategoriesList();
     await apiGetQuantityList();
     /* if (productId.value != "" && storeId.value != "") {
     //   storeId.value = Get.parameters["storeId"] ?? "";
