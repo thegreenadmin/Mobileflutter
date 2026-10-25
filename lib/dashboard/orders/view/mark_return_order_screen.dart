@@ -400,16 +400,18 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> with Glob
                                                       border: Border.all(
                                                           color: AppColors.white,
                                                           width: 1)),
+                                                  // A product can have no images.
                                                   child: CommonWidgets
                                                       .cachedNetworkImage(
                                                           ordersHomeMainController
-                                                              .getOrderItems[index]
-                                                              .product!
-                                                              .productImages!
-                                                              .first
-                                                              .image!
-                                                              .dynamicUrl
-                                                              .toString()),
+                                                                  .getOrderItems[
+                                                                      index]
+                                                                  .product
+                                                                  ?.productImages
+                                                                  ?.firstOrNull
+                                                                  ?.image
+                                                                  ?.dynamicUrl ??
+                                                              ""),
                                                 ),
                                               ),
                                               width10SizedBox,

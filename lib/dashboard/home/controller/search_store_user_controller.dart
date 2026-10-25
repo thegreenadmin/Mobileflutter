@@ -118,10 +118,14 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
 
   @override
   void onClose() {
-    // Always dispose controllers to prevent leaks
-    nearByStoresScrollController.dispose();
-    previousStoresScrollController.dispose();
-    favouriteStoresScrollController.dispose();
+    // The scroll controllers are not disposed here: several controllers
+    // Get.put this one, so GetX can close it with the route that created it
+    // while the store lists still hold these controllers, and they then fail
+    // with "A ScrollController was used after being disposed". Without
+    // listeners they hold nothing and are collected with this controller.
+    nearByStoresScrollController.removeListener(_nearbyScrollListener);
+    previousStoresScrollController.removeListener(_previousScrollListener);
+    favouriteStoresScrollController.removeListener(_favouriteScrollListener);
     super.onClose();
   }
 

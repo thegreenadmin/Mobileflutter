@@ -923,36 +923,52 @@ void main() {
         return liked.hitTestable().evaluate().isNotEmpty ? liked : outline;
       }
 
-      final first = await openStore();
-      var store = Get.find<StoreHomeMainController>();
-      if (first == liked) {
-        await _tap(tester, liked);
-        await _until(tester, 'unfavourited', () => !store.isLoading.value);
+      // Search > Favorite lists what the server has saved; its hearts
+      // remove a store from there.
+      Future<SearchStoreUserController> openFavourites() async {
+        await _backToHome(tester);
+        await _tap(tester, _storesPill);
+        await _waitFor(tester, find.text(StringConstants.searchForStoreText));
+        final search = Get.find<SearchStoreUserController>();
+        await _tap(tester, find.text(StringConstants.favoriteText));
+        await _pumpFor(tester, const Duration(seconds: 1));
+        await _until(tester, 'favourite stores', () => !search.isLoading.value);
+        return search;
       }
+
+      bool listed(SearchStoreUserController search) =>
+          search.favouriteStore.any((s) => s.storeId == _ownStoreId);
+
+      Future<void> removeFromFavourites() async {
+        final search = await openFavourites();
+        if (!listed(search)) return;
+        final name = find.text(_ownStoreName);
+        await _scrollUntilBuilt(tester, name);
+        await _tap(tester, _near(name, _asset(ImageConstants.liked)));
+        await _until(tester, 'favourite removed',
+            () => !search.isLoading.value && !listed(search));
+      }
+
+      // An earlier run may have left the store favourited.
+      await removeFromFavourites();
+      if (await openStore() == liked) {
+        throw TestFailure('store page shows a favourite the server '
+            'does not have');
+      }
+      final store = Get.find<StoreHomeMainController>();
       await _tap(tester, outline);
       await _waitFor(tester, liked.hitTestable());
       await _until(tester, 'favourite saved', () => !store.isLoading.value);
-      await _backToHome(tester);
-      await _tap(tester, _storesPill);
-      await _waitFor(tester, find.text(StringConstants.searchForStoreText));
-      final search = Get.find<SearchStoreUserController>();
-      await _tap(tester, find.text(StringConstants.favoriteText));
-      await _pumpFor(tester, const Duration(seconds: 1));
-      await _until(tester, 'favourite stores', () => !search.isLoading.value);
+      final search = await openFavourites();
+      if (!listed(search)) throw TestFailure('favourite not saved');
       await _scrollUntilBuilt(tester, find.text(_ownStoreName));
-      await _tap(tester, find.text(StringConstants.nearbyText));
+      // Reopened, the store page must show the favourite it has saved.
+      final shown = await openStore() == liked;
+      await removeFromFavourites();
       await _backToHome(tester);
-      if (await openStore() != liked) {
-        throw TestFailure('store favourite not saved');
+      if (!shown) {
+        throw TestFailure('store page does not show the saved favourite');
       }
-      store = Get.find<StoreHomeMainController>();
-      await _tap(tester, liked);
-      await _until(tester, 'favourite removed', () => !store.isLoading.value);
-      await _backToHome(tester);
-      if (await openStore() != outline) {
-        throw TestFailure('store favourite not removed');
-      }
-      await _backToHome(tester);
     });
 
     // store_options: the store page's Options menu: previous orders at this
