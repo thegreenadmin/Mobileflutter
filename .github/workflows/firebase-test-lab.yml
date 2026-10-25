@@ -2,6 +2,14 @@ name: Firebase Test Lab
 
 on:
   workflow_dispatch:
+    inputs:
+      platform:
+        description: 'Android runs the journey and Robo; iOS runs only a Robo crawl'
+        type: choice
+        options:
+          - android
+          - ios
+        default: android
   push:
     branches: ['ci/*']
     # Maestro-only changes run in maestro.yml; don't spend Test Lab quota.
@@ -28,6 +36,7 @@ env:
 
 jobs:
   integration-test:
+    if: github.event_name != 'workflow_dispatch' || inputs.platform == 'android'
     runs-on: ubuntu-latest
     timeout-minutes: 45
     environment: ANDROID_BETA_CONFIG
@@ -171,6 +180,7 @@ jobs:
           retention-days: 30
 
   robo-test:
+    if: github.event_name != 'workflow_dispatch' || inputs.platform == 'android'
     runs-on: ubuntu-latest
     timeout-minutes: 45
     environment: ANDROID_BETA_CONFIG
@@ -303,6 +313,113 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: firebase-test-lab-results
+          path: |
+            test-lab-results/
+            test-lab-output.txt
+          retention-days: 30
+
+  # iOS Robo crawl, on demand only (Actions > Firebase Test Lab > Run workflow,
+  # platform: ios). The app is built unsigned; Test Lab signs it to install on
+  # its devices.
+  ios-robo-test:
+    if: github.event_name == 'workflow_dispatch' && inputs.platform == 'ios'
+    runs-on: macos-26
+    timeout-minutes: 60
+    environment: ANDROID_BETA_CONFIG
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create environment file from GitHub Secrets
+        env:
+          BASE_URL_WO_API: ${{ vars.BASE_URL_WO_API_BETA }}
+          GOOGLE_MAP_KEY: ${{ secrets.GOOGLE_MAP_KEY_BETA }}
+          STRIPE_API_URL: ${{ vars.STRIPE_API_URL_BETA }}
+          STRIPE_CARD_BASIC_AUTH: ${{ secrets.STRIPE_CARD_BASIC_AUTH_BETA }}
+          STRIPE_BANK_BASIC_AUTH: ${{ secrets.STRIPE_BANK_BASIC_AUTH_BETA }}
+          STRIPE_PUBLISHABLE_KEY: ${{ secrets.STRIPE_PUBLISHABLE_KEY_BETA }}
+        run: |
+          cat > assets/env/api_key.env << EOF
+          BASE_URL_WO_API=${BASE_URL_WO_API}
+          VERSION=v1
+          GOOGLE_MAP_KEY=${GOOGLE_MAP_KEY}
+          STRIPE_API_URL=${STRIPE_API_URL}
+          STRIPE_CARD_BASIC_AUTH=${STRIPE_CARD_BASIC_AUTH}
+          STRIPE_BANK_BASIC_AUTH=${STRIPE_BANK_BASIC_AUTH}
+          STRIPE_PUBLISHABLE_KEY=${STRIPE_PUBLISHABLE_KEY}
+          EOF
+
+      - name: Select Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '26'
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+          cache: true
+
+      - name: Install Flutter dependencies
+        run: flutter pub get
+
+      # A debug build only starts with a debugger attached on a real iPhone.
+      - name: Build iOS app (unsigned, release)
+        run: flutter build ios --release --no-codesign
+
+      - name: Package IPA
+        run: |
+          mkdir -p ipa/Payload
+          cp -R build/ios/iphoneos/Runner.app ipa/Payload/
+          (cd ipa && zip -qry ../app.ipa Payload)
+          ls -lh app.ipa
+
+      - name: Authenticate with GCP
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.FIREBASE_TEST_LAB_SA_JSON }}
+
+      - name: Setup gcloud CLI
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          install_components: beta
+
+      - name: Run Firebase Test Lab iOS Robo test
+        env:
+          FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+        run: |
+          set -o pipefail
+          gcloud firebase test ios models list --project="${FIREBASE_PROJECT_ID}" || true
+          # iOS Robo may only be offered on the beta track of the CLI.
+          GCLOUD="gcloud"
+          if ! gcloud firebase test ios run --help 2>/dev/null | grep -q 'robo'; then
+            GCLOUD="gcloud beta"
+          fi
+          # No --device: Test Lab picks its default iPhone and iOS version.
+          $GCLOUD firebase test ios run \
+            --type=robo \
+            --app=app.ipa \
+            --timeout=300s \
+            --results-dir="ftl-ios-robo-${GITHUB_RUN_ID}" \
+            --project="${FIREBASE_PROJECT_ID}" \
+            2>&1 | tee test-lab-output.txt
+
+      - name: Extract results bucket
+        if: always()
+        run: |
+          BUCKET_PATH=$(grep -oE 'storage/browser/[^ ]+' test-lab-output.txt | head -1 | sed -e 's#storage/browser/##' -e 's#[]/]*$#/#' || true)
+          if [ -n "$BUCKET_PATH" ]; then
+            mkdir -p test-lab-results
+            gsutil -m cp -r "gs://${BUCKET_PATH}*" test-lab-results/ || true
+          fi
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: firebase-test-lab-ios-robo-results
           path: |
             test-lab-results/
             test-lab-output.txt
