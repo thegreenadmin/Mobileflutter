@@ -394,7 +394,14 @@ void main() {
         // shows while none is. The form appears once the stores load.
         await _waitFor(tester, find.text('Select business'));
         await _pumpFor(tester, const Duration(seconds: 1));
-        final pick = find.text('Choose a store');
+        // Its hint sits under an IgnorePointer, so open the dropdown itself.
+        final pick = find.byWidgetPredicate(
+            (w) =>
+                w is DropdownButton &&
+                w.value == null &&
+                w.hint is Text &&
+                (w.hint as Text).data == 'Choose a store',
+            description: 'unselected store dropdown');
         if (pick.evaluate().isNotEmpty) {
           await _submit(tester, pick);
           await _pumpFor(tester, const Duration(milliseconds: 800));
@@ -452,32 +459,35 @@ void main() {
     await step('owner offer create and delete', () async {
       await _tapUntil(tester, find.text(BottomNavStringConstants.offersText),
           find.text(StringConstants.addNewOfferText));
-      await _tap(tester, find.text(StringConstants.addNewOfferText));
-      await _waitFor(tester, find.text(StringConstants.enterOfferNameText));
-      await _tap(tester, find.text(StringConstants.uploadImageText));
-      await _tap(tester, find.text(StringConstants.galleryText));
-      final offers = Get.find<AddOffersController>();
-      await _until(tester, 'offer image upload',
-          () => offers.offerImageOriginalLinkFromServer.value.isNotEmpty);
-      await _enterField(tester, StringConstants.enterOfferNameText, offerName);
-      await _tap(
+      await _addStoreOffer(tester, offerName);
+      // A store takes one store-wide offer. If an earlier run's offer still
+      // holds it, remove that one and add again.
+      final conflict = find.textContaining('is already applied for the store');
+      await _until(
           tester,
-          find.byWidgetPredicate(
-              (w) => w is Radio && w.value == OfferType.store,
-              description: 'store offer radio'));
-      // A single-store owner gets the store preselected (no hint shown).
-      if (offers.storeIdValue.value.isEmpty) {
-        await _pickFirst(
-            tester, find.text(StringConstants.selectStoreText).last);
+          'offer saved',
+          () =>
+              find.text(offerName).evaluate().isNotEmpty ||
+              conflict.evaluate().isNotEmpty);
+      if (conflict.evaluate().isNotEmpty) {
+        final message = (conflict.evaluate().first.widget as Text).data ?? '';
+        final leftover = RegExp(r"as '(.*)' is already applied")
+                .firstMatch(message)
+                ?.group(1) ??
+            '';
+        // '6' is run 58's offer, renamed by the old Edit Offer name hint.
+        if (!leftover.startsWith('FTL offer') && leftover != '6') {
+          throw TestFailure('the store already has offer "$leftover"');
+        }
+        debugPrint('[journey]   removing leftover offer "$leftover"');
+        await _dismissAlert(tester);
+        await _backToHome(tester);
+        await _tapUntil(tester, find.text(BottomNavStringConstants.offersText),
+            find.text(StringConstants.addNewOfferText));
+        await _swipeDelete(tester, find.text(leftover));
+        await _waitGone(tester, find.text(leftover));
+        await _addStoreOffer(tester, offerName);
       }
-      final discountHint = find.descendant(
-          of: find.byType(DropdownButtonFormField<DiscountType>),
-          matching: find.text(StringConstants.selectTypeText));
-      if (discountHint.evaluate().isNotEmpty) {
-        await _pickFirst(tester, discountHint);
-      }
-      await _enterField(tester, StringConstants.enterValueText, '5');
-      await _submit(tester, find.text(StringConstants.addOfferText).last);
       await _waitFor(tester, find.text(offerName));
 
       // offer_edit: change the discount value through the card's edit icon.
@@ -900,8 +910,9 @@ void main() {
         return liked.hitTestable().evaluate().isNotEmpty ? liked : outline;
       }
 
-      final store = Get.find<StoreHomeMainController>();
-      if (await openStore() == liked) {
+      final first = await openStore();
+      var store = Get.find<StoreHomeMainController>();
+      if (first == liked) {
         await _tap(tester, liked);
         await _until(tester, 'unfavourited', () => !store.isLoading.value);
       }
@@ -921,6 +932,7 @@ void main() {
       if (await openStore() != liked) {
         throw TestFailure('store favourite not saved');
       }
+      store = Get.find<StoreHomeMainController>();
       await _tap(tester, liked);
       await _until(tester, 'favourite removed', () => !store.isLoading.value);
       await _backToHome(tester);
@@ -1006,7 +1018,10 @@ void main() {
               of: find.byType(IntlPhoneField),
               matching: find.byType(EditableText)),
           _secondPhone);
-      await _enterNear(tester, 'Amount', '1');
+      // The Amount label shares a column with the phone field; the amount
+      // is the last text field on the screen.
+      await tester.enterText(find.byType(TextField).last, '1');
+      await tester.pump(const Duration(milliseconds: 300));
       FocusManager.instance.primaryFocus?.unfocus();
       await _submit(tester, find.text('Generate barcode'));
       await _waitFor(tester, find.byType(QrImageView));
@@ -1353,7 +1368,15 @@ void main() {
           tester, StringConstants.yourThoughtText, 'FTL review $stamp');
       FocusManager.instance.primaryFocus?.unfocus();
       await _submit(tester, find.text(StringConstants.submitText));
-      await _waitGone(tester, stars, timeout: const Duration(seconds: 45));
+      // The order shows the rating afterwards, so wait for the sheet's
+      // text field to go rather than the stars.
+      await _waitGone(
+          tester,
+          find.byWidgetPredicate((w) =>
+              w is TextField &&
+              (w.decoration?.hintText == StringConstants.yourThoughtText ||
+                  w.decoration?.labelText == StringConstants.yourThoughtText)),
+          timeout: const Duration(seconds: 45));
       await _until(
           tester,
           'review saved',
@@ -1845,6 +1868,35 @@ Future<void> _scrollUntilBuilt(WidgetTester tester, Finder finder,
 }
 
 /// Taps away an alert's Okay button, logging what it said.
+/// From the Offers tab, fills Add New Offer as a store-wide offer named
+/// [name] (5% off) and submits it.
+Future<void> _addStoreOffer(WidgetTester tester, String name) async {
+  await _tap(tester, find.text(StringConstants.addNewOfferText));
+  await _waitFor(tester, find.text(StringConstants.enterOfferNameText));
+  await _tap(tester, find.text(StringConstants.uploadImageText));
+  await _tap(tester, find.text(StringConstants.galleryText));
+  final offers = Get.find<AddOffersController>();
+  await _until(tester, 'offer image upload',
+      () => offers.offerImageOriginalLinkFromServer.value.isNotEmpty);
+  await _enterField(tester, StringConstants.enterOfferNameText, name);
+  await _tap(
+      tester,
+      find.byWidgetPredicate((w) => w is Radio && w.value == OfferType.store,
+          description: 'store offer radio'));
+  // A single-store owner gets the store preselected (no hint shown).
+  if (offers.storeIdValue.value.isEmpty) {
+    await _pickFirst(tester, find.text(StringConstants.selectStoreText).last);
+  }
+  final discountHint = find.descendant(
+      of: find.byType(DropdownButtonFormField<DiscountType>),
+      matching: find.text(StringConstants.selectTypeText));
+  if (discountHint.evaluate().isNotEmpty) {
+    await _pickFirst(tester, discountHint);
+  }
+  await _enterField(tester, StringConstants.enterValueText, '5');
+  await _submit(tester, find.text(StringConstants.addOfferText).last);
+}
+
 Future<void> _dismissAlert(WidgetTester tester) async {
   final okay = find.text(StringConstants.okayText).hitTestable();
   if (okay.evaluate().isEmpty) return;
