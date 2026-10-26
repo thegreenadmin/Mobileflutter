@@ -406,13 +406,16 @@ jobs:
             --project="${FIREBASE_PROJECT_ID}" \
             2>&1 | tee test-lab-output.txt
 
+      # gsutil -m hangs on the macOS runners, so copy with gcloud storage, and
+      # take only the bucket name from the output: the folder is this run's.
       - name: Extract results bucket
         if: always()
+        timeout-minutes: 5
         run: |
-          BUCKET_PATH=$(grep -oE 'storage/browser/[^ ]+' test-lab-output.txt | head -1 | sed -e 's#storage/browser/##' -e 's#[]/]*$#/#' || true)
-          if [ -n "$BUCKET_PATH" ]; then
+          BUCKET=$(grep -oE 'storage/browser/test-lab-[a-z0-9-]+' test-lab-output.txt | head -1 | sed 's#storage/browser/##' || true)
+          if [ -n "$BUCKET" ]; then
             mkdir -p test-lab-results
-            gsutil -m cp -r "gs://${BUCKET_PATH}*" test-lab-results/ || true
+            gcloud storage cp -r "gs://${BUCKET}/ftl-ios-robo-${GITHUB_RUN_ID}/*" test-lab-results/ || true
           fi
 
       - name: Upload test results
