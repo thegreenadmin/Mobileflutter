@@ -15,6 +15,8 @@ group = project.main_group.new_group('RunnerTests', 'RunnerTests')
 tests.add_file_references([group.new_reference('RunnerTests.m')])
 tests.build_configurations.each do |config|
   settings = config.build_settings
+  # Without it the bundle builds as Runner.app/PlugIns/.xctest.
+  settings['PRODUCT_NAME'] = '$(TARGET_NAME)'
   settings['TEST_HOST'] = '$(BUILT_PRODUCTS_DIR)/Runner.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Runner'
   settings['BUNDLE_LOADER'] = '$(TEST_HOST)'
   settings['PRODUCT_BUNDLE_IDENTIFIER'] = 'com.thegreenmall.RunnerTests'
