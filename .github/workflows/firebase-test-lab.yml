@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       platform:
-        description: 'Android runs the journey and Robo; iOS runs only a Robo crawl'
+        description: 'Run the journey and Robo crawl on Android or on iPhone'
         type: choice
         options:
           - android
@@ -418,11 +418,154 @@ jobs:
             gcloud storage cp -r "gs://${BUCKET}/ftl-ios-robo-${GITHUB_RUN_ID}/*" test-lab-results/ || true
           fi
 
+      - name: Show Robo summary and app errors
+        if: always()
+        run: |
+          ACTIONS=$(find test-lab-results -name actions.json -exec jq '.events | length' {} + 2>/dev/null | head -1)
+          echo "Robo performed ${ACTIONS:-0} actions"
+          # The app's own lines (Flutter prints as "flutter:"), errors and crashes.
+          find test-lab-results -name 'syslog*' -exec grep -hE 'Runner\[|flutter:' {} + \
+            | grep -iE 'error|exception|fatal|crash|terminat' | tail -80 || true
+
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: firebase-test-lab-ios-robo-results
+          path: |
+            test-lab-results/
+            test-lab-output.txt
+          retention-days: 30
+
+  # iOS integration journey, on demand only (Run workflow, platform: ios).
+  # Flutter's integration_test runs on iOS as an XCTest bundle, so CI adds a
+  # RunnerTests target to the Xcode project, builds the journey unsigned for
+  # iPhone, and Test Lab signs and runs it.
+  ios-integration-test:
+    if: github.event_name == 'workflow_dispatch' && inputs.platform == 'ios'
+    runs-on: macos-26
+    timeout-minutes: 90
+    environment: ANDROID_BETA_CONFIG
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create environment file from GitHub Secrets
+        env:
+          BASE_URL_WO_API: ${{ vars.BASE_URL_WO_API_BETA }}
+          GOOGLE_MAP_KEY: ${{ secrets.GOOGLE_MAP_KEY_BETA }}
+          STRIPE_API_URL: ${{ vars.STRIPE_API_URL_BETA }}
+          STRIPE_CARD_BASIC_AUTH: ${{ secrets.STRIPE_CARD_BASIC_AUTH_BETA }}
+          STRIPE_BANK_BASIC_AUTH: ${{ secrets.STRIPE_BANK_BASIC_AUTH_BETA }}
+          STRIPE_PUBLISHABLE_KEY: ${{ secrets.STRIPE_PUBLISHABLE_KEY_BETA }}
+        run: |
+          cat > assets/env/api_key.env << EOF
+          BASE_URL_WO_API=${BASE_URL_WO_API}
+          VERSION=v1
+          GOOGLE_MAP_KEY=${GOOGLE_MAP_KEY}
+          STRIPE_API_URL=${STRIPE_API_URL}
+          STRIPE_CARD_BASIC_AUTH=${STRIPE_CARD_BASIC_AUTH}
+          STRIPE_BANK_BASIC_AUTH=${STRIPE_BANK_BASIC_AUTH}
+          STRIPE_PUBLISHABLE_KEY=${STRIPE_PUBLISHABLE_KEY}
+          EOF
+
+      - name: Select Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '26'
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+          cache: true
+
+      - name: Install Flutter dependencies
+        run: flutter pub get
+
+      - name: Add the RunnerTests target
+        run: |
+          ruby -e "require 'xcodeproj'" 2>/dev/null || gem install xcodeproj --no-document
+          ruby .github/ios/add_runner_tests.rb
+
+      - name: Build the journey for iPhone (unsigned)
+        run: |
+          # Points the app at the journey as its entry point and runs pod install.
+          flutter build ios integration_test/app_test.dart --release --no-codesign
+          cd ios
+          xcodebuild build-for-testing \
+            -workspace Runner.xcworkspace \
+            -scheme Runner \
+            -xcconfig Flutter/Release.xcconfig \
+            -configuration Release \
+            -sdk iphoneos \
+            -derivedDataPath ../build/ios_integ \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" \
+            > ../xcodebuild.log 2>&1 || { tail -150 ../xcodebuild.log; exit 1; }
+          tail -15 ../xcodebuild.log
+
+      - name: Package the tests
+        run: |
+          cd build/ios_integ/Build/Products
+          ls
+          zip -qr "$GITHUB_WORKSPACE/ios_tests.zip" Release-iphoneos *.xctestrun
+          ls -lh "$GITHUB_WORKSPACE/ios_tests.zip"
+
+      - name: Authenticate with GCP
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.FIREBASE_TEST_LAB_SA_JSON }}
+
+      - name: Setup gcloud CLI
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Run integration tests on Firebase Test Lab (iPhone)
+        env:
+          FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+        run: |
+          set -o pipefail
+          # No --device: Test Lab picks its default iPhone and iOS version.
+          gcloud firebase test ios run \
+            --test=ios_tests.zip \
+            --timeout=40m \
+            --results-dir="ftl-ios-integration-${GITHUB_RUN_ID}" \
+            --project="${FIREBASE_PROJECT_ID}" \
+            2>&1 | tee test-lab-output.txt
+
+      # gsutil -m hangs on the macOS runners; copy with gcloud storage.
+      - name: Extract results bucket
+        if: always()
+        timeout-minutes: 5
+        run: |
+          BUCKET=$(grep -oE 'storage/browser/test-lab-[a-z0-9-]+' test-lab-output.txt | head -1 | sed 's#storage/browser/##' || true)
+          if [ -n "$BUCKET" ]; then
+            mkdir -p test-lab-results
+            gcloud storage cp -r "gs://${BUCKET}/ftl-ios-integration-${GITHUB_RUN_ID}/*" test-lab-results/ || true
+          fi
+
+      - name: Show journey log from device
+        if: always()
+        run: |
+          find test-lab-results -name 'syslog*' -exec grep -hE '\[journey\]|EXCEPTION CAUGHT|Test failed' {} + || true
+
+      - name: Fail unless the journey passed
+        run: |
+          if grep -qE '│ (Failed|Inconclusive|Skipped) ' test-lab-output.txt; then
+            echo "::error::Firebase Test Lab did not pass"
+            exit 1
+          fi
+          if ! grep -rqs --include='syslog*' '\[journey\] ALL STEPS PASSED' test-lab-results; then
+            echo "::error::Integration journey did not complete (see 'Show journey log from device')"
+            exit 1
+          fi
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: firebase-test-lab-ios-integration-results
           path: |
             test-lab-results/
             test-lab-output.txt

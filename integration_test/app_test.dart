@@ -29,6 +29,7 @@ import 'dart:io';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -176,6 +177,7 @@ void main() {
     // launch_app
     await step('launch screen', () async {
       ImagePickerPlatform.instance = _FakeImagePicker();
+      _answerIosPermissionPrompts();
       app.main();
       await _waitFor(tester, find.text(StringConstants.continueAsGuestText),
           timeout: const Duration(seconds: 60));
@@ -2485,6 +2487,68 @@ void _dumpScreen() {
     }
   }
   debugPrint('[journey]   screen: ${seen.take(40).join(' | ')}');
+}
+
+/// On iOS, Test Lab's iPhones show system prompts for notifications and
+/// location that nobody answers, and main() waits for the notification answer
+/// before it shows anything. Answer them in Dart instead, and give location
+/// lookups a fixed position near the test store in Franklin, TN, the way Test
+/// Lab's Android devices start with permissions granted. Every other call on
+/// these channels goes to the real plugin.
+void _answerIosPermissionPrompts() {
+  if (!Platform.isIOS) return;
+  final messenger =
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
+  const codec = StandardMethodCodec();
+  void answer(String channel, Map<String, Object? Function(MethodCall)> calls) {
+    messenger.setMockMessageHandler(channel, (message) async {
+      final call = codec.decodeMethodCall(message);
+      final reply = calls[call.method];
+      if (reply == null) return messenger.delegate.send(channel, message);
+      return codec.encodeSuccessEnvelope(reply(call));
+    });
+  }
+
+  answer('plugins.flutter.io/firebase_messaging', {
+    // AuthorizationStatus.authorized
+    'Messaging#requestPermission': (_) => <String, int>{
+          'authorizationStatus': 1,
+          'alert': 1,
+          'badge': 1,
+          'sound': 1
+        },
+  });
+  answer('flutter.baseflow.com/permissions/methods', {
+    // PermissionStatus.granted, ServiceStatus.enabled
+    'checkPermissionStatus': (_) => 1,
+    'checkServiceStatus': (_) => 1,
+    'requestPermissions': (call) => <int, int>{
+          for (final permission in (call.arguments as List).cast<int>())
+            permission: 1,
+        },
+  });
+  Map<String, Object> position(MethodCall _) => <String, Object>{
+        'latitude': 35.9399,
+        'longitude': -86.8239,
+        'timestamp': DateTime.now().millisecondsSinceEpoch,
+        'accuracy': 5.0,
+        'altitude': 200.0,
+        'altitude_accuracy': 5.0,
+        'heading': 0.0,
+        'heading_accuracy': 0.0,
+        'speed': 0.0,
+        'speed_accuracy': 0.0,
+        'is_mocked': true,
+      };
+  answer('flutter.baseflow.com/geolocator_apple', {
+    // LocationPermission.whileInUse, LocationAccuracyStatus.precise
+    'checkPermission': (_) => 2,
+    'requestPermission': (_) => 2,
+    'isLocationServiceEnabled': (_) => true,
+    'getLocationAccuracy': (_) => 1,
+    'getCurrentPosition': position,
+    'getLastKnownPosition': position,
+  });
 }
 
 /// Hands image_picker a generated PNG instead of opening the gallery.
