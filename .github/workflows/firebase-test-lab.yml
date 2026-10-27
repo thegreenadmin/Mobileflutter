@@ -4,11 +4,12 @@ on:
   workflow_dispatch:
     inputs:
       platform:
-        description: 'Run the journey and Robo crawl on Android or on iPhone'
+        description: 'android or ios: journey and Robo crawl; ios-journey: only the iPhone journey'
         type: choice
         options:
           - android
           - ios
+          - ios-journey
         default: android
   push:
     branches: ['ci/*']
@@ -442,7 +443,7 @@ jobs:
   # RunnerTests target to the Xcode project, builds the journey unsigned for
   # iPhone, and Test Lab signs and runs it.
   ios-integration-test:
-    if: github.event_name == 'workflow_dispatch' && inputs.platform == 'ios'
+    if: github.event_name == 'workflow_dispatch' && (inputs.platform == 'ios' || inputs.platform == 'ios-journey')
     runs-on: macos-26
     timeout-minutes: 90
     environment: ANDROID_BETA_CONFIG
@@ -535,6 +536,26 @@ jobs:
             --results-dir="ftl-ios-integration-${GITHUB_RUN_ID}" \
             --project="${FIREBASE_PROJECT_ID}" \
             2>&1 | tee test-lab-output.txt
+
+      # gcloud only says "Test failed to run"; the APIs say why (for example
+      # failedToInstall, crashed, timedOut) and list the step's own outputs.
+      - name: Explain the device outcome
+        if: always()
+        env:
+          FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+        run: |
+          MATRIX=$(grep -oE 'matrix-[a-z0-9]+' test-lab-output.txt 2>/dev/null | head -1 || true)
+          [ -n "$MATRIX" ] || exit 0
+          TOKEN=$(gcloud auth print-access-token)
+          curl -sS -H "Authorization: Bearer $TOKEN" \
+            "https://testing.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/testMatrices/${MATRIX}" > matrix.json
+          jq '{state, outcomeSummary, invalidMatrixDetails, executions: [.testExecutions[] | {state, testDetails, toolResultsStep}]}' matrix.json
+          jq -r '.testExecutions[].toolResultsStep | "\(.historyId) \(.executionId) \(.stepId)"' matrix.json |
+          while read -r HISTORY EXECUTION STEP; do
+            curl -sS -H "Authorization: Bearer $TOKEN" \
+              "https://toolresults.googleapis.com/toolresults/v1beta3/projects/${FIREBASE_PROJECT_ID}/histories/${HISTORY}/executions/${EXECUTION}/steps/${STEP}" |
+              jq '{outcome, runDuration, toolOutputs: .testExecutionStep.toolExecution.toolOutputs}'
+          done
 
       # gsutil -m hangs on the macOS runners; copy with gcloud storage.
       - name: Extract results bucket
