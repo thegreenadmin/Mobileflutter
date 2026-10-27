@@ -495,10 +495,12 @@ jobs:
           # Points the app at the journey as its entry point and runs pod install.
           flutter build ios integration_test/app_test.dart --release --no-codesign
           cd ios
+          # No -xcconfig: it would apply the app's pod link flags to the test
+          # bundle too. Runner's Release config already includes
+          # Flutter/Release.xcconfig.
           xcodebuild build-for-testing \
             -workspace Runner.xcworkspace \
             -scheme Runner \
-            -xcconfig Flutter/Release.xcconfig \
             -configuration Release \
             -sdk iphoneos \
             -derivedDataPath ../build/ios_integ \
