@@ -469,6 +469,12 @@ jobs:
           echo "::group::System prompts and alerts in the device log"
           find test-lab-results -name 'syslog*' -exec grep -hiE 'SpringBoard.*(alert|prompt)|UserNotifications.*(authoriz|request)|CoreLocation.*(authoriz|prompt)|locationd.*(Runner|thegreenmall)|TCC.*(Runner|thegreenmall)' {} + | tail -60 || true
           echo "::endgroup::"
+          # Why a Robo action failed: the XCTest runner logs the reason, e.g. an
+          # element that has no keyboard focus.
+          echo "::group::XCTest runner errors"
+          find test-lab-results -name 'syslog*' -exec grep -hE 'Xctest-Runner|XCTest|testmanagerd' {} + \
+            | grep -iE 'fail|error|focus|keyboard|hittable|typ(e|ing)' | tail -60 || true
+          echo "::endgroup::"
           # The app's own lines (Flutter prints as "flutter:"), errors and crashes.
           find test-lab-results -name 'syslog*' -exec grep -hE 'Runner\[|flutter:' {} + \
             | grep -iE 'error|exception|fatal|crash|terminat' | tail -80 || true
