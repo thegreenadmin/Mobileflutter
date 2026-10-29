@@ -1,7 +1,7 @@
 [
   {
     "id": 1000,
-    "description": "iOS: wait out the Flutter splash, then log in with the demo account (0000000000 / OTP 0000). Same steps as login_start.json; on iOS Flutter text fields are TextInputSemanticsObject elements. If typing the code fails, it is tapped in on the number pad instead (the field takes 4 digits, so extra taps are dropped).",
+    "description": "iOS: wait out the Flutter splash, then log in with the demo account (0000000000 / OTP 0000). Same steps as login_start.json; on iOS Flutter text fields are TextInputSemanticsObject elements, and each login screen has just one.",
     "crawlStage": "crawl",
     "contextDescriptor": {
       "condition": "app_launched"
@@ -10,118 +10,40 @@
       {
         "eventType": "WAIT_FOR_ELEMENT",
         "delayTime": 60000,
-        "elementDescriptors": [
-          {
-            "contentDescription": "Login your account"
-          }
-        ]
+        "elementDescriptors": [{ "contentDescription": "Login your account" }]
       },
       {
         "eventType": "VIEW_CLICKED",
-        "elementDescriptors": [
-          {
-            "contentDescription": "Login your account"
-          }
-        ]
+        "elementDescriptors": [{ "contentDescription": "Login your account" }]
       },
       {
         "eventType": "WAIT_FOR_ELEMENT",
         "delayTime": 15000,
-        "elementDescriptors": [
-          {
-            "contentDescription": "Send Confirmation Code"
-          }
-        ]
+        "elementDescriptors": [{ "contentDescription": "Send Confirmation Code" }]
       },
       {
         "eventType": "VIEW_TEXT_CHANGED",
         "replacementText": "0000000000",
-        "elementDescriptors": [
-          {
-            "className": "TextInputSemanticsObject"
-          }
-        ]
+        "elementDescriptors": [{ "className": "TextInputSemanticsObject" }]
       },
       {
         "eventType": "VIEW_CLICKED",
-        "elementDescriptors": [
-          {
-            "contentDescription": "Send Confirmation Code"
-          }
-        ]
+        "elementDescriptors": [{ "contentDescription": "Send Confirmation Code" }]
       },
       {
         "eventType": "WAIT_FOR_ELEMENT",
         "delayTime": 30000,
-        "elementDescriptors": [
-          {
-            "contentDescription": "OTP code"
-          }
-        ]
-      },
-      {
-        "eventType": "VIEW_CLICKED",
-        "optional": true,
-        "elementDescriptors": [
-          {
-            "contentDescription": "OTP code"
-          }
-        ]
+        "elementDescriptors": [{ "contentDescription": "Verification code" }]
       },
       {
         "eventType": "VIEW_TEXT_CHANGED",
         "replacementText": "0000",
-        "optional": true,
-        "elementDescriptors": [
-          {
-            "contentDescription": "OTP code"
-          }
-        ]
-      },
-      {
-        "eventType": "VIEW_CLICKED",
-        "optional": true,
-        "elementDescriptors": [
-          {
-            "contentDescription": "0"
-          }
-        ]
-      },
-      {
-        "eventType": "VIEW_CLICKED",
-        "optional": true,
-        "elementDescriptors": [
-          {
-            "contentDescription": "0"
-          }
-        ]
-      },
-      {
-        "eventType": "VIEW_CLICKED",
-        "optional": true,
-        "elementDescriptors": [
-          {
-            "contentDescription": "0"
-          }
-        ]
-      },
-      {
-        "eventType": "VIEW_CLICKED",
-        "optional": true,
-        "elementDescriptors": [
-          {
-            "contentDescription": "0"
-          }
-        ]
+        "elementDescriptors": [{ "className": "TextInputSemanticsObject" }]
       },
       {
         "eventType": "WAIT_FOR_ELEMENT",
         "delayTime": 30000,
-        "elementDescriptors": [
-          {
-            "contentDescription": "Payments"
-          }
-        ]
+        "elementDescriptors": [{ "contentDescription": "Payments" }]
       }
     ]
   }
