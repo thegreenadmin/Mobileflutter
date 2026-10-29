@@ -166,8 +166,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                                             ],
                                             autocorrect: false,
                                             enableSuggestions: false,
-                                            enableInteractiveSelection: false,
-                                            showCursor: false,
+                                            cursorColor: Colors.transparent,
                                             style: const TextStyle(color: Colors.transparent),
                                             decoration: const InputDecoration(
                                               hintText: 'OTP code',

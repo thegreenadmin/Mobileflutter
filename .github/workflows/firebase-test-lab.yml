@@ -477,6 +477,11 @@ jobs:
           find test-lab-results -name 'filtered.ndjson' -exec grep -hiE 'fail|error|focus|keyboard|hittable|OTP' {} + \
             | cut -c1-400 | head -40 || true
           echo "::endgroup::"
+          # The XCTest runner that drives the device logs each tap and typing attempt.
+          echo "::group::XCTest runner log"
+          find test-lab-results -name 'syslog*' -exec grep -hE 'XCTRunner\[' {} + \
+            | grep -vE 'RunningBoard|locationd|CoreAnalytics' | cut -c1-300 | tail -150 || true
+          echo "::endgroup::"
           # The app's own lines (Flutter prints as "flutter:"), errors and crashes.
           find test-lab-results -name 'syslog*' -exec grep -hE 'Runner\[|flutter:' {} + \
             | grep -iE 'error|exception|fatal|crash|terminat' | tail -80 || true
