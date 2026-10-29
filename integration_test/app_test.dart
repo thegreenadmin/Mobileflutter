@@ -75,6 +75,10 @@ import 'package:webview_flutter/webview_flutter.dart';
 const _testPhone = '0000000000';
 const _testOtp = '0000';
 
+/// The iOS Simulator has no camera, so the barcode scanner can't open there.
+final _onIosSimulator = Platform.isIOS &&
+    Platform.environment.containsKey('SIMULATOR_DEVICE_NAME');
+
 /// Second staging test account, the P2P counterparty. It must be flagged as
 /// a test account on beta so it accepts [_testOtp].
 const _secondPhone = '3246661111';
@@ -428,14 +432,19 @@ void main() {
 
     // payment_scanner. Last, because mobile_scanner kills the app on a
     // device without a usable camera.
-    await step('payments scanner', () async {
-      await _openPayments(tester);
-      await _tap(tester, find.text('Pay to a Business'));
-      await _waitFor(tester, find.text('Scan Barcode'));
-      await _tap(tester, find.text('Enter Phone'));
-      await _waitFor(tester, find.text('Continue'));
-      await _backToHome(tester);
-    });
+    if (_onIosSimulator) {
+      debugPrint('[journey]   payments scanner skipped: no camera on the iOS '
+          'Simulator');
+    } else {
+      await step('payments scanner', () async {
+        await _openPayments(tester);
+        await _tap(tester, find.text('Pay to a Business'));
+        await _waitFor(tester, find.text('Scan Barcode'));
+        await _tap(tester, find.text('Enter Phone'));
+        await _waitFor(tester, find.text('Continue'));
+        await _backToHome(tester);
+      });
+    }
 
     // Names are unique per run so a leftover from an aborted run never
     // matches, and cleanup can find what this run made.
