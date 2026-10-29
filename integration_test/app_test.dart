@@ -2524,6 +2524,11 @@ void _answerIosPermissionPrompts() {
     });
   }
 
+  // An unsigned build (and the simulator) gets no APNs token, so FCM has none
+  // either and the backend rejects the login's empty device_token. Hand out
+  // one per run: logging in drops other sessions with the same token, and
+  // the backend keeps the session when a push to it fails.
+  final deviceToken = 'ios-journey-${DateTime.now().millisecondsSinceEpoch}';
   answer('plugins.flutter.io/firebase_messaging', {
     // AuthorizationStatus.authorized
     'Messaging#requestPermission': (_) => <String, int>{
@@ -2532,6 +2537,8 @@ void _answerIosPermissionPrompts() {
           'badge': 1,
           'sound': 1
         },
+    'Messaging#getAPNSToken': (_) => <String, String>{'token': deviceToken},
+    'Messaging#getToken': (_) => <String, String>{'token': deviceToken},
   });
   answer('dexterous.com/flutter/local_notifications', {
     // Granted, as if the notification prompt was accepted.
