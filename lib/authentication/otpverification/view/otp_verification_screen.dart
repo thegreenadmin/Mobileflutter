@@ -175,9 +175,6 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                                               counterText: '',
                                               contentPadding: EdgeInsets.zero,
                                             ),
-                                            onChanged: (value) {
-                                              if (value.length == 4) otpFocusNode.unfocus();
-                                            },
                                           ),
                                         ),
                                       ],
