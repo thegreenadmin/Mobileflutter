@@ -172,7 +172,12 @@ void main() {
       } catch (e) {
         debugPrint('[journey] FAILED at "$name": $e');
         _dumpScreen();
-        if (critical) rethrow;
+        if (critical) {
+          // main() may have swapped in its Crashlytics handler; without the
+          // binding's own, the failure trips a binding assertion instead.
+          FlutterError.onError = originalOnError;
+          rethrow;
+        }
         failed.add(name);
         await _backToHome(tester);
       }
@@ -2498,9 +2503,10 @@ void _dumpScreen() {
   debugPrint('[journey]   screen: ${seen.take(40).join(' | ')}');
 }
 
-/// On iOS, Test Lab's iPhones show system prompts for notifications and
-/// location that nobody answers, and main() waits for the notification answer
-/// before it shows anything. Answer them in Dart instead, and give location
+/// On iOS, Test Lab's iPhones and the simulator show system prompts for
+/// notifications and location that nobody answers, and main() waits for the
+/// notification answer (firebase_messaging and flutter_local_notifications
+/// both ask) before it shows anything. Answer them in Dart instead, and give location
 /// lookups a fixed position near the test store in Franklin, TN, the way Test
 /// Lab's Android devices start with permissions granted. Every other call on
 /// these channels goes to the real plugin.
@@ -2526,6 +2532,11 @@ void _answerIosPermissionPrompts() {
           'badge': 1,
           'sound': 1
         },
+  });
+  answer('dexterous.com/flutter/local_notifications', {
+    // Granted, as if the notification prompt was accepted.
+    'initialize': (_) => true,
+    'requestPermissions': (_) => true,
   });
   answer('flutter.baseflow.com/permissions/methods', {
     // PermissionStatus.granted, ServiceStatus.enabled
