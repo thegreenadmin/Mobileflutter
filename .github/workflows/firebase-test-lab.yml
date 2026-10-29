@@ -4,11 +4,12 @@ on:
   workflow_dispatch:
     inputs:
       platform:
-        description: 'android or ios: journey and Robo crawl; ios-journey: only the iPhone journey'
+        description: 'android or ios: journey and Robo crawl; ios-robo or ios-journey: only that iPhone job'
         type: choice
         options:
           - android
           - ios
+          - ios-robo
           - ios-journey
         default: android
   push:
@@ -323,7 +324,7 @@ jobs:
   # platform: ios). The app is built unsigned; Test Lab signs it to install on
   # its devices.
   ios-robo-test:
-    if: github.event_name == 'workflow_dispatch' && inputs.platform == 'ios'
+    if: github.event_name == 'workflow_dispatch' && (inputs.platform == 'ios' || inputs.platform == 'ios-robo')
     runs-on: macos-26
     timeout-minutes: 60
     environment: ANDROID_BETA_CONFIG
@@ -402,7 +403,7 @@ jobs:
           $GCLOUD firebase test ios run \
             --type=robo \
             --app=app.ipa \
-            --timeout=300s \
+            --timeout=900s \
             --results-dir="ftl-ios-robo-${GITHUB_RUN_ID}" \
             --project="${FIREBASE_PROJECT_ID}" \
             2>&1 | tee test-lab-output.txt
@@ -424,6 +425,22 @@ jobs:
         run: |
           ACTIONS=$(find test-lab-results -name actions.json -exec jq '.events | length' {} + 2>/dev/null | head -1)
           echo "Robo performed ${ACTIONS:-0} actions"
+          # What Robo did, step by step, and the script it recorded: shows the
+          # screen a crawl gets stuck on.
+          for f in $(find test-lab-results -name actions.json); do
+            echo "::group::actions.json (first events in full, then one line each)"
+            jq '.events[:3]' "$f"
+            jq -c '.events[] | del(.screenshot?, .screenshotPath?)' "$f" | cut -c1-400
+            echo "::endgroup::"
+          done
+          for f in $(find test-lab-results -name crawlscript.json); do
+            echo "::group::crawlscript.json"
+            jq -c '.[]?, .actions[]?' "$f" 2>/dev/null | cut -c1-400 || head -c 8000 "$f"
+            echo "::endgroup::"
+          done
+          echo "::group::System prompts and alerts in the device log"
+          find test-lab-results -name 'syslog*' -exec grep -hiE 'SpringBoard.*(alert|prompt)|UserNotifications.*(authoriz|request)|CoreLocation.*(authoriz|prompt)|locationd.*(Runner|thegreenmall)|TCC.*(Runner|thegreenmall)' {} + | tail -60 || true
+          echo "::endgroup::"
           # The app's own lines (Flutter prints as "flutter:"), errors and crashes.
           find test-lab-results -name 'syslog*' -exec grep -hE 'Runner\[|flutter:' {} + \
             | grep -iE 'error|exception|fatal|crash|terminat' | tail -80 || true
