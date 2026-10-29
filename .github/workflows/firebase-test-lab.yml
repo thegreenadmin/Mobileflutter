@@ -469,11 +469,13 @@ jobs:
           echo "::group::System prompts and alerts in the device log"
           find test-lab-results -name 'syslog*' -exec grep -hiE 'SpringBoard.*(alert|prompt)|UserNotifications.*(authoriz|request)|CoreLocation.*(authoriz|prompt)|locationd.*(Runner|thegreenmall)|TCC.*(Runner|thegreenmall)' {} + | tail -60 || true
           echo "::endgroup::"
-          # Why a Robo action failed: the XCTest runner logs the reason, e.g. an
-          # element that has no keyboard focus.
-          echo "::group::XCTest runner errors"
-          find test-lab-results -name 'syslog*' -exec grep -hE 'Xctest-Runner|XCTest|testmanagerd' {} + \
-            | grep -iE 'fail|error|focus|keyboard|hittable|typ(e|ing)' | tail -60 || true
+          # Why a Robo action failed: Robo keeps the reason in its results file
+          # (a protobuf, so read its strings), not in the device log.
+          echo "::group::Robo failure reasons"
+          find test-lab-results -name 'robo_results.pb' -exec strings -n 8 {} + \
+            | grep -iE 'fail|error|focus|keyboard|hittable|typ(e|ing)|OTP|exception' | sort | uniq -c | head -60 || true
+          find test-lab-results -name 'filtered.ndjson' -exec grep -hiE 'fail|error|focus|keyboard|hittable|OTP' {} + \
+            | cut -c1-400 | head -40 || true
           echo "::endgroup::"
           # The app's own lines (Flutter prints as "flutter:"), errors and crashes.
           find test-lab-results -name 'syslog*' -exec grep -hE 'Runner\[|flutter:' {} + \
