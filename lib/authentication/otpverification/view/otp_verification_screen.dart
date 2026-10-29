@@ -94,14 +94,21 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                                     // accessibility tools (TalkBack, Firebase Robo) can't type into
                                     // it, and a tap between the boxes hits the page's unfocus
                                     // handler. Expose one text field that focuses on tap anywhere
-                                    // in the row and accepts the code directly.
-                                    child: Semantics(
-                                      textField: true,
-                                      label: 'OTP code',
-                                      value: otpVerificationController.otpTextController.text,
-                                      onTap: otpFocusNode.requestFocus,
-                                      onSetText: (value) => otpVerificationController
-                                          .otpTextController.text = value.replaceAll(RegExp(r'\D'), ''),
+                                    // in the row and accepts the code directly. iOS types only into a
+                                    // field that reports keyboard focus, so it mirrors the hidden one's.
+                                    child: ListenableBuilder(
+                                      listenable: otpFocusNode,
+                                      builder: (context, child) => Semantics(
+                                        textField: true,
+                                        focusable: true,
+                                        focused: otpFocusNode.hasFocus,
+                                        label: 'OTP code',
+                                        value: otpVerificationController.otpTextController.text,
+                                        onTap: otpFocusNode.requestFocus,
+                                        onSetText: (value) => otpVerificationController
+                                            .otpTextController.text = value.replaceAll(RegExp(r'\D'), ''),
+                                        child: child,
+                                      ),
                                       child: GestureDetector(
                                         behavior: HitTestBehavior.opaque,
                                         onTap: otpFocusNode.requestFocus,
