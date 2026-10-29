@@ -2457,6 +2457,13 @@ Future<void> _submit(WidgetTester tester, Finder finder) async {
   await _waitFor(tester, finder);
   await tester.ensureVisible(finder.first);
   await _pumpFor(tester, const Duration(milliseconds: 500));
+  // ensureVisible puts it at the top edge of the scroll view, where on taller
+  // screens (the iPhones) a pinned header can cover it; centre it instead.
+  if (finder.hitTestable().evaluate().isEmpty) {
+    await Scrollable.ensureVisible(tester.element(finder.first),
+        alignment: 0.5);
+    await _pumpFor(tester, const Duration(milliseconds: 500));
+  }
   await _tap(tester, finder);
 }
 

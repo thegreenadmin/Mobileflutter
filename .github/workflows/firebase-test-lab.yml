@@ -675,9 +675,11 @@ jobs:
             test-lab-output.txt
           retention-days: 30
 
-  # The same XCTest target as ios-integration-test, run with xcodebuild test on
-  # an iOS Simulator in this runner instead of Test Lab's iPhones (which only
-  # answered "Infrastructure error occurred"). No Test Lab quota.
+  # The integration journey on an iOS Simulator in this runner, instead of Test
+  # Lab's iPhones (which only answered "Infrastructure error occurred"). No
+  # Test Lab quota. It runs through flutter test rather than xcodebuild test:
+  # the XCTest wrapper runs the whole journey while Xcode is still discovering
+  # tests, and Xcode gives up on that after ~13 minutes (run 86).
   ios-simulator-journey:
     if: github.event_name == 'workflow_dispatch' && (inputs.platform == 'ios' || inputs.platform == 'ios-sim')
     runs-on: macos-26
@@ -722,11 +724,6 @@ jobs:
       - name: Install Flutter dependencies
         run: flutter pub get
 
-      - name: Add the RunnerTests target
-        run: |
-          ruby -e "require 'xcodeproj'" 2>/dev/null || gem install xcodeproj --no-document
-          ruby .github/ios/add_runner_tests.rb
-
       # The newest iPhone on the newest iOS runtime the runner has.
       - name: Boot an iPhone simulator
         run: |
@@ -745,55 +742,30 @@ jobs:
           xcrun simctl location "$SIM_UDID" set 35.9399,-86.8239
           echo "SIM_UDID=$SIM_UDID" >> "$GITHUB_ENV"
 
-      # Points the app's entry at the journey and runs pod install, which
-      # picks up the RunnerTests Podfile target.
-      - name: Configure the build for the journey
+      - name: Run the journey on the simulator
         run: |
-          flutter build ios --config-only --debug integration_test/app_test.dart
-          cd ios && pod install
-
-      - name: Run the journey as an XCTest
-        run: |
-          # The journey's [journey] lines come from the app process.
-          xcrun simctl spawn "$SIM_UDID" log stream --style compact \
-            --predicate 'process == "Runner"' > sim.log 2>&1 &
-          cd ios
-          xcodebuild test \
-            -workspace Runner.xcworkspace \
-            -scheme Runner \
-            -configuration Debug \
-            -destination "id=$SIM_UDID" \
-            -resultBundlePath ../build/ios_sim.xcresult \
-            CODE_SIGNING_ALLOWED=NO \
-            > ../xcodebuild-test.log 2>&1 || { tail -150 ../xcodebuild-test.log; exit 1; }
-          grep -E 'Test (Suite|Case)|Executed' ../xcodebuild-test.log | tail -20
+          set -o pipefail
+          flutter test integration_test/app_test.dart -d "$SIM_UDID" \
+            --reporter expanded 2>&1 | tee journey.log
 
       - name: Show journey log from the simulator
         if: always()
         run: |
-          grep -hE '\[journey\]|EXCEPTION CAUGHT|Test failed|══' sim.log xcodebuild-test.log 2>/dev/null || true
+          grep -hE '\[journey\]|EXCEPTION CAUGHT|Test failed|══' journey.log 2>/dev/null || true
 
       - name: Fail unless the journey passed
         run: |
-          # XCTest passes when it records no tests (e.g. a Dart-side hang), so
-          # also require the journey's closing line.
-          if ! grep -qs '\[journey\] ALL STEPS PASSED' sim.log xcodebuild-test.log; then
+          # flutter test passes when it records no tests (e.g. a Dart-side
+          # hang), so also require the journey's closing line.
+          if ! grep -qs '\[journey\] ALL STEPS PASSED' journey.log; then
             echo "::error::Integration journey did not complete (see 'Show journey log from the simulator')"
             exit 1
           fi
-
-      - name: Package the result bundle
-        if: always()
-        run: |
-          [ -d build/ios_sim.xcresult ] && (cd build && zip -qr ../ios_sim.xcresult.zip ios_sim.xcresult) || true
 
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: ios-simulator-journey-results
-          path: |
-            sim.log
-            xcodebuild-test.log
-            ios_sim.xcresult.zip
+          path: journey.log
           retention-days: 30
