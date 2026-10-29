@@ -90,15 +90,24 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                                       left: 35.0,
                                       right: 35,
                                     ),
-                                    // pin_code_fields draws the boxes over a hidden, near zero-size
-                                    // TextField, which iOS (VoiceOver, Firebase Robo) can't type into.
-                                    // A transparent TextField over the boxes takes the input instead;
-                                    // they share the controller, so the boxes, validator and
-                                    // onCompleted work as before.
-                                    child: Stack(
-                                      children: [
-                                        ExcludeSemantics(
+                                    // pin_code_fields hides its TextField under an AbsorbPointer, so
+                                    // accessibility tools (TalkBack, Firebase Robo) can't type into
+                                    // it, and a tap between the boxes hits the page's unfocus
+                                    // handler. Expose one text field that focuses on tap anywhere
+                                    // in the row and accepts the code directly.
+                                    child: Semantics(
+                                      textField: true,
+                                      label: 'OTP code',
+                                      value: otpVerificationController.otpTextController.text,
+                                      onTap: otpFocusNode.requestFocus,
+                                      onSetText: (value) => otpVerificationController
+                                          .otpTextController.text = value.replaceAll(RegExp(r'\D'), ''),
+                                      child: GestureDetector(
+                                        behavior: HitTestBehavior.opaque,
+                                        onTap: otpFocusNode.requestFocus,
+                                        child: ExcludeSemantics(
                                           child: PinCodeTextField(
+                                            focusNode: otpFocusNode,
                                             validator: (value) {
                                               if (value == null || value.trim().isEmpty) {
                                                 return AlertStringConstants.pleaseEnterOtpText;
@@ -149,35 +158,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                                             },
                                           ),
                                         ),
-                                        Positioned(
-                                          top: 0,
-                                          left: 0,
-                                          right: 0,
-                                          height: 45,
-                                          child: TextField(
-                                            controller:
-                                                otpVerificationController.otpTextController,
-                                            focusNode: otpFocusNode,
-                                            keyboardType: TextInputType.number,
-                                            autofillHints: const [AutofillHints.oneTimeCode],
-                                            inputFormatters: [
-                                              FilteringTextInputFormatter.digitsOnly,
-                                              LengthLimitingTextInputFormatter(4),
-                                            ],
-                                            autocorrect: false,
-                                            enableSuggestions: false,
-                                            cursorColor: Colors.transparent,
-                                            style: const TextStyle(color: Colors.transparent),
-                                            decoration: const InputDecoration(
-                                              hintText: 'OTP code',
-                                              hintStyle: TextStyle(color: Colors.transparent),
-                                              border: InputBorder.none,
-                                              counterText: '',
-                                              contentPadding: EdgeInsets.zero,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
+                                      ),
                                     ),
                                   ),
                                   height20SizedBox,
