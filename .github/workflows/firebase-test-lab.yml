@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       platform:
-        description: 'android or ios: journey and Robo crawl; ios-robo, ios-journey (Test Lab) or ios-sim (simulator in the runner): only that iPhone job'
+        description: 'android or ios: journey and Robo crawl; ios-robo, ios-journey (Test Lab), ios-sim or ios-sim-xctest (simulator in the runner): only that iPhone job'
         type: choice
         options:
           - android
@@ -12,6 +12,7 @@ on:
           - ios-robo
           - ios-journey
           - ios-sim
+          - ios-sim-xctest
         default: android
   push:
     branches: ['ci/*']
@@ -680,8 +681,10 @@ jobs:
   # Test Lab quota. It runs through flutter test rather than xcodebuild test:
   # the XCTest wrapper runs the whole journey while Xcode is still discovering
   # tests, and Xcode gives up on that after ~13 minutes (run 86).
+  # ios-sim-xctest runs the RunnerTests XCTest bundle that Test Lab gets with
+  # xcodebuild test instead, to check it without spending iPhone quota.
   ios-simulator-journey:
-    if: github.event_name == 'workflow_dispatch' && (inputs.platform == 'ios' || inputs.platform == 'ios-sim')
+    if: github.event_name == 'workflow_dispatch' && (inputs.platform == 'ios' || inputs.platform == 'ios-sim' || inputs.platform == 'ios-sim-xctest')
     runs-on: macos-26
     timeout-minutes: 90
     environment: ANDROID_BETA_CONFIG
@@ -743,10 +746,32 @@ jobs:
           echo "SIM_UDID=$SIM_UDID" >> "$GITHUB_ENV"
 
       - name: Run the journey on the simulator
+        if: inputs.platform != 'ios-sim-xctest'
         run: |
           set -o pipefail
           flutter test integration_test/app_test.dart -d "$SIM_UDID" \
             --reporter expanded 2>&1 | tee journey.log
+
+      - name: Run the journey as an XCTest on the simulator
+        if: inputs.platform == 'ios-sim-xctest'
+        run: |
+          ruby -e "require 'xcodeproj'" 2>/dev/null || gem install xcodeproj --no-document
+          ruby .github/ios/add_runner_tests.rb
+          # Points the app's entry at the journey and runs pod install.
+          flutter build ios --config-only --debug integration_test/app_test.dart
+          (cd ios && pod install)
+          # The journey's [journey] lines come from the app process.
+          xcrun simctl spawn "$SIM_UDID" log stream --style compact \
+            --predicate 'process == "Runner"' > journey.log 2>&1 &
+          cd ios
+          xcodebuild test \
+            -workspace Runner.xcworkspace \
+            -scheme Runner \
+            -configuration Debug \
+            -destination "id=$SIM_UDID" \
+            CODE_SIGNING_ALLOWED=NO \
+            > ../xcodebuild-test.log 2>&1 || { tail -150 ../xcodebuild-test.log; exit 1; }
+          grep -E 'Test (Suite|Case)|Executed' ../xcodebuild-test.log | tail -20
 
       - name: Show journey log from the simulator
         if: always()
@@ -767,5 +792,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ios-simulator-journey-results
-          path: journey.log
+          path: |
+            journey.log
+            xcodebuild-test.log
           retention-days: 30
