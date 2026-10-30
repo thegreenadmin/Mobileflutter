@@ -15,9 +15,9 @@ on:
           - ios-sim-xctest
         default: android
       ios_device:
-        description: 'Test Lab iPhone model for the iOS journey (ios, ios-journey); the run lists the models Test Lab offers'
+        description: 'Test Lab iPhone model for the iOS journey (ios, ios-journey): iphone16pro, iphone14pro, iphone11pro, iphone8, iphonese3 or ipad10 (the run lists what Test Lab offers)'
         type: string
-        default: iphone15pro
+        default: iphone16pro
   push:
     branches: ['ci/*']
     # Maestro-only changes run in maestro.yml; don't spend Test Lab quota.
@@ -546,7 +546,7 @@ jobs:
           echo "Test Lab Xcode versions:"; jq -r '.iosDeviceCatalog.xcodeVersions[] | "  \(.version) \(.tags // [] | join(","))"' catalog.json
           echo "Test Lab iOS versions:"; jq -r '.iosDeviceCatalog.versions[] | "  \(.id) xcode: \(.supportedXcodeVersionIds // [] | join(","))"' catalog.json
           echo "Test Lab iPhone models:"; jq -r '.iosDeviceCatalog.models[] | "  \(.id) (\(.name)): iOS \(.supportedVersionIds // [] | join(", "))"' catalog.json
-          MODEL="${IOS_DEVICE:-iphone15pro}"
+          MODEL="${IOS_DEVICE:-iphone16pro}"
           IOS_VERSION=$(jq -r --arg m "$MODEL" '.iosDeviceCatalog.models[] | select(.id == $m) | .supportedVersionIds // [] | .[]' catalog.json | sort -t. -k1,1nr -k2,2nr | head -1)
           [ -n "$IOS_VERSION" ] || { echo "::error::Test Lab offers no iPhone model '$MODEL'; pick one of the models listed above"; exit 1; }
           echo "Device: $MODEL, iOS $IOS_VERSION"
