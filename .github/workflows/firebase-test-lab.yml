@@ -720,6 +720,7 @@ jobs:
           gcloud firebase test ios run \
             --test=ios_tests.zip \
             --device="model=${TEST_LAB_MODEL},version=${TEST_LAB_IOS}" \
+            --record-video \
             --xcode-version="${TEST_LAB_XCODE}" \
             --timeout=40m \
             --results-dir="ftl-ios-integration-${GITHUB_RUN_ID}" \
@@ -754,6 +755,14 @@ jobs:
           if [ -n "$BUCKET" ]; then
             mkdir -p test-lab-results
             gcloud storage cp -r "gs://${BUCKET}/ftl-ios-integration-${GITHUB_RUN_ID}/*" test-lab-results/ || true
+          fi
+          # Test Lab records video by default, but run 94 (iPhone SE, iOS
+          # 26.3) came back without one; say which runs have it.
+          VIDEOS=$(find test-lab-results -name '*.mp4' 2>/dev/null)
+          if [ -n "$VIDEOS" ]; then
+            echo "Device video (in the uploaded results):"; echo "$VIDEOS" | sed 's/^/  /'
+          else
+            echo "::notice::Test Lab recorded no video for this device"
           fi
 
       - name: Show journey log from device
