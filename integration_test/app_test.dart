@@ -714,7 +714,7 @@ void main() {
       await _openPayments(tester);
       await _tap(tester, find.text('Pay to a Business'));
       await _tap(tester, find.text('Enter Phone'));
-      await tester.enterText(
+      await _typeText(tester,
           find.descendant(
               of: find.byType(IntlPhoneField),
               matching: find.byType(EditableText)),
@@ -1059,14 +1059,14 @@ void main() {
       await _tap(tester, find.text('Receive'));
       await _tap(tester, find.text('Request money'));
       await _waitFor(tester, find.text('Generate barcode'));
-      await tester.enterText(
+      await _typeText(tester,
           find.descendant(
               of: find.byType(IntlPhoneField),
               matching: find.byType(EditableText)),
           _secondPhone);
       // The Amount label shares a column with the phone field; the amount
       // is the last text field on the screen.
-      await tester.enterText(find.byType(TextField).last, '1');
+      await _typeText(tester, find.byType(TextField).last, '1');
       await tester.pump(const Duration(milliseconds: 300));
       FocusManager.instance.primaryFocus?.unfocus();
       await _submit(tester, find.text('Generate barcode'));
@@ -1610,7 +1610,7 @@ void main() {
           findsOneWidget);
       await _enterField(tester, StringConstants.firstNameText, 'Ftl');
       await _enterField(tester, StringConstants.lastNameText, 'Test');
-      await tester.enterText(
+      await _typeText(tester,
           find.descendant(
               of: find.byType(IntlPhoneField),
               matching: find.byType(EditableText)),
@@ -1691,7 +1691,7 @@ Future<void> _logIn(WidgetTester tester, {String phone = _testPhone}) async {
     await _waitFor(tester, phoneField);
     await tester.tap(phoneField.first);
     await _pumpFor(tester, const Duration(milliseconds: 500));
-    await tester.enterText(phoneField.first, phone);
+    await _typeText(tester, phoneField.first, phone);
     await _pumpFor(tester, const Duration(milliseconds: 500));
     if (login.phoneNumber.value == phone) break;
     final typed = (tester.widget(phoneField.first) as EditableText)
@@ -1707,7 +1707,7 @@ Future<void> _logIn(WidgetTester tester, {String phone = _testPhone}) async {
 
   await _waitFor(tester, find.byType(PinCodeTextField));
   await _pumpFor(tester, const Duration(seconds: 1));
-  await tester.enterText(
+  await _typeText(tester,
       find.descendant(
           of: find.byType(PinCodeTextField),
           matching: find.byType(EditableText)),
@@ -1979,7 +1979,7 @@ Future<void> _payPerson(
   await _openPayments(tester);
   await _tap(tester, find.text('Pay to a Person'));
   await _tap(tester, find.text('Enter Mobile'));
-  await tester.enterText(
+  await _typeText(tester,
       find.descendant(
           of: find.byType(IntlPhoneField), matching: find.byType(EditableText)),
       phone);
@@ -1997,7 +1997,7 @@ Future<void> _payAmount(WidgetTester tester, String amount) async {
     _dumpScreen();
     rethrow;
   }
-  await tester.enterText(
+  await _typeText(tester,
       find.descendant(
           of: find
               .ancestor(of: find.text('Amount'), matching: find.byType(Column))
@@ -2085,7 +2085,7 @@ Future<void> _enterNear(WidgetTester tester, String label, String text) async {
           .first,
       matching: find.byType(EditableText));
   await tester.ensureVisible(field.first);
-  await tester.enterText(field.first, text);
+  await _typeText(tester, field.first, text);
   await tester.pump(const Duration(milliseconds: 300));
 }
 
@@ -2444,8 +2444,23 @@ Future<void> _enterField(WidgetTester tester, String hint, String text,
   await _waitFor(tester, field);
   await tester.ensureVisible(field.first);
   await _pumpFor(tester, const Duration(milliseconds: 300));
-  await tester.enterText(field.first, text);
+  await _typeText(tester, field.first, text);
   await tester.pump(const Duration(milliseconds: 300));
+}
+
+/// Types [text] into the field at [finder]. tester.enterText goes through the
+/// test text input, which does nothing in a release build, and Test Lab's
+/// iPhones only start release builds (run 92: the login field stayed empty).
+/// There the text also goes to the field's EditableText the way the keyboard
+/// delivers it, through its formatters and onChanged.
+Future<void> _typeText(WidgetTester tester, Finder finder, String text) async {
+  await tester.enterText(finder, text);
+  if (!kReleaseMode) return;
+  final editable = tester.state<EditableTextState>(find.descendant(
+      of: finder, matching: find.byType(EditableText), matchRoot: true));
+  editable.updateEditingValue(TextEditingValue(
+      text: text, selection: TextSelection.collapsed(offset: text.length)));
+  await tester.pump();
 }
 
 /// Opens the dropdown at [dropdown] and picks its first item.
