@@ -15,7 +15,7 @@ on:
           - ios-sim-xctest
         default: android
       ios_device:
-        description: 'Test Lab iPhone model for the iOS journey (ios, ios-journey): iphone16pro, iphone14pro, iphone11pro, iphone8, iphonese3 or ipad10 (the run lists what Test Lab offers)'
+        description: 'Test Lab iPhone for the iOS journey and Robo crawl: iphone16pro, iphone14pro, iphone11pro, iphone8, iphonese3 or ipad10 (the run lists what Test Lab offers)'
         type: string
         default: iphone16pro
   push:
@@ -327,8 +327,10 @@ jobs:
           retention-days: 30
 
   # iOS Robo crawl, on demand only (Actions > Firebase Test Lab > Run workflow,
-  # platform: ios). The app is built unsigned; Test Lab signs it to install on
-  # its devices.
+  # platform: ios or ios-robo), on the ios_device iPhone. The app is built
+  # unsigned; Test Lab signs it to install on its devices. It is built with
+  # ROBO_TEST, which makes the OTP screen enter the demo account's code
+  # itself (lib/utils/robo_test.dart): Robo can't type into the code boxes.
   ios-robo-test:
     if: github.event_name == 'workflow_dispatch' && (inputs.platform == 'ios' || inputs.platform == 'ios-robo')
     runs-on: macos-26
@@ -375,7 +377,7 @@ jobs:
 
       # A debug build only starts with a debugger attached on a real iPhone.
       - name: Build iOS app (unsigned, release)
-        run: flutter build ios --release --no-codesign
+        run: flutter build ios --release --no-codesign --dart-define=ROBO_TEST=true
 
       - name: Package IPA
         run: |
@@ -400,19 +402,30 @@ jobs:
       - name: Run Firebase Test Lab iOS Robo test
         env:
           FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+          IOS_DEVICE: ${{ inputs.ios_device }}
         run: |
           set -euo pipefail
           API="https://testing.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/testMatrices"
           auth() { echo "Authorization: Bearer $(gcloud auth print-access-token)"; }
+          # The ios_device iPhone, on its newest iOS version Test Lab offers.
+          MODEL="${IOS_DEVICE:-iphone16pro}"
+          curl -sS -H "$(auth)" \
+            "https://testing.googleapis.com/v1/testEnvironmentCatalog/IOS?projectId=${FIREBASE_PROJECT_ID}" > catalog.json
+          IOS_VERSION=$(jq -r --arg m "$MODEL" '.iosDeviceCatalog.models[] | select(.id == $m) | .supportedVersionIds // [] | .[]' catalog.json | sort -t. -k1,1nr -k2,2nr | head -1)
+          if [ -z "$IOS_VERSION" ]; then
+            jq -r '.iosDeviceCatalog.models[] | "  \(.id) (\(.name)): iOS \(.supportedVersionIds // [] | join(", "))"' catalog.json
+            echo "::error::Test Lab offers no iPhone model '$MODEL'; pick one of the models listed above"
+            exit 1
+          fi
+          echo "Device: $MODEL, iOS $IOS_VERSION"
           BUCKET=$(curl -sS -X POST -H "$(auth)" \
             "https://toolresults.googleapis.com/toolresults/v1beta3/projects/${FIREBASE_PROJECT_ID}:initializeSettings" |
             jq -r .defaultBucket)
           DIR="gs://${BUCKET}/ftl-ios-robo-${GITHUB_RUN_ID}"
           gcloud storage cp app.ipa "${DIR}/app.ipa"
           gcloud storage cp .github/robo/ios_login_start.json "${DIR}/robo_script.json"
-          # Test Lab's default iPhone; the crawl stops on its own when it runs
-          # out of new screens.
-          jq -n --arg dir "$DIR" '{
+          # The crawl stops on its own when it runs out of new screens.
+          jq -n --arg dir "$DIR" --arg model "$MODEL" --arg version "$IOS_VERSION" '{
             testSpecification: {
               testTimeout: "900s",
               iosRoboTest: {
@@ -421,7 +434,7 @@ jobs:
               }
             },
             environmentMatrix: {iosDeviceList: {iosDevices: [
-              {iosModelId: "iphonese3", iosVersionId: "26.3", locale: "en", orientation: "portrait"}
+              {iosModelId: $model, iosVersionId: $version, locale: "en", orientation: "portrait"}
             ]}},
             resultStorage: {googleCloudStorage: {gcsPath: "\($dir)/"}}
           }' > matrix-request.json

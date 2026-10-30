@@ -10,6 +10,7 @@ import 'package:thegreenmall/push_notifications/device_token_service.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
 import 'package:thegreenmall/utils/app_config_service.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/robo_test.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/utility.dart';
@@ -34,6 +35,13 @@ class OtpVerificationController extends GetxController  with GlobalVarMixin{
     countryCode.value = Get.arguments["countryCode"] ?? "";
     isSignUp.value = Get.arguments["signUp"] ?? false;
     await getFcmToken();
+    if (kRoboTest &&
+        phoneNumber.value.replaceAll(RegExp(r'\D'), '') == roboDemoPhone) {
+      // Robo builds only (see robo_test.dart). Filling the boxes, once the
+      // screen is up, fires their onCompleted, which submits the code.
+      Future.delayed(const Duration(seconds: 1),
+          () => otpTextController.text = roboDemoOtp);
+    }
   }
 
   Future<void> getFcmToken() async {

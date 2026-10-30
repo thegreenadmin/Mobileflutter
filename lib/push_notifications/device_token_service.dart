@@ -6,6 +6,7 @@ import 'package:thegreenmall/utils/api_constants.dart';
 import 'package:thegreenmall/utils/app_logger.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/global_share_data.dart';
+import 'package:thegreenmall/utils/robo_test.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 
 /// Keeps the backend's record of this device's FCM token in sync.
@@ -60,6 +61,11 @@ class DeviceTokenService {
           attempts++;
         }
         if (apnsToken == null) {
+          // Test Lab re-signs the Robo build for its iPhones, which can leave
+          // it without push; the backend refuses a login without a token.
+          if (kRoboTest) {
+            return 'robo-test-${DateTime.now().millisecondsSinceEpoch}';
+          }
           AppLogger.error('APNs token unavailable; skipping FCM token fetch');
           return null;
         }
