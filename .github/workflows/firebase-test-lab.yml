@@ -878,6 +878,15 @@ jobs:
           xcrun simctl location "$SIM_UDID" set 35.9399,-86.8239
           echo "SIM_UDID=$SIM_UDID" >> "$GITHUB_ENV"
 
+      # Test Lab returns no video for iOS runs (the iPhone journey and Robo
+      # crawl, runs 94-98), so record the simulator's screen instead. It keeps
+      # recording across steps until the stop step below.
+      - name: Start recording the simulator screen
+        run: |
+          nohup xcrun simctl io "$SIM_UDID" recordVideo --codec=h264 --force journey.mp4 \
+            > recorder.log 2>&1 &
+          echo $! > recorder.pid
+
       - name: Run the journey on the simulator
         if: inputs.platform != 'ios-sim-xctest'
         run: |
@@ -911,6 +920,17 @@ jobs:
         run: |
           grep -hE '\[journey\]|EXCEPTION CAUGHT|Test failed|══' journey.log 2>/dev/null || true
 
+      # recordVideo only writes a playable file when interrupted (Ctrl-C).
+      - name: Stop recording the simulator screen
+        if: always()
+        run: |
+          [ -f recorder.pid ] || exit 0
+          PID=$(cat recorder.pid)
+          kill -INT "$PID" 2>/dev/null || true
+          for _ in $(seq 60); do kill -0 "$PID" 2>/dev/null || break; sleep 1; done
+          cat recorder.log || true
+          ls -lh journey.mp4 2>/dev/null || echo "::warning::No simulator video was recorded"
+
       - name: Fail unless the journey passed
         run: |
           # flutter test passes when it records no tests (e.g. a Dart-side
@@ -929,3 +949,12 @@ jobs:
             journey.log
             xcodebuild-test.log
           retention-days: 30
+
+      - name: Upload the simulator video
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-simulator-journey-video
+          path: journey.mp4
+          if-no-files-found: warn
+          retention-days: 14
