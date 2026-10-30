@@ -77,6 +77,10 @@ import 'package:webview_flutter/webview_flutter.dart';
 const _testPhone = '0000000000';
 const _testOtp = '0000';
 
+/// Balance the customer wallet is topped back up to before the second order,
+/// with room for its delivery fee and the later wallet payments.
+const _customerWalletFloor = 30.0;
+
 /// The iOS Simulator has no camera, so the barcode scanner can't open there.
 final _onIosSimulator = Platform.isIOS &&
     Platform.environment.containsKey('SIMULATOR_DEVICE_NAME');
@@ -625,10 +629,11 @@ void main() {
                   (w.controller?.text ?? '').isNotEmpty,
               description: 'loaded store name field'));
       await _tap(tester, find.byIcon(Icons.arrow_back));
-      await _tap(tester, find.text(StringConstants.rolesAndPermissionText));
+      await _scrollAndTap(
+          tester, find.text(StringConstants.rolesAndPermissionText));
       await _waitFor(tester, find.text(StringConstants.addNewRoleText));
       await _tap(tester, find.byIcon(Icons.arrow_back));
-      await _tap(tester, find.text(StringConstants.manageWorkersText));
+      await _scrollAndTap(tester, find.text(StringConstants.manageWorkersText));
       await _waitFor(tester, find.textContaining('ember'));
       await _backToHome(tester);
     });
@@ -675,7 +680,12 @@ void main() {
       };
       for (final e in billing.entries) {
         await _enterField(tester, e.key, e.value, optional: true);
+        if (e.key == StringConstants.addressLine1Text) {
+          await _pickPlaceSuggestion(tester);
+        }
       }
+      FocusManager.instance.primaryFocus?.unfocus();
+      await _pumpFor(tester, const Duration(milliseconds: 800));
       await _submit(tester, find.text(StringConstants.addCardText).last);
       await _waitFor(tester, _cardEnding('4444'),
           timeout: const Duration(seconds: 45));
@@ -1216,6 +1226,14 @@ void main() {
     await step('customer second order', () async {
       if (!productCreated) throw TestFailure('no product to order');
       await _switchRole(tester, toCustomer: true);
+      // Each run spends a little of the shared test wallet (run 94: $13.61
+      // left for a $19.34 order), so top it back up when it runs low.
+      final balance = await _customerBalance(tester);
+      if (balance < _customerWalletFloor) {
+        final topUp = (_customerWalletFloor - balance).ceil();
+        debugPrint('[journey]   wallet $balance; topping up \$$topUp');
+        await _topUp(tester, '$topUp');
+      }
       balanceBeforeCancelledOrder = await _customerBalance(tester);
       cancelledOrderId = await _placeOrder(tester, productName);
       final after = await _customerBalance(tester);
@@ -1243,7 +1261,9 @@ void main() {
             tester, find.text(StringConstants.selectStoreText).last);
       }
       await _enterField(tester, 'eg ${currencySign}100.00', '1');
-      await _tap(tester, find.text('STRIPE TEST BANK'));
+      FocusManager.instance.primaryFocus?.unfocus();
+      await _pumpFor(tester, const Duration(milliseconds: 800));
+      await _scrollAndTap(tester, find.text('STRIPE TEST BANK'));
       await _submit(tester, find.text(StringConstants.oKText));
       await _waitGone(tester, find.text(StringConstants.payoutText),
           timeout: const Duration(seconds: 45));
@@ -2317,6 +2337,17 @@ Future<String> _placeOrder(WidgetTester tester, String productName) async {
   await _tap(tester, types.firstWhere((f) => f.evaluate().isNotEmpty).first);
   // Picking a type refreshes the wallet balance Pay Now checks.
   await _pumpFor(tester, const Duration(seconds: 3));
+  final shortfall =
+      find.textContaining(StringConstants.inSufficientFundText.trim());
+  if (shortfall.evaluate().isNotEmpty) {
+    // It can be the balance from before the refresh; give that time.
+    try {
+      await _waitGone(tester, shortfall, timeout: const Duration(seconds: 10));
+    } on TestFailure {
+      throw TestFailure('the wallet cannot pay for the order (the cart says '
+          '"${StringConstants.inSufficientFundText.trim()}")');
+    }
+  }
   await _submit(tester, find.text(StringConstants.payNowText));
   // Wallet payment asks to confirm the deduction first.
   await _tap(tester, find.text(StringConstants.proceedText));
@@ -2499,6 +2530,31 @@ Future<void> _submit(WidgetTester tester, Finder finder) async {
     await _pumpFor(tester, const Duration(milliseconds: 500));
   }
   await _tap(tester, finder);
+}
+
+/// Scrolls the list on screen until [finder] is built, then taps it. For
+/// rows below the fold on small screens (Test Lab's iPhone SE).
+Future<void> _scrollAndTap(WidgetTester tester, Finder finder) async {
+  await _scrollUntilBuilt(tester, finder);
+  await _submit(tester, finder);
+}
+
+/// Where the Places API answers (Test Lab's iPhones), typing an address pops
+/// a suggestion list over the form, and it stays up until one is picked
+/// (run 94: it covered Add Card). Picks the first, as a user would; the
+/// fields typed after it keep the test's values.
+Future<void> _pickPlaceSuggestion(WidgetTester tester) async {
+  final suggestion = find.descendant(
+      of: find.byType(ListTile), matching: find.byIcon(Icons.location_on));
+  try {
+    await _waitFor(tester, suggestion.hitTestable(),
+        timeout: const Duration(seconds: 3));
+  } on TestFailure {
+    return;
+  }
+  await tester.tap(suggestion.hitTestable().first);
+  await _waitGone(tester, suggestion, timeout: const Duration(seconds: 10));
+  await _pumpFor(tester, const Duration(milliseconds: 500));
 }
 
 /// Swipes the Dismissible row holding [finder] left and confirms Delete.
