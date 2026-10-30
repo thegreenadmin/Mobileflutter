@@ -504,8 +504,9 @@ jobs:
   # (.github/ios/add_runner_tests.rb), builds the journey signed for iPhone and
   # Test Lab runs it. Test Lab only runs XCTests whose bundles are signed (it
   # re-signs them for its devices); unsigned builds failed with "Infrastructure
-  # error occurred" before the app started (runs 72-89). The signing secrets
-  # (fastlane match) are in APP_STORE_CONFIG and the Test Lab credentials in
+  # error occurred" before the app started (runs 72-89). It is signed like the
+  # beta (TestFlight) build, whose signing secrets (fastlane match) are in
+  # APP_STORE_CONFIG and the Test Lab credentials in
   # ANDROID_BETA_CONFIG, so the work is split across three jobs.
 
   # Test Lab runs XCTests with its own Xcode and rejects a bundle built by a
@@ -613,8 +614,9 @@ jobs:
           ruby -e "require 'xcodeproj'" 2>/dev/null || gem install xcodeproj --no-document
           ruby .github/ios/add_runner_tests.rb
 
-      # The match development certificate and profile, into a CI keychain.
-      - name: Install the development signing
+      # The beta pipeline's match App Store certificate and profile, into a CI
+      # keychain.
+      - name: Install the App Store signing
         env:
           FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
           APPLE_TEAM_ID: ${{ vars.APPLE_TEAM_ID }}
@@ -646,13 +648,13 @@ jobs:
             -configuration Release \
             -sdk iphoneos \
             -derivedDataPath ../build/ios_integ \
-            DEVELOPMENT_TEAM="${APPLE_TEAM_ID}" CODE_SIGN_STYLE=Manual CODE_SIGN_IDENTITY="Apple Development" \
+            DEVELOPMENT_TEAM="${APPLE_TEAM_ID}" CODE_SIGN_STYLE=Manual CODE_SIGN_IDENTITY="Apple Distribution" \
             > ../xcodebuild.log 2>&1 || { tail -150 ../xcodebuild.log; exit 1; }
           tail -15 ../xcodebuild.log
           # Show that both bundles came out signed.
           for b in ../build/ios_integ/Build/Products/Release-iphoneos/Runner.app \
                    ../build/ios_integ/Build/Products/Release-iphoneos/Runner.app/PlugIns/RunnerTests.xctest; do
-            codesign -dv "$b" 2>&1 | grep -E 'Identifier|Authority=Apple Development|TeamIdentifier' || { echo "::error::$b is not signed"; exit 1; }
+            codesign -dv "$b" 2>&1 | grep -E 'Identifier|Authority=Apple Distribution|TeamIdentifier' || { echo "::error::$b is not signed"; exit 1; }
           done
 
       - name: Package the tests

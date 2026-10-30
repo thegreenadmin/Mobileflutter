@@ -185,12 +185,13 @@ platform :ios do
   end
 
   # Firebase Test Lab only runs XCTests whose app and test bundles are signed;
-  # it re-signs them for its own iPhones. CI then builds the journey with
-  # xcodebuild build-for-testing (see .github/workflows/firebase-test-lab.yml).
-  desc "Install the development signing used for the Test Lab XCTest build"
+  # it re-signs them for its own iPhones, so the beta pipeline's App Store
+  # signing does (match holds no development certificate). CI then builds the
+  # journey with xcodebuild build-for-testing (.github/workflows/firebase-test-lab.yml).
+  desc "Install the App Store signing used for the Test Lab XCTest build"
   lane :test_lab_signing do
     setup_ci if ENV['CI']
-    match(type: "development", readonly: true, git_basic_authorization: ENV['MATCH_GIT_BASIC_AUTHORIZATION'])
+    match(type: "appstore", readonly: true, git_basic_authorization: ENV['MATCH_GIT_BASIC_AUTHORIZATION'])
   end
 
   desc "Build an ad-hoc build for testing"

@@ -24,23 +24,19 @@ tests.build_configurations.each do |config|
   settings['CLANG_ENABLE_MODULES'] = 'YES'
 end
 
-# TEST_LAB_SIGNING=1: sign both targets for iPhones with the match development
-# certificate and profile (fastlane test_lab_signing installs them). Test Lab
-# only runs XCTests built signed; the committed project signs Runner for the
-# App Store, which can't be installed on a test device.
+# TEST_LAB_SIGNING=1: sign the test bundle like the app, which the committed
+# project already signs with the beta pipeline's App Store profile ("match
+# AppStore com.thegreenmall"; fastlane test_lab_signing installs it). Test Lab
+# only runs XCTests built signed, and re-signs them for its devices.
 if ENV['TEST_LAB_SIGNING'] == '1'
   team = app.build_configurations.map { |c| c.build_settings['DEVELOPMENT_TEAM[sdk=iphoneos*]'] }.compact.first
   abort('Runner has no iphoneos DEVELOPMENT_TEAM') if team.to_s.empty?
-  app.build_configurations.each do |config|
-    config.build_settings['CODE_SIGN_IDENTITY[sdk=iphoneos*]'] = 'Apple Development'
-    config.build_settings['PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]'] = 'match Development com.thegreenmall'
-  end
   tests.build_configurations.each do |config|
     config.build_settings['CODE_SIGN_STYLE'] = 'Manual'
     config.build_settings['DEVELOPMENT_TEAM'] = team
-    config.build_settings['CODE_SIGN_IDENTITY'] = 'Apple Development'
+    config.build_settings['CODE_SIGN_IDENTITY'] = 'Apple Distribution'
   end
-  puts "Signing Runner and RunnerTests for devices with team #{team}'s development profile"
+  puts "Signing RunnerTests with team #{team}'s App Store certificate"
 end
 project.save
 
