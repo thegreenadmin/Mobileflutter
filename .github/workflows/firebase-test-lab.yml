@@ -14,6 +14,10 @@ on:
           - ios-sim
           - ios-sim-xctest
         default: android
+      ios_device:
+        description: 'Test Lab iPhone model for the iOS journey (ios, ios-journey); the run lists the models Test Lab offers'
+        type: string
+        default: iphone15pro
   push:
     branches: ['ci/*']
     # Maestro-only changes run in maestro.yml; don't spend Test Lab quota.
@@ -510,13 +514,17 @@ jobs:
   # ANDROID_BETA_CONFIG, so the work is split across three jobs.
 
   # Test Lab runs XCTests with its own Xcode and rejects a bundle built by a
-  # newer one, so read the Xcode versions it supports.
+  # newer one, so read the Xcode versions it supports. Also checks the
+  # requested iPhone model before anything is built, and picks its newest
+  # iOS version.
   ios-test-lab-xcode:
     if: github.event_name == 'workflow_dispatch' && (inputs.platform == 'ios' || inputs.platform == 'ios-journey')
     runs-on: ubuntu-latest
     environment: ANDROID_BETA_CONFIG
     outputs:
       versions: ${{ steps.catalog.outputs.versions }}
+      model: ${{ steps.catalog.outputs.model }}
+      ios_version: ${{ steps.catalog.outputs.ios_version }}
     steps:
       - name: Authenticate with GCP
         uses: google-github-actions/auth@v2
@@ -530,15 +538,25 @@ jobs:
         id: catalog
         env:
           FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+          IOS_DEVICE: ${{ inputs.ios_device }}
         run: |
           TOKEN=$(gcloud auth print-access-token)
           curl -sS -H "Authorization: Bearer $TOKEN" \
             "https://testing.googleapis.com/v1/testEnvironmentCatalog/IOS?projectId=${FIREBASE_PROJECT_ID}" > catalog.json
           echo "Test Lab Xcode versions:"; jq -r '.iosDeviceCatalog.xcodeVersions[] | "  \(.version) \(.tags // [] | join(","))"' catalog.json
           echo "Test Lab iOS versions:"; jq -r '.iosDeviceCatalog.versions[] | "  \(.id) xcode: \(.supportedXcodeVersionIds // [] | join(","))"' catalog.json
-          VERSIONS=$(jq -r '.iosDeviceCatalog.xcodeVersions[].version' catalog.json | sort -t. -k1,1nr -k2,2nr -k3,3nr | tr '\n' ' ')
-          [ -n "$VERSIONS" ] || { echo "::error::Test Lab listed no Xcode versions"; exit 1; }
+          echo "Test Lab iPhone models:"; jq -r '.iosDeviceCatalog.models[] | "  \(.id) (\(.name)): iOS \(.supportedVersionIds // [] | join(", "))"' catalog.json
+          MODEL="${IOS_DEVICE:-iphone15pro}"
+          IOS_VERSION=$(jq -r --arg m "$MODEL" '.iosDeviceCatalog.models[] | select(.id == $m) | .supportedVersionIds // [] | .[]' catalog.json | sort -t. -k1,1nr -k2,2nr | head -1)
+          [ -n "$IOS_VERSION" ] || { echo "::error::Test Lab offers no iPhone model '$MODEL'; pick one of the models listed above"; exit 1; }
+          echo "Device: $MODEL, iOS $IOS_VERSION"
+          # Only Xcode versions that iOS version runs XCTests with.
+          VERSIONS=$(jq -r --arg v "$IOS_VERSION" '.iosDeviceCatalog.versions[] | select(.id == $v) | .supportedXcodeVersionIds // [] | .[]' catalog.json | sort -t. -k1,1nr -k2,2nr -k3,3nr | tr '\n' ' ')
+          [ -n "${VERSIONS// }" ] || VERSIONS=$(jq -r '.iosDeviceCatalog.xcodeVersions[].version' catalog.json | sort -t. -k1,1nr -k2,2nr -k3,3nr | tr '\n' ' ')
+          [ -n "${VERSIONS// }" ] || { echo "::error::Test Lab listed no Xcode versions"; exit 1; }
           echo "versions=$VERSIONS" >> "$GITHUB_OUTPUT"
+          echo "model=$MODEL" >> "$GITHUB_OUTPUT"
+          echo "ios_version=$IOS_VERSION" >> "$GITHUB_OUTPUT"
 
   ios-integration-build:
     needs: ios-test-lab-xcode
@@ -672,7 +690,7 @@ jobs:
           retention-days: 3
 
   ios-integration-test:
-    needs: ios-integration-build
+    needs: [ios-test-lab-xcode, ios-integration-build]
     runs-on: ubuntu-latest
     timeout-minutes: 60
     environment: ANDROID_BETA_CONFIG
@@ -695,11 +713,13 @@ jobs:
         env:
           FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
           TEST_LAB_XCODE: ${{ needs.ios-integration-build.outputs.xcode }}
+          TEST_LAB_MODEL: ${{ needs.ios-test-lab-xcode.outputs.model }}
+          TEST_LAB_IOS: ${{ needs.ios-test-lab-xcode.outputs.ios_version }}
         run: |
           set -o pipefail
-          # No --device: Test Lab picks its default iPhone and iOS version.
           gcloud firebase test ios run \
             --test=ios_tests.zip \
+            --device="model=${TEST_LAB_MODEL},version=${TEST_LAB_IOS}" \
             --xcode-version="${TEST_LAB_XCODE}" \
             --timeout=40m \
             --results-dir="ftl-ios-integration-${GITHUB_RUN_ID}" \
