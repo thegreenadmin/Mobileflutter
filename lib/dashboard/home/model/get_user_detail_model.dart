@@ -58,6 +58,7 @@ class User {
   String? email;
   String? phone;
   bool? hasStoreAccess;
+  bool? isTestAccount;
   List<UserAddresses>? userAddresses;
 
   User(
@@ -68,6 +69,7 @@ class User {
       this.email,
       this.phone,
       this.hasStoreAccess,
+      this.isTestAccount,
       this.userAddresses});
 
   User.fromJson(Map<String, dynamic> json) {
@@ -79,6 +81,7 @@ class User {
     email = json['email'];
     phone = json['phone'];
     hasStoreAccess = json['has_store_access'];
+    isTestAccount = json['is_test_account'];
     if (json['user_addresses'] != null) {
       userAddresses = <UserAddresses>[];
       json['user_addresses'].forEach((v) {
@@ -97,6 +100,7 @@ class User {
     data['email'] = email;
     data['phone'] = phone;
     data['has_store_access'] = hasStoreAccess;
+    data['is_test_account'] = isTestAccount;
     if (userAddresses != null) {
       data['user_addresses'] = userAddresses!.map((v) => v.toJson()).toList();
     }

@@ -63,7 +63,7 @@ class UserInboxController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -102,7 +102,7 @@ class UserInboxController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);

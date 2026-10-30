@@ -13,6 +13,7 @@ import 'package:thegreenmall/dashboard/orders/view/orders_home_main_screen.dart'
 import 'package:thegreenmall/utils/utils.dart';
 
 import 'customer/components/store_home_main_args.dart';
+import 'package:thegreenmall/utils/brand_image.dart';
 
 class NotificationListScreen extends StatefulWidget {
   const NotificationListScreen({super.key});
@@ -51,7 +52,7 @@ class _NotificationListScreenState extends State<NotificationListScreen> with Gl
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Center(
-                                      child: Image.asset(
+                                      child: BrandImage.asset(
                                         ImageConstants.nodata,
                                         scale: 8,
                                         color: AppColors.primary,
@@ -169,6 +170,10 @@ class _NotificationListScreenState extends State<NotificationListScreen> with Gl
                                           ),
                                           id: pageIdApp.value,
                                         );
+                                      } else if (notification.type == "payment" ||
+                                          notification.store == null) {
+                                        // Storeless payment notification: nothing
+                                        // to open, so don't surface an error.
                                       } else {
                                         Utility.showAlertMessage("Unable to process notification.");
                                       }
@@ -177,7 +182,7 @@ class _NotificationListScreenState extends State<NotificationListScreen> with Gl
                                     child: Container(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 10, vertical: 10),
-                                    decoration: const BoxDecoration(
+                                    decoration: BoxDecoration(
                                         color: AppColors.greyLight,
                                         borderRadius: BorderRadius.all(
                                           Radius.circular(8.0),
@@ -204,7 +209,14 @@ class _NotificationListScreenState extends State<NotificationListScreen> with Gl
                                                     "",
                                                 fit: BoxFit.contain,
                                                 radius: 22.0,
-                                                assetImg: ImageConstants.nopicfound,
+                                                // Storeless payment notification:
+                                                // fall back to the app logo.
+                                                assetImg: notificationListController
+                                                            .notificationList[index]
+                                                            .store ==
+                                                        null
+                                                    ? ImageConstants.homeMall
+                                                    : ImageConstants.nopicfound,
                                               ),
                                             ),
                                           ),
@@ -216,24 +228,53 @@ class _NotificationListScreenState extends State<NotificationListScreen> with Gl
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  notificationListController
-                                                          .notificationList[index]
-                                                          .store!
-                                                          .storeName ??
+                                                  // Payment rows: bold title
+                                                  // ("Payment sent"). Store rows:
+                                                  // the store name.
+                                                  ((notificationListController
+                                                                      .notificationList[index]
+                                                                      .type ==
+                                                                  "payment" ||
+                                                              notificationListController
+                                                                      .notificationList[index]
+                                                                      .store ==
+                                                                  null)
+                                                          ? notificationListController
+                                                              .notificationList[index]
+                                                              .title
+                                                          : notificationListController
+                                                              .notificationList[index]
+                                                              .store
+                                                              ?.storeName) ??
                                                       "",
-                                                  style: const TextStyle(
+                                                  style: TextStyle(
                                                       fontSize: 16.0,
                                                       color: AppColors.black,
                                                       fontWeight: FontWeight.w600),
                                                 ),
                                                 height4SizedBox,
                                                 Text(
-                                                  notificationListController
-                                                          .notificationList[index]
-                                                          .title ??
+                                                  // Payment rows: the detail line
+                                                  // ("You paid $20.00 to qwerty.").
+                                                  // Store rows: the notification
+                                                  // title.
+                                                  ((notificationListController
+                                                                      .notificationList[index]
+                                                                      .type ==
+                                                                  "payment" ||
+                                                              notificationListController
+                                                                      .notificationList[index]
+                                                                      .store ==
+                                                                  null)
+                                                          ? notificationListController
+                                                              .notificationList[index]
+                                                              .message
+                                                          : notificationListController
+                                                              .notificationList[index]
+                                                              .title) ??
                                                       "",
 
-                                                  style: const TextStyle(
+                                                  style: TextStyle(
                                                       fontSize: 16.0,
                                                       color: AppColors.black,
                                                       fontWeight: FontWeight.w500),
@@ -275,7 +316,7 @@ class _NotificationListScreenState extends State<NotificationListScreen> with Gl
           return notificationListController.isLoading.value
               ? Container(
             color: Colors.black.withOpacity(0.2),
-            child: const Center(
+            child: Center(
               child: CircularProgressIndicator(color: AppColors.primary),
             ),)
               : const SizedBox.shrink();
@@ -300,13 +341,18 @@ class _NotificationListScreenState extends State<NotificationListScreen> with Gl
                         children: [
                           Row(
                             children: [
+                              Image.asset(
+                                ImageConstants.homeMall,
+                                scale: 4,
+                              ),
+                              width10SizedBox,
                               IconButton(
                                 padding: EdgeInsets.all(5),
                                 constraints: const BoxConstraints(),
                                 onPressed: () {
                                   Get.back(id: pageIdApp.value);
                                 },
-                                icon: const Icon(
+                                icon: Icon(
                                   Icons.arrow_back,
                                   color: AppColors.black,
                                   size: 24.0,
@@ -315,17 +361,13 @@ class _NotificationListScreenState extends State<NotificationListScreen> with Gl
                               width10SizedBox,
                               Text(
                                 StringConstants.notificationsText,
-                                style: const TextStyle(
+                                style: TextStyle(
                                     fontSize: 22,
                                     color: AppColors.black,
                                     fontWeight: FontWeight.w600),
                               ),
                             ],
                           ),
-                          Image.asset(
-                            ImageConstants.homeMall,
-                            scale: 4,
-                          )
                         ]),
                   ],
                 )),

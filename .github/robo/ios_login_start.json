@@ -1,0 +1,73 @@
+[
+  {
+    "id": 1000,
+    "description": "iOS: wait out the Flutter splash, then log in with the demo account (0000000000). Robo types the phone number; it can't type into the OTP boxes, so the Robo build (--dart-define=ROBO_TEST=true, lib/utils/robo_test.dart) enters the demo code 0000 itself. On iOS Flutter text fields are TextInputSemanticsObject elements, and the login screen has just one.",
+    "crawlStage": "crawl",
+    "contextDescriptor": {
+      "condition": "app_launched"
+    },
+    "actions": [
+      {
+        "eventType": "WAIT_FOR_ELEMENT",
+        "delayTime": 60000,
+        "elementDescriptors": [
+          {
+            "contentDescription": "Login your account"
+          }
+        ]
+      },
+      {
+        "eventType": "VIEW_CLICKED",
+        "elementDescriptors": [
+          {
+            "contentDescription": "Login your account"
+          }
+        ]
+      },
+      {
+        "eventType": "WAIT_FOR_ELEMENT",
+        "delayTime": 15000,
+        "elementDescriptors": [
+          {
+            "contentDescription": "Send Confirmation Code"
+          }
+        ]
+      },
+      {
+        "eventType": "VIEW_TEXT_CHANGED",
+        "replacementText": "0000000000",
+        "elementDescriptors": [
+          {
+            "className": "TextInputSemanticsObject"
+          }
+        ]
+      },
+      {
+        "eventType": "VIEW_CLICKED",
+        "elementDescriptors": [
+          {
+            "contentDescription": "Send Confirmation Code"
+          }
+        ]
+      },
+      {
+        "eventType": "WAIT_FOR_ELEMENT",
+        "delayTime": 30000,
+        "elementDescriptors": [
+          {
+            "contentDescription": "Verification code"
+          }
+        ]
+      },
+      {
+        "eventType": "WAIT_FOR_ELEMENT",
+        "delayTime": 60000,
+        "elementDescriptors": [
+          {
+            "contentDescription": "Payments"
+          }
+        ]
+      }
+    ]
+  }
+]

@@ -4,6 +4,7 @@ import 'package:thegreenmall/dashboard/orders/controller/orders_home_main_contro
 import 'package:thegreenmall/utils/utils.dart';
 
 import '../view/component/order_status_enum.dart';
+import 'package:thegreenmall/utils/brand_image.dart';
 
 class MarkReturnOrderScreen extends StatefulWidget {
   final String? orderId;
@@ -48,6 +49,11 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> with Glob
                             children: [
                               Row(
                                 children: [
+                                  Image.asset(
+                                    ImageConstants.homeMall,
+                                    scale: 4,
+                                  ),
+                                  width10SizedBox,
                                   IconButton(
                                     padding: EdgeInsets.all(5),
                                     constraints: const BoxConstraints(),
@@ -55,7 +61,7 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> with Glob
                                       Get.back(id: pageIdApp.value);
 
                                     },
-                                    icon: const Icon(
+                                    icon: Icon(
                                       Icons.arrow_back,
                                       color: AppColors.black,
                                       size: 24.0,
@@ -64,17 +70,13 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> with Glob
                                   width10SizedBox,
                                   Text(
                                     StringConstants.returnRequestText,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         fontSize: 22,
                                         color: AppColors.black,
                                         fontWeight: FontWeight.w600),
                                   ),
                                 ],
                               ),
-                              Image.asset(
-                                ImageConstants.homeMall,
-                                scale: 4,
-                              )
                             ]),
                       ],
                     )),
@@ -124,7 +126,7 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> with Glob
                                               ordersHomeMainController
                                                   .customerName.value
                                                   .toTitleCase(),
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                   color: AppColors.black,
                                                   fontWeight: FontWeight.w600,
                                                   fontSize: 16)),
@@ -141,7 +143,7 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> with Glob
                                               child: Text(
                                                   ordersHomeMainController
                                                       .orderDate.value,
-                                                  style: const TextStyle(
+                                                  style: TextStyle(
                                                       overflow: TextOverflow.ellipsis,
                                                       color: AppColors.black,
                                                       fontWeight: FontWeight.w500,
@@ -170,7 +172,7 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> with Glob
                                                               ?.deliveryService
                                                               ?.name ??
                                                           "",
-                                                      style: const TextStyle(
+                                                      style: TextStyle(
                                                           overflow:
                                                               TextOverflow.ellipsis,
                                                           color: AppColors.black,
@@ -188,8 +190,8 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> with Glob
                                                       fontWeight: FontWeight.w400,
                                                       fontSize: 14)),
                                               Obx(() => Text(
-                                                    "\$${ordersHomeMainController.orderAmount.value}",
-                                                    style: const TextStyle(
+                                                    "$currencySign${ordersHomeMainController.orderAmount.value}",
+                                                    style: TextStyle(
                                                         color: AppColors.black,
                                                         fontWeight: FontWeight.w500,
                                                         fontSize: 14),
@@ -209,7 +211,7 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> with Glob
                                 Container(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 5),
-                                  decoration: const BoxDecoration(
+                                  decoration: BoxDecoration(
                                       color: AppColors.greyLight,
                                       borderRadius: BorderRadius.all(
                                         Radius.circular(10.0),
@@ -237,7 +239,7 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> with Glob
                                             ),
                                             width8SizedBox,
                                             Text(StringConstants.identityProofText,
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                     color: AppColors.black,
                                                     fontWeight: FontWeight.w600,
                                                     fontSize: 16)),
@@ -264,7 +266,7 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> with Glob
                                                         Get.back();
                                                         // Navigator.pop(_);
                                                       },
-                                                      child: const Icon(
+                                                      child: Icon(
                                                         Icons.clear,
                                                         color: AppColors.primary,
                                                         size: 24.0,
@@ -319,7 +321,7 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> with Glob
                                             }
                                           },
                                           child: Text(StringConstants.viewText,
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                   decoration:
                                                       TextDecoration.underline,
                                                   color: AppColors.primary,
@@ -345,7 +347,7 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> with Glob
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
                                       Center(
-                                        child: Image.asset(
+                                        child: BrandImage.asset(
                                           ImageConstants.nodata,
                                           scale: 8,
                                           color: AppColors.primary,
@@ -380,7 +382,7 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> with Glob
                                       child: Container(
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 10, vertical: 5),
-                                        decoration: const BoxDecoration(
+                                        decoration: BoxDecoration(
                                             color: AppColors.greyLight,
                                             borderRadius: BorderRadius.all(
                                               Radius.circular(10.0),
@@ -398,16 +400,18 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> with Glob
                                                       border: Border.all(
                                                           color: AppColors.white,
                                                           width: 1)),
+                                                  // A product can have no images.
                                                   child: CommonWidgets
                                                       .cachedNetworkImage(
                                                           ordersHomeMainController
-                                                              .getOrderItems[index]
-                                                              .product!
-                                                              .productImages!
-                                                              .first
-                                                              .image!
-                                                              .dynamicUrl
-                                                              .toString()),
+                                                                  .getOrderItems[
+                                                                      index]
+                                                                  .product
+                                                                  ?.productImages
+                                                                  ?.firstOrNull
+                                                                  ?.image
+                                                                  ?.dynamicUrl ??
+                                                              ""),
                                                 ),
                                               ),
                                               width10SizedBox,
@@ -423,7 +427,7 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> with Glob
                                                                 .product!
                                                                 .productName ??
                                                             "",
-                                                        style: const TextStyle(
+                                                        style: TextStyle(
                                                             color: AppColors.black,
                                                             fontWeight:
                                                                 FontWeight.w600,
@@ -576,7 +580,7 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> with Glob
                   border: Border.all(
                     color: AppColors.primary,
                   ),
-                  gradient: const LinearGradient(
+                  gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [AppColors.primary, AppColors.primary],
@@ -608,7 +612,7 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> with Glob
             return ordersHomeMainController.isLoading.value
                 ? Container(
               color: Colors.black.withOpacity(0.2),
-              child: const Center(
+              child: Center(
                 child: CircularProgressIndicator(color: AppColors.primary),
               ),)
                 : const SizedBox.shrink();

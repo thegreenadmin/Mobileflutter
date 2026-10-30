@@ -1,9 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.app.thegreenmall">
+    package="com.thegreenmall">
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.USE_BIOMETRIC"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="com.android.vending.BILLING"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
@@ -38,9 +39,31 @@
             <meta-data
                 android:name="com.google.android.gms.wallet.api.enabled"
                 android:value="true" />
+            <!-- Deep links are handled by the app_links plugin (see
+                 DeepLinkService), not Flutter's built-in Navigator-based deep
+                 linking. Leaving Flutter's handler on makes it treat the
+                 incoming /pay/<token> URL as the app's initial route, which
+                 GetX can't match and crashes at startup. Keep this false. -->
+            <meta-data
+                android:name="flutter_deeplinking_enabled"
+                android:value="false" />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+            <!-- App Links: open https://thegreenmall.net/pay/<token> (payment QR)
+                 and /order/<token> (pickup QR) directly in the app. autoVerify
+                 makes Android fetch /.well-known/assetlinks.json so the links
+                 skip the chooser. -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data
+                    android:scheme="https"
+                    android:host="thegreenmall.net"
+                    android:pathPrefix="/pay"/>
+                <data android:pathPrefix="/order"/>
             </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.

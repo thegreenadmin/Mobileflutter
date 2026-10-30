@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_google_maps_webservices/geocoding.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -6,7 +8,9 @@ import 'package:get/get.dart';
 // import "package:google_maps_webservice/geocoding.dart";
 import 'package:intl/intl.dart';
 import 'package:thegreenmall/dashboard/home/model/get_user_detail_model.dart';
+import 'package:thegreenmall/utils/app_logger.dart';
 import 'package:thegreenmall/utils/utils.dart';
+import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
 class Utility {
 
@@ -50,6 +54,16 @@ class Utility {
     return ServerCommunicator.baseUrlWithoutV1 + url;
   }
 
+  /// Handle 401 unauthorized errors - skip redirect for guest users
+  static void handle401Error() {
+    // Skip redirect for guest users by checking reactive variable
+    if (isGuest.value == true) {
+      return;
+    }
+    // Redirect to login for authenticated users
+    Get.offAll(() => const StartJourneyScreen());
+  }
+
   static void showConfirmAlertMessage(title,
       {String description = "",
       String? cancelText,
@@ -78,7 +92,7 @@ class Utility {
               height12SizedBox,
               Text(
                 title,
-                style: const TextStyle(
+                style: TextStyle(
                     color: AppColors.black,
                     fontSize: 20,
                     fontWeight: FontWeight.w600),
@@ -91,7 +105,7 @@ class Utility {
                     height15SizedBox,
                     Text(
                       description,
-                      style: const TextStyle(
+                      style: TextStyle(
                           color: AppColors.black,
                           fontSize: 16,
                           height: 1.6,
@@ -120,7 +134,7 @@ class Utility {
                       child: Center(
                         child: Text(
                           cancelText ?? StringConstants.cancelText,
-                          style: const TextStyle(
+                          style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 16.0,
                               color: AppColors.primary),
@@ -209,7 +223,7 @@ class Utility {
               visible: title != null,
               child: Text(
                 title ?? "",
-                style: const TextStyle(
+                style: TextStyle(
                     color: AppColors.black,
                     fontSize: 20,
                     fontWeight: FontWeight.w600),
@@ -255,7 +269,9 @@ class Utility {
         ),
         actions: const <Widget>[],
       ),
-    );
+      // Clear the flag however the dialog closes (back, a route reset on
+      // 401), not only on Okay, or every later alert is silently dropped.
+    ).whenComplete(() => _isDialogShowing = false);
   }
 
   static showAlert(
@@ -266,11 +282,11 @@ class Utility {
     return await Get.dialog(AlertDialog(
       title: Text(
         StringConstants.alertText,
-        style: const TextStyle(color: AppColors.primary, fontSize: 20),
+        style: TextStyle(color: AppColors.primary, fontSize: 20),
       ),
       content: Text(
         message,
-        style: const TextStyle(
+        style: TextStyle(
           color: AppColors.black,
           fontSize: 18,
         ),
@@ -316,30 +332,113 @@ class Utility {
     return TimeOfDay.fromDateTime(format.parse(tod));
   }
 
-  static Future<Position> fetchCurrentLocation() async {
-    bool serviceEnabled;
-    LocationPermission permission;
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    try {
-      if (!serviceEnabled) {
-        return Future.error('Location services are disabled.');
-      }
-      permission = await Geolocator.checkPermission();
-      if (permission == LocationPermission.denied) {
-        permission = await Geolocator.requestPermission();
-        if (permission == LocationPermission.denied) {
-          return Future.error('Location permissions are denied');
-        }
-      }
-      if (permission == LocationPermission.deniedForever) {
-        return Future.error(
-            'Location permissions are permanently denied, we cannot request permissions.');
-      }
+  // ---------------------------------------------------------------------------
+  // In-process location cache — survives controller recreation (Get.delete/put).
+  // Eliminates the 1-2 second GPS cold-start on every store navigation.
+  // ---------------------------------------------------------------------------
+  static Position? _cachedPosition;
+  static Stopwatch? _cacheStopwatch; // monotonic clock — immune to system-time changes
+  static const Duration _cacheMaxAge = Duration(minutes: 3);
 
-      return await Geolocator.getCurrentPosition();
+  // Completer-based lock: non-null while a background refresh is in flight.
+  // All callers that arrive while a refresh is running share the SAME Completer
+  // future, guaranteeing exactly one GPS request regardless of how many
+  // controllers call _refreshLocationCache() simultaneously.
+  static Completer<void>? _refreshCompleter;
+
+  /// Returns a position immediately if the in-process cache is fresh, otherwise
+  /// waits for GPS. After returning, refreshes the cache in the background so
+  /// the *next* navigation is instant too.
+  static Future<Position> fetchCurrentLocation() async {
+    final serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return Future.error('Location services are disabled.');
+    }
+
+    var permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are denied');
+      }
+    }
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error('Location permissions are permanently denied.');
+    }
+
+    // 1. Return in-process cache immediately if fresh.
+    //    Uses a Stopwatch (monotonic) so device-clock changes don't corrupt the age.
+    if (_cachedPosition != null &&
+        _cacheStopwatch != null &&
+        _cacheStopwatch!.elapsed <= _cacheMaxAge) {
+      _refreshLocationCache(); // warm next fix in background — idempotent
+      return _cachedPosition!;
+    }
+
+    // 2. Fall back to OS last-known position (usually instant).
+    final lastKnown = await Geolocator.getLastKnownPosition();
+    if (lastKnown != null) {
+      final osAge = DateTime.now().difference(lastKnown.timestamp);
+      if (osAge <= _cacheMaxAge) {
+        _updateCache(lastKnown);
+        _refreshLocationCache(); // warm fresh fix in background
+        return lastKnown;
+      }
+    }
+
+    // 3. No usable cache — must await a fresh GPS fix.
+    try {
+      final position = await Geolocator.getCurrentPosition(
+        timeLimit: const Duration(seconds: 10),
+      );
+      _updateCache(position);
+      return position;
     } catch (e) {
+      if (lastKnown != null) return lastKnown;
       return Future.error(e.toString());
     }
+  }
+
+  /// Writes a position into the cache and resets the monotonic stopwatch.
+  static void _updateCache(Position position) {
+    _cachedPosition = position;
+    _cacheStopwatch = Stopwatch()..start();
+  }
+
+  /// Silently fetches a fresh GPS fix in the background.
+  ///
+  /// Uses a [Completer]-based lock: if a refresh is already in flight, this
+  /// call is a no-op — the existing Completer already owns the GPS request.
+  /// The Completer is completed (and nulled) only after the GPS Future fully
+  /// resolves, so no second caller can slip past the guard mid-flight.
+  static void _refreshLocationCache() {
+    if (_refreshCompleter != null) return; // already in flight — skip
+    _refreshCompleter = Completer<void>();
+
+    Geolocator.getCurrentPosition(
+      timeLimit: const Duration(seconds: 15),
+    )
+    // Outer timeout: defense-in-depth in case the Geolocator plugin's
+    // internal timeLimit doesn't fire (e.g. plugin bug or frozen GPS stack).
+    // Ensures _refreshCompleter is always cleared within 20 seconds.
+    .timeout(
+      const Duration(seconds: 20),
+      onTimeout: () => throw TimeoutException('Location refresh timed out'),
+    )
+    .then((pos) {
+      _updateCache(pos);
+      AppLogger.debug('Location cache refreshed in background: '
+          '${pos.latitude}, ${pos.longitude}');
+    }).catchError((Object error) {
+      // Stale cache is acceptable — the next foreground call will retry.
+      // Log so developers can diagnose persistent GPS failures.
+      AppLogger.warning(
+          'Background location refresh failed: $error. '
+          'Stale cache will be used until next foreground fetch.');
+    }).whenComplete(() {
+      _refreshCompleter!.complete(); // signal completion
+      _refreshCompleter = null;      // release lock for next refresh cycle
+    });
   }
 
   static alertDialog(context,
@@ -355,13 +454,13 @@ class Utility {
         return AlertDialog(
           title: Text(
             title,
-            style: const TextStyle(
+            style: TextStyle(
                 fontWeight: FontWeight.w600,
                 color: AppColors.black,
                 fontSize: 20),
           ),
           content: Text(description,
-              style: const TextStyle(
+              style: TextStyle(
                   fontWeight: FontWeight.w400,
                   color: AppColors.black,
                   fontSize: 20)),
@@ -402,7 +501,7 @@ class Utility {
                     Get.back();
                     // Navigator.pop(contextt);
                   },
-                  child: const Icon(
+                  child: Icon(
                     Icons.clear,
                     color: AppColors.primary,
                     size: 24.0,
@@ -411,7 +510,7 @@ class Utility {
               ),
               title: Text(
                 StringConstants.fromWherePhotoText,
-                style: const TextStyle(
+                style: TextStyle(
                     color: AppColors.black,
                     fontSize: 16,
                     fontWeight: FontWeight.w500),
@@ -422,14 +521,14 @@ class Utility {
                     InkWell(
                       child: Row(
                         children: [
-                          const Icon(
+                          Icon(
                             Icons.image_sharp,
                             color: AppColors.primary,
                             size: 24.0,
                           ),
                           width10SizedBox,
                           Text(StringConstants.galleryText,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   color: AppColors.primary, fontSize: 16)),
                         ],
                       ),
@@ -442,14 +541,14 @@ class Utility {
                     InkWell(
                       child: Row(
                         children: [
-                          const Icon(
+                          Icon(
                             Icons.camera_alt,
                             color: AppColors.primary,
                             size: 24.0,
                           ),
                           width10SizedBox,
                           Text(StringConstants.cameraText,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   color: AppColors.primary, fontSize: 16)),
                         ],
                       ),

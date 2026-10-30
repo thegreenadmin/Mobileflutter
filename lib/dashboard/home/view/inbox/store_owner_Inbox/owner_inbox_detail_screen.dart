@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -7,7 +8,9 @@ import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/owner_inbox_detail_controller.dart';
 import 'package:thegreenmall/dashboard/home/model/owner_message_list_model.dart';
 import 'package:thegreenmall/dashboard/home/view/inbox/user_Inbox/image_preview_screen.dart';
+import 'package:thegreenmall/utils/guest_access_modal.dart';
 import 'package:thegreenmall/utils/utils.dart';
+import 'package:thegreenmall/utils/brand_image.dart';
 
 class OwnerInboxDetailScreen extends StatefulWidget {
   final String? storeName;
@@ -29,6 +32,22 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> with Glo
 
   @override
   void initState() {
+    // Check if user is guest - show modal for account-based features
+    if (isGuest.value == true) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        GuestAccessModal.show(
+          title: StringConstants.loginRequiredText,
+          message: StringConstants.loginToAccessInboxText,
+          onContinueAsGuest: () {
+            // Allow guest to continue - just close modal and go back
+            Get.back();
+          },
+        );
+      });
+      super.initState();
+      return;
+    }
+    
     getRole();
 
     ownerInboxDetailController.storeName.value = widget.storeName??"";
@@ -60,7 +79,7 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> with Glo
                 borderRadius: BorderRadius.circular(10),
                 image: DecorationImage(
                   fit: BoxFit.cover,
-                  image: NetworkImage(ownerInboxDetailController
+                  image: CachedNetworkImageProvider(ownerInboxDetailController
                       .userSelectedImageDynamicLinkFromServer.value),
                 ),
               ),
@@ -98,7 +117,7 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> with Glo
           children: [
             Expanded(
               child: Container(
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                       color: AppColors.greyLight,
                       borderRadius: BorderRadius.all(
                         Radius.circular(50),
@@ -131,7 +150,7 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> with Glo
                               ownerInboxDetailController
                                   .showSelectionDialog(context);
                             },
-                            child: const Icon(
+                            child: Icon(
                               Icons.image,
                               color: AppColors.primary,
                               size: 24.0,
@@ -181,7 +200,6 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> with Glo
                       backgroundColor: AppColors.primary,
                       textColor: AppColors.white,
                       fontSize: 14.0);
-                  debugPrint("C2 *****");
                 } else if (ownerInboxDetailController
                         .messageTextController.text.isNotEmpty &&
                     ownerInboxDetailController
@@ -190,7 +208,6 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> with Glo
                         .isEmpty) {
                   // FocusScope.of(context).requestFocus(FocusNode());
                   await ownerInboxDetailController.apiSendMessage();
-                  debugPrint("C3 *****");
                 } else if (ownerInboxDetailController
                         .messageTextController.text.isNotEmpty &&
                     ownerInboxDetailController
@@ -199,10 +216,9 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> with Glo
                         .isNotEmpty) {
                   // FocusScope.of(context).requestFocus(FocusNode());
                   await ownerInboxDetailController.apiSendMessage();
-                  debugPrint("C4 *****");
                 }
               },
-              child: const Center(
+              child: Center(
                 child: Icon(
                   Icons.send_outlined,
                   color: AppColors.primary,
@@ -351,7 +367,7 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> with Glo
                                             ""
                                         ? "Name:- ${ownerInboxDetailController.customerName?.value}"
                                         : "",
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 10,
                                       color: AppColors.black,
                                       fontWeight: FontWeight.w400,
@@ -364,7 +380,7 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> with Glo
                                       ),
                                       secFormat: '',
                                     ).toString(),
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 10,
                                       color: AppColors.black,
                                       fontWeight: FontWeight.w400,
@@ -467,7 +483,7 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> with Glo
                               height10SizedBox,
                               Text(messageList[index].message ?? "",
                                   overflow: TextOverflow.visible,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 14,
                                     color: AppColors.primary,
                                     fontWeight: FontWeight.w300,
@@ -646,6 +662,11 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> with Glo
                                 children: [
                                   Row(
                                     children: [
+                                      Image.asset(
+                                        ImageConstants.homeMall,
+                                        scale: 4,
+                                      ),
+                                      width10SizedBox,
                                       IconButton(
                                         padding: EdgeInsets.all(10),
                                         constraints: const BoxConstraints(),
@@ -653,7 +674,7 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> with Glo
                                           Get.back(id: pageIdApp.value, result: true);
                                           // Get.back();
                                         },
-                                        icon: const Icon(
+                                        icon: Icon(
                                           Icons.arrow_back,
                                           color: AppColors.black,
                                           size: 24.0,
@@ -662,17 +683,13 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> with Glo
                                       width10SizedBox,
                                       Obx(() => Text(
                                         ownerInboxDetailController.storeName.value,
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                             fontSize: 22,
                                             color: AppColors.black,
                                             fontWeight: FontWeight.w600),
                                       )),
                                     ],
                                   ),
-                                  Image.asset(
-                                    ImageConstants.homeMall,
-                                    scale: 4,
-                                  )
                                 ]),
                           ],
                         )),
@@ -697,14 +714,14 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> with Glo
                                                 : Column(
                                                     children: [
                                                       height20SizedBox,
-                                                      Image.asset(
+                                                      BrandImage.asset(
                                                         ImageConstants.nodata,
                                                         color: AppColors.primary,
                                                         scale: 8,
                                                       ),
                                                       Text(
                                                         StringConstants.noMessagesYetText,
-                                                        style: const TextStyle(
+                                                        style: TextStyle(
                                                           fontSize: 14,
                                                           fontWeight: FontWeight.w600,
                                                           color: AppColors.primary,
@@ -756,6 +773,9 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> with Glo
                               )),
                           _buildMessageComposer(),
                           GetBuilder<OwnerInboxDetailController>(
+                              init: Get.isRegistered<OwnerInboxDetailController>()
+                                  ? Get.find<OwnerInboxDetailController>()
+                                  : OwnerInboxDetailController(),
                               builder: (inboxDetailController) => inboxDetailController
                                       .userSelectedImageDynamicLinkFromServer.isNotEmpty
                                   ? buildPhotoLibraryGridView()
@@ -773,7 +793,7 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> with Glo
             return ownerInboxDetailController.isLoading.value
                 ? Container(
               color: Colors.black.withOpacity(0.2),
-              child: const Center(
+              child: Center(
                 child: CircularProgressIndicator(color: AppColors.primary),
               ),)
                 : const SizedBox.shrink();

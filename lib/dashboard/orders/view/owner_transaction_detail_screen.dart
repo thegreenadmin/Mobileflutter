@@ -57,13 +57,18 @@ class _OwnerTransactionDetailScreenState
                         children: [
                           Row(
                             children: [
+                              Image.asset(
+                                ImageConstants.homeMall,
+                                scale: 4,
+                              ),
+                              width10SizedBox,
                               IconButton(
                                 padding: EdgeInsets.zero,
                                 constraints: const BoxConstraints(),
                                 onPressed: () {
                                   Get.back(id: pageIdApp.value);
                                 },
-                                icon: const Icon(
+                                icon: Icon(
                                   Icons.arrow_back,
                                   color: AppColors.black,
                                   size: 24.0,
@@ -72,17 +77,13 @@ class _OwnerTransactionDetailScreenState
                               width10SizedBox,
                               Text(
                                 StringConstants.detailText,
-                                style: const TextStyle(
+                                style: TextStyle(
                                     fontSize: 22,
                                     color: AppColors.black,
                                     fontWeight: FontWeight.w600),
                               ),
                             ],
                           ),
-                          Image.asset(
-                            ImageConstants.homeMall,
-                            scale: 4,
-                          )
                         ]),
                   ],
                 )),
@@ -133,7 +134,7 @@ class _OwnerTransactionDetailScreenState
                                     Obx(() => Text(
                                         transactionDetailController
                                             .customerName!.value,
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                             color: AppColors.black,
                                             fontWeight: FontWeight.w600,
                                             fontSize: 16))),
@@ -148,7 +149,7 @@ class _OwnerTransactionDetailScreenState
                                       Text(
                                           transactionDetailController.orderDate
                                               .toString(),
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                               color: AppColors.black,
                                               fontWeight: FontWeight.w500,
                                               fontSize: 14)),
@@ -163,8 +164,8 @@ class _OwnerTransactionDetailScreenState
                                                 fontWeight: FontWeight.w400,
                                                 fontSize: 14)),
                                         Obx(() => Text(
-                                              "\$${transactionDetailController.orderAmount!.value}",
-                                              style: const TextStyle(
+                                              "$currencySign${transactionDetailController.orderAmount!.value}",
+                                              style: TextStyle(
                                                   color: AppColors.black,
                                                   fontWeight: FontWeight.w500,
                                                   fontSize: 14),

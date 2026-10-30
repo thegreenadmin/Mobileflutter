@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+import 'dart:ui' as ui;
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -9,6 +10,7 @@ import 'package:http/io_client.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
+import 'package:thegreenmall/utils/app_logger.dart';
 
 class UserProvider extends GetConnect {
   static final HttpClient _httpClient = HttpClient()
@@ -22,27 +24,49 @@ class UserProvider extends GetConnect {
     _httpClient.close(force: true);
   }
 
+  /// Safely convert a request payload into a Map for logging.
+  ///
+  /// `data` is sometimes a plain Map (most endpoints) and sometimes a typed
+  /// model object such as InputAddProduct (e.g. product create/edit). The model
+  /// objects are not Maps, so `Map<String, dynamic>.from(data)` threw
+  /// `type 'X' is not a subtype of type 'Map<dynamic, dynamic>'`. Prefer the
+  /// model's toJson(); fall back to a string so logging never crashes the call.
+  static dynamic _loggable(dynamic data) {
+    if (data == null) return null;
+    if (data is Map) return Map<String, dynamic>.from(data);
+    try {
+      return (data as dynamic).toJson();
+    } catch (_) {
+      return data.toString();
+    }
+  }
+
   Future<Response?> getWithHeadersApi(String url, Map<String, String> headers,
-      {bool showLoading = false}) async
+      {bool showLoading = false, bool showError = true}) async
   {
     headers.putIfAbsent('Connection', () => 'keep-alive');
     headers.putIfAbsent('Keep-Alive', () => 'timeout=5, max=1000');
+    // Device region hint for server-side country resolution (feature gating).
+    final deviceCountry = ui.PlatformDispatcher.instance.locale.countryCode;
+    if (deviceCountry != null && deviceCountry.isNotEmpty) {
+      headers.putIfAbsent('X-Device-Country', () => deviceCountry);
+    }
 
-    log("API URL********** $url");
-    log("API METHOD********** GET getWithHeadersApi");
-    log("API headers********** $headers");
+    AppLogger.logApiRequest('GET', url, {'headers': headers});
 // ✅ Check Internet Before Proceeding
     var connectivityResult = await Connectivity().checkConnectivity();
     if ( connectivityResult.contains(ConnectivityResult.none)) {
-      Utility.showAlertMessage(
-        "Please check your network connection.",
-        title: "No Internet Connection!",
-      );
+      if (showError) {
+        Utility.showAlertMessage(
+          "Please check your network connection.",
+          title: "No Internet Connection!",
+        );
+      }
       return null;
     }
         if (showLoading) {
           Get.dialog(
-              const Center(
+              Center(
                   child: CircularProgressIndicator(color: AppColors.primary)),
               barrierDismissible: false);
         }
@@ -54,54 +78,43 @@ class UserProvider extends GetConnect {
       final res = await _ioClient.get(Uri.parse(url), headers: headers)  .timeout(const Duration(seconds: 30));
       if (showLoading) Get.back();
 
-
-      log("API res.statusCode********** ${res.statusCode}");
-      log("API Response********** ${res.body}");
-      log("API Response********** ${json.decode(res.body)}");
+      AppLogger.logApiResponse('GET', url, res.statusCode, json.decode(res.body));
       return Response(statusCode: res.statusCode, body: json.decode(res.body));
-    }  on TimeoutException {
+    } on TimeoutException catch (e) {
       if (showLoading) Get.back();
-
+      AppLogger.error('Connection timed out', error: e);
+      if (showError) {
         Utility.showAlertMessage(
           "Connection timed out.",
           title:  AlertStringConstants.alertText,
         );
-
+      }
       return null;
     } on Exception catch (e) {
       if (showLoading) Get.back();
-
+      AppLogger.error('Exception in getWithHeadersApi', error: e);
+      if (showError) {
         Utility.showAlertMessage(
           e.toString(),
           title:  AlertStringConstants.alertText,
         );
-
+      }
       return null;
     } catch (e) {
       if (showLoading) Get.back();
-
+      AppLogger.error('Error in getWithHeadersApi', error: e);
+      if (showError) {
         Utility.showAlertMessage(
           e.toString(),
           title:  AlertStringConstants.alertText,
         );
-
-      return null;
-    } catch (e) {
-      if (showLoading) Get.back();
-
-        Utility.showAlertMessage(
-          e.toString(),
-          title:  AlertStringConstants.alertText,
-        );
-
+      }
       return null;
     }
   }
 
   Future<Response?> postApi(Map data, String url, {bool showLoading = false}) async {
-    log("API URL********** $url");
-    log("API METHOD********** POST postApi");
-    log("API data ********** ${json.encode(data)}");
+    AppLogger.logApiRequest('POST', url, _loggable(data));
 // ✅ Check Internet Before Proceeding
     var connectivityResult = await Connectivity().checkConnectivity();
     if ( connectivityResult.contains(ConnectivityResult.none)) {
@@ -113,7 +126,7 @@ class UserProvider extends GetConnect {
     }
         if (showLoading) {
           Get.dialog(
-              const Center(
+              Center(
                   child: CircularProgressIndicator(color: AppColors.primary)),
               barrierDismissible: false);
         }
@@ -130,38 +143,36 @@ class UserProvider extends GetConnect {
 
       final mData = json.decode(res.body) as Map<String, dynamic>;
       if (mData["multicast_id"] != null) {
+        AppLogger.error('FCM Error');
         Utility.showAlertMessage("FCM Error", title: "Alert!");
         return null;
       }
 
-      log("API Response********** ${json.decode(res.body)}");
+      AppLogger.logApiResponse('POST', url, res.statusCode, json.decode(res.body));
       return Response(statusCode: res.statusCode, body: json.decode(res.body));
-    }  on TimeoutException {
+    } on TimeoutException catch (e) {
       if (showLoading) Get.back();
-
-        Utility.showAlertMessage(
-          "Connection timed out.",
-          title:  AlertStringConstants.alertText,
-        );
-
+      AppLogger.error('Connection timed out', error: e);
+      Utility.showAlertMessage(
+        "Connection timed out.",
+        title:  AlertStringConstants.alertText,
+      );
       return null;
     } on Exception catch (e) {
       if (showLoading) Get.back();
-
-        Utility.showAlertMessage(
-          e.toString(),
-          title:  AlertStringConstants.alertText,
-        );
-
+      AppLogger.error('Exception in postApi', error: e);
+      Utility.showAlertMessage(
+        e.toString(),
+        title:  AlertStringConstants.alertText,
+      );
       return null;
     } catch (e) {
       if (showLoading) Get.back();
-
-        Utility.showAlertMessage(
-          e.toString(),
-          title:  AlertStringConstants.alertText,
-        );
-
+      AppLogger.error('Error in postApi', error: e);
+      Utility.showAlertMessage(
+        e.toString(),
+        title:  AlertStringConstants.alertText,
+      );
       return null;
     }
   }
@@ -170,9 +181,7 @@ class UserProvider extends GetConnect {
   Future<Response?> putApi(Map data, String url,
       {bool showLoading = false}) async
   {
-    log("API URL********** $url");
-    log("API data ********** $data");
-    log("API METHOD********** PUT");
+    AppLogger.logApiRequest('PUT', url, _loggable(data));
 
     // ✅ Check Internet Before Proceeding
     var connectivityResult = await Connectivity().checkConnectivity();
@@ -186,7 +195,7 @@ class UserProvider extends GetConnect {
     
         if (showLoading) {
           Get.dialog(
-              const Center(
+              Center(
                   child: CircularProgressIndicator(color: AppColors.primary)),
               barrierDismissible: false);
         }
@@ -200,44 +209,39 @@ class UserProvider extends GetConnect {
 
         if (showLoading) Get.back();
 
-        log("API Response********** ${json.decode(res.body)}");
+        AppLogger.logApiResponse('PUT', url, res.statusCode, json.decode(res.body));
         return Response(statusCode: res.statusCode, body: json.decode(res.body));
       } on SocketException catch (e) {
         if (showLoading) Get.back();
-
+        AppLogger.error('Server error', error: e);
         Utility.showAlertMessage(
           "Server error",
           title:  AlertStringConstants.alertText,
         );
-
         return null;
-
-    }  on TimeoutException {
+    } on TimeoutException catch (e) {
       if (showLoading) Get.back();
-
-        Utility.showAlertMessage(
-          "Connection timed out.",
-          title:  AlertStringConstants.alertText,
-        );
-
+      AppLogger.error('Connection timed out', error: e);
+      Utility.showAlertMessage(
+        "Connection timed out.",
+        title:  AlertStringConstants.alertText,
+      );
       return null;
     } on Exception catch (e) {
       if (showLoading) Get.back();
-
-        Utility.showAlertMessage(
-          e.toString(),
-          title:  AlertStringConstants.alertText,
-        );
-
+      AppLogger.error('Exception in putApi', error: e);
+      Utility.showAlertMessage(
+        e.toString(),
+        title:  AlertStringConstants.alertText,
+      );
       return null;
     } catch (e) {
       if (showLoading) Get.back();
-
-        Utility.showAlertMessage(
-          e.toString(),
-          title:  AlertStringConstants.alertText,
-        );
-
+      AppLogger.error('Error in putApi', error: e);
+      Utility.showAlertMessage(
+        e.toString(),
+        title:  AlertStringConstants.alertText,
+      );
       return null;
     }
   }
@@ -245,14 +249,16 @@ class UserProvider extends GetConnect {
   // Post with header request
   Future<Response?> postWithHeadersApi(
       data, String url, Map<String, String> headers,
-      {bool showLoading = false}) async {
+      {bool showLoading = false, bool showError = true}) async {
 
 
     headers.putIfAbsent('Keep-Alive', () => 'timeout=5, max=1000');
-    log("API URL********** $url");
-    log("API headers ********** $headers");
-    log("API data ********** $data");
-    log("API METHOD********** POST postWithHeadersApi");
+    // Device region hint for server-side country resolution (feature gating).
+    final deviceCountry = ui.PlatformDispatcher.instance.locale.countryCode;
+    if (deviceCountry != null && deviceCountry.isNotEmpty) {
+      headers.putIfAbsent('X-Device-Country', () => deviceCountry);
+    }
+    AppLogger.logApiRequest('POST (with headers)', url, {'headers': headers, 'data': _loggable(data)});
 // ✅ Check Internet Before Proceeding
     var connectivityResult = await Connectivity().checkConnectivity();
     if ( connectivityResult.contains(ConnectivityResult.none)) {
@@ -264,7 +270,7 @@ class UserProvider extends GetConnect {
     }
         if (showLoading) {
           Get.dialog(
-              const Center(
+              Center(
                   child: CircularProgressIndicator(color: AppColors.primary)),
               barrierDismissible: false);
         }
@@ -281,51 +287,54 @@ class UserProvider extends GetConnect {
 
       final mData = json.decode(res.body) as Map<dynamic, dynamic>;
       if (mData["multicast_id"] != null) {
+        AppLogger.error('FCM Error');
         Utility.showAlertMessage("FCM Error", title: "Alert!");
         return null;
       }
-      log("API Response********** ${json.decode(res.body)}");
+      AppLogger.logApiResponse('POST (with headers)', url, res.statusCode, json.decode(res.body));
       return Response(
           statusCode: res.statusCode,
           body: json.decode(res.body),
           headers: headers);
       } on SocketException catch (e) {
         if (showLoading) Get.back();
-
-        Utility.showAlertMessage(
-          "Server error",
-          title:  AlertStringConstants.alertText,
-        );
-
+        AppLogger.error('Server error', error: e);
+        if (showError) {
+          Utility.showAlertMessage(
+            "Server error",
+            title:  AlertStringConstants.alertText,
+          );
+        }
         return null;
-
-
-    }  on TimeoutException {
+    } on TimeoutException catch (e) {
       if (showLoading) Get.back();
-
+      AppLogger.error('Connection timed out', error: e);
+      if (showError) {
         Utility.showAlertMessage(
           "Connection timed out.",
           title:  AlertStringConstants.alertText,
         );
-
+      }
       return null;
     } on Exception catch (e) {
       if (showLoading) Get.back();
-
+      AppLogger.error('Exception in postWithHeadersApi', error: e);
+      if (showError) {
         Utility.showAlertMessage(
           e.toString(),
           title:  AlertStringConstants.alertText,
         );
-
+      }
       return null;
     } catch (e) {
       if (showLoading) Get.back();
-
+      AppLogger.error('Error in postWithHeadersApi', error: e);
+      if (showError) {
         Utility.showAlertMessage(
           e.toString(),
           title:  AlertStringConstants.alertText,
         );
-
+      }
       return null;
     }
   }
@@ -336,10 +345,12 @@ class UserProvider extends GetConnect {
       {bool showLoading = false}) async {
 
     headers.putIfAbsent('Keep-Alive', () => 'timeout=5, max=1000');
-    log("API URL********** $url");
-    log("API data ********** $data");
-    log("API data ********** $headers");
-    log("API METHOD********** PUT putWithHeadersApi");
+    // Device region hint for server-side country resolution (feature gating).
+    final deviceCountry = ui.PlatformDispatcher.instance.locale.countryCode;
+    if (deviceCountry != null && deviceCountry.isNotEmpty) {
+      headers.putIfAbsent('X-Device-Country', () => deviceCountry);
+    }
+    AppLogger.logApiRequest('PUT (with headers)', url, {'headers': headers, 'data': _loggable(data)});
 // ✅ Check Internet Before Proceeding
     var connectivityResult = await Connectivity().checkConnectivity();
     if ( connectivityResult.contains(ConnectivityResult.none)) {
@@ -351,7 +362,7 @@ class UserProvider extends GetConnect {
     }
         if (showLoading) {
           Get.dialog(
-              const Center(
+              Center(
                   child: CircularProgressIndicator(color: AppColors.primary)),
               barrierDismissible: false);
         }
@@ -364,50 +375,46 @@ class UserProvider extends GetConnect {
       final mData = json.decode(res.body) as Map<String, dynamic>;
       if (mData["multicast_id"] != null) {
         if (showLoading) Get.back();
+        AppLogger.error('FCM Error');
         Utility.showAlertMessage("FCM Error", title: "Alert!");
         return null;
       }
-      log("API Response********** ${json.decode(res.body)}");
+      AppLogger.logApiResponse('PUT (with headers)', url, res.statusCode, json.decode(res.body));
       return Response(
           statusCode: res.statusCode,
           body: json.decode(res.body),
           headers: headers);
       } on SocketException catch (e) {
         if (showLoading) Get.back();
-
+        AppLogger.error('Server error', error: e);
         Utility.showAlertMessage(
           "Server error",
           title:  AlertStringConstants.alertText,
         );
-
         return null;
-
-      }  on TimeoutException {
+      } on TimeoutException catch (e) {
       if (showLoading) Get.back();
-
+      AppLogger.error('Connection timed out', error: e);
         Utility.showAlertMessage(
           "Connection timed out.",
           title:  AlertStringConstants.alertText,
         );
-
       return null;
     } on Exception catch (e) {
       if (showLoading) Get.back();
-
+      AppLogger.error('Exception in putWithHeadersApi', error: e);
         Utility.showAlertMessage(
           e.toString(),
           title:  AlertStringConstants.alertText,
         );
-
       return null;
     } catch (e) {
       if (showLoading) Get.back();
-
+      AppLogger.error('Error in putWithHeadersApi', error: e);
         Utility.showAlertMessage(
           e.toString(),
           title:  AlertStringConstants.alertText,
         );
-
       return null;
     }
   }
@@ -418,10 +425,12 @@ class UserProvider extends GetConnect {
       {bool showLoading = false}) async {
 
     headers.putIfAbsent('Keep-Alive', () => 'timeout=5, max=1000');
-    log("API URL********** $url");
-    log("API data ********** $data");
-    log("API data ********** $headers");
-    log("API METHOD********** PUT putWithHeadersApi1");
+    // Device region hint for server-side country resolution (feature gating).
+    final deviceCountry = ui.PlatformDispatcher.instance.locale.countryCode;
+    if (deviceCountry != null && deviceCountry.isNotEmpty) {
+      headers.putIfAbsent('X-Device-Country', () => deviceCountry);
+    }
+    AppLogger.logApiRequest('PUT (with headers 1)', url, {'headers': headers, 'data': _loggable(data)});
 // ✅ Check Internet Before Proceeding
     var connectivityResult = await Connectivity().checkConnectivity();
     if ( connectivityResult.contains(ConnectivityResult.none)) {
@@ -433,7 +442,7 @@ class UserProvider extends GetConnect {
     }
         if (showLoading) {
           Get.dialog(
-              const Center(
+              Center(
                   child: CircularProgressIndicator(color: AppColors.primary)),
               barrierDismissible: false);
         }
@@ -446,48 +455,46 @@ class UserProvider extends GetConnect {
 
       final mData = json.decode(res.body) as Map<String, dynamic>;
       if (mData["multicast_id"] != null) {
+        AppLogger.error('FCM Error');
         Utility.showAlertMessage("FCM Error", title: "Alert!");
         return null;
-      } log("API Response********** ${json.decode(res.body)}");
+      }
+      AppLogger.logApiResponse('PUT (with headers 1)', url, res.statusCode, json.decode(res.body));
       return Response(
           statusCode: res.statusCode,
           body: json.decode(res.body),
           headers: headers);
       } on SocketException catch (e) {
         if (showLoading) Get.back();
-
+        AppLogger.error('Server error', error: e);
         Utility.showAlertMessage(
           "Server error",
           title:  AlertStringConstants.alertText,
         );
-
         return null;
-      }  on TimeoutException {
+      } on TimeoutException catch (e) {
       if (showLoading) Get.back();
-
+      AppLogger.error('Connection timed out', error: e);
         Utility.showAlertMessage(
           "Connection timed out.",
           title:  AlertStringConstants.alertText,
         );
-
       return null;
     } on Exception catch (e) {
       if (showLoading) Get.back();
-
+      AppLogger.error('Exception in putWithHeadersApi1', error: e);
         Utility.showAlertMessage(
           e.toString(),
           title:  AlertStringConstants.alertText,
         );
-
       return null;
     } catch (e) {
       if (showLoading) Get.back();
-
+      AppLogger.error('Error in putWithHeadersApi1', error: e);
         Utility.showAlertMessage(
           e.toString(),
           title:  AlertStringConstants.alertText,
         );
-
       return null;
     }
   }
@@ -498,10 +505,12 @@ class UserProvider extends GetConnect {
       {bool showLoading = false}) async {
     // headers.putIfAbsent('Connection', () => 'keep-alive');
     headers.putIfAbsent('Keep-Alive', () => 'timeout=5, max=1000');
-    log("API URL********** $url");
-    log("API data ********** $data");
-    log("API data ********** $headers");
-    log("API METHOD********** DELETE deleteWithHeadersApi");
+    // Device region hint for server-side country resolution (feature gating).
+    final deviceCountry = ui.PlatformDispatcher.instance.locale.countryCode;
+    if (deviceCountry != null && deviceCountry.isNotEmpty) {
+      headers.putIfAbsent('X-Device-Country', () => deviceCountry);
+    }
+    AppLogger.logApiRequest('DELETE (with headers)', url, {'headers': headers, 'data': _loggable(data)});
 // ✅ Check Internet Before Proceeding
     var connectivityResult = await Connectivity().checkConnectivity();
     if ( connectivityResult.contains(ConnectivityResult.none)) {
@@ -513,7 +522,7 @@ class UserProvider extends GetConnect {
     }
         if (showLoading) {
           Get.dialog(
-              const Center(
+              Center(
                   child: CircularProgressIndicator(color: AppColors.primary)),
               barrierDismissible: false);
         }
@@ -526,26 +535,26 @@ class UserProvider extends GetConnect {
 
       final mData = json.decode(res.body) as Map<dynamic, dynamic>;
       if (mData["multicast_id"] != null) {
+        AppLogger.error('FCM Error');
         Utility.showAlertMessage("FCM Error", title: "Alert!");
         return null;
-      } log("API Response********** ${json.decode(res.body)}");
+      }
+      AppLogger.logApiResponse('DELETE (with headers)', url, res.statusCode, json.decode(res.body));
       return Response(
           statusCode: res.statusCode,
           body: json.decode(res.body),
           headers: headers);
       } on SocketException catch (e) {
         if (showLoading) Get.back();
-
+        AppLogger.error('Server error', error: e);
         Utility.showAlertMessage(
           "Server error",
           title:  AlertStringConstants.alertText,
         );
-
         return null;
-
-      }  on TimeoutException {
+      } on TimeoutException catch (e) {
       if (showLoading) Get.back();
-
+      AppLogger.error('Connection timed out', error: e);
         Utility.showAlertMessage(
           "Connection timed out.",
           title:  AlertStringConstants.alertText,
@@ -553,21 +562,19 @@ class UserProvider extends GetConnect {
       return null;
     } on Exception catch (e) {
       if (showLoading) Get.back();
-
+      AppLogger.error('Exception in deleteWithHeadersApi', error: e);
         Utility.showAlertMessage(
           e.toString(),
           title:  AlertStringConstants.alertText,
         );
-
       return null;
     } catch (e) {
       if (showLoading) Get.back();
-
+      AppLogger.error('Error in deleteWithHeadersApi', error: e);
         Utility.showAlertMessage(
           e.toString(),
           title:  AlertStringConstants.alertText,
         );
-
       return null;
     }
   }

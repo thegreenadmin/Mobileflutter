@@ -56,6 +56,9 @@ class AddNewStoreController extends GetxController with GlobalVarMixin{
   late GetStatesModel getStateModel = GetStatesModel();
   RxList<StatesList> statesList = <StatesList>[].obs;
 
+  // Business vertical of the new store; 'herbs' is only offered to the
+  // country's licensed provider (isHerbsLicensee).
+  RxString storeType = "general".obs;
   RxString countryDropdownValue = "".obs;
   RxString? countryId = "".obs;
   RxString storeIdValue = "".obs;
@@ -129,11 +132,18 @@ class AddNewStoreController extends GetxController with GlobalVarMixin{
   }
 
   getCurrentLocation() async {
-
-    Position currentLocation = await Utility.fetchCurrentLocation();
-    lat = currentLocation.latitude;
-    lng = currentLocation.longitude;
-
+    // Nashville default — used when GPS is unavailable (e.g. simulator, denied
+    // service, or a timed-out fix) so the map pin has usable coordinates instead
+    // of leaving the call to throw an unhandled TimeoutException.
+    lat = 36.1627;
+    lng = -86.7816;
+    try {
+      Position currentLocation = await Utility.fetchCurrentLocation();
+      lat = currentLocation.latitude;
+      lng = currentLocation.longitude;
+    } catch (e) {
+      print("DEBUG: getCurrentLocation fallback to Nashville: $e");
+    }
   }
 
   Future<void> createDynamicLink() async {
@@ -159,6 +169,23 @@ class AddNewStoreController extends GetxController with GlobalVarMixin{
     kGoogleApiKey = ServerCommunicator.kGoogleApiKey;
   }
 
+  // Rebuilds storeTimingList from the currently selected week days using the
+  // latest opening/closing times. Order-independent, so it supersedes the
+  // incremental updates done while the form is being filled.
+  void rebuildCustomStoreTimings() {
+    storeTimingList.clear();
+    for (final day in weekDaysList) {
+      if (day.isSelected == true) {
+        storeTimingList.add({
+          "is_24_hours_active": false,
+          "day_of_week": day.id,
+          "opening_time": openingTime.value,
+          "closing_time": closingTime.value,
+        });
+      }
+    }
+  }
+
   bool validateAndSave() {
     final form = formKey.currentState;
     if (form!.validate()) {
@@ -179,6 +206,23 @@ class AddNewStoreController extends GetxController with GlobalVarMixin{
           isLoading.value = false;
           Utility.showAlertMessage(AlertStringConstants.pleaseSelectBannerText);
         } else {
+          // Custom hours: rebuild the timings from the selected days + the
+          // currently picked times so the payload never depends on the order
+          // the owner toggled days vs. picked times (which could leave empty
+          // time strings and trigger a backend "invalid input syntax for type
+          // time" 409).
+          if (!is247Time.value) {
+            rebuildCustomStoreTimings();
+            if (storeTimingList.isEmpty ||
+                openingTime.value.isEmpty ||
+                closingTime.value.isEmpty) {
+              isLoading.value = false;
+              autoValidate.value = true;
+              Utility.showAlertMessage(
+                  AlertStringConstants.pleaseSelectOpeningTimeText);
+              return;
+            }
+          }
           isLoading.value = true;
           apiCreateStore();
         }
@@ -357,7 +401,10 @@ class AddNewStoreController extends GetxController with GlobalVarMixin{
         "store_nick_name": storeNickNameTextController.text.trim(),
         "store_email": storeEmailTextController.text.trim(),
         "store_phone": phoneNumber.value,
-        "store_phone_code": countryCode.value
+        "store_phone_code": countryCode.value,
+        // herbs is rejected server-side unless the owner is the country's
+        // licensed provider
+        "store_type": storeType.value
       },
       "store_address": {
         "state": stateTextController.text.trim(),
@@ -450,7 +497,7 @@ class AddNewStoreController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -531,8 +578,12 @@ class AddNewStoreController extends GetxController with GlobalVarMixin{
   }
 
   ///Get DeliveryServices Api
+  ///Delivery options are per store type, so pass the current store type and
+  ///reset any prior selection whenever it changes.
   Future apiGetDeliveryServices() async {
     deliveryServices.clear();
+    deliveryServicesList.clear();
+    deliveryServicesTextController.clear();
     isLoading.value = true;
     Map<String, String> headers = {
       StringConstants.authorizationText:
@@ -540,8 +591,7 @@ class AddNewStoreController extends GetxController with GlobalVarMixin{
     };
          UserProvider()
         .getWithHeadersApi(
-            ServerCommunicator.baseUrl +
-                ServerCommunicator.deliveryServiceList,
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.deliveryServiceList}?store_type=${storeType.value}",
             headers,
             showLoading: false)
         .then((value) async {
@@ -552,9 +602,13 @@ class AddNewStoreController extends GetxController with GlobalVarMixin{
             DeliveryServicesResponse.fromJson(value?.body);
         deliveryServices.value =
             deliveryServicesResponse.data?.deliveryServices ?? [];
-        deliveryServices
-            .firstWhere((element) => element.name!.toLowerCase().contains("in"))
-            .isSelected = true;
+        // Pre-select "In store" when offered (general/munchies); herbs only
+        // returns Delivery, so guard against no match instead of crashing.
+        final inStoreIndex = deliveryServices.indexWhere(
+            (element) => (element.name ?? "").toLowerCase().contains("in"));
+        if (inStoreIndex != -1) {
+          deliveryServices[inStoreIndex].isSelected = true;
+        }
         var concatenate = StringBuffer();
         for (int i = 0; i < deliveryServices.length; i++) {
           if (deliveryServices[i].isSelected == true) {
@@ -574,7 +628,7 @@ class AddNewStoreController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData(); isLoading.value = false;
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else { isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -610,7 +664,7 @@ class AddNewStoreController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData(); isLoading.value = false;
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else { isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -651,7 +705,7 @@ class AddNewStoreController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData(); isLoading.value = false;
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else { isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);

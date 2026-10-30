@@ -27,7 +27,7 @@ class _PdfViewScreenState extends State<PdfViewScreen> {
                   widget.isShowPrivacy
                       ? StringConstants.privacyPolicyText
                       : StringConstants.termsAndConditionsText,
-                  style: const TextStyle(
+                  style: TextStyle(
                       fontSize: 18,
                       color: AppColors.black,
                       fontWeight: FontWeight.w600),

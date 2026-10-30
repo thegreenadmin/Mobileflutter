@@ -1,0 +1,12 @@
+appId: com.thegreenmall
+---
+# Go back from Add Card and verify the 4242 card is on the card list.
+- tapOn:
+    point: "90,74"
+- extendedWaitUntil:
+    visible: "Add New Card"
+    timeout: 10000
+- extendedWaitUntil:
+    visible: ".*4242"
+    timeout: 10000
+- takeScreenshot: card_list_verified

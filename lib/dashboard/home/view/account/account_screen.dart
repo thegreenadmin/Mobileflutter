@@ -5,7 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
-import 'package:thegreenmall/bottomnavigation/bottom_nav_controller.dart';
+import 'package:thegreenmall/authentication/login/view/login_screen.dart';
+import 'package:thegreenmall/bottomNavigation/bottom_nav_controller.dart';
 import 'package:thegreenmall/dashboard/home/controller/account_controller.dart';
 import 'package:thegreenmall/dashboard/home/controller/controller.dart';
 import 'package:thegreenmall/dashboard/home/view/account/account_id_screen.dart';
@@ -13,6 +14,7 @@ import 'package:thegreenmall/dashboard/home/view/account/active_membership_scree
 import 'package:thegreenmall/dashboard/home/view/account/personal_info_screen.dart';
 import 'package:thegreenmall/dashboard/orders/view/transaction_screen.dart';
 import 'package:thegreenmall/dashboard/wallet/view/add_card_screen.dart';
+import 'package:thegreenmall/utils/guest_access_modal.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
 enum _SupportState {
@@ -37,7 +39,6 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
   String authorized = 'Not Authorized';
   bool isAuthenticating = false;
 
-
   Future<void> _authenticateWithBiometrics() async {
     bool authenticated = false;
     try {
@@ -54,8 +55,6 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
       authenticated = authenticatedBiometric.value;
       authorized = 'Authenticating';
     } on PlatformException catch (e) {
-      // debugPrint("PlatformException:************** ${e.toString()}");
-      // debugPrint(e.toString());
       isAuthenticating = false;
       authorized = 'Error - ${e.message}';
       SharedPreferenceStorage.setData(StringConstants.authenticatedText, false);
@@ -126,14 +125,14 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
                                   Obx(() => Text(
                                         "${accountController.firstName!.value} ${accountController.lastName!.value}",
                                         overflow: TextOverflow.visible,
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                             color: AppColors.black,
                                             fontSize: 22,
                                             fontWeight: FontWeight.w600),
                                       )),
                                   Obx(() => Text(
                                         accountController.email.value,
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                             overflow: TextOverflow.visible,
                                             color: AppColors.black,
                                             fontSize: 16,
@@ -227,7 +226,7 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
                           children: [
                             Text(
                               StringConstants.profileText,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   fontSize: 20,
                                   color: AppColors.black,
                                   fontWeight: FontWeight.w600),
@@ -252,7 +251,7 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
                                       ),
                                       width15SizedBox,
                                       Text(StringConstants.personalInformationText,
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                               fontSize: 16,
                                               color: AppColors.black,
                                               fontWeight: FontWeight.w500)),
@@ -293,7 +292,7 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
                                               width15SizedBox,
                                               Text(
                                                   StringConstants.cardAndPaymentsText,
-                                                  style: const TextStyle(
+                                                  style: TextStyle(
                                                       fontSize: 16,
                                                       color: AppColors.black,
                                                       fontWeight: FontWeight.w500)),
@@ -321,6 +320,18 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
                               highlightColor: Colors.transparent,
                               splashColor: Colors.transparent,
                               onTap: () {
+                                // Check if user is guest - show modal for account-based features
+                                if (isGuest.value == true) {
+                                  GuestAccessModal.show(
+                                    title: StringConstants.loginRequiredText,
+                                    message: StringConstants.loginToAccessTransactionHistoryText,
+                                    onContinueAsGuest: () {
+                                      // Allow guest to continue - just close modal
+                                    },
+                                  );
+                                  return;
+                                }
+                                
                                 hasStoreAccess.value && permissionStoreList.isEmpty ||
                                         permissionStoreList.any((element) =>
                                             element.isStoreOwner == true ||
@@ -345,7 +356,7 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
                                       ),
                                       width15SizedBox,
                                       Text(StringConstants.transactionsHistoryText,
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                               fontSize: 16,
                                               color: AppColors.black,
                                               fontWeight: FontWeight.w500)),
@@ -382,7 +393,7 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
                                       ),
                                       width15SizedBox,
                                       Text(StringConstants.accountIdText,
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                               fontSize: 16,
                                               color: AppColors.black,
                                               fontWeight: FontWeight.w500)),
@@ -458,7 +469,7 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
                             ),*/
                             Text(
                               StringConstants.securityText,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   fontSize: 20,
                                   color: AppColors.black,
                                   fontWeight: FontWeight.w600),
@@ -471,7 +482,7 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
                                   children: [
                                     Text(
                                       StringConstants.screenLockText,
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w500,
                                         color: AppColors.black,
@@ -518,7 +529,7 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
                             ),
                             Text(
                               StringConstants.notificationPreferencesText,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   fontSize: 20,
                                   color: AppColors.black,
                                   fontWeight: FontWeight.w600),
@@ -531,7 +542,7 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
                                   children: [
                                     Text(
                                       StringConstants.inboxMessages,
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w500,
                                         color: AppColors.black,
@@ -627,100 +638,8 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
                                 Row(
                                   children: [
                                     Text(
-                                      StringConstants.tippingReceiptsAndOrdersText,
-                                      style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500,
-                                        color: AppColors.black,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Obx(
-                                  () => roleApp.value == Role.customerRoleText
-                                      ? FlutterSwitch(
-                                          height: 28,
-                                          width: 50,
-                                          value: accountController
-                                              .isUserTippingNotify.value,
-                                          activeToggleColor: AppColors.primary,
-                                          inactiveToggleColor: AppColors.grey,
-                                          activeSwitchBorder: Border.all(
-                                            color: AppColors.greyLight,
-                                          ),
-                                          inactiveSwitchBorder: Border.all(
-                                            color: AppColors.greyLight,
-                                          ),
-                                          activeColor: AppColors.greyMediumLight,
-                                          inactiveColor: AppColors.greyMediumLight,
-                                          onToggle: (val) {
-                                            accountController
-                                                .isUserTippingNotify.value = val;
-                                            // if (accountController
-                                            //     .isUserTippingNotify.value) {
-                                            accountController
-                                                .apiUpdateNotificationStatus(
-                                                    isEnabled: accountController
-                                                        .isUserTippingNotify.value,
-                                                    isOwner: false,
-                                                    notificationType: "order");
-                                            // } else {
-                                            //   accountController
-                                            //       .apiUpdateNotificationStatus(
-                                            //           isEnabled: false,
-                                            //           isOwner: false,
-                                            //           notificationType: "order");
-                                            // }
-                                          },
-                                        )
-                                      : FlutterSwitch(
-                                          height: 28,
-                                          width: 50,
-                                          value: accountController
-                                              .isOwnerTippingNotify.value,
-                                          activeToggleColor: AppColors.primary,
-                                          inactiveToggleColor: AppColors.grey,
-                                          activeSwitchBorder: Border.all(
-                                            color: AppColors.greyLight,
-                                          ),
-                                          inactiveSwitchBorder: Border.all(
-                                            color: AppColors.greyLight,
-                                          ),
-                                          activeColor: AppColors.greyMediumLight,
-                                          inactiveColor: AppColors.greyMediumLight,
-                                          onToggle: (val) {
-                                            accountController
-                                                .isOwnerTippingNotify.value = val;
-
-                                            // if (accountController
-                                            //     .isOwnerTippingNotify.value) {
-                                            accountController
-                                                .apiUpdateNotificationStatus(
-                                                    isEnabled: accountController
-                                                        .isOwnerTippingNotify.value,
-                                                    isOwner: true,
-                                                    notificationType: "order");
-                                            // } else {
-                                            //   accountController
-                                            //       .apiUpdateNotificationStatus(
-                                            //           isEnabled: false,
-                                            //           isOwner: true,
-                                            //           notificationType: "order");
-                                            // }
-                                          },
-                                        ),
-                                )
-                              ],
-                            ),
-                            height15SizedBox,
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  children: [
-                                    Text(
                                       StringConstants.storeOfferAndDiscountText,
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w500,
                                         color: AppColors.black,
@@ -807,7 +726,7 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
                             ),
                             height30SizedBox,
                             CustomButton(
-                              gradient: const LinearGradient(
+                              gradient: LinearGradient(
                                 begin: Alignment.topCenter,
                                 end: Alignment.bottomCenter,
                                 colors: [AppColors.primary, AppColors.primary],
@@ -828,7 +747,7 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
                             ),
                             height30SizedBox,
                             CustomButton(
-                              gradient: const LinearGradient(
+                              gradient: LinearGradient(
                                 begin: Alignment.topCenter,
                                 end: Alignment.bottomCenter,
                                 colors: [AppColors.redLight, AppColors.redLight],
@@ -860,7 +779,7 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
               return accountController.isLoading.value
                   ? Container(
                 color: Colors.black.withOpacity(0.2),
-                child: const Center(
+                child: Center(
                   child: CircularProgressIndicator(color: AppColors.primary),
                 ),
               )
@@ -887,13 +806,18 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
                       children: [
                         Row(
                           children: [
+                            Image.asset(
+                              ImageConstants.homeMall,
+                              scale: 4,
+                            ),
+                            width10SizedBox,
                             IconButton(
                               padding: EdgeInsets.zero,
                               constraints: const BoxConstraints(),
                               onPressed: () {
                                 Get.back(id: pageIdApp.value);
                               },
-                              icon: const Icon(
+                              icon: Icon(
                                 Icons.arrow_back,
                                 color: AppColors.black,
                                 size: 24.0,
@@ -902,17 +826,13 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
                             width10SizedBox,
                             Text(
                               StringConstants.accountText,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   fontSize: 22,
                                   color: AppColors.black,
                                   fontWeight: FontWeight.w600),
                             ),
                           ],
                         ),
-                        Image.asset(
-                          ImageConstants.homeMall,
-                          scale: 4,
-                        )
                       ]),
                 ],
               )),

@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:thegreenmall/dashboard/home/controller/account_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/account/select_membership_screen.dart';
 import 'package:thegreenmall/utils/utils.dart';
+import 'package:thegreenmall/utils/brand_image.dart';
 
 class ActiveMembershipScreen extends StatefulWidget {
   const ActiveMembershipScreen({
@@ -36,6 +37,11 @@ class ActiveMembershipScreenState extends State<ActiveMembershipScreen> with Glo
                         children: [
                           Row(
                             children: [
+                              Image.asset(
+                                ImageConstants.homeMall,
+                                scale: 4,
+                              ),
+                              width10SizedBox,
                               IconButton(
                                 padding: EdgeInsets.zero,
                                 constraints: const BoxConstraints(),
@@ -43,7 +49,7 @@ class ActiveMembershipScreenState extends State<ActiveMembershipScreen> with Glo
                                   Get.back(id: accountController.pageId.value);
                                   //Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
                                 },
-                                icon: const Icon(
+                                icon: Icon(
                                   Icons.arrow_back,
                                   color: AppColors.black,
                                   size: 24.0,
@@ -52,17 +58,13 @@ class ActiveMembershipScreenState extends State<ActiveMembershipScreen> with Glo
                               width10SizedBox,
                               Text(
                                 StringConstants.activeMembershipsText,
-                                style: const TextStyle(
+                                style: TextStyle(
                                     fontSize: 20,
                                     color: AppColors.black,
                                     fontWeight: FontWeight.w600),
                               ),
                             ],
                           ),
-                          Image.asset(
-                            ImageConstants.homeMall,
-                            scale: 4,
-                          )
                         ])),
               ),
               Expanded(
@@ -76,7 +78,7 @@ class ActiveMembershipScreenState extends State<ActiveMembershipScreen> with Glo
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Center(
-                                    child: Image.asset(
+                                    child: BrandImage.asset(
                                       ImageConstants.nodata,
                                       scale: 8,
                                       color: AppColors.primary,
@@ -104,7 +106,7 @@ class ActiveMembershipScreenState extends State<ActiveMembershipScreen> with Glo
                                   elevation: 2,
                                   child: ClipPath(
                                     child: Container(
-                                      decoration: const BoxDecoration(
+                                      decoration: BoxDecoration(
                                           border: Border(
                                               left: BorderSide(
                                                   color: AppColors.primary,
@@ -140,7 +142,7 @@ class ActiveMembershipScreenState extends State<ActiveMembershipScreen> with Glo
                                                           width12SizedBox,
                                                           Text(
                                                             "${accountController.activeMembershipList[index].membershipPlan!.planName.toString().toUpperCase()} ${StringConstants.planText.toUpperCase()}",
-                                                            style: const TextStyle(
+                                                            style: TextStyle(
                                                                 color:
                                                                     AppColors.primary,
                                                                 fontSize: 15,
@@ -157,7 +159,7 @@ class ActiveMembershipScreenState extends State<ActiveMembershipScreen> with Glo
                                                         child: Text(
                                                           "${accountController.activeMembershipList[index].membershipPlan!.planDescription} ",
                                                           maxLines: 5,
-                                                          style: const TextStyle(
+                                                          style: TextStyle(
                                                               color: AppColors.black,
                                                               fontSize: 16,
                                                               fontWeight:
@@ -169,7 +171,7 @@ class ActiveMembershipScreenState extends State<ActiveMembershipScreen> with Glo
                                                         children: [
                                                           Text(
                                                             "${StringConstants.amountText}: ",
-                                                            style: const TextStyle(
+                                                            style: TextStyle(
                                                                 color:
                                                                     AppColors.black,
                                                                 fontSize: 16,
@@ -177,8 +179,8 @@ class ActiveMembershipScreenState extends State<ActiveMembershipScreen> with Glo
                                                                     FontWeight.w600),
                                                           ),
                                                           Text(
-                                                            "\$${accountController.activeMembershipList[index].membershipCharge!.toStringAsFixed(2)}",
-                                                            style: const TextStyle(
+                                                            "$currencySign${accountController.activeMembershipList[index].membershipCharge!.toStringAsFixed(2)}",
+                                                            style: TextStyle(
                                                                 color:
                                                                     AppColors.black,
                                                                 fontSize: 16,
@@ -192,7 +194,7 @@ class ActiveMembershipScreenState extends State<ActiveMembershipScreen> with Glo
                                                         children: [
                                                           Text(
                                                             "${StringConstants.storeText}: ",
-                                                            style: const TextStyle(
+                                                            style: TextStyle(
                                                                 color:
                                                                     AppColors.black,
                                                                 fontSize: 16,
@@ -206,7 +208,7 @@ class ActiveMembershipScreenState extends State<ActiveMembershipScreen> with Glo
                                                                 .membershipStore!
                                                                 .storeName!
                                                                 .toCapitalized(),
-                                                            style: const TextStyle(
+                                                            style: TextStyle(
                                                                 color:
                                                                     AppColors.black,
                                                                 fontSize: 16,
@@ -220,7 +222,7 @@ class ActiveMembershipScreenState extends State<ActiveMembershipScreen> with Glo
                                                         children: [
                                                           Text(
                                                             "${StringConstants.statusText}: ",
-                                                            style: const TextStyle(
+                                                            style: TextStyle(
                                                                 color:
                                                                     AppColors.black,
                                                                 fontSize: 16,
@@ -229,7 +231,7 @@ class ActiveMembershipScreenState extends State<ActiveMembershipScreen> with Glo
                                                           ),
                                                           Text(
                                                             "${accountController.activeMembershipList[index].status!.toCapitalized()} ${StringConstants.tillText} ${DateFormat('MM-dd-yyyy').format(DateTime.parse(accountController.activeMembershipList[index].expiredAt.toString()))}",
-                                                            style: const TextStyle(
+                                                            style: TextStyle(
                                                                 color:
                                                                     AppColors.black,
                                                                 fontSize: 16,
@@ -289,7 +291,7 @@ class ActiveMembershipScreenState extends State<ActiveMembershipScreen> with Glo
             return accountController.isLoading.value
                 ? Container(
               color: Colors.black.withOpacity(0.2),
-              child: const Center(
+              child: Center(
                 child: CircularProgressIndicator(color: AppColors.primary),
               ),
             )

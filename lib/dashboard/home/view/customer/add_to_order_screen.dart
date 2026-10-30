@@ -3,9 +3,12 @@ import 'package:flutter/material.dart' hide CarouselController;
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:thegreenmall/authentication/login/view/login_screen.dart';
 import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
+import 'package:thegreenmall/utils/guest_access_modal.dart';
 import 'package:thegreenmall/utils/utils.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:thegreenmall/utils/brand_image.dart';
 
 class AddToOrderScreen extends StatefulWidget {
   const AddToOrderScreen({super.key});
@@ -14,7 +17,7 @@ class AddToOrderScreen extends StatefulWidget {
   State<AddToOrderScreen> createState() => _AddToOrderScreenState();
 }
 
-class _AddToOrderScreenState extends State<AddToOrderScreen> {
+class _AddToOrderScreenState extends State<AddToOrderScreen> with GlobalVarMixin {
   final StoreHomeMainController storeHomeMainController =
   Get.put(StoreHomeMainController());
   final CarouselSliderController _controller = CarouselSliderController();
@@ -23,10 +26,13 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
 
   @override
   initState() {
+    super.initState();
+    if (isGuest.value == true) {
+      return;
+    }
     WidgetsBinding.instance.addPostFrameCallback((_) {
       callApi();
     });
-    super.initState();
   }
 
   callApi() async {
@@ -112,7 +118,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                 children: [
                   Text(
                     StringConstants.orderText,
-                    style: const TextStyle(
+                    style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 18,
                         color: AppColors.black),
@@ -361,7 +367,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                 ?.first
                                 .link ??
                                 "",
-                            style: const TextStyle(
+                            style: TextStyle(
                                 decoration: TextDecoration.underline,
                                 fontWeight: FontWeight.w400,
                                 fontSize: 14,
@@ -383,7 +389,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                         ? height0SizedBox
                         : Text(
                       StringConstants.aboutProductText,
-                      style: const TextStyle(
+                      style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 18,
                           color: AppColors.black),
@@ -422,7 +428,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                   ),
                   Text(
                     StringConstants.otherDetailsText,
-                    style: const TextStyle(
+                    style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 18,
                         color: AppColors.black),
@@ -463,31 +469,31 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                   }),
 
                   Obx(() {
-                    return _buildRowOtherDetail(
-                        title: StringConstants.lengthText,
-                        textData:
-                        "${storeHomeMainController.productDetailResponse.value.data?.product?.length.toString() ?? "0"} Inches");
-                  }),
-
-                  Obx(() {
-                    return _buildRowOtherDetail(
-                        title: StringConstants.breadthText,
-                        textData:
-                        "${storeHomeMainController.productDetailResponse.value.data?.product?.width.toString() ?? "0"} Inches");
-                  }),
-
-                  Obx(() {
-                    return _buildRowOtherDetail(
-                        title: StringConstants.heightText,
-                        textData:
-                        "${storeHomeMainController.productDetailResponse.value.data?.product?.height.toString() ?? "0"} Inches");
-                  }),
-
-                  Obx(() {
-                    return _buildRowOtherDetail(
-                        title: StringConstants.weightText,
-                        textData:
-                        "${storeHomeMainController.productDetailResponse.value.data?.product?.weight.toString() ?? "0"} Ounces");
+                    return Visibility(
+                      visible: storeHomeMainController.storeDetailsResponse
+                          .value.data?.store?.storeType ==
+                          "herbs",
+                      child: Column(
+                        children: [
+                          _buildRowOtherDetail(
+                              title: StringConstants.lengthText,
+                              textData:
+                              "${storeHomeMainController.productDetailResponse.value.data?.product?.length.toString() ?? "0"} Inches"),
+                          _buildRowOtherDetail(
+                              title: StringConstants.breadthText,
+                              textData:
+                              "${storeHomeMainController.productDetailResponse.value.data?.product?.width.toString() ?? "0"} Inches"),
+                          _buildRowOtherDetail(
+                              title: StringConstants.heightText,
+                              textData:
+                              "${storeHomeMainController.productDetailResponse.value.data?.product?.height.toString() ?? "0"} Inches"),
+                          _buildRowOtherDetail(
+                              title: StringConstants.weightText,
+                              textData:
+                              "${storeHomeMainController.productDetailResponse.value.data?.product?.weight.toString() ?? "0"} Ounces"),
+                        ],
+                      ),
+                    );
                   }),
 
                   Obx(() {
@@ -518,7 +524,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                   }),
                   Text(
                     StringConstants.ratingReviewText,
-                    style: const TextStyle(
+                    style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 18,
                         color: AppColors.black),
@@ -532,7 +538,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                               ?.product?.averageRating
                               ?.toStringAsFixed(1) ??
                               "0.0",
-                          style: const TextStyle(
+                          style: TextStyle(
                               fontWeight: FontWeight.w600,
                               fontSize: 20,
                               color: AppColors.black),
@@ -575,7 +581,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                             Text(
                               "${storeHomeMainController.productDetailResponse.value.data?.product?.productReviews?.length ??
                                   "0"} ${StringConstants.reviewsText}",
-                              style: const TextStyle(
+                              style: TextStyle(
                                   fontWeight: FontWeight.w400,
                                   fontSize: 14,
                                   color: AppColors.black),
@@ -600,7 +606,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                           return Container(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 0, vertical: 8),
-                            decoration: const BoxDecoration(
+                            decoration: BoxDecoration(
                                 color: AppColors.greyLight,
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(8.0),
@@ -627,7 +633,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                               ?.firstName?.toTitleCase() ?? ""} "
                                               "${storeHomeMainController.productDetailResponse.value.data?.product?.productReviews?[i].user
                                               ?.lastName?.toTitleCase() ?? ""} ",
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                               fontSize: 16.0,
                                               color: AppColors.black,
                                               fontWeight: FontWeight.w600),
@@ -676,7 +682,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                                           .productReviews![i]
                                                           .createdAt
                                                           .toString())),
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                   fontSize: 14.0,
                                                   color: AppColors.black,
                                                   fontWeight: FontWeight.w400),
@@ -693,7 +699,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                               ?.productReviews?[i]
                                               .review ??
                                               "",
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                               fontSize: 14.0,
                                               color: AppColors.black,
                                               fontWeight: FontWeight.w400),
@@ -733,7 +739,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
           left: 20,
           right: 20,
           child: CustomButton(
-            gradient: const LinearGradient(
+            gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [AppColors.primary, AppColors.primary],
@@ -781,10 +787,17 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
               }
             },*/
             onTap: () {
+              if (isGuest.value == true) {
+                GuestAccessModal.show(
+                  title: StringConstants.loginRequiredText,
+                  message: StringConstants.loginToAddItemsToCartText,
+                );
+                return;
+              }
               if (!storeHomeMainController.isVerifiedStore.value) return;
 
-              final currentStoreId = int.parse(storeHomeMainController.storeId.toString());
-              final storedStoreId = int.parse(storeHomeMainController.storeIdValue.toString());
+              final currentStoreId = int.tryParse(storeHomeMainController.storeId.value) ?? 0;
+              final storedStoreId = int.tryParse(storeHomeMainController.storeIdValue.value) ?? 0;
               final hasItems = storeHomeMainController.itemsCount.value > 0;
 
               if (storedStoreId == 0) {
@@ -843,7 +856,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
               ),
               Text(
                 textData,
-                style: const TextStyle(
+                style: TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: 14,
                     color: AppColors.black),
@@ -859,7 +872,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
         .productDetailResponse.value.data?.product?.productImages;
 
     if (productImages == null || productImages.isEmpty) {
-      return Image.asset(
+      return BrandImage.asset(
         ImageConstants.defaultProduct,
         fit: BoxFit.fill,
         height: 120,
@@ -976,7 +989,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
         Expanded(
           child: Text(
             product?.productName ?? "",
-            style: const TextStyle(
+            style: TextStyle(
               overflow: TextOverflow.visible,
               fontSize: 18,
               color: AppColors.black,
@@ -986,9 +999,21 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
         ),
         InkWell(
           onTap: () {
-            var isFavorite = storeHomeMainController.isFavouriteProduct.value;
-            storeHomeMainController.isFavouriteProduct.value = !isFavorite;
+            // Check if user is guest - show modal and prevent state change
+            if (isGuest.value == true) {
+              GuestAccessModal.show(
+                title: StringConstants.loginRequiredText,
+                message: StringConstants.loginToAddProductsToFavouritesText,
+                onContinueAsGuest: () {
+                  // Allow guest to continue - just close modal
+                },
+              );
+              return; // Don't toggle or make API call
+            }
+
             if (!storeHomeMainController.isLoading.value) {
+              var isFavorite = storeHomeMainController.isFavouriteProduct.value;
+              storeHomeMainController.isFavouriteProduct.value = !isFavorite;
               if (isFavorite) {
                 storeHomeMainController.apiRemoveFavouriteProduct(product?.productId);
               } else {
@@ -1014,11 +1039,11 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
         children: [
           TextSpan(
             text: "${StringConstants.unitPriceText}:",
-            style: const TextStyle(color: AppColors.black, fontWeight: FontWeight.w400, fontSize: 14),
+            style: TextStyle(color: AppColors.black, fontWeight: FontWeight.w400, fontSize: 14),
           ),
           TextSpan(
-            text: ' \$${product?.productPrice ?? ""}',
-            style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14, color: AppColors.black),
+            text: ' $currencySign${product?.productPrice ?? ""}',
+            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14, color: AppColors.black),
           ),
         ],
       ),
@@ -1035,18 +1060,18 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
     var discountValue = product?.offer?.offerValue != null
         ? product!.offer!.offerType!.contains("percentage")
         ? ' ${product.offer!.offerValue}%'
-        : ' \$${product.offer!.offerValue}'
+        : ' $currencySign${product.offer!.offerValue}'
         : product?.discountType?.contains("percentage") ?? false
         ? ' ${product!.discountValue}%'
-        : ' \$${product?.discountValue ?? "0"}';
+        : ' $currencySign${product?.discountValue ?? "0"}';
     return Visibility(
       visible: product?.offer?.offerValue != null || isOfferForStore,
       replacement: SizedBox.shrink(),
       child: Text.rich(
         TextSpan(
           children: [
-            TextSpan(text: discountText, style: const TextStyle(color: AppColors.black, fontWeight: FontWeight.w400, fontSize: 14)),
-            TextSpan(text: discountValue, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14, color: AppColors.black)),
+            TextSpan(text: discountText, style: TextStyle(color: AppColors.black, fontWeight: FontWeight.w400, fontSize: 14)),
+            TextSpan(text: discountValue, style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14, color: AppColors.black)),
           ],
         ),
       ),
@@ -1067,7 +1092,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
         width10SizedBox,
         Text(
           storeHomeMainController.itemsCount.toString().padLeft(2, '0'),
-          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14, color: AppColors.black),
+          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14, color: AppColors.black),
         ),
         width10SizedBox,
         InkWell(
