@@ -740,6 +740,11 @@ jobs:
         if: always()
         run: |
           find test-lab-results -name 'syslog*' -exec grep -hE '\[journey\]|EXCEPTION CAUGHT|Test failed' {} + || true
+          # The app's own lines leading up to the first failed step.
+          echo "::group::App log before the first failure"
+          find test-lab-results -name 'syslog*' -exec grep -h 'flutter:' {} + \
+            | grep -B60 -m1 'FAILED at' | cut -c1-300 || true
+          echo "::endgroup::"
 
       - name: Fail unless the journey passed
         run: |

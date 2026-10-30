@@ -40,6 +40,7 @@ import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:thegreenmall/authentication/login/controller/login_controller.dart';
 import 'package:thegreenmall/authentication/signup/controller/signup_controller.dart';
 import 'package:thegreenmall/dashboard/home/controller/account_controller.dart';
 import 'package:thegreenmall/dashboard/home/controller/add_new_category_controller.dart';
@@ -1680,11 +1681,28 @@ var _currentPhone = _testPhone;
 
 /// Phone + OTP login, starting from the login screen.
 Future<void> _logIn(WidgetTester tester, {String phone = _testPhone}) async {
-  await tester.enterText(
-      find.descendant(
-          of: find.byType(IntlPhoneField), matching: find.byType(EditableText)),
-      phone);
-  await _pumpFor(tester, const Duration(milliseconds: 500));
+  final phoneField = find.descendant(
+      of: find.byType(IntlPhoneField), matching: find.byType(EditableText));
+  final login = Get.find<LoginController>();
+  // The app only takes the number from the field's onChanged. On Test Lab's
+  // iPhone the first entry didn't reach it (run 91: "Please enter mobile
+  // number"), so check it did, and type it again if not.
+  for (var attempt = 1;; attempt++) {
+    await _waitFor(tester, phoneField);
+    await tester.tap(phoneField.first);
+    await _pumpFor(tester, const Duration(milliseconds: 500));
+    await tester.enterText(phoneField.first, phone);
+    await _pumpFor(tester, const Duration(milliseconds: 500));
+    if (login.phoneNumber.value == phone) break;
+    final typed = (tester.widget(phoneField.first) as EditableText)
+        .controller
+        .text;
+    debugPrint('[journey]   phone entry $attempt: field "$typed", '
+        'controller "${login.phoneNumber.value}"');
+    if (attempt == 2) {
+      throw TestFailure('the login screen did not take the phone number');
+    }
+  }
   await _tap(tester, find.text(StringConstants.sendConfirmationCodeText));
 
   await _waitFor(tester, find.byType(PinCodeTextField));
