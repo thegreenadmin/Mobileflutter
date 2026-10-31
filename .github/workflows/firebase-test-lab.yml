@@ -816,8 +816,13 @@ jobs:
   # tests, and Xcode gives up on that after ~13 minutes (run 86).
   # ios-sim-xctest runs the RunnerTests XCTest bundle that Test Lab gets with
   # xcodebuild test instead, to check it without spending iPhone quota.
+  # With platform ios, this waits for the Test Lab journey: both use the same
+  # test account, and one journey's clean-up deletes the other's product as
+  # a leftover (run 99). always() keeps it running when that job is skipped
+  # (ios-sim) or fails.
   ios-simulator-journey:
-    if: github.event_name == 'workflow_dispatch' && (inputs.platform == 'ios' || inputs.platform == 'ios-sim' || inputs.platform == 'ios-sim-xctest')
+    needs: ios-integration-test
+    if: always() && github.event_name == 'workflow_dispatch' && (inputs.platform == 'ios' || inputs.platform == 'ios-sim' || inputs.platform == 'ios-sim-xctest')
     runs-on: macos-26
     timeout-minutes: 90
     environment: ANDROID_BETA_CONFIG
