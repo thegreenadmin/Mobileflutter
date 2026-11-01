@@ -458,8 +458,9 @@ void main() {
     }
 
     // Names are unique per run so a leftover from an aborted run never
-    // matches, and cleanup can find what this run made.
-    final stamp = DateTime.now().millisecondsSinceEpoch % 1000000;
+    // matches, and cleanup can find what this run made. Seconds (wrapping
+    // every ~11.5 days) also tell the cleanup how old a leftover is.
+    final stamp = _secondsStamp();
     final offerName = 'FTL offer $stamp';
     final productName = 'FTL product $stamp';
     var productCreated = false;
@@ -1520,8 +1521,17 @@ void main() {
       await _swipeDelete(tester, find.text(productName));
       await _waitGone(tester, find.text(productName));
       // Products earlier runs left behind when they failed before this step.
+      // Only old ones: a journey running at the same time on another device
+      // uses the same account, and run 99's simulator journey failed when
+      // the Test Lab one deleted its product mid-run.
       for (var i = 0; i < 5; i++) {
-        final stale = find.textContaining('FTL product ').hitTestable();
+        final stale = find
+            .byWidgetPredicate(
+                (w) =>
+                    w is Text &&
+                    _isOldLeftover(w.data ?? '', 'FTL product '),
+                description: 'leftover FTL product')
+            .hitTestable();
         if (stale.evaluate().isEmpty) break;
         final name = (stale.evaluate().first.widget as Text).data ?? '';
         debugPrint('[journey]   removing leftover "$name"');
@@ -2530,6 +2540,21 @@ Future<void> _submit(WidgetTester tester, Finder finder) async {
     await _pumpFor(tester, const Duration(milliseconds: 500));
   }
   await _tap(tester, finder);
+}
+
+/// Seconds since the epoch, kept to 6 digits (wraps every ~11.5 days).
+int _secondsStamp() =>
+    (DateTime.now().millisecondsSinceEpoch ~/ 1000) % 1000000;
+
+/// Whether [text] is a [prefix]-named item another run made over two hours
+/// ago. Journeys take under half an hour, so anything younger may belong to
+/// one still running.
+bool _isOldLeftover(String text, String prefix) {
+  if (!text.startsWith(prefix)) return false;
+  final stamp = int.tryParse(text.substring(prefix.length).trim());
+  if (stamp == null) return false;
+  final age = (_secondsStamp() - stamp) % 1000000;
+  return age > 2 * 60 * 60;
 }
 
 /// Scrolls the list on screen until [finder] is built, then taps it. For
