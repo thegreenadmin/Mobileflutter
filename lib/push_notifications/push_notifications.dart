@@ -13,7 +13,7 @@ import 'package:thegreenmall/dashboard/orders/view/mark_order_status_screen.dart
 import 'package:thegreenmall/dashboard/orders/view/orders_screen.dart';
 import 'package:thegreenmall/push_notifications/model/realtime_notification_model.dart';
 import 'package:thegreenmall/utils/utils.dart';
-import 'package:thegreenmall/bottomnavigation/bottom_nav_controller.dart';
+import 'package:thegreenmall/bottomNavigation/bottom_nav_controller.dart';
 
 
   final FirebaseMessaging messaging = FirebaseMessaging.instance;
@@ -55,14 +55,15 @@ import 'package:thegreenmall/bottomnavigation/bottom_nav_controller.dart';
         provisional: false,
         sound: true,
       );
-      debugPrint('User granted permission: ${settings.authorizationStatus}');
     }
   }
 
   getNotification() {
     FirebaseMessaging.onMessage.listen((RemoteMessage? message) {
+      AppLogger.info(
+          'FCM onMessage received: title=${message?.notification?.title}, '
+          'body=${message?.notification?.body}, data=${message?.data}');
       RemoteNotification? notification = message!.notification;
-      debugPrint("notification data---------------${message.data}");
       if (notification != null) {
         if (Platform.isAndroid) {
           flutterLocalNotificationsPlugin.show(
@@ -86,13 +87,12 @@ import 'package:thegreenmall/bottomnavigation/bottom_nav_controller.dart';
 
   getNotificationOpenedApp() {
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage? message) {
-      debugPrint("getNotificationOpenedApp data---${message!.data}");
       // getNotification();
       PushNotificationService pushNotificationService=PushNotificationService();
       pushNotificationService.selectNotification(NotificationResponse(
         notificationResponseType:
         NotificationResponseType.selectedNotificationAction,
-        payload: json.encode(message.data),
+        payload: json.encode(message?.data),
       ));
     });
   }
@@ -123,8 +123,6 @@ class PushNotificationService  with GlobalVarMixin{
 
 
     Get.parameters["isController"] = "yes";
-    debugPrint("payload 2---------->${notificationResponse.payload}");
-    // debugPrint("pageIdApp.value---------->${pageIdApp.value}");
     RealTimeNotification notificationData = RealTimeNotification.fromJson(
         json.decode(notificationResponse.payload.toString()));
 
@@ -141,19 +139,12 @@ class PushNotificationService  with GlobalVarMixin{
         Get.parameters[Role.role] = Role.storeOwnerRoleText;
       }
       Future.delayed(const Duration(milliseconds: 200), () async {
-        // Get.parameters["isFromTransaction"] = "false";
-        // Get.parameters["storeId"] = notificationData.storeId.toString();
-        // Get.parameters["orderId"] = notificationData.orderId.toString();
-        // Get.parameters["isFromNotification"] = "true";
         Get.put(OrdersHomeMainController()).onInit();
-        print("notificationData pageIdApp before ==============================");
-        // print(pageIdApp.value);
-
-        print("notificationData pageIdApp MarkOrderStatusScreen==============================");
 
         await Get.to(() =>  MarkOrderStatusScreen(
           orderId: notificationData.orderId.toString(),
           storeId: notificationData.storeId.toString(),
+          orderStatus: notificationData.orderStatus,
             isFromNotification:true
         ), id: pageIdApp.value);
       });
@@ -198,12 +189,6 @@ class PushNotificationService  with GlobalVarMixin{
       // Get.parameters["isFromTransaction"] = "false";
       // Get.parameters["storeId"] = notificationData.storeId.toString();
       // Get.parameters["orderId"] = notificationData.orderId.toString();
-      print("notificationData pageIdApp before ==============================");
-      // print(pageIdApp.value);
-
-
-      print("notificationData pageIdApp OffersScreen==============================");
-      // print(pageIdApp.value);
       await Get.to(() => OffersScreen(orderId:
       roleApp.value == Role.storeOwnerRoleText?"":notificationData.orderId.toString(),
           isFromTransaction:false,

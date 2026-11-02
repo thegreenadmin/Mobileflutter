@@ -21,6 +21,18 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> with Gl
   @override
   void initState() {
     accountController.isFromCart.value = widget.isFromCart;
+    // When opened directly (e.g. from the wallet email-required modal) the
+    // AccountController may not have been populated yet. Pre-fill from the
+    // backend so existing name/address aren't blanked on save.
+    if (accountController.userId == null ||
+        accountController.userId!.value.isEmpty) {
+      accountController.apiGetUserDetailApi();
+    } else {
+      // Controller is a living singleton; restore the form from the last saved
+      // values so a field cleared during a previous failed edit (e.g. email)
+      // isn't left blank when the screen is reopened.
+      accountController.syncEditFormControllers();
+    }
     super.initState();
   }
 
@@ -49,13 +61,18 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> with Gl
                                 children: [
                                   Row(
                                     children: [
+                                      Image.asset(
+                                        ImageConstants.homeMall,
+                                        scale: 4,
+                                      ),
+                                      width10SizedBox,
                                       IconButton(
                                         padding: EdgeInsets.zero,
                                         constraints: const BoxConstraints(),
                                         onPressed: () {
                                           Get.back(id: pageIdApp.value);
                                         },
-                                        icon: const Icon(
+                                        icon: Icon(
                                           Icons.arrow_back,
                                           color: AppColors.black,
                                           size: 24.0,
@@ -65,7 +82,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> with Gl
                                       SizedBox(
                                         child: Text(
                                           StringConstants.personalInformationText,
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                               fontSize: 20,
                                               color: AppColors.black,
                                               fontWeight: FontWeight.w600),
@@ -73,10 +90,6 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> with Gl
                                       ),
                                     ],
                                   ),
-                                  Image.asset(
-                                    ImageConstants.homeMall,
-                                    scale: 5,
-                                  )
                                 ]),
                           ],
                         )),
@@ -113,6 +126,19 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> with Gl
 
                                   formFields(StringConstants.nickNameText,false, controller: accountController.nickNameTextController,hint:StringConstants.nickNameText,),
 
+                                  formFields(StringConstants.emailText,true, controller: accountController.emailTextController,hint:StringConstants.emailText,
+                                      validator: (value) {
+                                        if (value == null || value.trim().isEmpty) {
+                                          return AlertStringConstants
+                                              .pleaseUpdateEmailToContinueText;
+                                        }
+                                        if (!GetUtils.isEmail(value.trim())) {
+                                          return AlertStringConstants
+                                              .pleaseEnterValidEmailText;
+                                        }
+                                        return null;
+                                      }),
+
                                   height20SizedBox,
 
                                   sectionTitle(StringConstants.addressText),
@@ -128,7 +154,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> with Gl
                                                 fontWeight: FontWeight.w400)),
                                         TextSpan(
                                           text: StringConstants.starText,
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                               fontSize: 16,
                                               color: AppColors.red,
                                               fontWeight: FontWeight.bold),
@@ -175,7 +201,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> with Gl
                                     decoration: InputDecoration(
                                       filled: true,
                                       fillColor:  AppColors.transparent,
-                                      errorStyle: const TextStyle(color: AppColors.red),
+                                      errorStyle: TextStyle(color: AppColors.red),
                                       errorMaxLines: 3,
                                       errorBorder:  CommonWidgets.underlineInputBorder(
                                           borderRadius:  0.0,
@@ -380,12 +406,12 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> with Gl
                                                               borderRadius:
                                                                   BorderRadius.circular(
                                                                       18.0),
-                                                              side: const BorderSide(
+                                                              side: BorderSide(
                                                                   color: AppColors
                                                                       .primary)))),
                                                   child: Text(
                                                     StringConstants.removeText,
-                                                    style: const TextStyle(
+                                                    style: TextStyle(
                                                         color: AppColors.primaryDark),
                                                   ),
                                                 ),
@@ -442,7 +468,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> with Gl
                                                                     borderRadius:
                                                                         BorderRadius.circular(
                                                                             18.0),
-                                                                    side: const BorderSide(
+                                                                    side: BorderSide(
                                                                         color: AppColors
                                                                             .primary)))),
                                                         child: Text(
@@ -460,7 +486,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> with Gl
 
                                   height40SizedBox,
                                   CustomButton(
-                                    gradient: const LinearGradient(
+                                    gradient: LinearGradient(
                                       begin: Alignment.topCenter,
                                       end: Alignment.bottomCenter,
                                       colors: [AppColors.primary, AppColors.primary],
@@ -489,7 +515,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> with Gl
                 return accountController.isLoading.value
                     ? Container(
                   color: Colors.black.withOpacity(0.2),
-                  child: const Center(
+                  child: Center(
                     child: CircularProgressIndicator(color: AppColors.primary),
                   ),
                 )
@@ -503,7 +529,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> with Gl
   Text sectionTitle(String label) {
     return Text(
       label,
-      style: const TextStyle(
+      style: TextStyle(
           color: AppColors.black,
           fontWeight: FontWeight.w600,
           fontSize: 20),
@@ -533,7 +559,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> with Gl
               if (isRequired)
               TextSpan(
                 text: StringConstants.starText,
-                style: const TextStyle(
+                style: TextStyle(
                     fontSize: 16,
                     color: AppColors.red,
                     fontWeight: FontWeight.bold),

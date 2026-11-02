@@ -17,10 +17,15 @@ import 'package:thegreenmall/dashboard/home/view/inbox/user_Inbox/user_inbox_scr
 import 'package:thegreenmall/dashboard/home/view/notification_list_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/store_owner/edit_product_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/store_owner/owner_stores_list_screen.dart';
-import 'package:thegreenmall/dashboard/orders/view/transaction_screen.dart';
+import 'package:thegreenmall/utils/guest_access_modal.dart';
+import 'package:thegreenmall/utils/guest_age_verification_modal.dart';
 import 'package:thegreenmall/utils/utils.dart';
+import 'package:thegreenmall/dashboard/payments/binding/payment_binding.dart';
+import 'package:thegreenmall/dashboard/payments/view/payment_shell_screen.dart';
 import 'customer/components/store_home_main_args.dart';
+import 'customer/components/ad_video_slide.dart';
 import 'store_owner/manage_store_main_screen.dart';
+import 'package:thegreenmall/utils/brand_image.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -34,18 +39,31 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
   final CarouselSliderController _controllerProducts = CarouselSliderController();
   int _current = 0;
   final CarouselSliderController _controller = CarouselSliderController();
-  final AccountController accountController = Get.put(AccountController());
 
-  final HomeController homeController = Get.put(HomeController());
+  late final AccountController accountController;
+  late final HomeController homeController;
 
   Future<void> _pullRefresh() async {
-    homeController.onInit();
+    await homeController.refreshUserData();
   }
 
   @override
   void initState() {
     super.initState();
+    print("DEBUG: HomeScreen initState - before Get.delete");
+    // Force-delete any stale cached instance so Get.put always creates a fresh
+    // controller and calls onInit()/_loadHomeData() after every Get.offAll login.
+    Get.delete<HomeController>(force: true);
+    print("DEBUG: HomeScreen initState - after Get.delete, before Get.put");
+    homeController = Get.put(HomeController());
+    print("DEBUG: HomeScreen initState - after Get.put HomeController");
+    accountController = Get.put(AccountController());
     WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (isGuest.value && !guestAgeVerified.value) {
+        GuestAgeVerificationModal.show();
+      }
+    });
   }
 
   @override
@@ -81,29 +99,39 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
               padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
               child: Column(crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Obx(() =>
-                  roleApp.value == Role.customerRoleText
-                      ? _buildCarouselSlider(
-                      offersCarouselList: homeController.userCarouselImgList,
-                      featuredProductList:
-                      homeController.featuredUserProductList)
-                      : _buildCarouselSlider(
-                      offersCarouselList: homeController.getOwnerOfferList,
-                      featuredProductList:
-                      homeController.ownerFeatureProductList)),
+                  Obx(() {
+                    final isCustomer = roleApp.value == Role.customerRoleText;
+                    final offersCarouselList = isCustomer
+                        ? homeController.userCarouselImgList
+                        : homeController.getOwnerOfferList;
+                    final featuredProductList = isCustomer
+                        ? homeController.featuredUserProductList
+                        : homeController.ownerFeatureProductList;
+
+                    // Explicitly observe list changes so the widget rebuilds when API data arrives.
+                    offersCarouselList.length;
+                    featuredProductList.length;
+
+                    return _buildCarouselSlider(
+                      offersCarouselList: offersCarouselList,
+                      featuredProductList: featuredProductList,
+                    );
+                  }),
                   height20SizedBox,
                   _buildFeatureProductText(),
                   height20SizedBox,
-                  Obx(
-                        () =>
-                    roleApp.value == Role.customerRoleText
-                        ? _buildProductsCarousel(
-                        featuredProductList:
-                        homeController.featuredUserProductList)
-                        : _buildProductsCarousel(
-                        featuredProductList:
-                        homeController.ownerFeatureProductList),
-                  )
+                  Obx(() {
+                    final isCustomer = roleApp.value == Role.customerRoleText;
+                    final featuredProductList = isCustomer
+                        ? homeController.featuredUserProductList
+                        : homeController.ownerFeatureProductList;
+
+                    featuredProductList.length;
+
+                    return _buildProductsCarousel(
+                      featuredProductList: featuredProductList,
+                    );
+                  })
                 ],
               ),
             ),
@@ -115,7 +143,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
           if (homeController.isLoading.value) {
             return Container(
             color: Colors.black.withOpacity(0.2),
-            child: const Center(
+            child: Center(
               child: CircularProgressIndicator(color: AppColors.primary),
             ),);
           } else {
@@ -134,7 +162,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
           ? height0SizedBox
           : Text(
         StringConstants.featuredProductsText,
-        style: const TextStyle(
+        style: TextStyle(
             color: AppColors.black,
             fontWeight: FontWeight.w600,
             fontSize: 20),
@@ -151,236 +179,308 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
             children: [
               buildTitle(),
               height12SizedBox,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      RawMaterialButton(
-                        elevation: 0,
-                        onPressed: () async {
-                          roleApp.value == Role.customerRoleText
-                              ? Get.to(() => const UserInboxScreen(),
-                              id: pageIdApp.value)
-                              : hasStoreAccess.value &&
-                              permissionStoreList.isEmpty ||
-                              permissionStoreList.any((element) =>
-                              element.isStoreOwner == true ||
-                                  element.controllers!.any((ele) =>
-                                  ele.controllerKey ==
-                                      PermissionKey
-                                          .manageMessages.statusName))
-                              ? await Get.to(() => const OwnerInboxScreen(),
-                              id: pageIdApp.value)
-                              : Utility.showAlertMessage(
-                              AlertStringConstants
-                                  .notAuthorizedToStoreText);
-                        },
-                        constraints: const BoxConstraints(),
-                        padding:
-                        const EdgeInsets.fromLTRB(2.0, 2.0, 10.0, 2.0),
-                        shape: RoundedRectangleBorder(
-                          side: const BorderSide(
-                              width: 1.0, color: AppColors.primary),
-                          borderRadius: BorderRadius.circular(28.0),
-                        ),
-                        fillColor: AppColors.white,
-                        child: Row(
-                          children: [
-                            Container(
-                                padding: const EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                  color: AppColors.primary,
-                                  borderRadius: BorderRadius.circular(100),
-                                ),
-                                child: Image.asset(
-                                  ImageConstants.message,
-                                  scale: 2.5,
-                                  color: AppColors.white,
-                                )),
-                            width5SizedBox,
-                            Text(
-                              StringConstants.inboxText,
-                              style: const TextStyle(
-                                  fontSize: 15.0,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                          ],
-                        ),
-                      ),
-                      width8SizedBox,
-                      Obx(() =>
-                      hasStoreAccess.value
-                          ? RawMaterialButton(
-                        elevation: 0,
-                        onPressed: () async {
-                          if (roleApp.value == Role.customerRoleText) {
-                            await Get.to(
-                                  () =>
-                                  SearchStoreUserScreen(
-                                    firstName: homeController.getUserDetailModel.data?.user?.firstName ?? "",
-                                    lastName: homeController.getUserDetailModel.data?.user?.lastName ?? "",
-                                  ),
-                              id: pageIdApp.value,
-
-                              // arguments: {
-                              // },
-                            );
-                          } else {
-                            await Get.to(
-                                  () =>
-                                  OwnerStoresListScreen(
-                                    firstName: homeController.getUserDetailModel.data?.user?.firstName ?? "",
-                                    isFromHome: false,
-                                    lastName: homeController.getUserDetailModel.data?.user?.lastName ?? "",
-                                  ),
-                              id: pageIdApp.value,
-                            );
-                          }
-                        },
-                        constraints: const BoxConstraints(),
-                        padding: const EdgeInsets.fromLTRB(
-                            2.0, 2.0, 10.0, 2.0),
-                        shape: RoundedRectangleBorder(
-                          side: const BorderSide(
-                              width: 1.0, color: AppColors.primary),
-                          borderRadius: BorderRadius.circular(28.0),
-                        ),
-                        fillColor: AppColors.white,
-                        child: Row(
-                          children: [
-                            Container(
-                                padding: const EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                  color: AppColors.primary,
-                                  borderRadius:
-                                  BorderRadius.circular(100),
-                                ),
-                                child: Image.asset(
-                                  ImageConstants.storeUnion,
-                                  scale: 2.2,
-                                  color: AppColors.white,
-                                )),
-                            width4SizedBox,
-                            Text(
-                              StringConstants.storesText,
-                              style: const TextStyle(
-                                  fontSize: 15.0,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                          ],
-                        ),
-                      )
-                          : RawMaterialButton(
-                        elevation: 0,
-                        onPressed: () async {
-                          if (roleApp.value == Role.customerRoleText) {
-                            await Get.to(
-                                  () =>
-                                  SearchStoreUserScreen(
-                                    firstName: homeController.getUserDetailModel.data?.user?.firstName ?? "",
-                                    lastName: homeController.getUserDetailModel.data?.user?.lastName ?? "",
-
-                                  ),
-                              id: pageIdApp.value,
-                            );
-                          }
-                        },
-                        constraints: const BoxConstraints(),
-                        padding: const EdgeInsets.fromLTRB(
-                            2.0, 2.0, 10.0, 2.0),
-                        shape: RoundedRectangleBorder(
-                          side: const BorderSide(
-                              width: 1.0, color: AppColors.primary),
-                          borderRadius: BorderRadius.circular(28.0),
-                        ),
-                        fillColor: AppColors.white,
-                        child: Row(
-                          children: [
-                            Container(
-                                padding: const EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                  color: AppColors.primary,
-                                  borderRadius:
-                                  BorderRadius.circular(100),
-                                ),
-                                child: Image.asset(
-                                  ImageConstants.storeUnion,
-                                  scale: 2.2,
-                                  color: AppColors.white,
-                                )),
-                            width5SizedBox,
-                            Text(
-                              StringConstants.storesText,
-                              style: const TextStyle(
-                                  fontSize: 15.0,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                          ],
-                        ),
-                      ))
-                    ],
+              // Align pins the pill group to the left so with 2-3 pills they
+              // hug the start (natural width) instead of being centered by the
+              // parent Column. FittedBox scales the whole group down as one unit
+              // when all four pills are present, so they still fit on screen.
+              // Country gating lives in _shortcutAvailable.
+              Obx(
+                () => Align(
+                  alignment: Alignment.centerLeft,
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    alignment: Alignment.centerLeft,
+                    // Order, labels, icons, colors and visibility come from
+                    // Settings → Home screen; ids keep their fixed actions.
+                    child: Row(children: _shortcutPills()),
                   ),
-                  Row(
-                    children: [
-                      RawMaterialButton(
-                          elevation: 0,
-                          onPressed: () async {
-                            hasStoreAccess.value &&
-                                permissionStoreList.isEmpty ||
-                                permissionStoreList.any((element) =>
-                                element.isStoreOwner == true ||
-                                    element.controllers!.any((ele) =>
-                                    ele.controllerKey ==
-                                        PermissionKey.manageTransaction
-                                            .statusName))
-                                ? await Get.to(() => const TransactionScreen(),
-                                id: pageIdApp.value)
-                                : Utility.showAlertMessage(
-                                AlertStringConstants
-                                    .notAuthorizedToStoreText);
-                          },
-                          constraints: const BoxConstraints(),
-                          padding: const EdgeInsets.all(14.0),
-                          shape: const CircleBorder(
-                            side: BorderSide(
-                                width: 1.0, color: AppColors.primary),
-                          ),
-                          fillColor: AppColors.white,
-                          child: Image.asset(
-                            ImageConstants.union,
-                            scale: 2.4,
-                          )),
-                      width5SizedBox,
-                      RawMaterialButton(
-                          elevation: 0,
-                          onPressed: () {
-                            Get.to(() => const AccountScreen(),
-                              id: pageIdApp.value,)
-                                ?.then((value) {
-                              homeController.isLoading.value = true;
-                              homeController.apiGetUserDetail();
-                              homeController.getCurrentLocation();
-                            });
-                          },
-                          constraints: const BoxConstraints(),
-                          padding: const EdgeInsets.all(14.0),
-                          shape: const CircleBorder(
-                            side: BorderSide(
-                                width: 1.0, color: AppColors.primary),
-                          ),
-                          fillColor: AppColors.white,
-                          child: Image.asset(
-                            ImageConstants.user,
-                            scale: 2.5,
-                          )),
-                    ],
-                  )
-                ],
+                ),
               ),
             ],
           )),
     );
+  }
+
+  // Opens the Payments hub (Pay/Send + Receive, P2P/P2B live inside).
+  void _openPaymentsHome() {
+    if (isGuest.value == true) {
+      GuestAccessModal.show(
+        title: StringConstants.loginRequiredText,
+        message: StringConstants.loginToSendOrReceivePaymentsText,
+        onContinueAsGuest: () {},
+      );
+      return;
+    }
+    // Push inside the home tab's nested navigator (like every other screen)
+    // so the flow lives in the same container and keeps the dashboard's
+    // bottom bar, instead of a full-screen root route with its own bar.
+    // The binding must come along explicitly: it used to run via the
+    // /paymentsFlow named route, which is no longer the entry point.
+    Get.to(
+      () => const PaymentShell(),
+      id: pageIdApp.value,
+      binding: PaymentBinding(),
+    );
+  }
+
+  // Role-aware inbox navigation, shared by the title-row inbox action.
+  Future<void> _openInbox() async {
+    if (isGuest.value == true) {
+      GuestAccessModal.show(
+        title: StringConstants.loginRequiredText,
+        message: StringConstants.loginToAccessInboxText,
+        onContinueAsGuest: () {},
+      );
+      return;
+    }
+
+    roleApp.value == Role.customerRoleText
+        ? Get.to(() => const UserInboxScreen(), id: pageIdApp.value)
+        : hasStoreAccess.value && permissionStoreList.isEmpty ||
+                permissionStoreList.any((element) =>
+                    element.isStoreOwner == true ||
+                    element.controllers!.any((ele) =>
+                        ele.controllerKey ==
+                        PermissionKey.manageMessages.statusName))
+            ? await Get.to(() => const OwnerInboxScreen(), id: pageIdApp.value)
+            : Utility.showAlertMessage(
+                AlertStringConstants.notAuthorizedToStoreText);
+  }
+
+  // Role-aware store navigation. [category] (e.g. Munchies / Herbs) is passed
+  // through to the store screen so the listing can be scoped to that category.
+  Future<void> _openStores({String? category}) async {
+    // Guests can browse stores; restricted actions (favourites, cart, etc.)
+    // are gated inside the store screens themselves.
+    final firstName = isGuest.value
+        ? "Guest"
+        : homeController.getUserDetailModel.data?.user?.firstName ?? "";
+    final lastName = isGuest.value
+        ? ""
+        : homeController.getUserDetailModel.data?.user?.lastName ?? "";
+
+    // Herbs is a single-licensee vertical: when the country has exactly one
+    // herbs store the backend hands us its id, so skip the store search and
+    // open that store directly. Customers/guests only — owners manage herbs
+    // through their own store flow below.
+    if (category == StringConstants.herbsText &&
+        herbsStoreId.value.isNotEmpty &&
+        roleApp.value == Role.customerRoleText) {
+      await Get.to(
+        () => StoreHomeMainScreen(
+          args: StoreHomeMainArgs(
+            storeId: herbsStoreId.value,
+            isFromMenu: false,
+            isFromFav: false,
+            isFromHome: true,
+            isFromOptions: false,
+          ),
+        ),
+        id: pageIdApp.value,
+      );
+      await homeController.apiActiveCartApi();
+      return;
+    }
+
+    if (roleApp.value == Role.customerRoleText) {
+      await Get.to(
+        () => SearchStoreUserScreen(
+          firstName: firstName,
+          lastName: lastName,
+          category: category,
+        ),
+        id: pageIdApp.value,
+      );
+      await homeController.apiActiveCartApi();
+    } else {
+      await Get.to(
+        () => OwnerStoresListScreen(
+          firstName: firstName,
+          isFromHome: false,
+          lastName: lastName,
+          category: category,
+        ),
+        id: pageIdApp.value,
+      );
+    }
+  }
+
+  List<Widget> _shortcutPills() {
+    final pills = <Widget>[];
+    for (final shortcut in AppConfig.current.homeShortcuts) {
+      if (!shortcut.visible || !_shortcutAvailable(shortcut.id)) continue;
+      if (pills.isNotEmpty) pills.add(width5SizedBox);
+      pills.add(_payPill(
+        icon: shortcut.iconData,
+        label: shortcut.label,
+        color: shortcut.color,
+        onTap: () => _onShortcutTap(shortcut.id),
+      ));
+    }
+    return pills;
+  }
+
+  // Munchies / Herbs / Payments are country-gated: the flags come from
+  // utils/app/config and the backend enforces them again on every API call,
+  // so hiding a pill here is cosmetic only. An admin can hide a pill but never
+  // show a vertical that is off for the caller's country.
+  bool _shortcutAvailable(String id) {
+    switch (id) {
+      case 'munchies':
+        return munchiesEnabled.value;
+      case 'herbs':
+        // Herbs is a regulated, single-licensee vertical: every store owner
+        // could otherwise see it. Customers/guests keep browsing it (country
+        // flag), but among store owners only the licensed provider gets it.
+        return herbsEnabled.value &&
+            (roleApp.value != Role.storeOwnerRoleText || isHerbsLicensee.value);
+      case 'payments':
+        return paymentsEnabled.value;
+      default:
+        return true;
+    }
+  }
+
+  // Munchies / Herbs reuse the same store screens as Stores, scoped by a
+  // category filter. The category tokens are fixed constants, independent of
+  // the admin-editable pill label.
+  void _onShortcutTap(String id) {
+    switch (id) {
+      case 'munchies':
+        _openStores(category: StringConstants.munchiesText);
+        break;
+      case 'herbs':
+        _openStores(category: StringConstants.herbsText);
+        break;
+      case 'payments':
+        // Opens the dedicated Payments screen (P2P / P2B live there).
+        _openPaymentsHome();
+        break;
+      default:
+        _openStores();
+    }
+  }
+
+  Widget _payPill({
+    required IconData icon,
+    required String label,
+    required VoidCallback onTap,
+    Color? color,
+  }) {
+    final accent = color ?? AppColors.primary;
+    return RawMaterialButton(
+      elevation: 0,
+      onPressed: onTap,
+      constraints: const BoxConstraints(),
+      padding: const EdgeInsets.fromLTRB(2.0, 2.0, 10.0, 2.0),
+      shape: RoundedRectangleBorder(
+        side: BorderSide(width: 1.0, color: accent),
+        borderRadius: BorderRadius.circular(28.0),
+      ),
+      fillColor: AppColors.white,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: accent,
+              borderRadius: BorderRadius.circular(100),
+            ),
+            child: Icon(icon, size: 18, color: AppColors.white),
+          ),
+          width5SizedBox,
+          Text(
+            label,
+            maxLines: 1,
+            style: const TextStyle(fontSize: 15.0, fontWeight: FontWeight.w500),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // A single circular action button used for the title-row icon cluster
+  // (transaction history, account, notifications). Keeping one shared style
+  // makes the three icons read as one cohesive group.
+  Widget _circleAction({required Widget icon, required VoidCallback onTap}) {
+    return RawMaterialButton(
+      elevation: 0,
+      onPressed: onTap,
+      constraints: const BoxConstraints(),
+      padding: const EdgeInsets.all(9.0),
+      shape: CircleBorder(
+        side: BorderSide(width: 1.0, color: AppColors.primary),
+      ),
+      fillColor: AppColors.white,
+      child: SizedBox(
+        width: 20,
+        height: 20,
+        child: Center(child: icon),
+      ),
+    );
+  }
+
+  // Inbox, account and notification action buttons, rendered as
+  // one consistent cluster in the title row.
+  List<Widget> _buildAccountActions() {
+    return [
+      // Inbox first, matching the header icon row.
+      _circleAction(
+        icon: Image.asset(ImageConstants.message, height: 20),
+        onTap: _openInbox,
+      ),
+      width2SizedBox,
+      // Account.
+      _circleAction(
+        icon: Image.asset(ImageConstants.user, height: 20),
+        onTap: _openAccount,
+      ),
+      width2SizedBox,
+      // Notifications.
+      _circleAction(
+        icon: Icon(
+          Icons.notifications_active,
+          color: AppColors.primary,
+          size: 20.0,
+        ),
+        onTap: _openNotifications,
+      ),
+      width2SizedBox,
+    ];
+  }
+
+  // Notifications need a session, so guests get the login modal here just
+  // like inbox and account.
+  void _openNotifications() {
+    if (isGuest.value == true) {
+      GuestAccessModal.show(
+        title: StringConstants.loginRequiredText,
+        message: StringConstants.loginToViewNotificationsText,
+        onContinueAsGuest: () {},
+      );
+      return;
+    }
+
+    if (homeController.isLoading.value == false) {
+      Get.to(() => const NotificationListScreen(), id: pageIdApp.value);
+    }
+  }
+
+  // Role-aware account navigation.
+  void _openAccount() {
+    if (isGuest.value == true) {
+      GuestAccessModal.show(
+        title: StringConstants.loginRequiredText,
+        message: StringConstants.loginToAccessAccountSettingsText,
+        onContinueAsGuest: () {},
+      );
+      return;
+    }
+
+    Get.to(() => const AccountScreen(), id: pageIdApp.value)?.then((value) {
+      homeController.refreshUserData();
+    });
   }
 
   Row buildTitle() {
@@ -388,30 +488,43 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Column(
+          // TGM logo leads the title header.
+          Image.asset(
+            ImageConstants.homeMall,
+            scale: 4,
+          ),
+          width8SizedBox,
+          Expanded(
+            child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Obx(() =>
                   Text(
-                    "${StringConstants.hiText}${firstName.value} ${lastName.value}",
-                    style: const TextStyle(
+                    "${StringConstants.hiText}${firstName.value}",
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
                         fontSize: 18,
                         color: AppColors.black,
                         fontWeight: FontWeight.w600),
                   )),
-              Text.rich(
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                alignment: Alignment.centerLeft,
+                child: Text.rich(
+                maxLines: 1,
                 TextSpan(
                   children: [
                     TextSpan(
                       text: StringConstants.welcomeToText,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontWeight: FontWeight.w400,
                         fontSize: 16,
                         color: AppColors.black,
                       ),
                     ),
-                    const TextSpan(
+                    TextSpan(
                       text: ' T',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
@@ -419,7 +532,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                         color: AppColors.black,
                       ),
                     ),
-                    const TextSpan(
+                    TextSpan(
                       text: 'he',
                       style: TextStyle(
                         fontWeight: FontWeight.w400,
@@ -427,7 +540,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                         color: AppColors.black,
                       ),
                     ),
-                    const TextSpan(
+                    TextSpan(
                       text: ' G',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
@@ -435,7 +548,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                         color: AppColors.black,
                       ),
                     ),
-                    const TextSpan(
+                    TextSpan(
                       text: 'reen',
                       style: TextStyle(
                         fontWeight: FontWeight.w400,
@@ -443,7 +556,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                         color: AppColors.black,
                       ),
                     ),
-                    const TextSpan(
+                    TextSpan(
                       text: ' M',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
@@ -451,7 +564,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                         color: AppColors.black,
                       ),
                     ),
-                    const TextSpan(
+                    TextSpan(
                       text: 'all',
                       style: TextStyle(
                         fontWeight: FontWeight.w400,
@@ -461,9 +574,10 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                     ),
                   ],
                 ),
+              ),
               )
             ],
-          ),
+          )),
           Row(
             children: [
               Obx(
@@ -481,10 +595,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                                 InkWell(
                                   onTap: () async {
                                     if (homeController.isLoading.value == false) {
-                                      // Get.parameters["storeId"] =
-                                      //     homeController.storeIdValue?.value;
-                                      await Get.to(() => CartScreen(storeId: homeController.storeIdValue?.value), id: pageIdApp.value)
-                                          ?.then((value) => homeController.apiActiveCartApi());
+                                      await Get.to(() => CartScreen(storeId: homeController.storeIdValue?.value), id: pageIdApp.value);
+                                      await homeController.apiActiveCartApi();
                                     }
                                   },
                                   child: Stack(
@@ -528,34 +640,60 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                       ),
                     ),
               ),
-              GestureDetector(
-                onTap: () {
-                  if (homeController.isLoading.value == false) {
-                    Get.to(() => const NotificationListScreen(), id: pageIdApp.value);
-                  }
-                },
-                child: const Icon(
-                  Icons.notifications_active,
-                  color: AppColors.primary,
-                  size: 24.0,
-                ),
-              ),
-              width10SizedBox,
-              Image.asset(
-                ImageConstants.homeMall,
-                scale: 4,
-              ),
+              ..._buildAccountActions(),
             ],
           )
         ]);
   }
 
+  // Advertisement tap handling. In-app navigation only, keyed off target_type:
+  //   product -> that product's detail; store/offer -> the store home.
+  Future<void> _handleAdTap(OffersList item) async {
+    final target = item.targetType ?? 'none';
+    if (target == 'none' || (item.storeId ?? "").isEmpty) {
+      return;
+    }
+    if (target == 'product') {
+      await Get.to(
+        () => StoreHomeMainScreen(
+          args: StoreHomeMainArgs(
+            storeId: item.storeId ?? "",
+            productId: item.productId ?? "",
+            invokedIndex: 2,
+            isFromMenu: true,
+            isFromFav: false,
+            isFromHome: false,
+            isFromOptions: false,
+          ),
+        ),
+        id: pageIdApp.value,
+      );
+    } else {
+      // store / offer -> store home
+      await Get.to(
+        () => StoreHomeMainScreen(
+          args: StoreHomeMainArgs(
+            storeId: item.storeId ?? "",
+            invokedIndex: 0,
+            isFromMenu: false,
+            isFromFav: false,
+            isFromHome: true,
+            isFromOptions: false,
+          ),
+        ),
+        id: pageIdApp.value,
+      );
+    }
+    await homeController.apiActiveCartApi();
+  }
+
   _buildCarouselSlider({RxList<OffersList>? offersCarouselList,
-    RxList<ProductsList>? featuredProductList}) =>
-      Column(crossAxisAlignment: CrossAxisAlignment.center,
+    RxList<ProductsList>? featuredProductList}) {
+    print("CAROUSEL_DEBUG: isEmpty=${offersCarouselList!.isEmpty}, length=${offersCarouselList.length}, hashCode=${offersCarouselList.hashCode}");
+    return Column(crossAxisAlignment: CrossAxisAlignment.center,
 
           children: [
-            offersCarouselList!.isEmpty
+            offersCarouselList.isEmpty
                 ? SizedBox(
               height:
               offersCarouselList.isEmpty && featuredProductList!.isEmpty
@@ -565,12 +703,12 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset(
+                  BrandImage.asset(
                     ImageConstants.greenmall420,
                   ),
                   Text(
-                    StringConstants.welcomeToGreenMallText,
-                    style: const TextStyle(
+                    StringConstants.yourWellnessMarketPlace,
+                    style: TextStyle(
                         fontSize: 20,
                         fontStyle: FontStyle.italic,
                         fontWeight: FontWeight.w500,
@@ -582,10 +720,15 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                 : CarouselSlider(
               items: offersCarouselList.take(5)
                   .map((item) =>
-                  Obx(() {
-                    return InkWell(
+                  InkWell(
                       onTap: () async {
                         if (homeController.isLoading.value == false) {
+                          // Advertisement slides navigate in-app by target_type
+                          // (no external URLs).
+                          if (item.isAd == true) {
+                            await _handleAdTap(item);
+                            return;
+                          }
                           if (roleApp.value == Role.customerRoleText) {
                             if (item.isOfferForStore == false) {
                               await Get.to(() =>
@@ -602,6 +745,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                                     ),
                                 id: pageIdApp.value,
                               );
+                              await homeController.apiActiveCartApi();
                               }else{
 
                               await Get.to(() =>
@@ -617,6 +761,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                                     ),
                                 id: pageIdApp.value,
                               );
+                              await homeController.apiActiveCartApi();
                             }
 
                             /* Get.parameters["isFromMenu"] = "true";
@@ -651,13 +796,32 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                               borderRadius: BorderRadius.circular(6.0),
                               child: Stack(
                                   children: <Widget>[
-                                    CommonWidgets.cachedNetworkImage(
-                                        item.image?.dynamicUrl.toString() ?? "",
-                                        assetImg: ImageConstants.nopicfound,
-                                        height:
-                                        WidgetConstants.screenHeight * 0.28,
-                                        width:
-                                        WidgetConstants.screenWidth * 0.85),
+                                    (item.isAd == true &&
+                                            item.mediaType == 'video' &&
+                                            (item.mediaUrl ?? "").isNotEmpty)
+                                        ? AdVideoSlide(
+                                            videoUrl: item.mediaUrl!,
+                                            thumbnailUrl: item.thumbnailUrl ??
+                                                item.image?.dynamicUrl
+                                                    ?.toString(),
+                                            height: WidgetConstants
+                                                    .screenHeight *
+                                                0.28,
+                                            width: WidgetConstants
+                                                    .screenWidth *
+                                                0.85,
+                                          )
+                                        : CommonWidgets.cachedNetworkImage(
+                                            item.image?.dynamicUrl.toString() ??
+                                                "",
+                                            assetImg:
+                                                ImageConstants.nopicfound,
+                                            height: WidgetConstants
+                                                    .screenHeight *
+                                                0.28,
+                                            width: WidgetConstants
+                                                    .screenWidth *
+                                                0.85),
                                     Positioned(
                                       bottom: 0.0,
                                       left: 0.0,
@@ -676,11 +840,16 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                                         padding: const EdgeInsets.symmetric(
                                             vertical: 10.0, horizontal: 20.0),
                                         child: Text(
-                                          offersCarouselList
-                                              .where((p0) => item == p0)
-                                              .first
-                                              .store
-                                              ?.storeName ?? "",
+                                          item.isAd == true
+                                              ? (item.title ??
+                                                  item.store?.storeName ??
+                                                  "")
+                                              : offersCarouselList
+                                                      .where((p0) => item == p0)
+                                                      .first
+                                                      .store
+                                                      ?.storeName ??
+                                                  "",
                                           style: const TextStyle(
                                             color: Colors.white,
                                             fontSize: 20.0,
@@ -689,9 +858,33 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                                         ),
                                       ),
                                     ),
+                                    // "Sponsored" marker on ad slides.
+                                    if (item.isAd == true)
+                                      Positioned(
+                                        top: 8.0,
+                                        right: 8.0,
+                                        child: Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 3.0, horizontal: 8.0),
+                                          decoration: BoxDecoration(
+                                            color: const Color.fromARGB(
+                                                160, 0, 0, 0),
+                                            borderRadius:
+                                                BorderRadius.circular(4.0),
+                                          ),
+                                          child: const Text(
+                                            "Sponsored",
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 11.0,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
                                   ]))),
-                    );
-                  }))
+                    )
+                  )
                   .toList(),
               carouselController: _controller,
               options: CarouselOptions(
@@ -741,6 +934,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
               }).toList(),
             ))
           ]);
+  }
 
   _buildProductsCarousel({RxList<ProductsList>? featuredProductList}) {
     return featuredProductList!.isEmpty
@@ -756,7 +950,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
               child: InkWell(
                 highlightColor: Colors.transparent,
                 splashColor: Colors.transparent,
-                onTap: () {
+                onTap: () async {
                   if (homeController.isLoading.value == false) {
                     if (roleApp.value == Role.customerRoleText) {
                     /*  Get.parameters["isFromHome"] = "false";
@@ -771,7 +965,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                           "2";*/
                       print("StoreHomeMainScreen storeId--" "${item.storeId}" );
                       print(item.storeId ?? "");
-                      Get.to(
+                      await Get.to(
                             () =>
                             StoreHomeMainScreen(args:
                             StoreHomeMainArgs(
@@ -787,6 +981,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                             ),
                         id: pageIdApp.value,
                       );
+                      await homeController.apiActiveCartApi();
                     } else {
                       // Get.parameters["isFromHome"] = "true";
                       // Get.parameters["storeId"] =
@@ -833,25 +1028,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                     ClipRRect(
                       borderRadius: BorderRadius.circular(8.0),
                       child: CommonWidgets.cachedNetworkImage(
-                        item.productImages ==
-                            null ||
-                            item
-                                .productImages!
-                                .isEmpty ||
-                            item
-                                .productImages![0]
-                                .image!
-                                .dynamicUrl ==
-                                null ||
-                            item
-                                .productImages!
-                                .isEmpty
-                            ? ""
-                            : item
-                            .productImages![0]
-                            .image!
-                            .dynamicUrl
-                            .toString(),
+                        item.productImages?.isNotEmpty == true
+                            ? item.productImages![0].image?.dynamicUrl ?? ""
+                            : "",
                         height: WidgetConstants.screenHeight * 0.25,
                         width: WidgetConstants.screenWidth * 0.5,
                       ),
@@ -861,7 +1040,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                       child: Text(
                         item.productName ?? "",
                         overflow: TextOverflow.visible,
-                        style: const TextStyle(
+                        style: TextStyle(
                             color: AppColors.black,
                             fontSize: 16,
                             fontWeight: FontWeight.w500),

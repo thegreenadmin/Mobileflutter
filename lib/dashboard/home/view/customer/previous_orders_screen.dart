@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
 import 'package:thegreenmall/utils/utils.dart';
+import 'package:thegreenmall/utils/brand_image.dart';
 
 class PreviousOrdersScreen extends StatefulWidget {
   const PreviousOrdersScreen({super.key});
@@ -26,7 +27,7 @@ class _PreviousOrdersScreenState extends State<PreviousOrdersScreen> {
               height5SizedBox,
               Text(
                 StringConstants.previousOrdersText,
-                style: const TextStyle(
+                style: TextStyle(
                     color: AppColors.black,
                     fontSize: 18,
                     fontWeight: FontWeight.w600),
@@ -42,7 +43,7 @@ class _PreviousOrdersScreenState extends State<PreviousOrdersScreen> {
                             children: [
                               SizedBox(height: WidgetConstants.screenHeight *0.09,),
                               Center(
-                                child: Image.asset(
+                                child: BrandImage.asset(
                                   ImageConstants.nodata,
                                   scale: 8,
                                   color: AppColors.primary,
@@ -178,7 +179,7 @@ class _PreviousOrdersScreenState extends State<PreviousOrdersScreen> {
                                                   .productName ??
                                               "",
                                           overflow: TextOverflow.ellipsis,
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                               color: AppColors.black,
                                               fontSize: 16,
                                               fontWeight: FontWeight.w600),
@@ -206,8 +207,8 @@ class _PreviousOrdersScreenState extends State<PreviousOrdersScreen> {
                                         height4SizedBox,
                                         Text(
                                           "${StringConstants.unitPriceText}: "
-                                          "\$${storeHomeMainController.previousOrderList[i].productPrice ?? ""}",
-                                          style: const TextStyle(
+                                          "$currencySign${storeHomeMainController.previousOrderList[i].productPrice ?? ""}",
+                                          style: TextStyle(
                                               color: AppColors.black,
                                               fontSize: 14,
                                               fontWeight: FontWeight.w600),

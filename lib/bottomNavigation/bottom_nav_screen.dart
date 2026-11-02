@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:thegreenmall/bottomnavigation/bottom_nav_controller.dart';
+import 'package:thegreenmall/bottomNavigation/bottom_nav_controller.dart';
 import 'package:thegreenmall/dashboard/home/controller/controller.dart';
 import 'package:thegreenmall/dashboard/home/view/home_screen.dart';
 import 'package:thegreenmall/dashboard/more/view/more_screen.dart';
@@ -28,12 +28,33 @@ class _BottomNavigationState extends State<BottomNavigation>  with GlobalVarMixi
       Get.put(BottomNavController());
   final AccountController accountController = Get.put(AccountController());
 
+  // Tab Navigator keys and observers owned by this dashboard instance.
+  // Get.nestedKey(id) hands out one GlobalKey per id for the whole app, but
+  // a second dashboard can be built while the previous one is still mounted
+  // (guest -> login: Get.offAllNamed keeps the old route alive until the new
+  // one has animated in), and both then claim the same key ("Multiple widgets
+  // used the same GlobalKey"). Each instance makes fresh keys and registers
+  // them with GetX, so Get.to(..., id: n) targets the newest dashboard.
+  final Map<int, GlobalKey<NavigatorState>> _navKeys = {};
+  final Map<int, TabRouteObserverProxy> _navObservers = {};
+
   @override
   void initState() {
     Get.parameters["isController"] = "no";
+    for (var id = 0; id <= 6; id++) {
+      final key =
+          GlobalKey<NavigatorState>(debugLabel: 'Getx nested key: $id');
+      _navKeys[id] = key;
+      Get.keys[id] = key;
+      // A Navigator observer can only be attached to one Navigator at a time.
+      _navObservers[id] = TabRouteObserverProxy();
+    }
 
     super.initState();
   }
+
+  _TabNav _tabNav(int id, Widget tab) =>
+      _TabNav(id, tab, _navKeys[id]!, _navObservers[id]!);
 
   late HttpClient client;
 
@@ -45,8 +66,8 @@ class _BottomNavigationState extends State<BottomNavigation>  with GlobalVarMixi
   Widget build(BuildContext context) {
     return PopScope(
       onPopInvoked: (v) async {
-        Utility.showConfirmAlertMessage("Click OK to exit the app.",
-            description: "Click OK to exit the app.", okay: "OK", okayTap: () {
+        Utility.showConfirmAlertMessage(StringConstants.exitAppConfirmText,
+            description: StringConstants.exitAppConfirmText, okay: "OK", okayTap: () {
           Get.back();
           if (Platform.isAndroid) {
             SystemNavigator.pop();
@@ -77,7 +98,7 @@ class _BottomNavigationState extends State<BottomNavigation>  with GlobalVarMixi
                     () => BottomNavigationBar(
                       type: BottomNavigationBarType.fixed,
                       selectedLabelStyle:
-                          const TextStyle(color: AppColors.primary),
+                          TextStyle(color: AppColors.primary),
                       selectedFontSize: 0.0,
                       elevation: 0,
                       showSelectedLabels: true,
@@ -246,16 +267,16 @@ class _BottomNavigationState extends State<BottomNavigation>  with GlobalVarMixi
           body: IndexedStack(
             index: bottomNavigationPageController.selectedIndex.value,
             children: [
-              const _TabNav(0, HomeScreen()),
-              const _TabNav(1, WalletScreen()),
+              _tabNav(0, HomeScreen()),
+              _tabNav(1, const WalletScreen()),
               roleApp.value == Role.storeOwnerRoleText
                   ? bottomNavigationPageController.storeList.length > 1 ||
                           bottomNavigationPageController.storeList.isEmpty
-                      ? const _TabNav(2, OrderStoresListScreen())
-                      : const _TabNav(3, OrdersHomeMainScreen())
-                  : const _TabNav(4, OrdersScreen()),
-              const _TabNav(5, OffersScreen()),
-              const _TabNav(6, MoreScreen()),
+                      ? _tabNav(2, const OrderStoresListScreen())
+                      : _tabNav(3, const OrdersHomeMainScreen())
+                  : _tabNav(4, const OrdersScreen()),
+              _tabNav(5, const OffersScreen()),
+              _tabNav(6, const MoreScreen()),
             ],
           ),
 
@@ -269,13 +290,32 @@ class _BottomNavigationState extends State<BottomNavigation>  with GlobalVarMixi
 class _TabNav extends GetView<BottomNavController> {
   final int navKey;
   final Widget tab;
-  const _TabNav(this.navKey, this.tab);
+  final GlobalKey<NavigatorState> navigatorKey;
+  final TabRouteObserverProxy observer;
+  // Key the widget by its navKey. The Orders slot can change its navKey in
+  // place (e.g. 4 = customer OrdersScreen -> 2 = OrderStoresListScreen) when a
+  // guest is converted to a store owner and roleApp updates. Without a Key,
+  // Flutter reuses the same _TabNav element and merely swaps the inner
+  // Navigator's GlobalKey (Get.nestedKey), which leaves the new nested
+  // Navigator mounted with no visible route -> permanently blank/white screen.
+  // A ValueKey forces a fresh element + Navigator when the navKey changes.
+  _TabNav(this.navKey, this.tab, this.navigatorKey, this.observer)
+      : super(key: ValueKey('tabNav_$navKey'));
 
   @override
   Widget build(BuildContext context) {
     return Navigator(
-      key: Get.nestedKey(navKey),
-      onGenerateRoute: (settings) => MaterialPageRoute(builder: (_) => tab),
+      key: navigatorKey,
+      // One observer per tab Navigator (owned by the dashboard state and
+      // reused across rebuilds); sharing one between Navigators trips
+      // 'observer.navigator == null'.
+      observers: [observer],
+      pages: [
+        MaterialPage(child: tab),
+      ],
+      onPopPage: (route, result) {
+        return route.didPop(result);
+      },
     );
   }
 }

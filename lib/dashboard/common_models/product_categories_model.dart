@@ -10,8 +10,8 @@ class ProductCategories {
       {productCategoryId, this.categoryId, this.status, this.category});
 
   ProductCategories.fromJson(Map<String, dynamic> json) {
-    productCategoryId = json['product_category_id'];
-    categoryId = json['category_id'];
+    productCategoryId = json['product_category_id']?.toString();
+    categoryId = json['category_id']?.toString();
     status = json['status'];
     category =
         json['category'] != null ? Category.fromJson(json['category']) : null;
@@ -64,7 +64,7 @@ class Category {
       );
 
   factory Category.fromJson(Map<String, dynamic> json) => Category(
-        categoryId: json["category_id"],
+        categoryId: json["category_id"]?.toString(),
         parentCategoryId: json["parent_category_id"],
         isFeaturedCategory: json["is_featured_category"],
         categoryName: json["category_name"],

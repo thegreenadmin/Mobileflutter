@@ -5,12 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
-import 'package:thegreenmall/bottomnavigation/bottom_nav_screen.dart';
+import 'package:thegreenmall/bottomNavigation/bottom_nav_screen.dart';
+import 'package:thegreenmall/push_notifications/device_token_service.dart';
+import 'package:thegreenmall/utils/app_config.dart';
+import 'package:thegreenmall/utils/app_config_service.dart';
+import 'package:thegreenmall/utils/app_gate.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
+import 'package:thegreenmall/utils/brand_image.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -26,12 +31,16 @@ class _SplashScreenState extends State<SplashScreen>
   bool isAuthenticating = false;
   bool authh = false;
 
+  Timer? _timer;
+  bool _started = false;
+  int _bioRetryCount = 0;
+  int get _maxBioRetries => AppConfig.current.biometricMaxAttempts;
+
   startTime() async {
     authh = await SharedPreferenceStorage.getData(
             StringConstants.authenticatedText) ??
         false;
     authenticatedBiometric.value = authh;
-    authh != false ? authh : false;
     BioMetricAuthentication.isBioMetricAuthenticated.value = authh;
     // BioMetricAuthentication.isBioMetricAuthenticated
     //     .value = await SharedPreferenceStorage.getData(
@@ -40,10 +49,8 @@ class _SplashScreenState extends State<SplashScreen>
     //     ? SharedPreferenceStorage.getData(StringConstants.authenticatedText)
     //         as bool
     //     : false;
-    debugPrint(
-        "BIOMETRIC AUTHENTICATION ******* ${BioMetricAuthentication.isBioMetricAuthenticated.value}");
     var duration = const Duration(seconds: 2);
-    return Timer(
+    _timer = Timer(
         duration,
         BioMetricAuthentication.isBioMetricAuthenticated.value == false
             ? navigationPage
@@ -58,26 +65,42 @@ class _SplashScreenState extends State<SplashScreen>
         await SharedPreferenceStorage.getData("onboardingCompleted") ?? "";
     bool wasStoreOwner =
         await SharedPreferenceStorage.getData("isStoreOwner") ?? false;
-    Future.delayed(const Duration(seconds: 3)).then((value) async {
+    // Restore the session before fetching config so a logged-in caller gets
+    // user-specific flags (herbs licensee).
+    if (token != null) {
+      authToken.value = token;
+      isGuest.value = false; // Ensure guest flag is false when token exists
+    }
 
-      roleApp(role ?? "");
-      // roleApp.value = role ?? "";
+    // Fetch the latest feature flags + admin app config while the splash is
+    // showing anyway; a slow network never extends the splash beyond it.
+    await Future.wait([
+      Future.delayed(const Duration(seconds: 3)),
+      AppConfigService.refresh()
+          .timeout(const Duration(seconds: 3), onTimeout: () => false),
+    ]);
+    // Maintenance mode / required update replace the app entirely.
+    if (await AppGate.enforce()) return;
 
-      if (onboardingCompleted == "yes") {
-        Get.offAll(() => const StartJourneyScreen());
-      } else if (token != null) {
-        isStoreOwner.value = wasStoreOwner;
-        authToken.value = token;
-        Get.offAll(() => const BottomNavigation());
-      } else {
-        Get.offNamed('/onboardView');
-      }
-    });
+    roleApp(role ?? "");
+    // roleApp.value = role ?? "";
+
+    if (token != null) {
+      isStoreOwner.value = wasStoreOwner;
+      // Re-sync the FCM token: it may have rotated since the last login, in
+      // which case the server is holding a dead token and push has stopped.
+      DeviceTokenService.instance.syncToken();
+      Get.offAll(() => const BottomNavigation());
+    } else {
+      // For new users or those without token, go to StartJourneyScreen
+      // where they can choose to login, signup, or continue as guest
+      Get.offAll(() => const StartJourneyScreen());
+    }
+    Future.delayed(const Duration(milliseconds: 800),
+        AppGate.maybePromptOptionalUpdate);
   }
 
   Future<void> _authenticateWithBiometrics() async {
-    debugPrint("_authenticateWithBiometrics:***** called");
-    bool authenticated = false;
     try {
       isAuthenticating = true;
       authorized = 'Authenticating';
@@ -91,8 +114,6 @@ class _SplashScreenState extends State<SplashScreen>
       isAuthenticating = false;
       authorized = 'Authenticating';
     } on PlatformException catch (e) {
-      debugPrint(e.toString());
-      debugPrint(e.message);
       isAuthenticating = false;
       authorized = 'Error - ${e.message}';
       if (Platform.isAndroid) {
@@ -100,7 +121,6 @@ class _SplashScreenState extends State<SplashScreen>
           SystemChannels.platform.invokeMethod('SystemNavigator.pop');
         }
       } else {
-        debugPrint("Platform.ios");
       }
 
       return;
@@ -112,17 +132,30 @@ class _SplashScreenState extends State<SplashScreen>
         authenticatedBiometric.value ? 'Authorized' : 'Not Authorized';
     authorized = message;
     if (authenticatedBiometric.value) {
+      _bioRetryCount = 0;
       SharedPreferenceStorage.setData(
-          StringConstants.authenticatedText, authenticated);
+          StringConstants.authenticatedText, authenticatedBiometric.value);
       await navigationPage();
-    } else {
+    } else if (_bioRetryCount < _maxBioRetries) {
+      _bioRetryCount++;
       _authenticateWithBiometrics();
+    } else {
+      // Exhausted retries: stop looping so the user isn't trapped on splash.
+      _bioRetryCount = 0;
+      authorized = 'Not Authorized';
+      if (Platform.isAndroid) {
+        SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+      }
     }
   }
 
   @override
   void initState() {
     super.initState();
+    if (!_started) {
+      _started = true;
+      startTime();
+    }
   }
 
   @override
@@ -134,17 +167,17 @@ class _SplashScreenState extends State<SplashScreen>
   }
   @override
   void dispose() {
+    _timer?.cancel();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    startTime();
     return Scaffold(
         body: Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         image: DecorationImage(
-          image: AssetImage(ImageConstants.splashBg),
+          image: brandImageProvider(ImageConstants.splashBg),
           fit: BoxFit.cover,
         ),
       ),

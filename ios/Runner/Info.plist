@@ -2,6 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<!-- Deep links are handled by the app_links plugin (see DeepLinkService),
+	     not Flutter's built-in Navigator-based deep linking. With Flutter's
+	     handler on, the incoming /pay/<token> universal link is treated as the
+	     app's initial route, which GetX can't match and crashes at startup. -->
+	<key>FlutterDeepLinkingEnabled</key>
+	<false/>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
@@ -42,7 +48,7 @@
 		<string>_dartobservatory._tcp</string>
 	</array>
 	<key>NSCameraUsageDescription</key>
-	<string>The app needs permission for image selection</string>
+	<string>The Green Mall uses the camera to scan product barcodes for quick checkout, take photos of items to add to your wishlist, and upload your profile picture.</string>
 	<key>NSLocationUsageDescription</key>
 	<string>The app needs permission for location</string>
 	<key>NSFaceIDUsageDescription</key>

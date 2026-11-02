@@ -27,15 +27,19 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> with GlobalVar
     super.initState();
     border = OutlineInputBorder(
       borderRadius: BorderRadius.circular(5.0),
-      borderSide: const BorderSide(
+      borderSide: BorderSide(
         color: AppColors.primary,
         width: 1.0,
       ),
     );
-    addCardController.apiGetUserWalletBalance();
-    addCardController.apiGetCardList();
-    // addCardController.apiGetCountries();
-    addCardController.apiGetUserDetailApi();
+    // These set Rx loading flags synchronously; doing that mid-build trips
+    // "setState() called during build" in Obx widgets, so wait a frame.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      addCardController.apiGetUserWalletBalance();
+      addCardController.apiGetCardList();
+      // addCardController.apiGetCountries();
+      addCardController.apiGetUserDetailApi();
+    });
   }
 
   @override
@@ -57,13 +61,18 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> with GlobalVar
                           children: [
                             Row(
                               children: [
+                                Image.asset(
+                                  ImageConstants.homeMall,
+                                  scale: 4,
+                                ),
+                                width10SizedBox,
                                 IconButton(
                                   padding: EdgeInsets.zero,
                                   constraints: const BoxConstraints(),
                                   onPressed: () {
                                     Get.back(id: pageIdApp.value);
                                   },
-                                  icon: const Icon(
+                                  icon: Icon(
                                     Icons.arrow_back,
                                     color: AppColors.black,
                                     size: 24.0,
@@ -72,17 +81,13 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> with GlobalVar
                                 width10SizedBox,
                                 Text(
                                   StringConstants.addCardText,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                       fontSize: 22,
                                       color: AppColors.black,
                                       fontWeight: FontWeight.w600),
                                 ),
                               ],
                             ),
-                            Image.asset(
-                              ImageConstants.homeMall,
-                              scale: 4,
-                            )
                           ])),
                 ),
                 Obx(
@@ -137,7 +142,7 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> with GlobalVar
                                   StringConstants.cardNumberText, // 'Number',
                               hintText:
                                   StringConstants.x4Text, //'XXXX XXXX XXXX XXXX',
-                              labelStyle: const TextStyle(
+                              labelStyle: TextStyle(
                                   color: AppColors.black, fontSize: 16),
                               hintStyle: const TextStyle(
                                   color: AppColors.grey, fontSize: 14),
@@ -145,7 +150,7 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> with GlobalVar
                               enabledBorder: border,
                             ),
                             expiryDateDecoration: InputDecoration(
-                              labelStyle: const TextStyle(
+                              labelStyle: TextStyle(
                                   color: AppColors.black, fontSize: 16),
                               hintStyle: const TextStyle(
                                   color: AppColors.grey, fontSize: 14),
@@ -156,7 +161,7 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> with GlobalVar
                               hintText: StringConstants.x2Text, //'XX/XX',
                             ),
                             cvvCodeDecoration: InputDecoration(
-                              labelStyle: const TextStyle(
+                              labelStyle: TextStyle(
                                   color: AppColors.black, fontSize: 16),
                               hintStyle: const TextStyle(
                                   color: AppColors.grey, fontSize: 14),
@@ -166,7 +171,7 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> with GlobalVar
                               hintText: StringConstants.x1Text, //'XXX',
                             ),
                             cardHolderDecoration: InputDecoration(
-                              labelStyle: const TextStyle(
+                              labelStyle: TextStyle(
                                   color: AppColors.black, fontSize: 16),
                               hintStyle: const TextStyle(
                                   color: AppColors.grey, fontSize: 14),
@@ -190,7 +195,7 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> with GlobalVar
                               children: [
                                 Text(
                                   StringConstants.billingAddressText,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                       color: AppColors.black,
                                       fontSize: 18,
                                       fontWeight: FontWeight.w600),
@@ -241,11 +246,11 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> with GlobalVar
                                         bottom: WidgetConstants.screenWidth * 0.034,
                                         right: 0),
                                     labelText: StringConstants.addressLine1Text,
-                                    labelStyle: const TextStyle(
+                                    labelStyle: TextStyle(
                                         color: AppColors.black, fontSize: 16),
                                     filled: true,
                                     fillColor:  AppColors.transparent,
-                                    errorStyle: const TextStyle(color: AppColors.red),
+                                    errorStyle: TextStyle(color: AppColors.red),
                                     errorMaxLines: 3,
                                     hintText: StringConstants.addressLine1Text,
                                     hintStyle: const TextStyle(color: AppColors.grey, fontSize: 14),
@@ -272,7 +277,7 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> with GlobalVar
                                         color: AppColors.primary),
                                   ),
                                   // textCapitalization: TextCapitalization.words,
-                                  textStyle: const TextStyle(
+                                  textStyle: TextStyle(
                                       color: AppColors.black,
                                       fontSize: 16,
                                       fontWeight: FontWeight.w400),
@@ -385,7 +390,7 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> with GlobalVar
                                   controller:
                                       addCardController.addressLine2TextController,
                                   labelText: StringConstants.addressLine2Text,
-                                  labelStyle: const TextStyle(
+                                  labelStyle: TextStyle(
                                       color: AppColors.black, fontSize: 16),
                                   hintText: StringConstants.addressLine2Text,
                                   hintStyle: const TextStyle(
@@ -409,7 +414,7 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> with GlobalVar
                                       right: 0),
                                   controller: addCardController.cityTextController,
                                   labelText: StringConstants.cityText,
-                                  labelStyle: const TextStyle(
+                                  labelStyle: TextStyle(
                                       color: AppColors.black, fontSize: 16),
                                   hintText: StringConstants.cityText,
                                   hintStyle: const TextStyle(
@@ -438,7 +443,7 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> with GlobalVar
                                       bottom: WidgetConstants.screenWidth * 0.034,
                                       right: 0),
                                   labelText: StringConstants.zipCodeText,
-                                  labelStyle: const TextStyle(
+                                  labelStyle: TextStyle(
                                       color: AppColors.black, fontSize: 16),
                                   hintText: StringConstants.zipCodeText,
                                   hintStyle: const TextStyle(
@@ -470,7 +475,7 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> with GlobalVar
                                       bottom: WidgetConstants.screenWidth * 0.034,
                                       right: 0),
                                   labelText: StringConstants.stateText,
-                                  labelStyle: const TextStyle(
+                                  labelStyle: TextStyle(
                                       color: AppColors.black, fontSize: 16),
                                   hintText: StringConstants.stateText,
                                   hintStyle: const TextStyle(
@@ -502,7 +507,7 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> with GlobalVar
                                       bottom: WidgetConstants.screenWidth * 0.034,
                                       right: 0),
                                   labelText: StringConstants.countryText,
-                                  labelStyle: const TextStyle(
+                                  labelStyle: TextStyle(
                                       color: AppColors.black, fontSize: 16),
                                   hintText: StringConstants.countryText,
                                   hintStyle: const TextStyle(
@@ -686,7 +691,7 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> with GlobalVar
                         height20SizedBox,
                         CustomButton(
                           width: WidgetConstants.screenWidth * 0.9,
-                          gradient: const LinearGradient(
+                          gradient: LinearGradient(
                             begin: Alignment.topCenter,
                             end: Alignment.bottomCenter,
                             colors: [AppColors.primary, AppColors.primary],
@@ -721,7 +726,7 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> with GlobalVar
             return addCardController.isLoading.value
                 ? Container(
               color: Colors.black.withOpacity(0.2),
-              child: const Center(
+              child: Center(
                 child: CircularProgressIndicator(color: AppColors.primary),
               ),)
                 : const SizedBox.shrink();

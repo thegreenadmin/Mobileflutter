@@ -52,6 +52,11 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> with GlobalVa
                   children: [
                     Row(
                       children: [
+                        Image.asset(
+                          ImageConstants.homeMall,
+                          scale: 4,
+                        ),
+                        width10SizedBox,
                         IconButton(
                           padding: EdgeInsets.all(5),
                           constraints: const BoxConstraints(),
@@ -60,7 +65,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> with GlobalVa
                             manageStoreController.imageUrlList.clear();
                             Get.back(id: pageIdApp.value);
                           },
-                          icon: const Icon(
+                          icon: Icon(
                             Icons.arrow_back,
                             color: AppColors.black,
                             size: 24.0,
@@ -69,17 +74,13 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> with GlobalVa
                         width10SizedBox,
                         Text(
                             widget.categoryName??"",
-                            style: const TextStyle(
+                            style: TextStyle(
                                 fontSize: 22,
                                 color: AppColors.black,
                                 fontWeight: FontWeight.w600),
                           ),
                       ],
                     ),
-                    Image.asset(
-                      ImageConstants.homeMall,
-                      scale: 4,
-                    )
                   ])),
         ));
   }
@@ -110,7 +111,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> with GlobalVa
                                   : Column(
                                       children: [
                                         Text(StringConstants.uploadProductPhotosText,
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                                 color: AppColors.black,
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.w400)),
@@ -181,7 +182,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> with GlobalVa
                                                                 .removeAt(index);
                                                             setState(() {});
                                                           },
-                                                          child: const Padding(
+                                                          child: Padding(
                                                             padding: EdgeInsets.all(2),
                                                             child: Icon(
                                                                 Icons.delete_forever,
@@ -268,7 +269,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> with GlobalVa
                                               Text(
                                                   StringConstants
                                                       .theImageMustBeAtLeastText,
-                                                  style: const TextStyle(
+                                                  style: TextStyle(
                                                       color: AppColors.black,
                                                       fontSize: 12,
                                                       fontWeight: FontWeight.w400)),
@@ -461,21 +462,21 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> with GlobalVa
                                             ),
                                             border: UnderlineInputBorder(
                                               borderRadius: BorderRadius.circular(5.0),
-                                              borderSide: const BorderSide(
+                                              borderSide: BorderSide(
                                                 color: AppColors.primary,
                                                 width: 1.0,
                                               ),
                                             ),
                                             focusedBorder: UnderlineInputBorder(
                                               borderRadius: BorderRadius.circular(5.0),
-                                              borderSide: const BorderSide(
+                                              borderSide: BorderSide(
                                                 color: AppColors.primary,
                                                 width: 1.0,
                                               ),
                                             ),
                                             errorBorder: UnderlineInputBorder(
                                               borderRadius: BorderRadius.circular(5.0),
-                                              borderSide: const BorderSide(
+                                              borderSide: BorderSide(
                                                 color: AppColors.primary,
                                                 width: 1.0,
                                               ),
@@ -494,7 +495,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> with GlobalVa
                                               value: value.quantityTypeId,
                                               child: Text(
                                                 value.quantityTypeName,
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                     color: AppColors.black,
                                                     fontSize: 16,
                                                     fontWeight: FontWeight.w500),
@@ -662,21 +663,21 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> with GlobalVa
                                       ),
                                       border: UnderlineInputBorder(
                                         borderRadius: BorderRadius.circular(5.0),
-                                        borderSide: const BorderSide(
+                                        borderSide: BorderSide(
                                           color: AppColors.primary,
                                           width: 1.0,
                                         ),
                                       ),
                                       focusedBorder: UnderlineInputBorder(
                                         borderRadius: BorderRadius.circular(5.0),
-                                        borderSide: const BorderSide(
+                                        borderSide: BorderSide(
                                           color: AppColors.primary,
                                           width: 1.0,
                                         ),
                                       ),
                                       errorBorder: UnderlineInputBorder(
                                         borderRadius: BorderRadius.circular(5.0),
-                                        borderSide: const BorderSide(
+                                        borderSide: BorderSide(
                                           color: AppColors.primary,
                                           width: 1.0,
                                         ),
@@ -696,7 +697,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> with GlobalVa
                                         value: value,
                                         child: Text(
                                           value,
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                               color: AppColors.black,
                                               fontSize: 16,
                                               fontWeight: FontWeight.w500),
@@ -786,21 +787,21 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> with GlobalVa
                                 ),
                                 border: UnderlineInputBorder(
                                   borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: const BorderSide(
+                                  borderSide: BorderSide(
                                     color: AppColors.primary,
                                     width: 1.0,
                                   ),
                                 ),
                                 focusedBorder: UnderlineInputBorder(
                                   borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: const BorderSide(
+                                  borderSide: BorderSide(
                                     color: AppColors.primary,
                                     width: 1.0,
                                   ),
                                 ),
                                 errorBorder: UnderlineInputBorder(
                                   borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: const BorderSide(
+                                  borderSide: BorderSide(
                                     color: AppColors.primary,
                                     width: 1.0,
                                   ),
@@ -819,7 +820,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> with GlobalVa
                                   value: value,
                                   child: Text(
                                     value,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         color: AppColors.black,
                                         fontSize: 16,
                                         fontWeight: FontWeight.w500),
@@ -835,6 +836,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> with GlobalVa
                               },
                             ),
                             height20SizedBox,
+                            if (manageStoreController.isHerbsStore) ...[
                             Row(
                               children: [
                                 Flexible(
@@ -971,6 +973,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> with GlobalVa
                               ],
                             ),
                             height20SizedBox,
+                            ],
                             Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               crossAxisAlignment: CrossAxisAlignment.end,
@@ -1004,21 +1007,21 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> with GlobalVa
                                           ),
                                           border: UnderlineInputBorder(
                                             borderRadius: BorderRadius.circular(5.0),
-                                            borderSide: const BorderSide(
+                                            borderSide: BorderSide(
                                               color: AppColors.primary,
                                               width: 1.0,
                                             ),
                                           ),
                                           focusedBorder: UnderlineInputBorder(
                                             borderRadius: BorderRadius.circular(5.0),
-                                            borderSide: const BorderSide(
+                                            borderSide: BorderSide(
                                               color: AppColors.primary,
                                               width: 1.0,
                                             ),
                                           ),
                                           errorBorder: UnderlineInputBorder(
                                             borderRadius: BorderRadius.circular(5.0),
-                                            borderSide: const BorderSide(
+                                            borderSide: BorderSide(
                                               color: AppColors.primary,
                                               width: 1.0,
                                             ),
@@ -1038,7 +1041,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> with GlobalVa
                                             value: value,
                                             child: Text(
                                               value,
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                   color: AppColors.black,
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.w500),
@@ -1111,7 +1114,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> with GlobalVa
                                   children: [
                                     Text(
                                       StringConstants.enableProductText,
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w400,
                                         color: AppColors.black,
@@ -1141,7 +1144,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> with GlobalVa
                             ),
                             height40SizedBox,
                             CustomButton(
-                              gradient: const LinearGradient(
+                              gradient: LinearGradient(
                                 begin: Alignment.topCenter,
                                 end: Alignment.bottomCenter,
                                 colors: [AppColors.primary, AppColors.primary],
@@ -1187,7 +1190,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> with GlobalVa
           return manageStoreController.isLoading.value
               ? Container(
             color: Colors.black.withOpacity(0.2),
-            child: const Center(
+            child: Center(
               child: CircularProgressIndicator(color: AppColors.primary),
             ),)
               : const SizedBox.shrink();
@@ -1203,13 +1206,13 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> with GlobalVa
         children: [
           TextSpan(
               text: title,
-              style: const TextStyle(
+              style: TextStyle(
                   color: AppColors.black,
                   fontSize: 16,
                   fontWeight: FontWeight.w400)),
           TextSpan(
             text:starText,
-            style: const TextStyle(
+            style: TextStyle(
                 fontSize: 16,
                 color: AppColors.red,
                 fontWeight: FontWeight.bold),

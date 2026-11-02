@@ -66,19 +66,45 @@ class OrdersController extends GetxController with GlobalVarMixin{
   RxList<Order> orderList = <Order>[].obs;
   RxList<Order> storeOrderList = <Order>[].obs;
   RxBool isFavouriteStore = false.obs;
+  // The in-progress status is hidden from the tracker: an order being
+  // prepared still shows as Received, then jumps to Ready for pickup /
+  // In-transit (mirrors the store-side flow where preparing a pickup order
+  // chains straight to ready-for-pickup).
   RxList<Categories> stepInd = [
     Categories(id: 0, name: "Received", isSelected: false),
-    Categories(id: 1, name: "In Progress", isSelected: false),
-    Categories(id: 2, name: "In-transit", isSelected: false),
-    Categories(id: 3, name: "Complete", isSelected: false),
+    Categories(id: 1, name: "In-transit", isSelected: false),
+    Categories(id: 2, name: "Complete", isSelected: false),
   ].obs;
 
+
+  // Guards against the eager onReady() load and a transition-triggered reload
+  // running concurrently and firing duplicate /order/list requests.
+  bool _initInFlight = false;
+
+  // BottomNavController calls onInit() MANUALLY on the (already-registered)
+  // instance on every Orders-tab tap, so guard listener registration to avoid
+  // attaching a duplicate ever(isGuest) worker each time.
+  bool _listenersInitialized = false;
 
   @override
   void onInit() {
     super.onInit();
-    // ✅ lightweight setup only
-    _initUserRole();
+    if (_listenersInitialized) return;
+    _listenersInitialized = true;
+
+    // The Orders tab is built eagerly inside the BottomNavigation IndexedStack,
+    // so this controller is created (and its onReady() load runs) while the user
+    // may still be a guest — at which point _initApiCalls() bails on the guest
+    // guard and leaves orderList empty. When the guest logs in (isGuest: true →
+    // false) nothing re-triggers the load on this already-created instance, so
+    // the screen stays on "No orders found" even though /order/list has data.
+    // Mirror HomeController's ever(isGuest) pattern and reload on transition.
+    ever(isGuest, (bool guestStatus) async {
+      if (!guestStatus && authToken.value.isNotEmpty) {
+        page.value = 1;
+        await _initApiCalls();
+      }
+    });
   }
 
   @override
@@ -88,12 +114,30 @@ class OrdersController extends GetxController with GlobalVarMixin{
     _initApiCalls();
   }
 
-  Future<void> _initUserRole() async {
-    var roleData = await SharedPreferenceStorage.getData(Role.role) ?? "";
-    role?.value = roleData;
+  Future<void> _initApiCalls() async {
+    // Dedupe concurrent loads (e.g. eager onReady() + ever(isGuest) transition
+    // reload, or a tab-tap reload arriving while the first load is in flight).
+    if (_initInFlight) return;
+    _initInFlight = true;
+    try {
+      await _runInitApiCalls();
+    } finally {
+      _initInFlight = false;
+    }
   }
 
-  Future<void> _initApiCalls() async {
+  Future<void> _runInitApiCalls() async {
+    // Read role directly from SharedPrefs here so we don't race with the
+    // async write from login/splash. On real devices SharedPrefs reads are
+    // slower and role?.value set in onInit() may still be "" by the time
+    // onReady() fires.
+    final roleData = await SharedPreferenceStorage.getData(Role.role) ?? "";
+    role?.value = roleData.isNotEmpty ? roleData : roleApp.value;
+
+    // Skip API calls for guest users
+    if (isGuest.value == true) {
+      return;
+    }
     // run heavy stuff here
     if (role?.value == Role.customerRoleText) {
       page.value = 1;
@@ -116,8 +160,11 @@ class OrdersController extends GetxController with GlobalVarMixin{
       orderStatusName.value = OrderStatusEnum.receivedOrder.statusName;
       uerSelectedTab.value = 0;
 
-      await apiGetOrderStatusListApi();
-      await apiGetUserDetail();
+      // Both are independent — run in parallel
+      await Future.wait([
+        apiGetOrderStatusListApi(),
+        apiGetUserDetail(),
+      ]);
       await setupScrollController();
     }
 
@@ -235,7 +282,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
                           Flexible(
                             child: Text(
                               StringConstants.ratingText,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600,
                                 color: AppColors.black,
@@ -305,7 +352,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
                           inputFormatters: <TextInputFormatter>[
                             LengthLimitingTextInputFormatter(100),
                           ],
-                          style: const TextStyle(
+                          style: TextStyle(
                               color: AppColors.black,
                               fontSize: 16,
                               fontWeight: FontWeight.w500),
@@ -326,21 +373,21 @@ class OrdersController extends GetxController with GlobalVarMixin{
                             fillColor: Colors.white,
                             border: UnderlineInputBorder(
                               borderRadius: BorderRadius.circular(5.0),
-                              borderSide: const BorderSide(
+                              borderSide: BorderSide(
                                 color: AppColors.primary,
                                 width: 1.0,
                               ),
                             ),
                             errorBorder: UnderlineInputBorder(
                               borderRadius: BorderRadius.circular(5.0),
-                              borderSide: const BorderSide(
+                              borderSide: BorderSide(
                                 color: AppColors.primary,
                                 width: 1.0,
                               ),
                             ),
                             focusedBorder: UnderlineInputBorder(
                               borderRadius: BorderRadius.circular(5.0),
-                              borderSide: const BorderSide(
+                              borderSide: BorderSide(
                                 color: AppColors.primary,
                                 width: 1.0,
                               ),
@@ -355,7 +402,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
                           )),
                       height10SizedBox,
                       CustomButton(
-                        gradient: const LinearGradient(
+                        gradient: LinearGradient(
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
                           colors: [AppColors.primary, AppColors.primary],
@@ -409,7 +456,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
                           Flexible(
                             child: Text(
                               StringConstants.returnOrderText,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600,
                                 color: AppColors.black,
@@ -473,7 +520,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
                               children: [
                                 Text(
                                   orderItemObj.value.product?.productName ?? "",
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                       fontWeight: FontWeight.w500,
                                       fontSize: 18,
                                       color: AppColors.black),
@@ -496,7 +543,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
                                                   fontSize: 16)),
                                           TextSpan(
                                             text:
-                                                "\$${orderItemObj.value.product?.productPrice.toString() ?? ""}",
+                                                "$currencySign${orderItemObj.value.product?.productPrice.toString() ?? ""}",
                                             style: TextStyle(
                                                 fontWeight: FontWeight.w600,
                                                 fontSize: 16,
@@ -529,7 +576,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
                           inputFormatters: <TextInputFormatter>[
                             LengthLimitingTextInputFormatter(100),
                           ],
-                          style: const TextStyle(
+                          style: TextStyle(
                               color: AppColors.black,
                               fontSize: 16,
                               fontWeight: FontWeight.w500),
@@ -550,21 +597,21 @@ class OrdersController extends GetxController with GlobalVarMixin{
                             fillColor: Colors.white,
                             border: UnderlineInputBorder(
                               borderRadius: BorderRadius.circular(5.0),
-                              borderSide: const BorderSide(
+                              borderSide: BorderSide(
                                 color: AppColors.primary,
                                 width: 1.0,
                               ),
                             ),
                             errorBorder: UnderlineInputBorder(
                               borderRadius: BorderRadius.circular(5.0),
-                              borderSide: const BorderSide(
+                              borderSide: BorderSide(
                                 color: AppColors.primary,
                                 width: 1.0,
                               ),
                             ),
                             focusedBorder: UnderlineInputBorder(
                               borderRadius: BorderRadius.circular(5.0),
-                              borderSide: const BorderSide(
+                              borderSide: BorderSide(
                                 color: AppColors.primary,
                                 width: 1.0,
                               ),
@@ -579,7 +626,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
                           )),
                       height10SizedBox,
                       CustomButton(
-                        gradient: const LinearGradient(
+                        gradient: LinearGradient(
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
                           colors: [AppColors.primary, AppColors.primary],
@@ -628,7 +675,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
             height10SizedBox,
             Text(
               StringConstants.returnRequestSentText,
-              style: const TextStyle(
+              style: TextStyle(
                   color: AppColors.black,
                   fontSize: 25,
                   fontWeight: FontWeight.w600),
@@ -650,7 +697,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
             ),
             height25SizedBox,
             CustomButton(
-              gradient: const LinearGradient(
+              gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [AppColors.primary, AppColors.primary],
@@ -705,7 +752,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {  isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -738,7 +785,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        await Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       }
     });
   }
@@ -773,7 +820,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else { isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -824,7 +871,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else if (value?.body["status"] == ApiConstants.statusCode409) { isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
         Get.back(id: pageIdApp.value);
@@ -861,7 +908,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
 
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else { isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -935,14 +982,14 @@ class OrdersController extends GetxController with GlobalVarMixin{
                   : []
     };
 
-         UserProvider()
+    final value = await UserProvider()
         .postWithHeadersApi(
             data,
             "${ServerCommunicator.baseUrl}${ServerCommunicator.orderList}",
             headers,
-            showLoading: false)
-        .then((value) async {
-             isLoading.value = false;
+            showLoading: false);
+
+      isLoading.value = false;
       isDataLoading.value = false;
 
       if (value?.body["status"] == ApiConstants.statusCode201 ||
@@ -965,17 +1012,20 @@ class OrdersController extends GetxController with GlobalVarMixin{
 
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else { isLoading.value = false;
         if (value?.body['message'] != null) { isLoading.value = false;
           Utility.showAlertMessage(value?.body['message']);
         }
       }
-    });
   }
 
   ///Get Store Order List Api
   Future apiGetStoreOrderListApi() async {
+    // Skip API call for guest users
+    if (isGuest.value == true) {
+      return;
+    }
     if (pageStore.value == 1) {
       isLoading.value = true;
       storeOrderList.value = [];
@@ -1036,7 +1086,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -1073,7 +1123,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {    isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -1108,7 +1158,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        await Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else { isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -1150,30 +1200,31 @@ class OrdersController extends GetxController with GlobalVarMixin{
             orderStatusTypeName.value =
                 element.orderStatus?.orderStatusName ?? "";
 
+            // in progress maps to the Received step: the preparing state is
+            // hidden from the tracker.
             activeStep.value = element.orderStatus?.orderStatusName ==
-                    OrderStatusEnum.receivedOrder.statusName
+                        OrderStatusEnum.receivedOrder.statusName ||
+                    element.orderStatus?.orderStatusName ==
+                        OrderStatusEnum.inProgress.statusName
                 ? 0
                 : element.orderStatus?.orderStatusName ==
-                        OrderStatusEnum.inProgress.statusName
+                            OrderStatusEnum.inTransit.statusName ||
+                        element.orderStatus?.orderStatusName ==
+                            OrderStatusEnum.readyForPickup.statusName
                     ? 1
                     : element.orderStatus?.orderStatusName ==
-                                OrderStatusEnum.inTransit.statusName ||
+                                OrderStatusEnum.completed.statusName ||
                             element.orderStatus?.orderStatusName ==
-                                OrderStatusEnum.readyForPickup.statusName
+                                OrderStatusEnum.cancelled.statusName
                         ? 2
-                        : element.orderStatus?.orderStatusName ==
-                                    OrderStatusEnum.completed.statusName ||
-                                element.orderStatus?.orderStatusName ==
-                                    OrderStatusEnum.cancelled.statusName
-                            ? 3
-                            : 0;
+                        : 0;
           }
         });
 
         if (orderDetailResponse.data?.order?.deliveryServiceId == "2") {
-          stepInd.firstWhere((element) => element.id == 2).name = "In-transit";
+          stepInd.firstWhere((element) => element.id == 1).name = "In-transit";
         } else { isLoading.value = false;
-          stepInd.firstWhere((element) => element.id == 2).name =
+          stepInd.firstWhere((element) => element.id == 1).name =
               "Ready for pickup";
         }
 
@@ -1189,7 +1240,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']); isLoading.value = false;
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else { isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -1234,7 +1285,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -1278,7 +1329,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();  isLoading.value = false;
         Get.parameters.clear();
-        await Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {  isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -1318,7 +1369,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        await Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else { isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -1356,7 +1407,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData(); isLoading.value = false;
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else { isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -1394,7 +1445,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/orders/controller/orders_home_main_controller.dart';
@@ -8,6 +9,7 @@ import 'package:thegreenmall/utils/utils.dart';
 
 import '../view/component/order_status_enum.dart';
 import 'mark_return_order_screen.dart';
+import 'package:thegreenmall/utils/brand_image.dart';
 
 class OrdersHomeMainScreen extends StatefulWidget {
   final String? orderId;
@@ -26,16 +28,90 @@ class OrdersHomeMainScreen extends StatefulWidget {
 class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with GlobalVarMixin{
   final OrdersHomeMainController ordersHomeMainController =
       Get.put(OrdersHomeMainController());
+  final TextEditingController searchTextController = TextEditingController();
 
 
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ordersHomeMainController.storeId.value = widget.storeId ?? "";
+      ordersHomeMainController.storeId.value = widget.storeId ?? Get.parameters["storeId"] ?? "";
       ordersHomeMainController.orderId.value = widget.orderId ?? "";
       ordersHomeMainController.isFromNotification.value = widget.isFromNotification ?? false;
+      searchTextController.text =
+          ordersHomeMainController.orderSearchQuery.value;
     });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    searchTextController.dispose();
+    super.dispose();
+  }
+
+  Padding buildOrderSearchField() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+      child: TextField(
+        controller: searchTextController,
+        textInputAction: TextInputAction.search,
+        onChanged: (value) {
+          ordersHomeMainController.orderSearchQuery.value = value;
+        },
+        style: TextStyle(
+            color: AppColors.black, fontSize: 14, fontWeight: FontWeight.w400),
+        decoration: InputDecoration(
+          filled: true,
+          isDense: true,
+          prefixIcon: Image.asset(
+            ImageConstants.search,
+            color: AppColors.grey,
+            scale: 4,
+          ),
+          suffixIcon: Obx(
+            () => Visibility(
+              visible:
+                  ordersHomeMainController.orderSearchQuery.value.isNotEmpty,
+              child: InkWell(
+                onTap: () {
+                  searchTextController.clear();
+                  ordersHomeMainController.orderSearchQuery.value = "";
+                },
+                child: Image.asset(
+                  ImageConstants.cross,
+                  scale: 4,
+                ),
+              ),
+            ),
+          ),
+          focusColor: AppColors.grey,
+          hintText: StringConstants.searchOrdersHintText,
+          hintStyle: const TextStyle(color: AppColors.grey, fontSize: 14),
+          fillColor: Colors.white,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(5.0),
+            borderSide: const BorderSide(
+              color: AppColors.grey,
+              width: 1.0,
+            ),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(5.0),
+            borderSide: const BorderSide(
+              color: AppColors.grey,
+              width: 1.0,
+            ),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(5.0),
+            borderSide: const BorderSide(
+              color: AppColors.grey,
+              width: 1.0,
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   Padding horizontalTabs() {
@@ -46,39 +122,47 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: List.generate(
             ordersHomeMainController.horizontalTabList.length,
-                (i) => InkWell(
-              highlightColor: Colors.transparent,
-              splashColor: Colors.transparent,
-              onTap: () {
-                ordersHomeMainController.onIndexChange(i);
-                setState(() {});
-              },
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    ordersHomeMainController.horizontalTabList[i],
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: ordersHomeMainController.selectedIndex.value == i
-                          ? FontWeight.w500
-                          : FontWeight.w400,
-                      color: ordersHomeMainController.selectedIndex.value == i
-                          ? AppColors.primary
-                          : AppColors.blackLight,
+                (i) {
+              // Visible tabs skip the hidden in-progress status, so each tab
+              // maps to an internal status index rather than its position.
+              final statusIndex = ordersHomeMainController.tabStatusIndexes[i];
+              return InkWell(
+                highlightColor: Colors.transparent,
+                splashColor: Colors.transparent,
+                onTap: () {
+                  ordersHomeMainController.onIndexChange(statusIndex);
+                  setState(() {});
+                },
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      ordersHomeMainController.horizontalTabList[i],
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: ordersHomeMainController
+                            .selectedIndex.value == statusIndex
+                            ? FontWeight.w500
+                            : FontWeight.w400,
+                        color: ordersHomeMainController.selectedIndex.value ==
+                            statusIndex
+                            ? AppColors.primary
+                            : AppColors.blackLight,
+                      ),
                     ),
-                  ),
-                  height8SizedBox,
-                  Container(
-                    color: ordersHomeMainController.selectedIndex.value == i
-                        ? AppColors.primary
-                        : Colors.transparent,
-                    height: 2,
-                    width: 80,
-                  ),
-                ],
-              ),
-            ),
+                    height8SizedBox,
+                    Container(
+                      color: ordersHomeMainController.selectedIndex.value ==
+                          statusIndex
+                          ? AppColors.primary
+                          : Colors.transparent,
+                      height: 2,
+                      width: 80,
+                    ),
+                  ],
+                ),
+              );
+            },
           ),
         ),
       ),
@@ -96,27 +180,29 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
                 alignment: Alignment.bottomCenter,
                 children: [
                   Obx(() => Container(
-                    height: WidgetConstants.screenHeight * 0.25,
+                    // A minimum, not a fixed height: on short screens a long address
+                    // needs more room than 25% of the screen.
+                    constraints: BoxConstraints(
+                        minHeight: WidgetConstants.screenHeight * 0.25),
                     decoration: BoxDecoration(
                       color: const Color(0xff7c94b6),
                       image: DecorationImage(
                         fit: BoxFit.cover,
                         colorFilter: const ColorFilter.mode(
                             Colors.black45, BlendMode.darken),
-                        image: ordersHomeMainController.storeDetailsResponse.value
-                            .data?.store?.image?.dynamicUrl ==
-                            null ||
-                            ordersHomeMainController.storeDetailsResponse
-                                .value.data!.store!.image!.dynamicUrl!.isEmpty
-                            ? const AssetImage(ImageConstants.storeicon)
-                        as ImageProvider
-                            : NetworkImage(ordersHomeMainController
-                            .storeDetailsResponse
-                            .value
-                            .data!
-                            .store!
-                            .image!
-                            .dynamicUrl!),
+                        image: () {
+                          final url = ordersHomeMainController
+                              .storeDetailsResponse
+                              .value
+                              .data
+                              ?.store
+                              ?.image
+                              ?.dynamicUrl;
+                          return (url == null || url.isEmpty)
+                              ? const AssetImage(ImageConstants.storeicon)
+                                  as ImageProvider
+                              : CachedNetworkImageProvider(url);
+                        }(),
                       ),
                     ),
                     child: Column(
@@ -204,7 +290,8 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
                                         child: Text(
                                             ordersHomeMainController
                                                 .storeLocation.value,
-                                            overflow: TextOverflow.visible,
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
                                             style: const TextStyle(
                                                 overflow: TextOverflow.visible,
                                                 color: AppColors.white,
@@ -265,6 +352,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
                 ],
               ),
               horizontalTabs(),
+              buildOrderSearchField(),
               Obx(() => Expanded(
                   child: ordersHomeMainController.ownerOrderHistoryList!.isEmpty
                       ? Column(
@@ -272,7 +360,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Center(
-                                  child: Image.asset(
+                                  child: BrandImage.asset(
                                     ImageConstants.nodata,
                                     scale: 8,
                                     color: AppColors.primary,
@@ -322,7 +410,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
             return ordersHomeMainController.isLoading.value
                 ? Container(
               color: Colors.black.withOpacity(0.2),
-              child: const Center(
+              child: Center(
                 child: CircularProgressIndicator(color: AppColors.primary),
               ),)
                 : const SizedBox.shrink();
@@ -396,7 +484,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 10, vertical: 10),
-                                decoration: const BoxDecoration(
+                                decoration: BoxDecoration(
                                     color: AppColors.greyLight,
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(10.0),
@@ -440,7 +528,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
                                                             .customerName
                                                             ?.toTitleCase() ??
                                                         "",
-                                                    style: const TextStyle(
+                                                    style: TextStyle(
                                                         color: AppColors.black,
                                                         fontWeight:
                                                             FontWeight.w500,
@@ -464,7 +552,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
                                                       .ownerOrderHistoryList![
                                                   index].orderId.toString()}",
 
-                                                    style: const TextStyle(
+                                                    style: TextStyle(
                                                         color: AppColors.black,
                                                         fontWeight:
                                                             FontWeight.w600,
@@ -494,7 +582,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
                                                               .toString()),
                                                       secFormat: '',
                                                     ).toString(),
-                                                    style: const TextStyle(
+                                                    style: TextStyle(
                                                         color: AppColors.black,
                                                         fontWeight:
                                                             FontWeight.w600,
@@ -535,7 +623,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
                                                                     .estimateDeliveryDate.toString()),
                                                             secFormat: '',
                                                           ).toString(),
-                                                          style: const TextStyle(
+                                                          style: TextStyle(
                                                               color: AppColors.black,
                                                               fontWeight: FontWeight.w600,
                                                               fontSize: 14))
@@ -573,7 +661,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
                                                                 .deliveryText
                                                             : StringConstants
                                                                 .curbSideText,
-                                                    style: const TextStyle(
+                                                    style: TextStyle(
                                                         color: AppColors.black,
                                                         fontWeight:
                                                             FontWeight.w600,
@@ -604,7 +692,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
                                                             ?.orderStatusName
                                                             ?.toTitleCase() ??
                                                         "",
-                                                    style: const TextStyle(
+                                                    style: TextStyle(
                                                         color: AppColors.green,
                                                         fontWeight:
                                                             FontWeight.w600,
@@ -666,7 +754,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
                                                             FontWeight.w600,
                                                         fontSize: 14)),
                                                 Text(
-                                                    "\$${ordersHomeMainController.ownerOrderHistoryList![index].totalAmount!.toStringAsFixed(2)}",
+                                                    "$currencySign${ordersHomeMainController.ownerOrderHistoryList![index].totalAmount!.toStringAsFixed(2)}",
                                                     style: const TextStyle(
                                                         color: AppColors.black,
                                                         fontWeight:
@@ -689,9 +777,9 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
                                                             FontWeight.w600,
                                                         fontSize: 14)),
                                                 Text(
-                                                    "\$${ordersHomeMainController.ownerOrderHistoryList![index].orderTransactions![0].storeReceivedAmount?.toStringAsFixed(2) ??"0.0"}",
+                                                    "$currencySign${ordersHomeMainController.ownerOrderHistoryList![index].orderTransactions![0].storeReceivedAmount?.toStringAsFixed(2) ??"0.0"}",
                                                     // "\$${ordersHomeMainController.ownerOrderHistoryList![index].orderTransactions![0].storeReceivedAmount!.toStringAsFixed(2)}",
-                                                    style: const TextStyle(
+                                                    style: TextStyle(
                                                         color: AppColors.black,
                                                         fontWeight:
                                                             FontWeight.w600,

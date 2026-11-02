@@ -1,7 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/cart_screen.dart';
+import 'package:thegreenmall/utils/guest_access_modal.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
 mixin PreferredSizeWidget on Widget {
@@ -19,6 +21,19 @@ class UserStoreOrderAppBar extends StatefulWidget with PreferredSizeWidget {
 class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> with GlobalVarMixin{
   final StoreHomeMainController storeHomeMainController =
       Get.put(StoreHomeMainController());
+
+  @override
+  void initState() {
+    super.initState();
+    // Watch for isGuest changes and refresh store details when user logs in
+    ever(isGuest, (bool guestStatus) async {
+      if (!guestStatus &&
+          storeHomeMainController.storeId.value.isNotEmpty &&
+          storeHomeMainController.storeId.value != "0") {
+        await storeHomeMainController.getCurrentLocation();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +56,7 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> with Global
                           storeHomeMainController.storeDetailsResponse.value
                               .data!.store!.image!.dynamicUrl!.isEmpty
                       ? const AssetImage(ImageConstants.storeicon) as ImageProvider
-                      : NetworkImage(storeHomeMainController
+                      : CachedNetworkImageProvider(storeHomeMainController
                           .storeDetailsResponse
                           .value
                           .data!
@@ -74,7 +89,7 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> with Global
                                       constraints: const BoxConstraints(),
                                       onPressed: () {
                                         // Get.delete<StoreHomeMainController>();
-                                        Get.back(id: pageIdApp.value);
+                                        Navigator.of(context).pop();
                                       },
                                       icon: const Icon(
                                         Icons.arrow_back,
@@ -160,6 +175,18 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> with Global
                                 storeHomeMainController.isFavouriteStore.value == true
                                     ? InkWell(
                                         onTap: () {
+                                          // Check if user is guest - show modal and prevent API call
+                                          if (isGuest.value == true) {
+                                            GuestAccessModal.show(
+                                              title: StringConstants.loginRequiredText,
+                                              message: StringConstants.loginToManageFavouriteStoresText,
+                                              onContinueAsGuest: () {
+                                                // Allow guest to continue - just close modal
+                                              },
+                                            );
+                                            return; // Don't toggle or make API call
+                                          }
+
                                           storeHomeMainController
                                               .isFavouriteStore.value = false;
                                           if (storeHomeMainController
@@ -182,6 +209,18 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> with Global
                                       )
                                     : InkWell(
                                         onTap: () {
+                                          // Check if user is guest - show modal and prevent API call
+                                          if (isGuest.value == true) {
+                                            GuestAccessModal.show(
+                                              title: StringConstants.loginRequiredText,
+                                              message: StringConstants.loginToAddStoresToFavouritesText,
+                                              onContinueAsGuest: () {
+                                                // Allow guest to continue - just close modal
+                                              },
+                                            );
+                                            return; // Don't toggle or make API call
+                                          }
+
                                           storeHomeMainController
                                               .isFavouriteStore.value = true;
                                           if (storeHomeMainController

@@ -16,7 +16,7 @@ class AddressSection extends StatelessWidget {
       children: [
         Text(
           StringConstants.addressText,
-          style: const TextStyle(
+          style: TextStyle(
               color: AppColors.black,
               fontWeight: FontWeight.w600,
               fontSize: 20),
@@ -42,7 +42,7 @@ class AddressSection extends StatelessWidget {
             fontWeight: FontWeight.w400,
             fontSize: 16),),
         height10SizedBox,
-        Text(value,   style: const TextStyle(
+        Text(value,   style: TextStyle(
             color: AppColors.black,
             fontWeight: FontWeight.w500,
             fontSize: 16),),

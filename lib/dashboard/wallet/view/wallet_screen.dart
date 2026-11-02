@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:thegreenmall/authentication/login/view/login_screen.dart';
 import 'package:thegreenmall/dashboard/wallet/controller/wallet_controller.dart';
 import 'package:thegreenmall/dashboard/wallet/view/add_money_to_wallet_customer.dart';
 import 'package:thegreenmall/dashboard/wallet/view/add_money_to_wallet_owner.dart';
@@ -17,15 +18,33 @@ class WalletScreen extends StatefulWidget {
 }
 
 class _WalletScreenState extends State<WalletScreen> with GlobalVarMixin{
-  final WalletController walletController = Get.put(WalletController());
+  // Use a getter (not a cached field) so the screen always binds to the
+  // currently-registered WalletController instance. GetX can dispose and
+  // recreate the controller (e.g. after a guest is converted to a real role
+  // and the nav stack is rebuilt). A cached `final` reference would keep
+  // pointing at a stale, disposed instance, so the balance fetched by
+  // refreshWallet would land on a different instance than the one this Obx
+  // observes — leaving the UI stuck at "0.00" until Add Money forced a fetch
+  // on the stale instance.
+  WalletController get walletController => Get.put(WalletController());
   var roleVal = "";
   String storeName = "";
+
+  @override
+  void initState() {
+    super.initState();
+    // NOTE: Don't auto-redirect guests from initState because this screen is
+    // pre-built inside the BottomNavigation IndexedStack. Guest guards are
+    // enforced via the bottom-nav tap handler instead.
+  }
 
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
     return Scaffold(
-
+      // No inputs here; the add-money screens pushed over this tab raise the
+      // keyboard, which would otherwise squeeze this Column into overflow.
+      resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
           Column(
@@ -39,9 +58,9 @@ class _WalletScreenState extends State<WalletScreen> with GlobalVarMixin{
                   walletController.searchStoreUserController.storeIdValue.value,
                   cartLength:
                   walletController.searchStoreUserController.cartCount.value,
-                  firstName: walletController.firstName!.value,
+                  firstName: firstName.value,
                   labelText: StringConstants.walletText,
-                  lastName: walletController.lastName!.value,
+                  lastName: lastName.value,
                   okayTap: () {
                     walletController.searchStoreUserController.apiActiveCartApi();
                   },
@@ -93,7 +112,7 @@ class _WalletScreenState extends State<WalletScreen> with GlobalVarMixin{
                                         ? Text(
                                             walletController.storeList[0].storeName
                                                 .toString(),
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                                 color: AppColors.black,
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.w500))
@@ -127,7 +146,7 @@ class _WalletScreenState extends State<WalletScreen> with GlobalVarMixin{
                                               border: UnderlineInputBorder(
                                                 borderRadius:
                                                     BorderRadius.circular(5.0),
-                                                borderSide: const BorderSide(
+                                                borderSide: BorderSide(
                                                   color: AppColors.primary,
                                                   width: 1.0,
                                                 ),
@@ -135,7 +154,7 @@ class _WalletScreenState extends State<WalletScreen> with GlobalVarMixin{
                                               focusedBorder: UnderlineInputBorder(
                                                 borderRadius:
                                                     BorderRadius.circular(5.0),
-                                                borderSide: const BorderSide(
+                                                borderSide: BorderSide(
                                                   color: AppColors.primary,
                                                   width: 1.0,
                                                 ),
@@ -143,7 +162,7 @@ class _WalletScreenState extends State<WalletScreen> with GlobalVarMixin{
                                               errorBorder: UnderlineInputBorder(
                                                 borderRadius:
                                                     BorderRadius.circular(5.0),
-                                                borderSide: const BorderSide(
+                                                borderSide: BorderSide(
                                                   color: AppColors.primary,
                                                   width: 1.0,
                                                 ),
@@ -161,7 +180,7 @@ class _WalletScreenState extends State<WalletScreen> with GlobalVarMixin{
                                                 value: value.storeId,
                                                 child: Text(
                                                   value.storeName,
-                                                  style: const TextStyle(
+                                                  style: TextStyle(
                                                       color: AppColors.black,
                                                       fontSize: 16,
                                                       fontWeight: FontWeight.w500),
@@ -213,7 +232,7 @@ class _WalletScreenState extends State<WalletScreen> with GlobalVarMixin{
                                             ),
                                           )
                                         : Text(
-                                            "\$${walletController.userWalletBalance?.value ?? "0.00"}",
+                                            "$currencySign${walletController.userWalletBalance?.value ?? "0.00"}",
                                             style: const TextStyle(
                                                 color: AppColors.white,
                                                 fontSize: 26,
@@ -254,8 +273,8 @@ class _WalletScreenState extends State<WalletScreen> with GlobalVarMixin{
                                             ),
                                           )
                                         : Text(
-                                            "\$${walletController.ownerWalletBalance!.value}",
-                                            style: const TextStyle(
+                                            "$currencySign${walletController.ownerWalletBalance!.value}",
+                                            style: TextStyle(
                                                 color: AppColors.black,
                                                 fontSize: 26,
                                                 fontWeight: FontWeight.w500),
@@ -263,7 +282,7 @@ class _WalletScreenState extends State<WalletScreen> with GlobalVarMixin{
                                     height4SizedBox,
                                     Text(
                                       StringConstants.totalBalanceText,
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                           color: AppColors.black, fontSize: 18),
                                     ),
                                     height10SizedBox,
@@ -320,7 +339,7 @@ class _WalletScreenState extends State<WalletScreen> with GlobalVarMixin{
                               ),
                               Text(
                                 StringConstants.manageText,
-                                style: const TextStyle(
+                                style: TextStyle(
                                     fontSize: 16,
                                     color: AppColors.black,
                                     fontWeight: FontWeight.w500),
@@ -448,7 +467,7 @@ class _WalletScreenState extends State<WalletScreen> with GlobalVarMixin{
             return walletController.isLoading.value
                 ? Container(
               color: Colors.black.withOpacity(0.2),
-              child: const Center(
+              child: Center(
                 child: CircularProgressIndicator(color: AppColors.primary),
               ),
             )

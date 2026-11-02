@@ -26,12 +26,14 @@ class AccountController extends GetxController with GlobalVarMixin {
   TextEditingController countryTextController = TextEditingController();
   TextEditingController noOfDaysTextController = TextEditingController();
   RxBool isScreenLockNotify = false.obs;
-  RxBool isUserInboxMessagesNotify = false.obs;
-  RxBool isOwnerInboxMessagesNotify = false.obs;
-  RxBool isUserTippingNotify = false.obs;
-  RxBool isOwnerTippingNotify = false.obs;
-  RxBool isOwnerOfferNotify = false.obs;
-  RxBool isUserOfferNotify = false.obs;
+  /// Default on, matching the backend send gate: it treats a missing
+  /// notification_settings row as enabled, so the toggles must too.
+  RxBool isUserInboxMessagesNotify = true.obs;
+  RxBool isOwnerInboxMessagesNotify = true.obs;
+  RxBool isUserTippingNotify = true.obs;
+  RxBool isOwnerTippingNotify = true.obs;
+  RxBool isOwnerOfferNotify = true.obs;
+  RxBool isUserOfferNotify = true.obs;
   RxBool autoValidate = false.obs;
   RxBool isFromCart = false.obs;
   RxBool isOwner = false.obs;
@@ -104,10 +106,15 @@ class AccountController extends GetxController with GlobalVarMixin {
   @override
   void onReady() {
     super.onReady();
-    kGoogleApiKey = ServerCommunicator.kGoogleApiKey;
-    // isFromCart.value = Get.parameters["isFromCart"] == "true" ? true : false;
-         apiGetUserDetailApi();
-    getGkey();
+    // Skip initialization for guest users
+    Future.delayed(Duration.zero, () async {
+      if (isGuest.value == true) {
+        return;
+      }
+      kGoogleApiKey = ServerCommunicator.kGoogleApiKey;
+      apiGetUserDetailApi();
+      getGkey();
+    });
   }
 
   updatePlan(index, String plan) {
@@ -188,7 +195,7 @@ class AccountController extends GetxController with GlobalVarMixin {
               height12SizedBox,
               Text(
                 StringConstants.storeAccessText,
-                style: const TextStyle(color: AppColors.black, fontSize: 20, fontWeight: FontWeight.w600),
+                style: TextStyle(color: AppColors.black, fontSize: 20, fontWeight: FontWeight.w600),
                 textAlign: TextAlign.start,
               ),
               height12SizedBox,
@@ -247,7 +254,7 @@ class AccountController extends GetxController with GlobalVarMixin {
               height12SizedBox,
               Text(
                 StringConstants.enterNumberOfDaysText,
-                style: const TextStyle(color: AppColors.black, fontSize: 20, fontWeight: FontWeight.w500),
+                style: TextStyle(color: AppColors.black, fontSize: 20, fontWeight: FontWeight.w500),
                 textAlign: TextAlign.start,
               ),
               height12SizedBox,
@@ -258,7 +265,7 @@ class AccountController extends GetxController with GlobalVarMixin {
                   inputFormatters: <TextInputFormatter>[
                     LengthLimitingTextInputFormatter(100),
                   ],
-                  style: const TextStyle(color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w500),
+                  style: TextStyle(color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w500),
                   controller: noOfDaysTextController,
                   keyboardType: TextInputType.text,
                   textCapitalization: TextCapitalization.words,
@@ -268,21 +275,21 @@ class AccountController extends GetxController with GlobalVarMixin {
                     fillColor: Colors.white,
                     border: UnderlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
-                      borderSide: const BorderSide(
+                      borderSide: BorderSide(
                         color: AppColors.primary,
                         width: 1.0,
                       ),
                     ),
                     errorBorder: UnderlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
-                      borderSide: const BorderSide(
+                      borderSide: BorderSide(
                         color: AppColors.primary,
                         width: 1.0,
                       ),
                     ),
                     focusedBorder: UnderlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
-                      borderSide: const BorderSide(
+                      borderSide: BorderSide(
                         color: AppColors.primary,
                         width: 1.0,
                       ),
@@ -391,6 +398,10 @@ class AccountController extends GetxController with GlobalVarMixin {
 
   ///Get User Detail Info Api
   Future apiGetUserDetailApi() async {
+    // Skip API call for guest users
+    if (isGuest.value == true) {
+      return;
+    }
     isLoading.value = true;
     Map<String, String> headers = {
       StringConstants.authorizationText: "${StringConstants.bearerText} ${authToken.value}",
@@ -454,6 +465,26 @@ class AccountController extends GetxController with GlobalVarMixin {
     });
   }
 
+  /// Re-populate the edit-form text controllers from the values currently held
+  /// in state. The AccountController is a living singleton, so its controllers
+  /// survive between screen visits. Without this, a field the user cleared but
+  /// did not successfully save — e.g. email left blank on a failed update —
+  /// stays blank when the edit screen is reopened, even though the view screen
+  /// still shows the saved value (it reads the observables, not the
+  /// controllers).
+  void syncEditFormControllers() {
+    firstNameTextController.text = firstName?.value ?? "";
+    lastNameTextController.text = lastName?.value ?? "";
+    nickNameTextController.text = nickName?.value ?? "";
+    emailTextController.text = email.value;
+    addressLine1TextController.text = addressLine1.value;
+    addressLine2TextController.text = addressLine2.value;
+    townOrCityTextController.text = city.value;
+    postalCodeTextController.text = postalCode.value;
+    countryTextController.text = country.value;
+    stateTextController.text = state.value;
+  }
+
   ///Get Store List Api
   Future apiGetAllStoreList() async {
     isLoading.value = true;
@@ -475,7 +506,7 @@ class AccountController extends GetxController with GlobalVarMixin {
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {  isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -570,6 +601,7 @@ class AccountController extends GetxController with GlobalVarMixin {
         "first_name": firstNameTextController.text.trim(),
         "last_name": lastNameTextController.text.trim(),
         "nick_name": nickNameTextController.text.trim(),
+        "email": emailTextController.text.trim(),
       },
       "address": {
         "user_address_id": getUserDetailModel.data?.user?.userAddresses != null &&
@@ -591,6 +623,11 @@ class AccountController extends GetxController with GlobalVarMixin {
         .then((value) async {
              if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
+        // Keep the locally cached email in sync so the wallet email gate clears
+        // immediately after the user adds/updates it here.
+        final updatedEmail = emailTextController.text.trim();
+        email.value = updatedEmail;
+        SharedPreferenceStorage.setData(StringConstants.emailText, updatedEmail);
         firstNameTextController.clear();
         lastNameTextController.clear();
         nickNameTextController.clear();
@@ -652,8 +689,37 @@ class AccountController extends GetxController with GlobalVarMixin {
     });
   }
 
+  /// Maps the server's notification_settings rows onto the toggles.
+  ///
+  /// The list endpoint returns rows for one side only and omits any row that
+  /// was never created, so a type missing from [settings] must keep its
+  /// default-on value — the backend treats a missing row as enabled and sends.
+  /// For the same reason a row only ever writes the side it belongs to.
+  void applyNotificationSettings(List<NotificationSettings> settings) {
+    for (final setting in settings) {
+      final bool isEnabled = setting.isEnabled == true;
+      final bool isForStore = setting.isForStore == true;
+
+      switch (setting.notificationType) {
+        case "order":
+          isForStore ? isOwnerTippingNotify.value = isEnabled : isUserTippingNotify.value = isEnabled;
+          break;
+        case "offer":
+          isForStore ? isOwnerOfferNotify.value = isEnabled : isUserOfferNotify.value = isEnabled;
+          break;
+        case "message":
+          isForStore ? isOwnerInboxMessagesNotify.value = isEnabled : isUserInboxMessagesNotify.value = isEnabled;
+          break;
+      }
+    }
+  }
+
   ///Get Notification Status Api
   Future apiGetNotificationStatus(bool isOwner) async {
+    // Skip API call for guest users
+    if (isGuest.value == true) {
+      return;
+    }
     isLoading.value = true;
     Map<String, String> headers = {
       StringConstants.authorizationText: "${StringConstants.bearerText} ${authToken.value}",
@@ -669,47 +735,7 @@ class AccountController extends GetxController with GlobalVarMixin {
         isLoading.value = false;
         notificationStatusList.value = notificationStatusModel.data!.notificationSettings!;
 
-        for (int i = 0; i < notificationStatusList.length; i++) {
-          if (notificationStatusList[i].notificationType == "order") {
-            if (notificationStatusList[i].isForStore == true) {
-              if (notificationStatusList[i].isEnabled == true) {
-                isOwnerTippingNotify.value = notificationStatusList[i].isEnabled == true;
-                isUserTippingNotify.value = notificationStatusList[i].isEnabled != true;
-              }
-            } else {
-              if (notificationStatusList[i].isEnabled == true) {
-                isOwnerTippingNotify.value = notificationStatusList[i].isEnabled != true;
-                isUserTippingNotify.value = notificationStatusList[i].isEnabled == true;
-              }
-            }
-          }
-          if (notificationStatusList[i].notificationType == "offer") {
-            if (notificationStatusList[i].isForStore == true) {
-              if (notificationStatusList[i].isEnabled == true) {
-                isOwnerOfferNotify.value = notificationStatusList[i].isEnabled == true;
-                isUserOfferNotify.value = notificationStatusList[i].isEnabled != true;
-              }
-            } else {
-              if (notificationStatusList[i].isEnabled == true) {
-                isOwnerOfferNotify.value = notificationStatusList[i].isEnabled != true;
-                isUserOfferNotify.value = notificationStatusList[i].isEnabled == true;
-              }
-            }
-          }
-          if (notificationStatusList[i].notificationType == "message") {
-            if (notificationStatusList[i].isForStore == true) {
-              if (notificationStatusList[i].isEnabled == true) {
-                isOwnerInboxMessagesNotify.value = notificationStatusList[i].isEnabled == true;
-                isUserInboxMessagesNotify.value = notificationStatusList[i].isEnabled != true;
-              }
-            } else {
-              if (notificationStatusList[i].isEnabled == true) {
-                isOwnerInboxMessagesNotify.value = notificationStatusList[i].isEnabled != true;
-                isUserInboxMessagesNotify.value = notificationStatusList[i].isEnabled == true;
-              }
-            }
-          }
-        }
+        applyNotificationSettings(notificationStatusList);
 
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {  isLoading.value = false;
@@ -963,6 +989,6 @@ class AccountController extends GetxController with GlobalVarMixin {
   clearData() async {
     storage.clearData();
     Get.parameters.clear();
-    await Get.offAll(const StartJourneyScreen());
+    Utility.handle401Error();
   }
 }

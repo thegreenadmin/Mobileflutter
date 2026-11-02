@@ -86,7 +86,7 @@ class StoreOfferDetailController extends GetxController with GlobalVarMixin {
 
         storage.clearData();
         Get.parameters.clear();
-        await Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);

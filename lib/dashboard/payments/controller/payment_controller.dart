@@ -1,0 +1,592 @@
+import 'dart:async';
+
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:local_auth/local_auth.dart';
+import 'package:uuid/uuid.dart';
+
+import 'package:thegreenmall/provider/user_provider.dart';
+import 'package:thegreenmall/utils/api_constants.dart';
+import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
+import 'package:thegreenmall/utils/server_communicator.dart';
+import 'package:thegreenmall/utils/utility.dart';
+
+import 'package:thegreenmall/dashboard/home/model/get_user_store_list_model.dart';
+
+import '../model/payment_intent_model.dart';
+import '../model/payment_recipient.dart';
+import '../model/qr_payload_model.dart';
+import '../payment_link.dart';
+
+/// Drives the whole P2P / P2B barcode-payment flow:
+/// scan/lookup -> details -> review -> confirm -> success.
+class PaymentController extends GetxController {
+  final LocalAuthentication _auth = LocalAuthentication();
+  final _uuid = const Uuid();
+
+  // Home tab + payment type
+  final RxInt segment = 0.obs; // 0 = Pay/Send, 1 = Receive
+  final RxString paymentType = 'p2p'.obs; // 'p2p' | 'p2b'
+
+  // Flow state
+  final Rxn<PaymentRecipient> recipient = Rxn<PaymentRecipient>();
+  final RxString amountText = ''.obs;
+  final RxString note = ''.obs;
+  final Rxn<PaymentIntentModel> intent = Rxn<PaymentIntentModel>();
+
+  // UX state
+  final RxBool isProcessing = false.obs;
+  // True while a /payment/create call is in flight. Gates the "Review & Pay"
+  // button and the re-entrancy guard so a double-tap can't fire two creates for
+  // the same scanned QR (the second trips the server's single-use
+  // qr_session_id guard -> "qr_session_id must be unique").
+  final RxBool isCreating = false.obs;
+  final RxString errorMessage = ''.obs;
+
+  /// Machine-readable code of the last confirm failure (e.g.
+  /// 'INSUFFICIENT_BALANCE'), so screens can offer a matching recovery action.
+  final RxString errorCode = ''.obs;
+
+  /// Balance of the funding wallet (personal, or [sourceStore]'s), fetched for
+  /// the review screen's insufficient-funds guard. Null while unknown so the
+  /// guard only engages on a definite shortfall.
+  final Rxn<double> walletBalance = Rxn<double>();
+
+  // Store-owner receive flow: the owner's businesses to choose from.
+  final RxList<UserStoresList> ownerStores = <UserStoresList>[].obs;
+  final RxBool storesLoading = false.obs;
+
+  // Pay flow (P2P or P2B): when a store owner funds the payment from one of their
+  // stores, the chosen store (null = pay from their personal wallet).
+  final Rxn<UserStoresList> sourceStore = Rxn<UserStoresList>();
+
+  // P2B pay flow: businesses attached to a looked-up phone number, for the
+  // user to pick which one to pay.
+  final RxList<PaymentRecipient> businessMatches = <PaymentRecipient>[].obs;
+
+  // The number behind the current business lookup, used to pay by phone when a
+  // chosen payee carries no merchant/store id.
+  String? _lookupPhone;
+  String? _lookupCode;
+
+  /// Idempotency key for the current attempt; regenerated when a new payment
+  /// is started so retries of the same attempt are safe.
+  String _idempotencyKey = '';
+
+  /// Exactly what resolves the payee for /payment/create — set at resolution
+  /// time, because the recipient profile carries only a masked phone.
+  /// QR: {payload}, manual P2P: {phone, phone_code}, P2B: {merchant_id}.
+  Map<String, dynamic> _payeeRef = {};
+
+  Map<String, String> get _headers => {
+        StringConstants.authorizationText:
+            "${StringConstants.bearerText} ${authToken.value}",
+        // Required so the server's bodyParser.json() parses the request body.
+        'Content-Type': 'application/json',
+      };
+
+  bool _isOk(dynamic status) =>
+      status == ApiConstants.statusCode200 || status == ApiConstants.statusCode201;
+
+  double get amount => double.tryParse(amountText.value.trim()) ?? 0;
+
+  void startNewAttempt() {
+    _idempotencyKey = _uuid.v4();
+    intent.value = null;
+    errorMessage.value = '';
+    errorCode.value = '';
+  }
+
+  void resetFlow() {
+    recipient.value = null;
+    amountText.value = '';
+    note.value = '';
+    intent.value = null;
+    errorMessage.value = '';
+    errorCode.value = '';
+    walletBalance.value = null;
+    _idempotencyKey = '';
+    _payeeRef = {};
+    businessMatches.clear();
+    sourceStore.value = null;
+    isCreating.value = false;
+  }
+
+  /// True when the signed-in user is a store owner — gates the P2P "pay from a
+  /// store" selector to owners only.
+  bool get isStoreOwner => roleApp.value == Role.storeOwnerRoleText;
+
+  // ---------------------------------------------------------------------------
+  // Recipient resolution
+  // ---------------------------------------------------------------------------
+
+  /// Decode a scanned QR/barcode. Returns the recipient on success, or null with
+  /// [errorMessage] set (caller shows the right error UI: invalid / expired).
+  Future<PaymentRecipient?> decodeScannedCode(String raw) async {
+    // A store owner may resolve to one of their own stores; load the owner's
+    // store list first so [_handleRecipientResponse] can block self-payment.
+    await _ensureOwnerStoresLoaded();
+    // Unwrap a `https://thegreenmall.net/pay/<token>` universal link to its
+    // token; legacy opaque payloads pass through unchanged.
+    final payload = PaymentLink.payloadFromScan(raw);
+    final res = await UserProvider().postWithHeadersApi(
+      {"payload": payload},
+      ServerCommunicator.baseUrl + ServerCommunicator.paymentQrDecode,
+      _headers,
+    );
+    return _handleRecipientResponse(res, payeeRef: {"payload": payload});
+  }
+
+  /// Manual lookup by phone (P2P) or merchant id (P2B).
+  Future<PaymentRecipient?> lookupRecipient(
+      {String? phone, String? phoneCode, String? merchantId}) async {
+    await _ensureOwnerStoresLoaded();
+    final body = <String, dynamic>{};
+    if (merchantId != null && merchantId.isNotEmpty) {
+      body['merchant_id'] = int.tryParse(merchantId) ?? merchantId;
+    } else {
+      body['phone'] = phone;
+      body['phone_code'] = phoneCode;
+    }
+    final res = await UserProvider().postWithHeadersApi(
+      body,
+      ServerCommunicator.baseUrl + ServerCommunicator.paymentRecipientLookup,
+      _headers,
+      showLoading: true,
+    );
+    return _handleRecipientResponse(res, payeeRef: body);
+  }
+
+  /// P2B manual entry: look up every business attached to [phone]. Returns the
+  /// list (may be empty) on success, or null with [errorMessage] set on failure.
+  /// The caller shows a picker so the user chooses which business to pay.
+  Future<List<PaymentRecipient>?> lookupBusinessesByPhone({
+    required String phone,
+    required String phoneCode,
+  }) async {
+    await _ensureOwnerStoresLoaded();
+    final res = await UserProvider().postWithHeadersApi(
+      {"phone": phone, "phone_code": phoneCode, "type": "p2b"},
+      ServerCommunicator.baseUrl + ServerCommunicator.paymentRecipientLookup,
+      _headers,
+      showLoading: true,
+    );
+    if (res == null) {
+      errorMessage.value = 'Something went wrong. Please try again.';
+      return null;
+    }
+    if (_isOk(res.body['status'])) {
+      final data = res.body['data'];
+      // Remember the looked-up number so a payee with no merchant/store id can
+      // still be paid by phone (see [selectBusiness]).
+      _lookupPhone = phone;
+      _lookupCode = phoneCode;
+      // Tolerate three shapes: a bare array in `data`, a wrapped
+      // `data.businesses`, or a single recipient object (current backend, which
+      // resolves the phone to one person/owner rather than a businesses list).
+      final raw = data is List
+          ? data
+          : (data is Map && data['businesses'] is List
+              ? data['businesses'] as List
+              : (data is Map ? [data] : const []));
+      final list = raw
+          .map((e) =>
+              PaymentRecipient.fromJson(Map<String, dynamic>.from(e as Map)))
+          .toList();
+      // A store owner must not transfer money between their own stores: drop any
+      // match that is one of the owner's stores before showing the picker.
+      final ownMatches = list.where(_isOwnStore).length;
+      final payable = list.where((r) => !_isOwnStore(r)).toList();
+      businessMatches.value = payable;
+      if (payable.isEmpty) {
+        errorMessage.value = ownMatches > 0
+            ? AlertStringConstants.cannotPayOwnStoreText
+            : 'No businesses found for this number.';
+        return null;
+      }
+      errorMessage.value = '';
+      return payable;
+    }
+    errorMessage.value =
+        res.body['message'] ?? 'No businesses found for this number.';
+    return null;
+  }
+
+  /// Commit the business the user picked as the payee, then prep the
+  /// amount/create step exactly as a successful lookup would.
+  void selectBusiness(PaymentRecipient r) {
+    recipient.value = r;
+    paymentType.value = r.type;
+    // Resolve the payee for /payment/create. Prefer a per-store merchant code,
+    // then store_id; if neither is present (the backend resolved the phone to a
+    // plain user), fall back to paying by the looked-up phone number.
+    if (r.merchantId != null) {
+      _payeeRef = {"merchant_id": r.merchantId};
+    } else if (r.storeId != null) {
+      _payeeRef = {"store_id": r.storeId};
+    } else {
+      _payeeRef = {"phone": _lookupPhone, "phone_code": _lookupCode};
+    }
+    amountText.value = r.hasFixedAmount ? r.fixedAmount!.toStringAsFixed(2) : '';
+    startNewAttempt();
+  }
+
+  /// Loads the signed-in owner's stores once, so the own-store guard below has
+  /// something to match against. No-op for non-owners or when already loaded.
+  Future<void> _ensureOwnerStoresLoaded() async {
+    if (roleApp.value != Role.storeOwnerRoleText) return;
+    if (ownerStores.isNotEmpty) return;
+    await fetchOwnerStores();
+  }
+
+  /// True when [r] is a business that belongs to the signed-in store owner.
+  /// Matched by store id (owner store ids are strings, recipient ids ints).
+  bool _isOwnStore(PaymentRecipient r) {
+    if (roleApp.value != Role.storeOwnerRoleText) return false;
+    if (r.storeId == null) return false;
+    return ownerStores.any((s) => s.storeId == r.storeId.toString());
+  }
+
+  PaymentRecipient? _handleRecipientResponse(dynamic res,
+      {required Map<String, dynamic> payeeRef}) {
+    if (res == null) {
+      errorMessage.value = 'Something went wrong. Please try again.';
+      return null;
+    }
+    if (_isOk(res.body['status'])) {
+      final r = PaymentRecipient.fromJson(
+          Map<String, dynamic>.from(res.body['data']));
+      // Block a store owner from paying (transferring to) one of their own
+      // stores, whether reached by scanning its code or a merchant-id lookup.
+      if (_isOwnStore(r)) {
+        errorMessage.value = AlertStringConstants.cannotPayOwnStoreText;
+        return null;
+      }
+      recipient.value = r;
+      paymentType.value = r.type;
+      _payeeRef = payeeRef;
+      errorMessage.value = '';
+      // A fixed-amount merchant code pre-fills (and locks) the amount.
+      amountText.value =
+          r.hasFixedAmount ? r.fixedAmount!.toStringAsFixed(2) : '';
+      startNewAttempt();
+      return r;
+    }
+    errorMessage.value = res.body['message'] ?? 'Invalid or unsupported code.';
+    return null;
+  }
+
+  // ---------------------------------------------------------------------------
+  // My / merchant receive code
+  // ---------------------------------------------------------------------------
+
+  /// Fetches the businesses owned by the signed-in user so a store-owner can
+  /// pick which one to receive into. No-op refresh while already loading.
+  Future<void> fetchOwnerStores() async {
+    if (storesLoading.value) return;
+    storesLoading.value = true;
+    final res = await UserProvider().getWithHeadersApi(
+      ServerCommunicator.baseUrl + ServerCommunicator.userStore,
+      _headers,
+      showLoading: false,
+    );
+    if (res != null && _isOk(res.body['status'])) {
+      final model = GetUserStoreListModel.fromJson(
+          Map<String, dynamic>.from(res.body));
+      ownerStores.value = model.data?.stores ?? <UserStoresList>[];
+    }
+    storesLoading.value = false;
+  }
+
+  Future<QrPayloadModel?> generateMyCode(
+      {required String actorType, int? storeId, double? amount}) async {
+    final body = <String, dynamic>{"actor_type": actorType};
+    if (storeId != null) body['store_id'] = storeId;
+    if (amount != null && amount > 0) body['amount'] = amount;
+    final res = await UserProvider().postWithHeadersApi(
+      body,
+      ServerCommunicator.baseUrl + ServerCommunicator.paymentQrGenerate,
+      _headers,
+    );
+    if (res != null && _isOk(res.body['status'])) {
+      return QrPayloadModel.fromJson(
+          Map<String, dynamic>.from(res.body['data']));
+    }
+    Utility.showToast(res?.body['message'] ?? 'Unable to generate payment code');
+    return null;
+  }
+
+  /// "Request money": texts [phone] an SMS (via the backend Pinpoint service)
+  /// asking them to pay [amount] to the signed-in user. Returns true on success;
+  /// shows a toast and returns false otherwise.
+  Future<bool> sendPaymentRequestSms({
+    required String phone,
+    required String phoneCode,
+    required double amount,
+    String? note,
+  }) async {
+    final res = await UserProvider().postWithHeadersApi(
+      {
+        "phone": phone,
+        "phone_code": phoneCode,
+        "amount": amount,
+        if (note != null && note.trim().isNotEmpty) "note": note.trim(),
+      },
+      ServerCommunicator.baseUrl + ServerCommunicator.paymentRequestSms,
+      _headers,
+      showLoading: true,
+    );
+    if (res != null && _isOk(res.body['status'])) return true;
+    Utility.showToast(res?.body['message'] ?? 'Unable to send the request');
+    return false;
+  }
+
+  // ---------------------------------------------------------------------------
+  // Create (Details -> Review)
+  // ---------------------------------------------------------------------------
+
+  /// Validates locally, then creates the payment intent. On a KYC gate it returns
+  /// 'KYC_REQUIRED' so the caller can route to license upload. Returns 'OK' on
+  /// success, or null/other code on failure (errorMessage set).
+  Future<String?> createPayment() async {
+    // Re-entrancy guard: ignore a second tap while a create is already running.
+    // Two concurrent creates for a scanned QR race the server's single-use
+    // qr_session_id insert and the loser fails with "qr_session_id must be
+    // unique". 'BUSY' tells the caller to do nothing (no error toast).
+    if (isCreating.value) return 'BUSY';
+
+    final r = recipient.value;
+    if (r == null) {
+      errorMessage.value = 'No recipient selected';
+      return null;
+    }
+    final amt = amount;
+    if (amt <= 0) {
+      errorMessage.value = 'Enter a valid amount';
+      return null;
+    }
+
+    // Already created an intent for this attempt (e.g. user went back from
+    // Review and tapped Pay again): reuse it instead of re-consuming the
+    // single-use QR session.
+    if (intent.value?.id != null) {
+      errorMessage.value = '';
+      return 'OK';
+    }
+
+    if (_idempotencyKey.isEmpty) startNewAttempt();
+    isCreating.value = true;
+
+    final body = <String, dynamic>{
+      "idempotency_key": _idempotencyKey,
+      "amount": amt,
+      "note": note.value,
+      // Forward the exact payee reference captured at resolution time
+      // (QR payload, manual phone, or merchant id).
+      ..._payeeRef,
+    };
+
+    // A store owner can fund the send (P2P or P2B) from one of their stores. The
+    // backend authorizes ownership and debits that store's wallet.
+    final src = sourceStore.value;
+    if (src?.storeId != null) {
+      final id = int.tryParse(src!.storeId!);
+      if (id != null) body['initiator_store_id'] = id;
+    }
+
+    try {
+      final res = await UserProvider().postWithHeadersApi(
+        body,
+        ServerCommunicator.baseUrl + ServerCommunicator.paymentCreate,
+        _headers,
+        showLoading: true,
+      );
+
+      if (res == null) {
+        errorMessage.value = 'Something went wrong. Please try again.';
+        return null;
+      }
+      if (_isOk(res.body['status'])) {
+        intent.value = PaymentIntentModel.fromJson(
+            Map<String, dynamic>.from(res.body['data']));
+        errorMessage.value = '';
+        return 'OK';
+      }
+
+      final code = res.body['code'];
+      errorMessage.value =
+          _friendlyCreateError(code, res.body['message']);
+      return code ?? 'ERROR';
+    } finally {
+      isCreating.value = false;
+    }
+  }
+
+  /// Maps a /payment/create failure to a message a payer can act on. A scanned
+  /// QR session is single-use: once it has funded a payment the server rejects a
+  /// re-use with a raw "qr_session_id must be unique", which we translate into a
+  /// "scan a fresh code" prompt instead of leaking the DB constraint text.
+  String _friendlyCreateError(String? code, String? message) {
+    final raw = (message ?? '').toLowerCase();
+    if (code == 'QR_SESSION_USED' ||
+        code == 'QR_SESSION_EXPIRED' ||
+        raw.contains('qr_session_id')) {
+      return 'This payment code has already been used or is no longer valid. '
+          'Please ask for a new code and scan again.';
+    }
+    return message ?? 'Unable to start payment';
+  }
+
+  // ---------------------------------------------------------------------------
+  // Confirm (Review -> Processing -> Success)
+  // ---------------------------------------------------------------------------
+
+  /// Fetches the funding wallet's balance (personal wallet, or the chosen
+  /// store's) so the review screen can flag a shortfall before the user
+  /// commits, mirroring the cart checkout's insufficient-funds guard.
+  Future<void> loadWalletBalance() async {
+    walletBalance.value = null;
+    final src = sourceStore.value;
+    final url = src?.storeId != null
+        ? "${ServerCommunicator.baseUrl}${ServerCommunicator.storeWalletBalance}?store_id=${src!.storeId}"
+        : ServerCommunicator.baseUrl + ServerCommunicator.userWalletBalance;
+    final res =
+        await UserProvider().getWithHeadersApi(url, _headers, showLoading: false);
+    if (res != null && _isOk(res.body['status'])) {
+      final bal = res.body['data']?['balance'];
+      walletBalance.value = bal is num ? bal.toDouble() : double.tryParse('$bal');
+    }
+  }
+
+  /// Runs biometric (if required) then confirms. Returns the succeeded intent,
+  /// or null with [errorMessage] set. Safe to retry with the same intent.
+  Future<PaymentIntentModel?> confirmPayment() async {
+    final i = intent.value;
+    if (i == null) {
+      errorMessage.value = 'No payment to confirm';
+      return null;
+    }
+
+    bool biometricVerified = false;
+    if (i.biometricRequired) {
+      biometricVerified = await _runBiometric();
+      if (!biometricVerified) {
+        errorMessage.value = 'Authentication was not completed';
+        return null;
+      }
+    }
+
+    isProcessing.value = true;
+    errorMessage.value = '';
+    errorCode.value = '';
+
+    PaymentIntentModel? result;
+    // Retry only when there is NO answer (timeout / network drop): the confirm
+    // is idempotent (same idempotency_key + intent id, spec 5.5.3), so re-sending
+    // is safe. A definitive server response — success OR failure — is acted on
+    // immediately and never retried: re-confirming an intent the backend has
+    // already moved to a terminal "failed" state just yields a useless generic
+    // "(status: failed)" and hides the real reason.
+    for (int attempt = 0; attempt <= 2; attempt++) {
+      final res = await UserProvider().postWithHeadersApi(
+        {
+          "payment_intent_id": i.id,
+          "idempotency_key": _idempotencyKey,
+          "biometric_verified": biometricVerified,
+        },
+        ServerCommunicator.baseUrl + ServerCommunicator.paymentConfirm,
+        _headers,
+      );
+
+      // No usable response: retry (idempotent) until the last attempt.
+      if (res == null) {
+        if (attempt == 2) {
+          errorMessage.value =
+              'Payment could not be completed. Please try again.';
+        }
+        continue;
+      }
+
+      if (_isOk(res.body['status'])) {
+        result = PaymentIntentModel.fromJson(
+            Map<String, dynamic>.from(res.body['data']));
+        // A confirm can come back 200 but with a terminal, non-succeeded status
+        // (the transfer itself failed). Surface a usable reason instead of a
+        // blank error on the processing screen.
+        if (!result.isSucceeded) {
+          errorCode.value = (res.body['code'] ?? '').toString();
+          errorMessage.value = _friendlyConfirmError(
+              res.body['message'], res.body['code'], result.status);
+        }
+        break;
+      }
+
+      // Definitive server-side failure: stop and surface the reason.
+      errorCode.value = (res.body['code'] ?? '').toString();
+      errorMessage.value = _friendlyConfirmError(
+          res.body['message'], res.body['code'], null);
+      break;
+    }
+
+    isProcessing.value = false;
+    return result;
+  }
+
+  /// Turns a confirm failure (HTTP error body or a 200 with a terminal status)
+  /// into a message the payer can act on. Prefers a meaningful server message,
+  /// but rewrites the bare "(status: ...)" backend string and maps the common
+  /// failure codes/states to plain language.
+  String _friendlyConfirmError(String? message, String? code, String? status) {
+    switch (code) {
+      case 'INSUFFICIENT_BALANCE':
+        return 'Not enough balance in your wallet to complete this payment. '
+            'Please add money and try again.';
+      case 'DAILY_LIMIT_EXCEEDED':
+      case 'VELOCITY_EXCEEDED':
+        return "You've reached your payment limit. Please try again later.";
+      case 'INTENT_EXPIRED':
+        return 'This payment request expired. Please start again.';
+      case 'INTENT_NOT_FOUND':
+      case 'INTENT_NOT_PAYABLE':
+        return 'This payment is no longer valid. Please start again.';
+    }
+    final raw = (message ?? '').toLowerCase();
+    // The backend's bare "Payment cannot be completed (status: failed)" leaks an
+    // internal state and tells the user nothing — replace it.
+    if (message == null || message.trim().isEmpty || raw.contains('status:')) {
+      if (status == 'expired') return 'This payment request expired. Please start again.';
+      if (status == 'cancelled') return 'This payment was cancelled.';
+      return 'The payment could not be completed. Please check your wallet '
+          'balance and try again.';
+    }
+    return message;
+  }
+
+  Future<bool> _runBiometric() async {
+    try {
+      final canCheck = await _auth.canCheckBiometrics || await _auth.isDeviceSupported();
+      if (!canCheck) {
+        // No biometric hardware enrolled: allow the payment to proceed rather
+        // than hard-blocking the user (server still treats it as verified intent).
+        return true;
+      }
+      return await _auth.authenticate(
+        localizedReason: 'Authenticate to confirm your payment',
+        options: const AuthenticationOptions(stickyAuth: true),
+      );
+    } on PlatformException {
+      return false;
+    }
+  }
+
+  Future<void> cancelPayment() async {
+    final i = intent.value;
+    if (i == null || i.id == null) return;
+    await UserProvider().postWithHeadersApi(
+      {"payment_intent_id": i.id},
+      ServerCommunicator.baseUrl + ServerCommunicator.paymentCancel,
+      _headers,
+    );
+  }
+}

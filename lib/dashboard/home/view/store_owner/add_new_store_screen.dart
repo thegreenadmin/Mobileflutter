@@ -10,7 +10,10 @@ import 'package:thegreenmall/utils/google_place_autocompleted.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
 class AddNewStoreScreen extends StatefulWidget {
-  const AddNewStoreScreen({super.key});
+  // Vertical the owner came from on the home pills ("Munchies"/"Herbs"/null).
+  // Pre-selects the store type and labels this screen accordingly.
+  final String? category;
+  const AddNewStoreScreen({super.key, this.category});
 
   @override
   State<AddNewStoreScreen> createState() => _AddNewStoreScreenState();
@@ -22,8 +25,37 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
 
   @override
   void initState() {
-    addNewStoreController.apiGetDeliveryServices();
     super.initState();
+    // Pre-select the store type from the vertical the owner tapped, but only
+    // when that vertical is actually offered in the dropdown (otherwise the
+    // DropdownButtonFormField would assert on a value with no matching item).
+    // Herbs is one-store-per-country, so it's only addable when none exists yet.
+    if (widget.category == StringConstants.munchiesText && munchiesEnabled.value) {
+      addNewStoreController.storeType.value = "munchies";
+    } else if (widget.category == StringConstants.herbsText &&
+        herbsEnabled.value &&
+        isHerbsLicensee.value &&
+        herbsStoreId.value.isEmpty) {
+      addNewStoreController.storeType.value = "herbs";
+    } else {
+      addNewStoreController.storeType.value = "general";
+    }
+    // Delivery options are per store type, so fetch only after the type is set.
+    addNewStoreController.apiGetDeliveryServices();
+  }
+
+  // Title reflecting the vertical, e.g. "Add Munchies Store" / "Add Store".
+  String get _addStoreTitle {
+    if (widget.category == StringConstants.munchiesText && munchiesEnabled.value) {
+      return "${StringConstants.addText} ${StringConstants.munchiesText} ${StringConstants.storeText}";
+    }
+    if (widget.category == StringConstants.herbsText &&
+        herbsEnabled.value &&
+        isHerbsLicensee.value &&
+        herbsStoreId.value.isEmpty) {
+      return "${StringConstants.addText} ${StringConstants.herbsText} ${StringConstants.storeText}";
+    }
+    return StringConstants.addStoreText;
   }
 
   @override
@@ -53,7 +85,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                           children: [
                             Text(
                               StringConstants.storeDetailsText,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   color: AppColors.black,
                                   fontWeight: FontWeight.w600,
                                   fontSize: 20),
@@ -166,7 +198,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Text(StringConstants.uploadStoreLogoText,
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                               color: AppColors.black,
                                               fontSize: 14,
                                               fontWeight: FontWeight.w500)),
@@ -287,7 +319,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                                   const TextStyle(color: AppColors.grey, fontSize: 14),
                               autovalidateMode: AutovalidateMode.onUserInteraction,
                               textCapitalization: TextCapitalization.words,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   color: AppColors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400),
@@ -298,6 +330,51 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                                 return null;
                               },
                             ),
+                            height20SizedBox,
+                            buildText(StringConstants.storeTypeText, StringConstants.starText,),
+
+                            height4SizedBox,
+                            //STORE TYPE FIELD (herbs only for the country's
+                            //licensed provider; backend re-validates)
+                            Obx(
+                              () => DropdownButtonFormField<String>(
+                                value: addNewStoreController.storeType.value,
+                                decoration: const InputDecoration(
+                                  border: UnderlineInputBorder(),
+                                ),
+                                style: TextStyle(
+                                    color: AppColors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400),
+                                items: [
+                                  DropdownMenuItem(
+                                      value: "general",
+                                      child: Text(StringConstants.generalStoreTypeText)),
+                                  if (munchiesEnabled.value)
+                                    DropdownMenuItem(
+                                        value: "munchies",
+                                        child: Text(StringConstants.munchiesText)),
+                                  // Herbs is one-store-per-country: hide the
+                                  // option once a herbs store already exists
+                                  // (licensee edits it instead of adding).
+                                  if (herbsEnabled.value &&
+                                      isHerbsLicensee.value &&
+                                      herbsStoreId.value.isEmpty)
+                                    DropdownMenuItem(
+                                        value: "herbs",
+                                        child: Text(StringConstants.herbsText)),
+                                ],
+                                onChanged: (value) {
+                                  addNewStoreController.storeType.value =
+                                      value ?? "general";
+                                  // Delivery options differ per store type;
+                                  // refetch + reset selection on change.
+                                  addNewStoreController
+                                      .apiGetDeliveryServices();
+                                },
+                              ),
+                            ),
+
                             height20SizedBox,
                             buildText(StringConstants.einBusinessId, StringConstants.starText,),
 
@@ -318,7 +395,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                                   const TextStyle(color: AppColors.grey, fontSize: 14),
                               autovalidateMode: AutovalidateMode.onUserInteraction,
                               textCapitalization: TextCapitalization.words,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   color: AppColors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400),
@@ -332,7 +409,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                             height20SizedBox,
                             Text(
                               StringConstants.nickNameText,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   color: AppColors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400),
@@ -354,7 +431,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                                   const TextStyle(color: AppColors.grey, fontSize: 14),
                               autovalidateMode: AutovalidateMode.onUserInteraction,
                               textCapitalization: TextCapitalization.words,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   color: AppColors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400),
@@ -382,7 +459,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                                   const TextStyle(color: AppColors.grey, fontSize: 14),
                               autovalidateMode: AutovalidateMode.onUserInteraction,
                               textCapitalization: TextCapitalization.words,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   color: AppColors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400),
@@ -410,7 +487,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                                 FilteringTextInputFormatter.digitsOnly,
                               ],
                               keyboardType: TextInputType.phone,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   color: AppColors.black,
                                   fontSize: 15,
                                   fontWeight: FontWeight.w400),
@@ -427,14 +504,14 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                                     color: AppColors.grey, fontSize: 14),
                                 border: UnderlineInputBorder(
                                   borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: const BorderSide(
+                                  borderSide: BorderSide(
                                     color: AppColors.primary,
                                     width: 1.0,
                                   ),
                                 ),
                                 errorBorder: UnderlineInputBorder(
                                   borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: const BorderSide(
+                                  borderSide: BorderSide(
                                     color: AppColors.primary,
                                     width: 1.0,
                                   ),
@@ -448,7 +525,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                                 ),
                                 focusedBorder: UnderlineInputBorder(
                                   borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: const BorderSide(
+                                  borderSide: BorderSide(
                                     color: AppColors.primary,
                                     width: 1.0,
                                   ),
@@ -468,7 +545,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                             height20SizedBox,
                             Text(
                               StringConstants.addressText,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   color: AppColors.black,
                                   fontWeight: FontWeight.w600,
                                   fontSize: 20),
@@ -516,7 +593,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                               decoration: InputDecoration(
                                 filled: true,
                                 fillColor:  AppColors.transparent,
-                                errorStyle: const TextStyle(color: AppColors.red),
+                                errorStyle: TextStyle(color: AppColors.red),
                                 errorMaxLines: 3,
                                 errorBorder:  CommonWidgets.underlineInputBorder(
                                     borderRadius:  0.0,
@@ -547,7 +624,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                                     color:  AppColors.primary),
                               ),
                               // textCapitalization: TextCapitalization.words,
-                              textStyle: const TextStyle(
+                              textStyle: TextStyle(
                                   color: AppColors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400),
@@ -565,8 +642,6 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                                     mode: Mode.overlay,
                                     language: "en",
                                     components: []);
-                                debugPrint(
-                                    "ADDRESSES---description->${p?.description}");
                                 if (p?.description != null) {
                                   int idx = p?.description?.indexOf(",") ?? 0;
                                   List parts = [
@@ -636,7 +711,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                             height20SizedBox,
                             Text(
                               StringConstants.addressLine2Text,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   color: AppColors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400),
@@ -658,7 +733,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                                   const TextStyle(color: AppColors.grey, fontSize: 14),
                               autovalidateMode: AutovalidateMode.onUserInteraction,
                               textCapitalization: TextCapitalization.words,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   color: AppColors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400),
@@ -686,7 +761,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                                   const TextStyle(color: AppColors.grey, fontSize: 14),
                               autovalidateMode: AutovalidateMode.onUserInteraction,
                               textCapitalization: TextCapitalization.words,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   color: AppColors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400),
@@ -717,7 +792,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                                   const TextStyle(color: AppColors.grey, fontSize: 14),
                               autovalidateMode: AutovalidateMode.onUserInteraction,
                               textCapitalization: TextCapitalization.words,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   color: AppColors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400),
@@ -747,7 +822,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                                   const TextStyle(color: AppColors.grey, fontSize: 14),
                               autovalidateMode: AutovalidateMode.onUserInteraction,
                               textCapitalization: TextCapitalization.words,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   color: AppColors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400),
@@ -778,7 +853,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                                   const TextStyle(color: AppColors.grey, fontSize: 14),
                               autovalidateMode: AutovalidateMode.onUserInteraction,
                               textCapitalization: TextCapitalization.words,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   color: AppColors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400),
@@ -793,7 +868,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                             height20SizedBox,
                             Text(
                               StringConstants.storeTimingText,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   color: AppColors.black,
                                   fontWeight: FontWeight.w600,
                                   fontSize: 20),
@@ -827,7 +902,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                                     Text(
                                       StringConstants.customTimeText,
                                       overflow: TextOverflow.visible,
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                           color: AppColors.black,
                                           fontSize: 16,
                                           fontWeight: FontWeight.w400),
@@ -874,7 +949,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                                     Text(
                                       StringConstants.twentyFourSevenText,
                                       overflow: TextOverflow.visible,
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                           color: AppColors.black,
                                           fontSize: 16,
                                           fontWeight: FontWeight.w400),
@@ -931,7 +1006,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                                                     AutovalidateMode.onUserInteraction,
                                                 textCapitalization:
                                                     TextCapitalization.words,
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                     color: AppColors.black,
                                                     fontSize: 16,
                                                     fontWeight: FontWeight.w400),
@@ -993,7 +1068,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                                                     AutovalidateMode.onUserInteraction,
                                                 textCapitalization:
                                                     TextCapitalization.words,
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                     color: AppColors.black,
                                                     fontSize: 16,
                                                     fontWeight: FontWeight.w400),
@@ -1129,7 +1204,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                                   const TextStyle(color: AppColors.grey, fontSize: 14),
                               autovalidateMode: AutovalidateMode.onUserInteraction,
                               textCapitalization: TextCapitalization.words,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   color: AppColors.primary,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400),
@@ -1169,7 +1244,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                                   const TextStyle(color: AppColors.grey, fontSize: 14),
                               autovalidateMode: AutovalidateMode.onUserInteraction,
                               textCapitalization: TextCapitalization.words,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   color: AppColors.primary,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400),
@@ -1189,7 +1264,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                             ),
                             height40SizedBox,
                             CustomButton(
-                              gradient: const LinearGradient(
+                              gradient: LinearGradient(
                                 begin: Alignment.topCenter,
                                 end: Alignment.bottomCenter,
                                 colors: [AppColors.primary, AppColors.primary],
@@ -1223,7 +1298,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
           return addNewStoreController.isLoading.value
               ? Container(
             color: Colors.black.withOpacity(0.2),
-            child: const Center(
+            child: Center(
               child: CircularProgressIndicator(color: AppColors.primary),
             ),)
               : const SizedBox.shrink();
@@ -1245,6 +1320,11 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                   children: [
                     Row(
                       children: [
+                        Image.asset(
+                          ImageConstants.homeMall,
+                          scale: 4,
+                        ),
+                        width10SizedBox,
                         IconButton(
                           padding: EdgeInsets.zero,
                           constraints: const BoxConstraints(),
@@ -1253,7 +1333,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
 
                             Get.delete<AddNewStoreController>();
                           },
-                          icon: const Icon(
+                          icon: Icon(
                             Icons.arrow_back,
                             color: AppColors.black,
                             size: 24.0,
@@ -1261,18 +1341,14 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                         ),
                         width10SizedBox,
                         Text(
-                          StringConstants.addStoreText,
-                          style: const TextStyle(
+                          _addStoreTitle,
+                          style: TextStyle(
                               fontSize: 22,
                               color: AppColors.black,
                               fontWeight: FontWeight.w600),
                         ),
                       ],
                     ),
-                    Image.asset(
-                      ImageConstants.homeMall,
-                      scale: 4,
-                    )
                   ])),
         ));
   }
@@ -1290,7 +1366,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
         builder: (context, child) {
           return Theme(
             data: ThemeData.light().copyWith(
-              colorScheme: const ColorScheme.light(primary: AppColors.primary),
+              colorScheme: ColorScheme.light(primary: AppColors.primary),
               buttonTheme:
                   const ButtonThemeData(textTheme: ButtonTextTheme.primary),
             ),
@@ -1300,8 +1376,6 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
       ))!;
       controller.text = date.format(context).toString();
       timeValue.value = "${date.hour}:${date.minute}:00";
-
-      debugPrint("${date.hour}:${date.minute}:00");
 
       if (addNewStoreController.weekDaysList.isNotEmpty) {
         for (int i = 0; i < addNewStoreController.weekDaysList.length; i++) {
@@ -1328,13 +1402,13 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
         children: [
           TextSpan(
               text: title,
-              style: const TextStyle(
+              style: TextStyle(
                   color: AppColors.black,
                   fontSize: 16,
                   fontWeight: FontWeight.w400)),
           TextSpan(
             text:starText,
-            style: const TextStyle(
+            style: TextStyle(
                 fontSize: 16,
                 color: AppColors.red,
                 fontWeight: FontWeight.bold),
