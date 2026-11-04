@@ -90,6 +90,9 @@ class ServerCommunicator {
   static const nearByStoreList = 'shop/stores/list/nearby';
   static const notificationList = 'notification/setting/list';
   static const notificationListUrl = 'notification/list';
+//H
+  // Server-published help videos ("how to use the app"); app is view-only.
+  static const helpVideoList = 'help/video/list';
 
 //O
   static const otpVerify = 'user/otp/verify';

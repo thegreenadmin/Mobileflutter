@@ -71,7 +71,7 @@ class _EmailRequiredDialog extends StatelessWidget {
             height20SizedBox,
             Text(
               title,
-              style: const TextStyle(
+              style: TextStyle(
                 color: AppColors.black,
                 fontSize: 20,
                 fontWeight: FontWeight.w600,

@@ -13,6 +13,7 @@ import 'package:thegreenmall/dashboard/orders/view/orders_home_main_screen.dart'
 import 'package:thegreenmall/utils/utils.dart';
 
 import 'customer/components/store_home_main_args.dart';
+import 'package:thegreenmall/utils/brand_image.dart';
 
 class NotificationListScreen extends StatefulWidget {
   const NotificationListScreen({super.key});
@@ -51,7 +52,7 @@ class _NotificationListScreenState extends State<NotificationListScreen> with Gl
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Center(
-                                      child: Image.asset(
+                                      child: BrandImage.asset(
                                         ImageConstants.nodata,
                                         scale: 8,
                                         color: AppColors.primary,
@@ -181,7 +182,7 @@ class _NotificationListScreenState extends State<NotificationListScreen> with Gl
                                     child: Container(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 10, vertical: 10),
-                                    decoration: const BoxDecoration(
+                                    decoration: BoxDecoration(
                                         color: AppColors.greyLight,
                                         borderRadius: BorderRadius.all(
                                           Radius.circular(8.0),
@@ -246,7 +247,7 @@ class _NotificationListScreenState extends State<NotificationListScreen> with Gl
                                                               .store
                                                               ?.storeName) ??
                                                       "",
-                                                  style: const TextStyle(
+                                                  style: TextStyle(
                                                       fontSize: 16.0,
                                                       color: AppColors.black,
                                                       fontWeight: FontWeight.w600),
@@ -273,7 +274,7 @@ class _NotificationListScreenState extends State<NotificationListScreen> with Gl
                                                               .title) ??
                                                       "",
 
-                                                  style: const TextStyle(
+                                                  style: TextStyle(
                                                       fontSize: 16.0,
                                                       color: AppColors.black,
                                                       fontWeight: FontWeight.w500),
@@ -315,7 +316,7 @@ class _NotificationListScreenState extends State<NotificationListScreen> with Gl
           return notificationListController.isLoading.value
               ? Container(
             color: Colors.black.withOpacity(0.2),
-            child: const Center(
+            child: Center(
               child: CircularProgressIndicator(color: AppColors.primary),
             ),)
               : const SizedBox.shrink();
@@ -351,7 +352,7 @@ class _NotificationListScreenState extends State<NotificationListScreen> with Gl
                                 onPressed: () {
                                   Get.back(id: pageIdApp.value);
                                 },
-                                icon: const Icon(
+                                icon: Icon(
                                   Icons.arrow_back,
                                   color: AppColors.black,
                                   size: 24.0,
@@ -360,7 +361,7 @@ class _NotificationListScreenState extends State<NotificationListScreen> with Gl
                               width10SizedBox,
                               Text(
                                 StringConstants.notificationsText,
-                                style: const TextStyle(
+                                style: TextStyle(
                                     fontSize: 22,
                                     color: AppColors.black,
                                     fontWeight: FontWeight.w600),

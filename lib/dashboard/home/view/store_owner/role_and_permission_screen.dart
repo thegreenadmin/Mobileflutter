@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/add_new_role_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/store_owner/add_edit_role.dart';
 import 'package:thegreenmall/utils/utils.dart';
+import 'package:thegreenmall/utils/brand_image.dart';
 
 class RoleAndPermissionScreen extends StatefulWidget {
   final String? storeId;
@@ -49,7 +50,7 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> with 
                         children: [
                           Text(
                             StringConstants.rolesText,
-                            style: const TextStyle(
+                            style: TextStyle(
                                 fontSize: 18.0,
                                 color: AppColors.black,
                                 fontWeight: FontWeight.w600),
@@ -91,7 +92,7 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> with 
                               },
                               child: Row(
                                 children: [
-                                  const Icon(
+                                  Icon(
                                     Icons.add,
                                     color: AppColors.primary,
                                     size: 18.0,
@@ -99,7 +100,7 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> with 
                                   width2SizedBox,
                                   Text(
                                     StringConstants.addNewRoleText,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         fontSize: 15.0,
                                         color: AppColors.primary,
                                         fontWeight: FontWeight.w500),
@@ -118,7 +119,7 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> with 
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
                                       Center(
-                                        child: Image.asset(
+                                        child: BrandImage.asset(
                                           ImageConstants.nodata,
                                           scale: 8,
                                           color: AppColors.primary,
@@ -142,7 +143,7 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> with 
                                   return Container(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 5, vertical: 20),
-                                    decoration: const BoxDecoration(
+                                    decoration: BoxDecoration(
                                         color: AppColors.greyLight,
                                         borderRadius: BorderRadius.all(
                                           Radius.circular(8.0),
@@ -154,7 +155,7 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> with 
                                           addNewRoleController
                                                   .storeRoleList[index].roleName ??
                                               "",
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                               fontSize: 16.0,
                                               color: AppColors.black,
                                               fontWeight: FontWeight.w500),
@@ -266,7 +267,7 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> with 
           return addNewRoleController.isLoading.value
               ? Container(
             color: Colors.black.withOpacity(0.2),
-            child: const Center(
+            child: Center(
               child: CircularProgressIndicator(color: AppColors.primary),
             ),)
               : const SizedBox.shrink();
@@ -300,7 +301,7 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> with 
                           onPressed: () {
                             Get.back(id: pageIdApp.value);
                           },
-                          icon: const Icon(
+                          icon: Icon(
                             Icons.arrow_back,
                             color: AppColors.black,
                             size: 24.0,
@@ -309,7 +310,7 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> with 
                         width10SizedBox,
                         Text(
                           StringConstants.rolesAndPermissionText,
-                          style: const TextStyle(
+                          style: TextStyle(
                               fontSize: 20,
                               color: AppColors.black,
                               fontWeight: FontWeight.w600),

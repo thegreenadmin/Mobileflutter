@@ -467,7 +467,7 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
             height10SizedBox,
             Text(
               StringConstants.enterEinNumberText,
-              style: const TextStyle(color: AppColors.primaryDark, fontSize: 20, fontWeight: FontWeight.w600),
+              style: TextStyle(color: AppColors.primaryDark, fontSize: 20, fontWeight: FontWeight.w600),
               textAlign: TextAlign.start,
             ),
             height15SizedBox,
@@ -487,7 +487,7 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
                     }
                     return null;
                   },
-                  style: const TextStyle(color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w400),
+                  style: TextStyle(color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w400),
                   controller: einNumberTextController,
                   keyboardType: TextInputType.phone,
                   decoration: InputDecoration(
@@ -497,21 +497,21 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
                     fillColor: Colors.white,
                     border: UnderlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
-                      borderSide: const BorderSide(
+                      borderSide: BorderSide(
                         color: AppColors.primary,
                         width: 1.0,
                       ),
                     ),
                     errorBorder: UnderlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
-                      borderSide: const BorderSide(
+                      borderSide: BorderSide(
                         color: AppColors.primary,
                         width: 1.0,
                       ),
                     ),
                     focusedBorder: UnderlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
-                      borderSide: const BorderSide(
+                      borderSide: BorderSide(
                         color: AppColors.primary,
                         width: 1.0,
                       ),
@@ -775,8 +775,8 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
       previousStore.clear();
       update();
       GuestAccessModal.show(
-        title: "Login Required",
-        message: "Please login to view previous stores",
+        title: StringConstants.loginRequiredText,
+        message: StringConstants.loginToViewPreviousStoresText,
         onContinueAsGuest: () {
           // Allow guest to continue - just close modal
         },
@@ -849,8 +849,8 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
     // Check if user is guest - show modal for login
     if (isGuest.value == true) {
       GuestAccessModal.show(
-        title: "Login Required",
-        message: "Please login to view favourite stores",
+        title: StringConstants.loginRequiredText,
+        message: StringConstants.loginToViewFavouriteStoresText,
         onContinueAsGuest: () {
           // Allow guest to continue - just close modal
         },

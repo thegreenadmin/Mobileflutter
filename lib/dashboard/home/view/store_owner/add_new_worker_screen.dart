@@ -125,7 +125,7 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> with GlobalVarM
                                   const TextStyle(color: AppColors.grey, fontSize: 14),
                               autovalidateMode: AutovalidateMode.onUserInteraction,
                               textCapitalization: TextCapitalization.words,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   color: AppColors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400),
@@ -158,7 +158,7 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> with GlobalVarM
                                   const TextStyle(color: AppColors.grey, fontSize: 14),
                               autovalidateMode: AutovalidateMode.onUserInteraction,
                               textCapitalization: TextCapitalization.words,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   color: AppColors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400),
@@ -195,7 +195,7 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> with GlobalVarM
                                 child: Text(
                                   addNewWorkerController.storeName.value,
                                   textAlign: TextAlign.center,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w500,
                                     color: AppColors.primaryLight,
@@ -223,7 +223,7 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> with GlobalVarM
                                   const TextStyle(color: AppColors.grey, fontSize: 14),
                               autovalidateMode: AutovalidateMode.onUserInteraction,
                               textCapitalization: TextCapitalization.words,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   color: AppColors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400),
@@ -280,7 +280,7 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> with GlobalVarM
                                         autovalidateMode:
                                             AutovalidateMode.onUserInteraction,
                                         textCapitalization: TextCapitalization.words,
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                             color: AppColors.black,
                                             fontSize: 16,
                                             fontWeight: FontWeight.w400),
@@ -308,7 +308,7 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> with GlobalVarM
                                             builder: (context, child) {
                                               return Theme(
                                                 data: ThemeData.light().copyWith(
-                                                  colorScheme: const ColorScheme.light(
+                                                  colorScheme: ColorScheme.light(
                                                       primary: AppColors.primary),
                                                   buttonTheme: const ButtonThemeData(
                                                       textTheme:
@@ -355,7 +355,7 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> with GlobalVarM
                                         autovalidateMode:
                                             AutovalidateMode.onUserInteraction,
                                         textCapitalization: TextCapitalization.words,
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                             color: AppColors.black,
                                             fontSize: 16,
                                             fontWeight: FontWeight.w400),
@@ -383,7 +383,7 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> with GlobalVarM
                                             builder: (context, child) {
                                               return Theme(
                                                 data: ThemeData.light().copyWith(
-                                                  colorScheme: const ColorScheme.light(
+                                                  colorScheme: ColorScheme.light(
                                                       primary: AppColors.primary),
                                                   buttonTheme: const ButtonThemeData(
                                                       textTheme:
@@ -425,7 +425,7 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> with GlobalVarM
                                 FilteringTextInputFormatter.digitsOnly,
                               ],
                               keyboardType: TextInputType.phone,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   color: AppColors.black,
                                   fontSize: 15,
                                   fontWeight: FontWeight.w400),
@@ -440,14 +440,14 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> with GlobalVarM
                                     color: AppColors.blackLight, fontSize: 15),
                                 border: UnderlineInputBorder(
                                   borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: const BorderSide(
+                                  borderSide: BorderSide(
                                     color: AppColors.primary,
                                     width: 1.0,
                                   ),
                                 ),
                                 errorBorder: UnderlineInputBorder(
                                   borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: const BorderSide(
+                                  borderSide: BorderSide(
                                     color: AppColors.primary,
                                     width: 1.0,
                                   ),
@@ -461,7 +461,7 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> with GlobalVarM
                                 ),
                                 focusedBorder: UnderlineInputBorder(
                                   borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: const BorderSide(
+                                  borderSide: BorderSide(
                                     color: AppColors.primary,
                                     width: 1.0,
                                   ),
@@ -518,21 +518,21 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> with GlobalVarM
                                             ),
                                             border: UnderlineInputBorder(
                                               borderRadius: BorderRadius.circular(5.0),
-                                              borderSide: const BorderSide(
+                                              borderSide: BorderSide(
                                                 color: AppColors.primary,
                                                 width: 1.0,
                                               ),
                                             ),
                                             focusedBorder: UnderlineInputBorder(
                                               borderRadius: BorderRadius.circular(5.0),
-                                              borderSide: const BorderSide(
+                                              borderSide: BorderSide(
                                                 color: AppColors.primary,
                                                 width: 1.0,
                                               ),
                                             ),
                                             errorBorder: UnderlineInputBorder(
                                               borderRadius: BorderRadius.circular(5.0),
-                                              borderSide: const BorderSide(
+                                              borderSide: BorderSide(
                                                 color: AppColors.primary,
                                                 width: 1.0,
                                               ),
@@ -549,7 +549,7 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> with GlobalVarM
                                               value: value.roleId,
                                               child: Text(
                                                 value.roleName,
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                     color: AppColors.black,
                                                     fontSize: 16,
                                                     fontWeight: FontWeight.w500),
@@ -566,7 +566,7 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> with GlobalVarM
                             ),
                             height40SizedBox,
                             CustomButton(
-                              gradient: const LinearGradient(
+                              gradient: LinearGradient(
                                 begin: Alignment.topCenter,
                                 end: Alignment.bottomCenter,
                                 colors: [AppColors.primary, AppColors.primary],
@@ -599,7 +599,7 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> with GlobalVarM
           return addNewWorkerController.isLoading.value
               ? Container(
             color: Colors.black.withOpacity(0.2),
-            child: const Center(
+            child: Center(
               child: CircularProgressIndicator(color: AppColors.primary),
             ),)
               : const SizedBox.shrink();
@@ -634,7 +634,7 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> with GlobalVarM
                               onPressed: () {
                                 Get.back(id: pageIdApp.value);
                               },
-                              icon: const Icon(
+                              icon: Icon(
                                 Icons.arrow_back,
                                 color: AppColors.black,
                                 size: 24.0,
@@ -643,7 +643,7 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> with GlobalVarM
                             width10SizedBox,
                             Text(
                               StringConstants.addWorkerText,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   fontSize: 22,
                                   color: AppColors.black,
                                   fontWeight: FontWeight.w600),
@@ -662,13 +662,13 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> with GlobalVarM
                       children: [
                         TextSpan(
                             text: title,
-                            style: const TextStyle(
+                            style: TextStyle(
                                 color: AppColors.black,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w400)),
                         TextSpan(
                           text:starText,
-                          style: const TextStyle(
+                          style: TextStyle(
                               fontSize: 16,
                               color: AppColors.red,
                               fontWeight: FontWeight.bold),

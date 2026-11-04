@@ -62,7 +62,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                                   height40SizedBox,
                                   Text(
                                     StringConstants.verificationCodeText,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         color: AppColors.primary,
                                         fontSize: 30,
                                         fontWeight: FontWeight.w600),
@@ -157,7 +157,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                                           },
                                           child: Text(
                                             StringConstants.resendText,
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                                 fontSize: 15,
                                                 fontWeight: FontWeight.w600,
                                                 color: AppColors.primary),
@@ -168,7 +168,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                                   ),
                                   height40SizedBox,
                                   CustomButton(
-                                      gradient: const LinearGradient(
+                                      gradient: LinearGradient(
                                         begin: Alignment.topCenter,
                                         end: Alignment.bottomCenter,
                                         colors: [AppColors.primary, AppColors.primary],
@@ -202,7 +202,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                 return otpVerificationController.isLoading.value
                     ? Container(
                   color: Colors.black.withOpacity(0.2),
-                  child: const Center(
+                  child: Center(
                     child: CircularProgressIndicator(color: AppColors.primary),
                   ),
                 )

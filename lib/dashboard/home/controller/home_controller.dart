@@ -250,8 +250,8 @@ class HomeController extends GetxController with GlobalVarMixin {
                     // Check if user is guest - show modal for account-based features
                     if (isGuest.value == true) {
                       GuestAccessModal.show(
-                        title: "Login Required",
-                        message: "Please login to access account settings",
+                        title: StringConstants.loginRequiredText,
+                        message: StringConstants.loginToAccessAccountSettingsText,
                         onContinueAsGuest: () {
                           // Allow guest to continue - just close modal
                         },
@@ -269,7 +269,7 @@ class HomeController extends GetxController with GlobalVarMixin {
                     children: [
                       Text(
                         StringConstants.userProfileText,
-                        style: const TextStyle(
+                        style: TextStyle(
                             color: AppColors.black, fontSize: 16),
                       ),
                     ],
@@ -289,8 +289,8 @@ class HomeController extends GetxController with GlobalVarMixin {
                 // Check if user is guest - show modal for account-based features
                 if (isGuest.value == true) {
                   GuestAccessModal.show(
-                    title: "Login Required",
-                    message: "Please login to access account settings",
+                    title: StringConstants.loginRequiredText,
+                    message: StringConstants.loginToAccessAccountSettingsText,
                     onContinueAsGuest: () {
                       // Allow guest to continue - just close modal
                     },
@@ -309,7 +309,7 @@ class HomeController extends GetxController with GlobalVarMixin {
                   Text(
                     StringConstants.storeProfileText,
                     style:
-                        const TextStyle(color: AppColors.black, fontSize: 16),
+                        TextStyle(color: AppColors.black, fontSize: 16),
                   ),
                 ],
               ),
@@ -453,7 +453,7 @@ class HomeController extends GetxController with GlobalVarMixin {
     try {
       final value = await UserProvider()
           .getWithHeadersApi(
-              "${ServerCommunicator.baseUrl}${ServerCommunicator.shopStoreHomeOffers}?longitude=$lng&latitude=$lat&mileage=1000&page=1&page_size=20",
+              "${ServerCommunicator.baseUrl}${ServerCommunicator.shopStoreHomeOffers}?longitude=$lng&latitude=$lat&mileage=${AppConfig.current.homeSearchRadiusMiles}&page=1&page_size=${AppConfig.current.homeOffersPageSize}",
               headers,
               showLoading: false);
 
@@ -569,7 +569,7 @@ class HomeController extends GetxController with GlobalVarMixin {
     featuredUserProductList.clear();
     isLoading.value = true;
     String url =
-        "${ServerCommunicator.baseUrl}${ServerCommunicator.shopStoreHomeProducts}?longitude=${lng.toString()}&latitude=${lat.toString()}&mileage=1000&page=1&page_size=5";
+        "${ServerCommunicator.baseUrl}${ServerCommunicator.shopStoreHomeProducts}?longitude=${lng.toString()}&latitude=${lat.toString()}&mileage=${AppConfig.current.homeSearchRadiusMiles}&page=1&page_size=${AppConfig.current.homeFeaturedProductsPageSize}";
      
     Map<String, String> headers = {
       'Content-Type': 'application/json',

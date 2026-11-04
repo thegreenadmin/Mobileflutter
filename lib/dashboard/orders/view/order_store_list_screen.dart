@@ -4,6 +4,7 @@ import 'package:thegreenmall/dashboard/orders/controller/orders_controller.dart'
 import 'package:thegreenmall/dashboard/orders/view/order_barcode_scanner_screen.dart';
 import 'package:thegreenmall/dashboard/orders/view/orders_home_main_screen.dart';
 import 'package:thegreenmall/utils/utils.dart';
+import 'package:thegreenmall/utils/brand_image.dart';
 
 class OrderStoresListScreen extends StatefulWidget {
   const OrderStoresListScreen({super.key});
@@ -87,7 +88,7 @@ class _OrderStoresListScreenState extends State<OrderStoresListScreen> with Glob
                               Obx(
                                     () => Text(
                                   'Hi, ${firstName.value}',
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                       fontSize: 20,
                                       color: AppColors.black,
                                       fontWeight: FontWeight.w400),
@@ -96,7 +97,7 @@ class _OrderStoresListScreenState extends State<OrderStoresListScreen> with Glob
                               height4SizedBox,
                               Text(
                                 StringConstants.ordersText,
-                                style: const TextStyle(
+                                style: TextStyle(
                                     fontSize: 22,
                                     color: AppColors.black,
                                     fontWeight: FontWeight.w600),
@@ -120,7 +121,7 @@ class _OrderStoresListScreenState extends State<OrderStoresListScreen> with Glob
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Image.asset(
+                        BrandImage.asset(
                           ImageConstants.nodata,
                           scale: 8,
                           color: AppColors.primary,
@@ -169,20 +170,20 @@ class _OrderStoresListScreenState extends State<OrderStoresListScreen> with Glob
             child: Container(
               padding:
                   const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                   color: AppColors.greyLight,
                   borderRadius: BorderRadius.all(
                     Radius.circular(8.0),
                   )),
               child: Row(
                 children: [
-                  const Icon(Icons.qr_code_scanner,
+                  Icon(Icons.qr_code_scanner,
                       color: AppColors.primary, size: 26),
                   width10SizedBox,
                   Expanded(
                     child: Text(
                       StringConstants.scanOrderBarcodeText,
-                      style: const TextStyle(
+                      style: TextStyle(
                           color: AppColors.black,
                           fontWeight: FontWeight.w600,
                           fontSize: 16),
@@ -238,7 +239,7 @@ class _OrderStoresListScreenState extends State<OrderStoresListScreen> with Glob
                             child: Container(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 10),
-                              decoration: const BoxDecoration(
+                              decoration: BoxDecoration(
                                   color: AppColors.greyLight,
                                   borderRadius: BorderRadius.all(
                                     Radius.circular(8.0),
@@ -279,7 +280,7 @@ class _OrderStoresListScreenState extends State<OrderStoresListScreen> with Glob
                                               ordersController.storeList[index]
                                                       .storeName ??
                                                   "",
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                   fontSize: 16.0,
                                                   color: AppColors.black,
                                                   fontWeight: FontWeight.w500),
@@ -334,7 +335,7 @@ class _OrderStoresListScreenState extends State<OrderStoresListScreen> with Glob
                                                                           i]
                                                                       .addressLine1 ??
                                                                   "",
-                                                              style: const TextStyle(
+                                                              style: TextStyle(
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .w400,
@@ -383,7 +384,7 @@ class _OrderStoresListScreenState extends State<OrderStoresListScreen> with Glob
                                                                               i]
                                                                           .city ??
                                                                       "",
-                                                                  style: const TextStyle(
+                                                                  style: TextStyle(
                                                                       color: AppColors
                                                                           .black,
                                                                       fontWeight:
@@ -427,7 +428,7 @@ class _OrderStoresListScreenState extends State<OrderStoresListScreen> with Glob
                                                                           .state!
                                                                           .stateName ??
                                                                       "",
-                                                                  style: const TextStyle(
+                                                                  style: TextStyle(
                                                                       color: AppColors
                                                                           .black,
                                                                       fontWeight:

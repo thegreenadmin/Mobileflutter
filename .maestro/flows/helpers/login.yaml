@@ -1,0 +1,29 @@
+appId: com.thegreenmall
+---
+# Reusable subflow: logs in with the test account (phone 0000000000 / OTP 0000)
+# and lands on the authenticated home screen. Call via `runFlow: helpers/login.yaml`.
+- launchApp
+- extendedWaitUntil:
+    visible: "Login your account"
+    timeout: 20000
+- tapOn: "Login your account"
+- extendedWaitUntil:
+    visible: "Send Confirmation Code"
+    timeout: 15000
+- tapOn: "Mobile"
+- inputText: "0000000000"
+- tapOn: "Send Confirmation Code"
+- extendedWaitUntil:
+    visible: "Verification code"
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 5000
+- retry:
+    maxRetries: 3
+    commands:
+      - tapOn:
+          point: "20%,71%"
+      - inputText: "0000"
+      - extendedWaitUntil:
+          visible: "Stores"
+          timeout: 8000

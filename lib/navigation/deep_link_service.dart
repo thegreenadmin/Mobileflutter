@@ -4,6 +4,8 @@ import 'package:app_links/app_links.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
+import 'package:thegreenmall/dashboard/orders/order_link.dart';
+import 'package:thegreenmall/dashboard/orders/order_scan_resolver.dart';
 import 'package:thegreenmall/dashboard/payments/payment_link.dart';
 import 'package:thegreenmall/dashboard/payments/payment_routes.dart';
 import 'package:thegreenmall/utils/global_share_data.dart';
@@ -52,9 +54,36 @@ class DeepLinkService {
   }
 
   static void _handleUri(Uri uri) {
-    final token = PaymentLink.extractToken(uri.toString());
-    if (token == null) return; // not a /pay/<token> link
-    _openPayment(token);
+    final raw = uri.toString();
+
+    final token = PaymentLink.extractToken(raw);
+    if (token != null) {
+      _openPayment(token);
+      return;
+    }
+
+    // Pickup/order QR: https://thegreenmall.net/order/<token>. Scanned with a
+    // plain phone camera by store staff, this opens the order's fulfil screen.
+    if (OrderLink.isOrderLink(raw)) {
+      _openOrder(raw);
+      return;
+    }
+    // Anything else isn't ours — ignore.
+  }
+
+  static void _openOrder(String link) {
+    // Fulfilling an order needs a signed-in store user. If we're not there yet,
+    // ask them to sign in rather than silently dropping the scan.
+    if (authToken.value.isEmpty) {
+      Utility.showToast('Please sign in to open this order.');
+      return;
+    }
+    // Push on the root navigator (navId: null) — a deep link can arrive on cold
+    // start before the orders tab shell is mounted. resolveOrderAndOpen surfaces
+    // access/lookup failures as a message.
+    resolveOrderAndOpen(link).then((error) {
+      if (error != null) Utility.showToast(error);
+    });
   }
 
   static void _openPayment(String token) {

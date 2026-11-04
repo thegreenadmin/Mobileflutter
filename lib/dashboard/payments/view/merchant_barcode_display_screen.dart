@@ -11,6 +11,7 @@ import '../controller/payment_controller.dart';
 import '../model/qr_payload_model.dart';
 import 'component/pay_theme.dart';
 import 'component/pay_widgets.dart';
+import 'package:thegreenmall/utils/app_config.dart';
 
 /// Displays a scannable dynamic payment code for a user (Receive) or merchant
 /// (P2B), with an expiry countdown and auto-refresh (spec 5.7).
@@ -150,7 +151,7 @@ class _MerchantBarcodeDisplayScreenState
   Widget _buildPickerForm() {
     return Obx(() {
       if (c.storesLoading.value && c.ownerStores.isEmpty) {
-        return const Center(
+        return Center(
             child: CircularProgressIndicator(color: PayTheme.accent));
       }
       // Stores are mandatory only when there is no personal-code fallback.
@@ -188,7 +189,7 @@ class _MerchantBarcodeDisplayScreenState
                       color: PayTheme.secondaryText),
                   items: [
                     if (_allowPersonal)
-                      const DropdownMenuItem<UserStoresList?>(
+                      DropdownMenuItem<UserStoresList?>(
                         value: null,
                         child: Row(
                           children: [
@@ -203,7 +204,7 @@ class _MerchantBarcodeDisplayScreenState
                           value: s,
                           child: Row(
                             children: [
-                              const Icon(Icons.storefront_rounded,
+                              Icon(Icons.storefront_rounded,
                                   color: PayTheme.accent, size: 22),
                               const SizedBox(width: 12),
                               Expanded(
@@ -242,9 +243,9 @@ class _MerchantBarcodeDisplayScreenState
                       fontSize: 28,
                       fontWeight: FontWeight.w700,
                       color: PayTheme.primaryText),
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     border: InputBorder.none,
-                    prefixText: '\$ ',
+                    prefixText: '$currencySign ',
                     prefixStyle: TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.w700,
@@ -289,7 +290,7 @@ class _MerchantBarcodeDisplayScreenState
 
   Widget _buildCode() {
     if (_loading && _qr == null) {
-      return const Center(child: CircularProgressIndicator(color: PayTheme.accent));
+      return Center(child: CircularProgressIndicator(color: PayTheme.accent));
     }
     if (_qr == null) {
       return PayMessageView(
@@ -307,7 +308,7 @@ class _MerchantBarcodeDisplayScreenState
         children: [
           const SizedBox(height: PayTheme.sectionGap),
           if (_amount != null) ...[
-            Text('\$ ${_amount!.toStringAsFixed(2)}',
+            Text('$currencySign ${_amount!.toStringAsFixed(2)}',
                 style: PayTheme.largeHeader),
             if (_selectedStore?.storeName != null)
               Text(_selectedStore!.storeName!, style: PayTheme.bodyMuted),
@@ -333,13 +334,13 @@ class _MerchantBarcodeDisplayScreenState
                 if (expired)
                   Column(
                     children: [
-                      const Text('This code has expired',
+                      Text('This code has expired',
                           style: TextStyle(color: PayTheme.error)),
                       const SizedBox(height: 10),
                       TextButton.icon(
                         onPressed: _generate,
-                        icon: const Icon(Icons.refresh, color: PayTheme.accent),
-                        label: const Text('Refresh code',
+                        icon: Icon(Icons.refresh, color: PayTheme.accent),
+                        label: Text('Refresh code',
                             style: TextStyle(color: PayTheme.accent)),
                       ),
                     ],
@@ -361,11 +362,11 @@ class _MerchantBarcodeDisplayScreenState
             const SizedBox(height: PayTheme.itemGap),
             TextButton.icon(
               onPressed: _editPickerDetails,
-              icon: const Icon(Icons.edit_outlined,
+              icon: Icon(Icons.edit_outlined,
                   color: PayTheme.accent, size: 20),
               label: Text(
                   _requireAmount ? 'Change amount / store' : 'Change business',
-                  style: const TextStyle(color: PayTheme.accent)),
+                  style: TextStyle(color: PayTheme.accent)),
             ),
           ],
         ],

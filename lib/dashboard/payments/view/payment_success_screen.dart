@@ -7,12 +7,13 @@ import '../payment_routes.dart';
 import '../model/payment_intent_model.dart';
 import 'component/pay_theme.dart';
 import 'component/pay_widgets.dart';
+import 'package:thegreenmall/utils/app_config.dart';
 
 /// Success confirmation + receipt summary (spec 5.6).
 class PaymentSuccessScreen extends StatelessWidget {
   const PaymentSuccessScreen({super.key});
 
-  String _money(double v) => '\$${v.toStringAsFixed(2)}';
+  String _money(double v) => '$currencySign${v.toStringAsFixed(2)}';
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +54,7 @@ class PaymentSuccessScreen extends StatelessWidget {
                           color: PayTheme.success.withOpacity(0.12),
                           shape: BoxShape.circle,
                         ),
-                        child: const Icon(Icons.check_rounded,
+                        child: Icon(Icons.check_rounded,
                             color: PayTheme.success, size: 48),
                       ),
                       const SizedBox(height: PayTheme.itemGap),
@@ -62,7 +63,7 @@ class PaymentSuccessScreen extends StatelessWidget {
                       Text('You have sent', style: PayTheme.bodyMuted),
                       const SizedBox(height: 4),
                       Text(_money(i.amount),
-                          style: const TextStyle(
+                          style: TextStyle(
                               fontSize: 36,
                               fontWeight: FontWeight.bold,
                               color: PayTheme.success)),

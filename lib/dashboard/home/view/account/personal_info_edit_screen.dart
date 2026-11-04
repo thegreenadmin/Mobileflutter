@@ -72,7 +72,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> with Gl
                                         onPressed: () {
                                           Get.back(id: pageIdApp.value);
                                         },
-                                        icon: const Icon(
+                                        icon: Icon(
                                           Icons.arrow_back,
                                           color: AppColors.black,
                                           size: 24.0,
@@ -82,7 +82,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> with Gl
                                       SizedBox(
                                         child: Text(
                                           StringConstants.personalInformationText,
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                               fontSize: 20,
                                               color: AppColors.black,
                                               fontWeight: FontWeight.w600),
@@ -154,7 +154,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> with Gl
                                                 fontWeight: FontWeight.w400)),
                                         TextSpan(
                                           text: StringConstants.starText,
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                               fontSize: 16,
                                               color: AppColors.red,
                                               fontWeight: FontWeight.bold),
@@ -201,7 +201,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> with Gl
                                     decoration: InputDecoration(
                                       filled: true,
                                       fillColor:  AppColors.transparent,
-                                      errorStyle: const TextStyle(color: AppColors.red),
+                                      errorStyle: TextStyle(color: AppColors.red),
                                       errorMaxLines: 3,
                                       errorBorder:  CommonWidgets.underlineInputBorder(
                                           borderRadius:  0.0,
@@ -406,12 +406,12 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> with Gl
                                                               borderRadius:
                                                                   BorderRadius.circular(
                                                                       18.0),
-                                                              side: const BorderSide(
+                                                              side: BorderSide(
                                                                   color: AppColors
                                                                       .primary)))),
                                                   child: Text(
                                                     StringConstants.removeText,
-                                                    style: const TextStyle(
+                                                    style: TextStyle(
                                                         color: AppColors.primaryDark),
                                                   ),
                                                 ),
@@ -468,7 +468,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> with Gl
                                                                     borderRadius:
                                                                         BorderRadius.circular(
                                                                             18.0),
-                                                                    side: const BorderSide(
+                                                                    side: BorderSide(
                                                                         color: AppColors
                                                                             .primary)))),
                                                         child: Text(
@@ -486,7 +486,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> with Gl
 
                                   height40SizedBox,
                                   CustomButton(
-                                    gradient: const LinearGradient(
+                                    gradient: LinearGradient(
                                       begin: Alignment.topCenter,
                                       end: Alignment.bottomCenter,
                                       colors: [AppColors.primary, AppColors.primary],
@@ -515,7 +515,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> with Gl
                 return accountController.isLoading.value
                     ? Container(
                   color: Colors.black.withOpacity(0.2),
-                  child: const Center(
+                  child: Center(
                     child: CircularProgressIndicator(color: AppColors.primary),
                   ),
                 )
@@ -529,7 +529,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> with Gl
   Text sectionTitle(String label) {
     return Text(
       label,
-      style: const TextStyle(
+      style: TextStyle(
           color: AppColors.black,
           fontWeight: FontWeight.w600,
           fontSize: 20),
@@ -559,7 +559,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> with Gl
               if (isRequired)
               TextSpan(
                 text: StringConstants.starText,
-                style: const TextStyle(
+                style: TextStyle(
                     fontSize: 16,
                     color: AppColors.red,
                     fontWeight: FontWeight.bold),

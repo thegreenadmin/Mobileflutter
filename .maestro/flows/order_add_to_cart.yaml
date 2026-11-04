@@ -1,0 +1,56 @@
+appId: com.thegreenmall
+---
+# Navigate to a store, find a product, and add it to the cart.
+- runFlow: helpers/login.yaml
+- runFlow: helpers/goto_store_search.yaml
+
+# Wait for nearby stores and tap the first one
+- extendedWaitUntil:
+    visible: "Store Hours.*"
+    timeout: 15000
+- tapOn:
+    text: "Store Hours.*"
+    index: 0
+- waitForAnimationToEnd:
+    timeout: 5000
+- extendedWaitUntil:
+    visible: "Welcome to.*"
+    timeout: 10000
+
+# Go to Categories
+- tapOn: "Categories"
+- extendedWaitUntil:
+    visible: "Categories"
+    timeout: 10000
+
+# Tap the first category
+- retry:
+    maxRetries: 3
+    commands:
+      - tapOn:
+          text: ".*product.*"
+          index: 0
+      - waitForAnimationToEnd:
+          timeout: 5000
+
+# Tap the first product in the grid
+- retry:
+    maxRetries: 3
+    commands:
+      - tapOn:
+          text: "Unit Price.*"
+          index: 0
+      - waitForAnimationToEnd:
+          timeout: 5000
+
+# Should be on the product detail / Add to Order screen
+- extendedWaitUntil:
+    visible: "Add to Order"
+    timeout: 10000
+- takeScreenshot: product_detail
+
+# Tap "Add to Order" button
+- tapOn: "Add to Order"
+- waitForAnimationToEnd:
+    timeout: 5000
+- takeScreenshot: added_to_cart

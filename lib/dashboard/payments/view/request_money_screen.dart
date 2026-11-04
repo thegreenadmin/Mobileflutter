@@ -12,6 +12,7 @@ import '../controller/payment_controller.dart';
 import '../payment_routes.dart';
 import 'component/pay_theme.dart';
 import 'component/pay_widgets.dart';
+import 'package:thegreenmall/utils/app_config.dart';
 
 /// "Request money" — a customer asks a specific person to pay them. They enter
 /// the person's mobile number + amount, then either generate a scannable code
@@ -57,7 +58,7 @@ class _RequestMoneyScreenState extends State<RequestMoneyScreen> {
       arguments: {
         'actor_type': 'user',
         'amount': _amount,
-        'title': 'Request \$${_amount.toStringAsFixed(2)}',
+        'title': 'Request $currencySign${_amount.toStringAsFixed(2)}',
         'subtitle': 'Let them scan to pay you',
       },
     );
@@ -108,7 +109,7 @@ class _RequestMoneyScreenState extends State<RequestMoneyScreen> {
                     controller: _phoneController,
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     keyboardType: TextInputType.phone,
-                    style: const TextStyle(
+                    style: TextStyle(
                         color: AppColors.black,
                         fontSize: 15,
                         fontWeight: FontWeight.w400),
@@ -122,7 +123,7 @@ class _RequestMoneyScreenState extends State<RequestMoneyScreen> {
                       hintStyle: const TextStyle(fontSize: 15),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5.0),
-                        borderSide: const BorderSide(
+                        borderSide: BorderSide(
                             color: AppColors.primary, width: 1.0),
                       ),
                       enabledBorder: OutlineInputBorder(
@@ -132,7 +133,7 @@ class _RequestMoneyScreenState extends State<RequestMoneyScreen> {
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5.0),
-                        borderSide: const BorderSide(
+                        borderSide: BorderSide(
                             color: AppColors.primary, width: 1.0),
                       ),
                     ),
@@ -226,7 +227,7 @@ class _SecondaryButton extends StatelessWidget {
               borderRadius: BorderRadius.circular(14)),
         ),
         icon: loading
-            ? const SizedBox(
+            ? SizedBox(
                 height: 20,
                 width: 20,
                 child: CircularProgressIndicator(

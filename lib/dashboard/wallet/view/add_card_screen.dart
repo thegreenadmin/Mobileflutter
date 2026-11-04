@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/wallet/controller/add_card_controller.dart';
 import 'package:thegreenmall/dashboard/wallet/view/add_card_detail_screen.dart';
 import 'package:thegreenmall/utils/utils.dart';
+import 'package:thegreenmall/utils/brand_image.dart';
 
 class AddCardScreen extends StatefulWidget {
   const AddCardScreen({
@@ -61,7 +62,7 @@ class AddCardScreenState extends State<AddCardScreen> with GlobalVarMixin{
                                   Get.back(id: pageIdApp.value);
 
                                 },
-                                icon: const Icon(
+                                icon: Icon(
                                   Icons.arrow_back,
                                   color: AppColors.black,
                                   size: 24.0,
@@ -70,7 +71,7 @@ class AddCardScreenState extends State<AddCardScreen> with GlobalVarMixin{
                               width10SizedBox,
                               Text(
                                 StringConstants.cardAndPaymentText,
-                                style: const TextStyle(
+                                style: TextStyle(
                                     fontSize: 20,
                                     color: AppColors.black,
                                     fontWeight: FontWeight.w600),
@@ -89,7 +90,7 @@ class AddCardScreenState extends State<AddCardScreen> with GlobalVarMixin{
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Center(
-                          child: Image.asset(
+                          child: BrandImage.asset(
                             ImageConstants.nodata,
                             scale: 8,
                             color: AppColors.primary,
@@ -169,7 +170,7 @@ class AddCardScreenState extends State<AddCardScreen> with GlobalVarMixin{
                                                       .cardList[index].card?.brand
                                                       .toString()
                                                       .toUpperCase() ??"",
-                                                  style: const TextStyle(
+                                                  style: TextStyle(
                                                       color: AppColors.black,
                                                       fontSize: 15,
                                                       fontWeight: FontWeight.w500),
@@ -247,7 +248,7 @@ class AddCardScreenState extends State<AddCardScreen> with GlobalVarMixin{
             return addCardController.isLoading.value
                 ? Container(
               color: Colors.black.withOpacity(0.2),
-              child: const Center(
+              child: Center(
                 child: CircularProgressIndicator(color: AppColors.primary),
               ),)
                 : const SizedBox.shrink();

@@ -1,0 +1,48 @@
+appId: com.thegreenmall
+---
+# Navigate into a store, open a category, and browse products.
+- runFlow: helpers/login.yaml
+- runFlow: helpers/goto_store_search.yaml
+
+# Wait for nearby stores and tap the first one
+- extendedWaitUntil:
+    visible: "Store Hours.*"
+    timeout: 15000
+- tapOn:
+    text: "Store Hours.*"
+    index: 0
+- waitForAnimationToEnd:
+    timeout: 5000
+- extendedWaitUntil:
+    visible: "Welcome to.*"
+    timeout: 10000
+
+# Go to Categories
+- tapOn: "Categories"
+- extendedWaitUntil:
+    visible: "Categories"
+    timeout: 10000
+
+# Tap the first category (if any products exist)
+- retry:
+    maxRetries: 2
+    commands:
+      - tapOn:
+          text: ".*product.*"
+          index: 0
+      - waitForAnimationToEnd:
+          timeout: 5000
+
+# Should land on the product list for that category
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: product_list
+
+# Test sort filter - tap popup menu
+- retry:
+    maxRetries: 2
+    commands:
+      - tapOn: "Price low to high"
+      - waitForAnimationToEnd:
+          timeout: 3000
+- takeScreenshot: products_sorted

@@ -1,0 +1,28 @@
+appId: com.thegreenmall
+---
+# Verify the store search screen loads with all three tabs and the search field.
+- runFlow: helpers/login.yaml
+- runFlow: helpers/goto_store_search.yaml
+
+# Verify all three tabs are present
+- assertVisible: "Nearby"
+- assertVisible: "Previous"
+- assertVisible: "Favorite"
+- takeScreenshot: store_search_nearby_tab
+
+# Switch to Previous tab
+- tapOn: "Previous"
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: store_search_previous_tab
+
+# Switch to Favorite tab
+- tapOn: "Favorite"
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: store_search_favorite_tab
+
+# Switch back to Nearby tab
+- tapOn: "Nearby"
+- waitForAnimationToEnd:
+    timeout: 3000

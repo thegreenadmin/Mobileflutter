@@ -62,7 +62,7 @@ class _PaymentProcessingScreenState extends State<PaymentProcessingScreen> {
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        children: const [
+        children: [
           SizedBox(
             height: 64,
             width: 64,

@@ -3,7 +3,6 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart' as mdio;
 import 'package:file_picker/file_picker.dart';
-import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -17,7 +16,6 @@ import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart
 
 class AddNewStoreController extends GetxController with GlobalVarMixin{
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  FirebaseDynamicLinks dynamicLinks = FirebaseDynamicLinks.instance;
   TextEditingController storeNameTextController = TextEditingController();
   TextEditingController einTextController = TextEditingController();
   TextEditingController storeNickNameTextController = TextEditingController();
@@ -103,8 +101,6 @@ class AddNewStoreController extends GetxController with GlobalVarMixin{
 
   dynamic lat = 0.0;
   dynamic lng = 0.0;
-  ShortDynamicLink? shortLink;
-  String? dynamicLink;
 
   filePicker() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -145,20 +141,6 @@ class AddNewStoreController extends GetxController with GlobalVarMixin{
       print("DEBUG: getCurrentLocation fallback to Nashville: $e");
     }
   }
-
-  Future<void> createDynamicLink() async {
-    final DynamicLinkParameters parameters = DynamicLinkParameters(
-      uriPrefix: 'https://thegreenmall.page.link',
-      link: Uri.parse(dynamicLink!),
-      androidParameters: const AndroidParameters(
-        packageName: 'com.app.thegreenmall',
-      ),
-      iosParameters: const IOSParameters(
-        bundleId: 'com.thegreenmall',
-      ),
-    );
-    shortLink = await dynamicLinks.buildShortLink(parameters);
-       }
 
   getGKey() async {
     var roleVal = await SharedPreferenceStorage.getData(Role.role);
@@ -487,11 +469,7 @@ class AddNewStoreController extends GetxController with GlobalVarMixin{
         termsOriginalLinkFromServer.value = "";
         privacyOriginalLinkFromServer.value = "";
         storeIdValue.value = value?.body["data"]['store_id'].toString() ?? "";
-        dynamicLink =
-            ServerCommunicator.baseUrlWithoutApi + storeIdValue.value;
         apiGetPermissions();
-        // await createDynamicLink();
-        // await apiDynamicLink();
         Get.back(id: pageIdApp.value);
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
@@ -538,43 +516,6 @@ class AddNewStoreController extends GetxController with GlobalVarMixin{
     } catch (e) {
       log("ERROR*******${e.toString()}");
     }
-  }
-
-  ///Dynamic link
-  Future apiDynamicLink() async {
-    isLoading.value = true;
-    Map<String, String> headers = {
-      'Content-Type': 'application/json',
-      StringConstants.authorizationText:
-          "${StringConstants.bearerText} ${authToken.value}",
-    };
-
-    Map data = {
-      "store_id": int.parse(storeIdValue.value),
-      "dynamic_link": shortLink!.shortUrl.toString(),
-    };
-     
-    UserProvider()
-        .putWithHeadersApi(
-            data,
-            "${ServerCommunicator.baseUrl}${ServerCommunicator.storeDynamicLinkUpdate}",
-            headers,
-            showLoading: false)
-        .then((value) async {
-      isLoading.value = false;
-             if (value?.body["status"] == ApiConstants.statusCode201 ||
-          value?.body["status"] == ApiConstants.statusCode200) {
-      } else if (value?.body["status"] == ApiConstants.statusCode401) { isLoading.value = false;
-        Utility.showAlertMessage(value?.body['message']);
-        storage.clearData();
-        Get.parameters.clear();
-        Get.back(id: pageIdApp.value);
-      } else { isLoading.value = false;
-        if (value?.body['message'] != null) {
-          Utility.showAlertMessage(value?.body['message']);
-        }
-      }
-    });
   }
 
   ///Get DeliveryServices Api

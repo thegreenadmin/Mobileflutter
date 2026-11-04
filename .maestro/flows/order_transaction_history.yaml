@@ -1,0 +1,44 @@
+appId: com.thegreenmall
+---
+# Navigate to Orders and view the transaction history screen.
+- runFlow: helpers/login.yaml
+- runFlow: helpers/goto_orders.yaml
+
+# Wait for orders screen
+- extendedWaitUntil:
+    visible: "Active"
+    timeout: 10000
+
+# Navigate to Transaction History (may need to tap a store first)
+- retry:
+    maxRetries: 3
+    commands:
+      - tapOn:
+          text: ".*"
+          index: 0
+      - waitForAnimationToEnd:
+          timeout: 5000
+
+# Look for transaction history elements
+- retry:
+    maxRetries: 3
+    commands:
+      - extendedWaitUntil:
+          visible: "Transaction History"
+          timeout: 10000
+
+# Verify tabs
+- assertVisible: "Current Month"
+- assertVisible: "Past Orders"
+- takeScreenshot: transaction_history_current
+
+# Switch to Past Orders tab
+- tapOn: "Past Orders"
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: transaction_history_past
+
+# Switch back
+- tapOn: "Current Month"
+- waitForAnimationToEnd:
+    timeout: 3000

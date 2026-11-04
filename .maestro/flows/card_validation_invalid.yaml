@@ -1,0 +1,48 @@
+appId: com.thegreenmall
+---
+# Negative test: invalid (Luhn-failing) card number + past expiry should be rejected.
+# Assumes already logged in and on Home (avoids OTP re-entry which crashes the driver).
+- tapOn:
+    point: "127,800"
+- extendedWaitUntil:
+    visible: "Manage"
+    timeout: 10000
+- tapOn: "Manage"
+- extendedWaitUntil:
+    visible: "Add Cards / Payment Methods"
+    timeout: 10000
+- tapOn: "Add Cards / Payment Methods"
+- extendedWaitUntil:
+    visible: "Add New Card"
+    timeout: 10000
+- tapOn: "Add New Card"
+- extendedWaitUntil:
+    visible: "Card Number"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    point: "201,393"
+- inputText: "1234567890123456"
+- tapOn:
+    point: "100,473"
+- inputText: "0120"
+- tapOn:
+    point: "301,473"
+- inputText: "123"
+- tapOn:
+    point: "201,553"
+- inputText: "Test User"
+- hideKeyboard
+- takeScreenshot: card_invalid_filled
+- swipe:
+    start: "201,650"
+    end: "201,250"
+- waitForAnimationToEnd:
+    timeout: 2000
+- tapOn:
+    text: "Add Card"
+    index: 1
+- waitForAnimationToEnd:
+    timeout: 6000
+- takeScreenshot: card_invalid_result

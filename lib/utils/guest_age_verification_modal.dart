@@ -58,7 +58,7 @@ class _GuestAgeVerificationDialog extends StatelessWidget {
               ),
             ),
             height20SizedBox,
-            const Text(
+            Text(
               "Age Verification",
               style: TextStyle(
                 color: AppColors.black,
@@ -112,7 +112,7 @@ class _GuestAgeVerificationDialog extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-                child: const Text(
+                child: Text(
                   "No, I'm under 18",
                   style: TextStyle(
                     color: AppColors.primary,

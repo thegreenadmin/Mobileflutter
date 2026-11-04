@@ -1,0 +1,31 @@
+appId: com.thegreenmall
+---
+# Open the merchant barcode / payment code generation screen.
+- runFlow: helpers/login.yaml
+
+# Navigate to Payments
+- tapOn: "Payments"
+- waitForAnimationToEnd:
+    timeout: 5000
+- extendedWaitUntil:
+    visible: ".*"
+    timeout: 10000
+
+# Look for My Payment Code option
+- retry:
+    maxRetries: 3
+    commands:
+      - tapOn: "My Payment Code"
+      - extendedWaitUntil:
+          visible: "My Payment Code"
+          timeout: 8000
+
+- takeScreenshot: merchant_barcode_screen
+
+# Verify elements
+- retry:
+    maxRetries: 2
+    commands:
+      - assertVisible: "Generate code"
+
+- takeScreenshot: merchant_barcode_ready

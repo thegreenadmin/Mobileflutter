@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
 import 'package:thegreenmall/utils/guest_access_modal.dart';
 import 'package:thegreenmall/utils/utils.dart';
+import 'package:thegreenmall/utils/brand_image.dart';
 
 class StoreFavouriteScreen extends StatefulWidget {
   const StoreFavouriteScreen({super.key});
@@ -28,7 +29,7 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> with Global
             padding: const EdgeInsets.only(left: 8.0),
             child: Text(
               StringConstants.favoritesText,
-              style: const TextStyle(
+              style: TextStyle(
                   color: AppColors.black,
                   fontSize: 18,
                   fontWeight: FontWeight.w600),
@@ -70,7 +71,7 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> with Global
                       children: [
                         SizedBox(height: WidgetConstants.screenHeight *0.09,),
                         Center(
-                          child: Image.asset(
+                          child: BrandImage.asset(
                             ImageConstants.nodata,
                             scale: 8,
                             color: AppColors.primary,
@@ -156,7 +157,7 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> with Global
                                           height: 148,
                                           width: 148,
                                         )
-                                      : Image.asset(
+                                      : BrandImage.asset(
                                           ImageConstants.defaultProduct,
                                           fit: BoxFit.fill,
                                           height: 148,
@@ -175,8 +176,8 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> with Global
                                         // Check if user is guest - show modal and prevent API call
                                         if (isGuest.value == true) {
                                           GuestAccessModal.show(
-                                            title: "Login Required",
-                                            message: "Please login to manage favourites",
+                                            title: StringConstants.loginRequiredText,
+                                            message: StringConstants.loginToManageFavouritesText,
                                             onContinueAsGuest: () {
                                               // Allow guest to continue - just close modal
                                             },
@@ -208,7 +209,7 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> with Global
                                           .productName ??
                                       "",
                                   overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                       color: AppColors.black,
                                       fontSize: 16,
                                       fontWeight: FontWeight.w600),
@@ -239,9 +240,9 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> with Global
                                     : height4SizedBox,
                                 Text(
                                   "${StringConstants.unitPriceText}: "
-                                  "\$${storeHomeMainController.featureProductList[i].productPrice ?? ""}",
+                                  "$currencySign${storeHomeMainController.featureProductList[i].productPrice ?? ""}",
                                   overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                       color: AppColors.black,
                                       fontSize: 14,
                                       fontWeight: FontWeight.w600),

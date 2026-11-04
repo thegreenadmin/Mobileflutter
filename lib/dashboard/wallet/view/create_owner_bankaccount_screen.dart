@@ -39,7 +39,7 @@ class _CreateOwnerBankAccountState extends State<CreateOwnerBankAccount> with Gl
                           onPressed: () {
                             Get.back(id: pageIdApp.value);
                           },
-                          icon: const Icon(
+                          icon: Icon(
                             Icons.arrow_back,
                             color: AppColors.black,
                             size: 24.0,
@@ -48,7 +48,7 @@ class _CreateOwnerBankAccountState extends State<CreateOwnerBankAccount> with Gl
                         width10SizedBox,
                         Text(
                           StringConstants.addBankDetailsText,
-                          style: const TextStyle(
+                          style: TextStyle(
                               fontSize: 22,
                               color: AppColors.black,
                               fontWeight: FontWeight.w600),
@@ -72,7 +72,7 @@ class _CreateOwnerBankAccountState extends State<CreateOwnerBankAccount> with Gl
                     height20SizedBox,
                     Text(
                       StringConstants.accountHolderNameText,
-                      style: const TextStyle(
+                      style: TextStyle(
                           color: AppColors.black,
                           fontSize: 16,
                           fontWeight: FontWeight.w400),
@@ -86,7 +86,7 @@ class _CreateOwnerBankAccountState extends State<CreateOwnerBankAccount> with Gl
                         inputFormatters: <TextInputFormatter>[
                           LengthLimitingTextInputFormatter(40),
                         ],
-                        style: const TextStyle(
+                        style: TextStyle(
                             color: AppColors.black,
                             fontSize: 16,
                             fontWeight: FontWeight.w400),
@@ -107,21 +107,21 @@ class _CreateOwnerBankAccountState extends State<CreateOwnerBankAccount> with Gl
                           fillColor: Colors.white,
                           border: UnderlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
+                            borderSide: BorderSide(
                               color: AppColors.primary,
                               width: 1.0,
                             ),
                           ),
                           errorBorder: UnderlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
+                            borderSide: BorderSide(
                               color: AppColors.primary,
                               width: 1.0,
                             ),
                           ),
                           focusedBorder: UnderlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
+                            borderSide: BorderSide(
                               color: AppColors.primary,
                               width: 1.0,
                             ),
@@ -137,7 +137,7 @@ class _CreateOwnerBankAccountState extends State<CreateOwnerBankAccount> with Gl
                     height20SizedBox,
                     Text(
                       StringConstants.accountHolderTypeText,
-                      style: const TextStyle(
+                      style: TextStyle(
                           color: AppColors.black,
                           fontSize: 16,
                           fontWeight: FontWeight.w400),
@@ -212,7 +212,7 @@ class _CreateOwnerBankAccountState extends State<CreateOwnerBankAccount> with Gl
                     height20SizedBox,
                     Text(
                       StringConstants.accountNumberText,
-                      style: const TextStyle(
+                      style: TextStyle(
                           color: AppColors.black,
                           fontSize: 16,
                           fontWeight: FontWeight.w400),
@@ -226,7 +226,7 @@ class _CreateOwnerBankAccountState extends State<CreateOwnerBankAccount> with Gl
                         inputFormatters: <TextInputFormatter>[
                           LengthLimitingTextInputFormatter(40),
                         ],
-                        style: const TextStyle(
+                        style: TextStyle(
                             color: AppColors.black,
                             fontSize: 16,
                             fontWeight: FontWeight.w400),
@@ -248,21 +248,21 @@ class _CreateOwnerBankAccountState extends State<CreateOwnerBankAccount> with Gl
                           fillColor: Colors.white,
                           border: UnderlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
+                            borderSide: BorderSide(
                               color: AppColors.primary,
                               width: 1.0,
                             ),
                           ),
                           errorBorder: UnderlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
+                            borderSide: BorderSide(
                               color: AppColors.primary,
                               width: 1.0,
                             ),
                           ),
                           focusedBorder: UnderlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
+                            borderSide: BorderSide(
                               color: AppColors.primary,
                               width: 1.0,
                             ),
@@ -278,7 +278,7 @@ class _CreateOwnerBankAccountState extends State<CreateOwnerBankAccount> with Gl
                     height20SizedBox,
                     Text(
                       StringConstants.routingNumberText,
-                      style: const TextStyle(
+                      style: TextStyle(
                           color: AppColors.black,
                           fontSize: 16,
                           fontWeight: FontWeight.w400),
@@ -292,7 +292,7 @@ class _CreateOwnerBankAccountState extends State<CreateOwnerBankAccount> with Gl
                         inputFormatters: <TextInputFormatter>[
                           LengthLimitingTextInputFormatter(40),
                         ],
-                        style: const TextStyle(
+                        style: TextStyle(
                             color: AppColors.black,
                             fontSize: 16,
                             fontWeight: FontWeight.w400),
@@ -313,21 +313,21 @@ class _CreateOwnerBankAccountState extends State<CreateOwnerBankAccount> with Gl
                           fillColor: Colors.white,
                           border: UnderlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
+                            borderSide: BorderSide(
                               color: AppColors.primary,
                               width: 1.0,
                             ),
                           ),
                           errorBorder: UnderlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
+                            borderSide: BorderSide(
                               color: AppColors.primary,
                               width: 1.0,
                             ),
                           ),
                           focusedBorder: UnderlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
+                            borderSide: BorderSide(
                               color: AppColors.primary,
                               width: 1.0,
                             ),
@@ -343,7 +343,7 @@ class _CreateOwnerBankAccountState extends State<CreateOwnerBankAccount> with Gl
                     height20SizedBox,
                     Text(
                       StringConstants.selectCountryText,
-                      style: const TextStyle(
+                      style: TextStyle(
                           color: AppColors.black,
                           fontSize: 16,
                           fontWeight: FontWeight.w400),
@@ -370,21 +370,21 @@ class _CreateOwnerBankAccountState extends State<CreateOwnerBankAccount> with Gl
                           ),
                           border: UnderlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
+                            borderSide: BorderSide(
                               color: AppColors.primary,
                               width: 1.0,
                             ),
                           ),
                           focusedBorder: UnderlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
+                            borderSide: BorderSide(
                               color: AppColors.primary,
                               width: 1.0,
                             ),
                           ),
                           errorBorder: UnderlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
+                            borderSide: BorderSide(
                               color: AppColors.primary,
                               width: 1.0,
                             ),
@@ -401,7 +401,7 @@ class _CreateOwnerBankAccountState extends State<CreateOwnerBankAccount> with Gl
                             value: value.abbrevation,
                             child: Text(
                               value.abbrevation + " - " + value.countryName,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   color: AppColors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500),
@@ -416,7 +416,7 @@ class _CreateOwnerBankAccountState extends State<CreateOwnerBankAccount> with Gl
                     ),
                     height40SizedBox,
                     CustomButton(
-                      gradient: const LinearGradient(
+                      gradient: LinearGradient(
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
                         colors: [AppColors.primary, AppColors.primary],

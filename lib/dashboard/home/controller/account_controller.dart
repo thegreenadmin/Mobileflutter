@@ -195,7 +195,7 @@ class AccountController extends GetxController with GlobalVarMixin {
               height12SizedBox,
               Text(
                 StringConstants.storeAccessText,
-                style: const TextStyle(color: AppColors.black, fontSize: 20, fontWeight: FontWeight.w600),
+                style: TextStyle(color: AppColors.black, fontSize: 20, fontWeight: FontWeight.w600),
                 textAlign: TextAlign.start,
               ),
               height12SizedBox,
@@ -254,7 +254,7 @@ class AccountController extends GetxController with GlobalVarMixin {
               height12SizedBox,
               Text(
                 StringConstants.enterNumberOfDaysText,
-                style: const TextStyle(color: AppColors.black, fontSize: 20, fontWeight: FontWeight.w500),
+                style: TextStyle(color: AppColors.black, fontSize: 20, fontWeight: FontWeight.w500),
                 textAlign: TextAlign.start,
               ),
               height12SizedBox,
@@ -265,7 +265,7 @@ class AccountController extends GetxController with GlobalVarMixin {
                   inputFormatters: <TextInputFormatter>[
                     LengthLimitingTextInputFormatter(100),
                   ],
-                  style: const TextStyle(color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w500),
+                  style: TextStyle(color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w500),
                   controller: noOfDaysTextController,
                   keyboardType: TextInputType.text,
                   textCapitalization: TextCapitalization.words,
@@ -275,21 +275,21 @@ class AccountController extends GetxController with GlobalVarMixin {
                     fillColor: Colors.white,
                     border: UnderlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
-                      borderSide: const BorderSide(
+                      borderSide: BorderSide(
                         color: AppColors.primary,
                         width: 1.0,
                       ),
                     ),
                     errorBorder: UnderlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
-                      borderSide: const BorderSide(
+                      borderSide: BorderSide(
                         color: AppColors.primary,
                         width: 1.0,
                       ),
                     ),
                     focusedBorder: UnderlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
-                      borderSide: const BorderSide(
+                      borderSide: BorderSide(
                         color: AppColors.primary,
                         width: 1.0,
                       ),

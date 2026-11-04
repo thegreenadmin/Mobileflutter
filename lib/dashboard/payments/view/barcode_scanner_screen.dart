@@ -201,11 +201,11 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen>
             onPressed: _uploadFromGallery,
             style: OutlinedButton.styleFrom(
               minimumSize: const Size.fromHeight(PayTheme.buttonHeight),
-              side: const BorderSide(color: PayTheme.accent),
+              side: BorderSide(color: PayTheme.accent),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
             ),
-            icon: const Icon(Icons.image_outlined, color: PayTheme.accent),
-            label: const Text('Upload from Gallery', style: TextStyle(color: PayTheme.accent)),
+            icon: Icon(Icons.image_outlined, color: PayTheme.accent),
+            label: Text('Upload from Gallery', style: TextStyle(color: PayTheme.accent)),
           ),
           const SizedBox(height: PayTheme.sectionGap),
         ],
@@ -411,7 +411,7 @@ class _MobileEntryState extends State<_MobileEntry> {
             controller: _phoneController,
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
             keyboardType: TextInputType.phone,
-            style: const TextStyle(
+            style: TextStyle(
                 color: AppColors.black, fontSize: 15, fontWeight: FontWeight.w400),
             showDropdownIcon: false,
             flagsButtonMargin: const EdgeInsets.all(10),
@@ -429,11 +429,11 @@ class _MobileEntryState extends State<_MobileEntry> {
               hintStyle: const TextStyle(fontSize: 15),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(5.0),
-                borderSide: const BorderSide(color: AppColors.primary, width: 1.0),
+                borderSide: BorderSide(color: AppColors.primary, width: 1.0),
               ),
               errorBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(5.0),
-                borderSide: const BorderSide(color: AppColors.primary, width: 1.0),
+                borderSide: BorderSide(color: AppColors.primary, width: 1.0),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(5.0),
@@ -441,7 +441,7 @@ class _MobileEntryState extends State<_MobileEntry> {
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(5.0),
-                borderSide: const BorderSide(color: AppColors.primary, width: 1.0),
+                borderSide: BorderSide(color: AppColors.primary, width: 1.0),
               ),
             ),
             onCountryChanged: (value) {

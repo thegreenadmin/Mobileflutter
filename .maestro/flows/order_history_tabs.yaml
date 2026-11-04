@@ -1,0 +1,33 @@
+appId: com.thegreenmall
+---
+# Navigate to Orders tab and verify Active / Complete / Cancelled tabs.
+- runFlow: helpers/login.yaml
+- runFlow: helpers/goto_orders.yaml
+
+# Wait for orders screen to load
+- extendedWaitUntil:
+    visible: "Active"
+    timeout: 10000
+
+# Verify all three tabs
+- assertVisible: "Active"
+- assertVisible: "Complete"
+- assertVisible: "Cancelled"
+- takeScreenshot: orders_active_tab
+
+# Switch to Complete tab
+- tapOn: "Complete"
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: orders_complete_tab
+
+# Switch to Cancelled tab
+- tapOn: "Cancelled"
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: orders_cancelled_tab
+
+# Switch back to Active tab
+- tapOn: "Active"
+- waitForAnimationToEnd:
+    timeout: 3000

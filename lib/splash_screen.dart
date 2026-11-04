@@ -7,11 +7,15 @@ import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:thegreenmall/bottomNavigation/bottom_nav_screen.dart';
 import 'package:thegreenmall/push_notifications/device_token_service.dart';
+import 'package:thegreenmall/utils/app_config.dart';
+import 'package:thegreenmall/utils/app_config_service.dart';
+import 'package:thegreenmall/utils/app_gate.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
+import 'package:thegreenmall/utils/brand_image.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -30,7 +34,7 @@ class _SplashScreenState extends State<SplashScreen>
   Timer? _timer;
   bool _started = false;
   int _bioRetryCount = 0;
-  static const int _maxBioRetries = 3;
+  int get _maxBioRetries => AppConfig.current.biometricMaxAttempts;
 
   startTime() async {
     authh = await SharedPreferenceStorage.getData(
@@ -61,25 +65,39 @@ class _SplashScreenState extends State<SplashScreen>
         await SharedPreferenceStorage.getData("onboardingCompleted") ?? "";
     bool wasStoreOwner =
         await SharedPreferenceStorage.getData("isStoreOwner") ?? false;
-    Future.delayed(const Duration(seconds: 3)).then((value) async {
+    // Restore the session before fetching config so a logged-in caller gets
+    // user-specific flags (herbs licensee).
+    if (token != null) {
+      authToken.value = token;
+      isGuest.value = false; // Ensure guest flag is false when token exists
+    }
 
-      roleApp(role ?? "");
-      // roleApp.value = role ?? "";
+    // Fetch the latest feature flags + admin app config while the splash is
+    // showing anyway; a slow network never extends the splash beyond it.
+    await Future.wait([
+      Future.delayed(const Duration(seconds: 3)),
+      AppConfigService.refresh()
+          .timeout(const Duration(seconds: 3), onTimeout: () => false),
+    ]);
+    // Maintenance mode / required update replace the app entirely.
+    if (await AppGate.enforce()) return;
 
-      if (token != null) {
-        isStoreOwner.value = wasStoreOwner;
-        authToken.value = token;
-        isGuest.value = false; // Ensure guest flag is false when token exists
-        // Re-sync the FCM token: it may have rotated since the last login, in
-        // which case the server is holding a dead token and push has stopped.
-        DeviceTokenService.instance.syncToken();
-        Get.offAll(() => const BottomNavigation());
-      } else {
-        // For new users or those without token, go to StartJourneyScreen
-        // where they can choose to login, signup, or continue as guest
-        Get.offAll(() => const StartJourneyScreen());
-      }
-    });
+    roleApp(role ?? "");
+    // roleApp.value = role ?? "";
+
+    if (token != null) {
+      isStoreOwner.value = wasStoreOwner;
+      // Re-sync the FCM token: it may have rotated since the last login, in
+      // which case the server is holding a dead token and push has stopped.
+      DeviceTokenService.instance.syncToken();
+      Get.offAll(() => const BottomNavigation());
+    } else {
+      // For new users or those without token, go to StartJourneyScreen
+      // where they can choose to login, signup, or continue as guest
+      Get.offAll(() => const StartJourneyScreen());
+    }
+    Future.delayed(const Duration(milliseconds: 800),
+        AppGate.maybePromptOptionalUpdate);
   }
 
   Future<void> _authenticateWithBiometrics() async {
@@ -157,9 +175,9 @@ class _SplashScreenState extends State<SplashScreen>
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         image: DecorationImage(
-          image: AssetImage(ImageConstants.splashBg),
+          image: brandImageProvider(ImageConstants.splashBg),
           fit: BoxFit.cover,
         ),
       ),

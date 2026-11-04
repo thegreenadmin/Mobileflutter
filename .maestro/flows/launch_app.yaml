@@ -1,0 +1,10 @@
+appId: com.thegreenmall
+---
+- launchApp
+- extendedWaitUntil:
+    visible: "Continue as Guest"
+    timeout: 15000
+- takeScreenshot: launch_screen
+- assertVisible: "Continue as Guest"
+- assertVisible: "Login your account"
+- assertVisible: "Create an account"

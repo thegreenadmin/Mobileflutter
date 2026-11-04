@@ -107,8 +107,9 @@ import 'package:thegreenmall/bottomNavigation/bottom_nav_controller.dart';
   }
 
   Future<RemoteMessage?> checkForInitialFirebaseMessage() async {
-    RemoteMessage? initialMessage =
-    await FirebaseMessaging.instance.getInitialMessage();
+    RemoteMessage? initialMessage = await FirebaseMessaging.instance
+        .getInitialMessage()
+        .timeout(const Duration(seconds: 5), onTimeout: () => null);
     return initialMessage;
   }
 class PushNotificationService  with GlobalVarMixin{
@@ -144,6 +145,7 @@ class PushNotificationService  with GlobalVarMixin{
         await Get.to(() =>  MarkOrderStatusScreen(
           orderId: notificationData.orderId.toString(),
           storeId: notificationData.storeId.toString(),
+          orderStatus: notificationData.orderStatus,
             isFromNotification:true
         ), id: pageIdApp.value);
       });

@@ -44,8 +44,22 @@ env:
   RUBY_VERSION: '3.3'
 
 jobs:
+  # Store releases can be started from the admin panel by non-developers, so
+  # they wait here until a required reviewer of the STORE_RELEASE environment
+  # approves the run in GitHub. Beta and push builds skip this job.
+  release-approval:
+    if: github.event.inputs.environment == 'release'
+    runs-on: ubuntu-latest
+    environment: STORE_RELEASE
+    steps:
+      - name: Release approved
+        run: echo "Store release approved by a STORE_RELEASE reviewer"
+
   build-ios:
-    if: github.event.inputs.platform == 'ios' || github.event.inputs.platform == 'both' || github.event.inputs.platform == ''
+    needs: release-approval
+    # !failure() && !cancelled(): run when the approval job succeeded or was
+    # skipped (beta/push), but not when the release was rejected.
+    if: ${{ !failure() && !cancelled() && (github.event.inputs.platform == 'ios' || github.event.inputs.platform == 'both' || github.event.inputs.platform == '') }}
     runs-on: macos-26
     timeout-minutes: 120
     environment: APP_STORE_CONFIG
@@ -168,7 +182,8 @@ jobs:
           retention-days: 30
 
   build-android:
-    if: github.event.inputs.platform == 'android' || github.event.inputs.platform == 'both' || github.event.inputs.platform == ''
+    needs: release-approval
+    if: ${{ !failure() && !cancelled() && (github.event.inputs.platform == 'android' || github.event.inputs.platform == 'both' || github.event.inputs.platform == '') }}
     runs-on: ubuntu-latest
     timeout-minutes: 90
     environment: ANDROID_BETA_CONFIG

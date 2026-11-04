@@ -90,7 +90,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen>
                                 onPressed: () {
                                   Get.back(id: pageIdApp.value);
                                 },
-                                icon: const Icon(
+                                icon: Icon(
                                   Icons.arrow_back,
                                   color: AppColors.black,
                                   size: 24.0,
@@ -99,7 +99,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen>
                               width10SizedBox,
                               Text(
                                 StringConstants.manageWalletText,
-                                style: const TextStyle(
+                                style: TextStyle(
                                     fontSize: 22,
                                     color: AppColors.black,
                                     fontWeight: FontWeight.w600),
@@ -168,7 +168,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen>
                                                     walletController
                                                         .storeList[0].storeName
                                                         .toString(),
-                                                    style: const TextStyle(
+                                                    style: TextStyle(
                                                         color: AppColors.black,
                                                         fontSize: 16,
                                                         fontWeight:
@@ -212,7 +212,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen>
                                                             BorderRadius
                                                                 .circular(5.0),
                                                         borderSide:
-                                                            const BorderSide(
+                                                            BorderSide(
                                                           color:
                                                               AppColors.primary,
                                                           width: 1.0,
@@ -224,7 +224,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen>
                                                             BorderRadius
                                                                 .circular(5.0),
                                                         borderSide:
-                                                            const BorderSide(
+                                                            BorderSide(
                                                           color:
                                                               AppColors.primary,
                                                           width: 1.0,
@@ -236,7 +236,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen>
                                                             BorderRadius
                                                                 .circular(5.0),
                                                         borderSide:
-                                                            const BorderSide(
+                                                            BorderSide(
                                                           color:
                                                               AppColors.primary,
                                                           width: 1.0,
@@ -257,7 +257,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen>
                                                         value: value.storeId,
                                                         child: Text(
                                                           value.storeName,
-                                                          style: const TextStyle(
+                                                          style: TextStyle(
                                                               color: AppColors
                                                                   .black,
                                                               fontSize: 16,
@@ -308,7 +308,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen>
                                       ? Column(
                                           children: [
                                             Obx(() => Text(
-                                                  "\$${walletController.userWalletBalance!.value}",
+                                                  "$currencySign${walletController.userWalletBalance!.value}",
                                                   style: const TextStyle(
                                                       color: AppColors.white,
                                                       fontSize: 26,
@@ -318,7 +318,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen>
                                             height8SizedBox,
                                             Text(
                                               StringConstants.totalBalanceText,
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                   color: AppColors.black,
                                                   fontSize: 18),
                                             ),
@@ -358,8 +358,8 @@ class _ManageWalletScreenState extends State<ManageWalletScreen>
                                       : Column(
                                           children: [
                                             Obx(() => Text(
-                                                  "\$${walletController.ownerWalletBalance!.value}",
-                                                  style: const TextStyle(
+                                                  "$currencySign${walletController.ownerWalletBalance!.value}",
+                                                  style: TextStyle(
                                                       color: AppColors.black,
                                                       fontSize: 26,
                                                       fontWeight:
@@ -368,7 +368,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen>
                                             height8SizedBox,
                                             Text(
                                               StringConstants.totalBalanceText,
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                   color: AppColors.black,
                                                   fontSize: 18),
                                             ),
@@ -438,7 +438,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen>
                                                       child: Text(
                                                         StringConstants
                                                             .autoReloadIntoWalletText,
-                                                        style: const TextStyle(
+                                                        style: TextStyle(
                                                             color:
                                                                 AppColors.black,
                                                             fontSize: 16,
@@ -458,7 +458,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen>
                                                       child: Text(
                                                         StringConstants
                                                             .editAutoReloadIntoWalletText,
-                                                        style: const TextStyle(
+                                                        style: TextStyle(
                                                             decoration:
                                                                 TextDecoration
                                                                     .underline,
@@ -559,7 +559,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen>
                                       Text(
                                         StringConstants
                                             .addCardPaymentMethodsText,
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                             color: AppColors.black,
                                             fontSize: 16,
                                             fontWeight: FontWeight.w500),
@@ -614,7 +614,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen>
                                               Text(
                                                 StringConstants
                                                     .connectBankAccountText,
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                     color: AppColors.black,
                                                     fontSize: 16,
                                                     fontWeight:
@@ -676,7 +676,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen>
                                               Text(
                                                 StringConstants
                                                     .debitMoneyFromWalletText,
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                     color: AppColors.black,
                                                     fontSize: 16,
                                                     fontWeight:
@@ -699,7 +699,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen>
                                     ? height0SizedBox
                                     : Text(
                                         StringConstants.paymentMethodText,
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                             color: AppColors.black,
                                             fontSize: 18,
                                             fontWeight: FontWeight.w600),
@@ -708,7 +708,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen>
                                     ? height0SizedBox
                                     : Text(
                                         StringConstants.bankAccountsText,
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                             color: AppColors.black,
                                             fontSize: 18,
                                             fontWeight: FontWeight.w600),
@@ -806,7 +806,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen>
                                                                         .toString()
                                                                         .toUpperCase() ??
                                                                     "",
-                                                                style: const TextStyle(
+                                                                style: TextStyle(
                                                                     color: AppColors
                                                                         .black,
                                                                     fontSize:
@@ -914,7 +914,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen>
                                                                   .bank!
                                                                   .bankName
                                                                   .toString(),
-                                                              style: const TextStyle(
+                                                              style: TextStyle(
                                                                   color:
                                                                       AppColors
                                                                           .black,
@@ -1000,7 +1000,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen>
             return walletController.isLoading.value
                 ? Container(
                     color: Colors.black.withOpacity(0.2),
-                    child: const Center(
+                    child: Center(
                       child:
                           CircularProgressIndicator(color: AppColors.primary),
                     ),

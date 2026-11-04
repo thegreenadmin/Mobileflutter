@@ -5,6 +5,7 @@ import 'package:thegreenmall/dashboard/home/view/store_owner/add_new_store_scree
 import 'package:thegreenmall/dashboard/home/view/store_owner/claim_store_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/store_owner/manage_store_main_screen.dart';
 import 'package:thegreenmall/utils/utils.dart';
+import 'package:thegreenmall/utils/brand_image.dart';
 
 class OwnerStoresListScreen extends StatefulWidget {
   final String? firstName;
@@ -74,7 +75,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> with Glob
           return ownerStoresController.isLoading.value
               ? Container(
             color: Colors.black.withOpacity(0.2),
-            child: const Center(
+            child: Center(
               child: CircularProgressIndicator(color: AppColors.primary),
             ),)
               : const SizedBox.shrink();
@@ -99,7 +100,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> with Glob
     return Dismissible(
           background: Container(
             color: AppColors.redLight,
-            child: const Align(
+            child: Align(
               alignment: Alignment.centerRight,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -152,7 +153,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> with Glob
             child: Container(
               padding:
                   const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                   color: AppColors.primaryLight,
                   borderRadius: BorderRadius.all(
                     Radius.circular(8.0),
@@ -191,7 +192,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> with Glob
                               ownerStoresController
                                       .storeList[index].storeName ??
                                   "",
-                              style: const TextStyle(
+                              style: TextStyle(
                                   fontSize: 16.0,
                                   color: AppColors.black,
                                   fontWeight: FontWeight.w500),
@@ -290,7 +291,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> with Glob
                                                           .storeAddresses![i]
                                                           .city ??
                                                       "",
-                                                  style: const TextStyle(
+                                                  style: TextStyle(
                                                       color: AppColors.black,
                                                       fontWeight:
                                                           FontWeight.w600,
@@ -325,7 +326,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> with Glob
                                                           .state!
                                                           .stateName ??
                                                       "",
-                                                  style: const TextStyle(
+                                                  style: TextStyle(
                                                       color: AppColors.black,
                                                       fontWeight:
                                                           FontWeight.w600,
@@ -365,7 +366,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> with Glob
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Center(
-          child: Image.asset(
+          child: BrandImage.asset(
             ImageConstants.nodata,
             scale: 8,
             color: AppColors.primary,
@@ -411,7 +412,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> with Glob
                             onPressed: () {
                               Get.back(id: pageIdApp.value);
                             },
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.arrow_back,
                               color: AppColors.black,
                               size: 24.0,
@@ -424,7 +425,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> with Glob
                             children: [
                               Text(
                                   "${StringConstants.hiText}${widget.firstName}",
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                       fontSize: 20,
                                       color: AppColors.black,
                                       fontWeight: FontWeight.w600),
@@ -432,7 +433,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> with Glob
 
                               Text(
                                 StringConstants.storeListTitle(widget.category),
-                                style: const TextStyle(
+                                style: TextStyle(
                                     fontSize: 18,
                                     color: AppColors.black,
                                     fontWeight: FontWeight.w400),
@@ -509,7 +510,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> with Glob
                   onTap: () {
                     Get.to(() => const ClaimStoreScreen(), id: pageIdApp.value);
                   },
-                  child: const Text.rich(
+                  child: Text.rich(
                     textAlign: TextAlign.center,
                     softWrap: true,
                     TextSpan(

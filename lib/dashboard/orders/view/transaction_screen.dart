@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/orders/controller/transaction_controller.dart';
 import 'package:thegreenmall/utils/utils.dart';
+import 'package:thegreenmall/utils/brand_image.dart';
 
 class TransactionScreen extends StatefulWidget {
   const TransactionScreen({super.key});
@@ -219,7 +220,7 @@ class _TransactionScreenState extends State<TransactionScreen>  with GlobalVarMi
                                     onPressed: () {
                                       Get.back(id: pageIdApp.value);
                                     },
-                                    icon: const Icon(
+                                    icon: Icon(
                                       Icons.arrow_back,
                                       color: AppColors.black,
                                       size: 24.0,
@@ -228,7 +229,7 @@ class _TransactionScreenState extends State<TransactionScreen>  with GlobalVarMi
                                   width10SizedBox,
                                   Text(
                                     StringConstants.transactionsHistoryText,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         fontSize: 20,
                                         color: AppColors.black,
                                         fontWeight: FontWeight.w600),
@@ -261,7 +262,7 @@ class _TransactionScreenState extends State<TransactionScreen>  with GlobalVarMi
                                           crossAxisAlignment: CrossAxisAlignment.center,
                                           children: [
                                             Center(
-                                              child: Image.asset(
+                                              child: BrandImage.asset(
                                                 ImageConstants.nodata,
                                                 scale: 8,
                                                 color: AppColors.primary,
@@ -315,7 +316,7 @@ class _TransactionScreenState extends State<TransactionScreen>  with GlobalVarMi
                                           child: Container(
                                             padding: const EdgeInsets.symmetric(
                                                 horizontal: 10, vertical: 10),
-                                            decoration: const BoxDecoration(
+                                            decoration: BoxDecoration(
                                                 color: AppColors.greyLight,
                                                 borderRadius: BorderRadius.all(
                                                   Radius.circular(10.0),
@@ -546,7 +547,7 @@ class _TransactionScreenState extends State<TransactionScreen>  with GlobalVarMi
                                                                       TextAlign.start,
                                                                   overflow: TextOverflow
                                                                       .ellipsis,
-                                                                  style: const TextStyle(
+                                                                  style: TextStyle(
                                                                       color:
                                                                           AppColors.black,
                                                                       fontWeight:
@@ -561,29 +562,29 @@ class _TransactionScreenState extends State<TransactionScreen>  with GlobalVarMi
                                                                                 index]
                                                                             .orderTransaction !=
                                                                         null
-                                                                    ? "\$${transactionController.userTransactionList![index].orderTransaction!.totalAmount!.toStringAsFixed(2)}"
+                                                                    ? "$currencySign${transactionController.userTransactionList![index].orderTransaction!.totalAmount!.toStringAsFixed(2)}"
                                                                     : transactionController
                                                                                 .userTransactionList![
                                                                                     index]
                                                                                 .orderItemRefundTransaction !=
                                                                             null
-                                                                        ? "\$${transactionController.userTransactionList![index].orderItemRefundTransaction!.transaction!.transactionAmount!.toStringAsFixed(2)}"
+                                                                        ? "$currencySign${transactionController.userTransactionList![index].orderItemRefundTransaction!.transaction!.transactionAmount!.toStringAsFixed(2)}"
                                                                         : transactionController
                                                                                     .userTransactionList![
                                                                                         index]
                                                                                     .transaction !=
                                                                                 null
-                                                                            ? "\$${transactionController.userTransactionList![index].transaction!.transactionAmount!.toStringAsFixed(2)}"
+                                                                            ? "$currencySign${transactionController.userTransactionList![index].transaction!.transactionAmount!.toStringAsFixed(2)}"
                                                                             : transactionController
                                                                                         .userTransactionList![index]
                                                                                         .membership !=
                                                                                     null
-                                                                                ? "\$${transactionController.userTransactionList![index].membership!.membershipCharge!.toStringAsFixed(2)}"
+                                                                                ? "$currencySign${transactionController.userTransactionList![index].membership!.membershipCharge!.toStringAsFixed(2)}"
                                                                                 : "",
                                                                 textAlign: TextAlign.end,
                                                                 overflow:
                                                                     TextOverflow.ellipsis,
-                                                                style: const TextStyle(
+                                                                style: TextStyle(
                                                                     color:
                                                                         AppColors.primary,
                                                                     fontWeight:
@@ -600,7 +601,7 @@ class _TransactionScreenState extends State<TransactionScreen>  with GlobalVarMi
                                                           children: [
                                                             Text(
                                                                 "${StringConstants.transactionText}: ",
-                                                                style: const TextStyle(
+                                                                style: TextStyle(
                                                                     color:
                                                                         AppColors.black,
                                                                     fontWeight:
@@ -667,7 +668,7 @@ class _TransactionScreenState extends State<TransactionScreen>  with GlobalVarMi
                                                   CrossAxisAlignment.center,
                                               children: [
                                                 Center(
-                                                  child: Image.asset(
+                                                  child: BrandImage.asset(
                                                     ImageConstants.nodata,
                                                     scale: 8,
                                                     color: AppColors.primary,
@@ -759,7 +760,7 @@ class _TransactionScreenState extends State<TransactionScreen>  with GlobalVarMi
                                               child: Container(
                                                 padding: const EdgeInsets.symmetric(
                                                     horizontal: 6, vertical: 10),
-                                                decoration: const BoxDecoration(
+                                                decoration: BoxDecoration(
                                                     color: AppColors.greyLight,
                                                     borderRadius: BorderRadius.all(
                                                       Radius.circular(10.0),
@@ -957,7 +958,7 @@ class _TransactionScreenState extends State<TransactionScreen>  with GlobalVarMi
                                                                             .store!
                                                                             .storeName ??
                                                                         "",
-                                                                    style: const TextStyle(
+                                                                    style: TextStyle(
                                                                         color: AppColors
                                                                             .black,
                                                                         fontWeight:
@@ -970,7 +971,7 @@ class _TransactionScreenState extends State<TransactionScreen>  with GlobalVarMi
                                                                                   index]
                                                                               .orderTransaction !=
                                                                           null && transactionController.ownerOrderTransactionList![index].orderTransaction?.storeReceivedAmount!=null
-                                                                      ? "\$${transactionController.ownerOrderTransactionList![index].orderTransaction?.storeReceivedAmount.toStringAsFixed(2)}"
+                                                                      ? "$currencySign${transactionController.ownerOrderTransactionList![index].orderTransaction?.storeReceivedAmount.toStringAsFixed(2)}"
                                                                       : transactionController
                                                                                   .ownerOrderTransactionList![
                                                                                       index]
@@ -982,22 +983,22 @@ class _TransactionScreenState extends State<TransactionScreen>  with GlobalVarMi
                                                                                       .storePayout
                                                                                       ?.payoutType ==
                                                                                   "transfered"
-                                                                              ? "\$${transactionController.ownerOrderTransactionList![index].storePayout?.totalTransactionAmount!.toStringAsFixed(2)}"
-                                                                              : "\$${transactionController.ownerOrderTransactionList![index].storePayout?.totalReversedAmount!.toStringAsFixed(2)}"
+                                                                              ? "$currencySign${transactionController.ownerOrderTransactionList![index].storePayout?.totalTransactionAmount!.toStringAsFixed(2)}"
+                                                                              : "$currencySign${transactionController.ownerOrderTransactionList![index].storePayout?.totalReversedAmount!.toStringAsFixed(2)}"
                                                                           : transactionController
                                                                                       .ownerOrderTransactionList![
                                                                                           index]
                                                                                       .orderItemRefundTransaction !=
                                                                                   null
-                                                                              ? "\$${transactionController.ownerOrderTransactionList![index].orderItemRefundTransaction?.transaction!.transactionAmount!.toStringAsFixed(2)}"
+                                                                              ? "$currencySign${transactionController.ownerOrderTransactionList![index].orderItemRefundTransaction?.transaction!.transactionAmount!.toStringAsFixed(2)}"
                                                                               : transactionController.ownerOrderTransactionList![index].membership !=
                                                                                       null
-                                                                                  ? "\$${transactionController.ownerOrderTransactionList![index].membership!.membershipCharge!.toStringAsFixed(2)}"
+                                                                                  ? "$currencySign${transactionController.ownerOrderTransactionList![index].membership!.membershipCharge!.toStringAsFixed(2)}"
                                                                                   : transactionController.ownerOrderTransactionList![index].transaction !=
                                                                                           null
-                                                                                      ? "\$${transactionController.ownerOrderTransactionList![index].transaction!.transactionAmount!.toStringAsFixed(2)}"
-                                                                                      : "\$0.00",
-                                                                  style: const TextStyle(
+                                                                                      ? "$currencySign${transactionController.ownerOrderTransactionList![index].transaction!.transactionAmount!.toStringAsFixed(2)}"
+                                                                                      : "${currencySign}0.00",
+                                                                  style: TextStyle(
                                                                       color: AppColors
                                                                           .primary,
                                                                       fontWeight:
@@ -1014,7 +1015,7 @@ class _TransactionScreenState extends State<TransactionScreen>  with GlobalVarMi
                                                               children: [
                                                                 Text(
                                                                     "${StringConstants.transactionText}: ",
-                                                                    style: const TextStyle(
+                                                                    style: TextStyle(
                                                                         color: AppColors
                                                                             .black,
                                                                         fontWeight:
@@ -1082,7 +1083,7 @@ class _TransactionScreenState extends State<TransactionScreen>  with GlobalVarMi
             return transactionController.isLoading.value
                 ? Container(
               color: Colors.black.withOpacity(0.2),
-              child: const Center(
+              child: Center(
                 child: CircularProgressIndicator(color: AppColors.primary),
               ),)
                 : const SizedBox.shrink();

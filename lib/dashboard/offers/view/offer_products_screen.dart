@@ -74,7 +74,7 @@ class _OfferProductScreenState extends State<OfferProductScreen> {
                                       onPressed: () {
                                         Get.back(id: pageIdApp.value);
                                       },
-                                      icon: const Icon(
+                                      icon: Icon(
                                         Icons.arrow_back,
                                         color: AppColors.black,
                                         size: 24.0,
@@ -83,7 +83,7 @@ class _OfferProductScreenState extends State<OfferProductScreen> {
                                     width10SizedBox,
                                     Text(
                                       StringConstants.offerDetailText,
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                           fontSize: 22, color: AppColors.black, fontWeight: FontWeight.w600),
                                     ),
                                   ],
@@ -164,7 +164,7 @@ class _OfferProductScreenState extends State<OfferProductScreen> {
                             Text(
                               offerObj?.offerType != null && offerObj!.offerType.toString().contains("per")
                                   ? "${StringConstants.offerPriceText}: ${offerObj?.offerValue}%"
-                                  : "${StringConstants.offerPriceText}: \$${offerObj?.offerValue}",
+                                  : "${StringConstants.offerPriceText}: $currencySign${offerObj?.offerValue}",
                               style: const TextStyle(color: Colors.black, fontSize: 12),
                             ),
                           ],
@@ -275,7 +275,7 @@ class _OfferProductScreenState extends State<OfferProductScreen> {
                                                 ),
                                                 height4SizedBox, */
                                               Text(
-                                                "${StringConstants.priceText}: \$${offersController.featuredUserProductList[index].offerPrice.toStringAsFixed(2)}",
+                                                "${StringConstants.priceText}: $currencySign${offersController.featuredUserProductList[index].offerPrice.toStringAsFixed(2)}",
                                                 style: const TextStyle(color: Colors.black, fontSize: 12),
                                               ),
                                               height4SizedBox,

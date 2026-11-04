@@ -3,6 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/account_controller.dart';
 import 'package:thegreenmall/utils/utils.dart';
+import 'package:thegreenmall/utils/brand_image.dart';
 
 class SelectMembershipPlan extends StatefulWidget {
   const SelectMembershipPlan({
@@ -47,7 +48,7 @@ class SelectMembershipPlanState extends State<SelectMembershipPlan> with GlobalV
                                   onPressed: () {
                                     Get.back(id: pageIdApp.value);
                                   },
-                                  icon: const Icon(
+                                  icon: Icon(
                                     Icons.arrow_back,
                                     color: AppColors.black,
                                     size: 24.0,
@@ -56,7 +57,7 @@ class SelectMembershipPlanState extends State<SelectMembershipPlan> with GlobalV
                                 width10SizedBox,
                                 Text(
                                   StringConstants.selectMembershipPlanText,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                       fontSize: 20,
                                       color: AppColors.black,
                                       fontWeight: FontWeight.w600),
@@ -81,7 +82,7 @@ class SelectMembershipPlanState extends State<SelectMembershipPlan> with GlobalV
                                       crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
                                         Center(
-                                          child: Image.asset(
+                                          child: BrandImage.asset(
                                             ImageConstants.nodata,
                                             scale: 8,
                                             color: AppColors.primary,
@@ -135,7 +136,7 @@ class SelectMembershipPlanState extends State<SelectMembershipPlan> with GlobalV
                                             children: [
                                               Text(
                                                 "${accountController.membershipList[index].planName!.toUpperCase()} PLAN",
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                     color: AppColors.primary,
                                                     fontSize: 18,
                                                     fontWeight: FontWeight.w600),
@@ -144,7 +145,7 @@ class SelectMembershipPlanState extends State<SelectMembershipPlan> with GlobalV
                                               Text(
                                                 accountController.membershipList[index]
                                                     .planDescription!,
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                     color: AppColors.black,
                                                     fontSize: 18,
                                                     fontWeight: FontWeight.w500),
@@ -185,7 +186,7 @@ class SelectMembershipPlanState extends State<SelectMembershipPlan> with GlobalV
                                                               Text(
                                                                   StringConstants
                                                                       .monthlyPlanText,
-                                                                  style: const TextStyle(
+                                                                  style: TextStyle(
                                                                       color:
                                                                           AppColors.black,
                                                                       fontSize: 16,
@@ -196,8 +197,8 @@ class SelectMembershipPlanState extends State<SelectMembershipPlan> with GlobalV
                                                           ),
                                                           height10SizedBox,
                                                           Text(
-                                                              "\$${accountController.membershipList[index].plan30Charge!.toStringAsFixed(2)}",
-                                                              style: const TextStyle(
+                                                              "$currencySign${accountController.membershipList[index].plan30Charge!.toStringAsFixed(2)}",
+                                                              style: TextStyle(
                                                                   color: AppColors.black,
                                                                   fontSize: 15,
                                                                   fontWeight:
@@ -237,7 +238,7 @@ class SelectMembershipPlanState extends State<SelectMembershipPlan> with GlobalV
                                                               Text(
                                                                   StringConstants
                                                                       .quarterlyPlanText,
-                                                                  style: const TextStyle(
+                                                                  style: TextStyle(
                                                                       color:
                                                                           AppColors.black,
                                                                       fontSize: 16,
@@ -248,8 +249,8 @@ class SelectMembershipPlanState extends State<SelectMembershipPlan> with GlobalV
                                                           ),
                                                           height10SizedBox,
                                                           Text(
-                                                              "\$${accountController.membershipList[index].plan90Charge!.toStringAsFixed(2)}",
-                                                              style: const TextStyle(
+                                                              "$currencySign${accountController.membershipList[index].plan90Charge!.toStringAsFixed(2)}",
+                                                              style: TextStyle(
                                                                   color: AppColors.black,
                                                                   fontSize: 15,
                                                                   fontWeight:
@@ -296,7 +297,7 @@ class SelectMembershipPlanState extends State<SelectMembershipPlan> with GlobalV
                                                               Text(
                                                                   StringConstants
                                                                       .halfYearlyText,
-                                                                  style: const TextStyle(
+                                                                  style: TextStyle(
                                                                       color:
                                                                           AppColors.black,
                                                                       fontSize: 16,
@@ -307,8 +308,8 @@ class SelectMembershipPlanState extends State<SelectMembershipPlan> with GlobalV
                                                           ),
                                                           height10SizedBox,
                                                           Text(
-                                                              "\$${accountController.membershipList[index].plan180Charge!.toStringAsFixed(2)}",
-                                                              style: const TextStyle(
+                                                              "$currencySign${accountController.membershipList[index].plan180Charge!.toStringAsFixed(2)}",
+                                                              style: TextStyle(
                                                                   color: AppColors.black,
                                                                   fontSize: 15,
                                                                   fontWeight:
@@ -348,7 +349,7 @@ class SelectMembershipPlanState extends State<SelectMembershipPlan> with GlobalV
                                                               Text(
                                                                   StringConstants
                                                                       .yearlyPlanText,
-                                                                  style: const TextStyle(
+                                                                  style: TextStyle(
                                                                       color:
                                                                           AppColors.black,
                                                                       fontSize: 16,
@@ -359,8 +360,8 @@ class SelectMembershipPlanState extends State<SelectMembershipPlan> with GlobalV
                                                           ),
                                                           height10SizedBox,
                                                           Text(
-                                                              "\$${accountController.membershipList[index].plan365Charge!.toStringAsFixed(2)}",
-                                                              style: const TextStyle(
+                                                              "$currencySign${accountController.membershipList[index].plan365Charge!.toStringAsFixed(2)}",
+                                                              style: TextStyle(
                                                                   color: AppColors.black,
                                                                   fontSize: 15,
                                                                   fontWeight:
@@ -374,7 +375,7 @@ class SelectMembershipPlanState extends State<SelectMembershipPlan> with GlobalV
                                               height10SizedBox,
                                               Center(
                                                 child: CustomButton(
-                                                  gradient: const LinearGradient(
+                                                  gradient: LinearGradient(
                                                     begin: Alignment.topCenter,
                                                     end: Alignment.bottomCenter,
                                                     colors: [
@@ -436,7 +437,7 @@ class SelectMembershipPlanState extends State<SelectMembershipPlan> with GlobalV
             return accountController.isLoading.value
                 ? Container(
               color: Colors.black.withOpacity(0.2),
-              child: const Center(
+              child: Center(
                 child: CircularProgressIndicator(color: AppColors.primary),
               ),)
                 : const SizedBox.shrink();
@@ -516,7 +517,7 @@ class _MyAlertDialogState extends State<MyAlertDialog> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               CustomButton(
-                gradient: const LinearGradient(
+                gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [AppColors.primary, AppColors.primary],
@@ -535,7 +536,7 @@ class _MyAlertDialogState extends State<MyAlertDialog> {
               ),
               width5SizedBox,
               CustomButton(
-                gradient: const LinearGradient(
+                gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [AppColors.primary, AppColors.primary],

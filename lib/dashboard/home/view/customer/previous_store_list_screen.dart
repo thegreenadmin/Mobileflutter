@@ -8,6 +8,7 @@ import 'package:thegreenmall/utils/guest_access_modal.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
 import 'components/store_home_main_args.dart';
+import 'package:thegreenmall/utils/brand_image.dart';
 
 class PreviousStoreListScreen extends StatefulWidget {
   const PreviousStoreListScreen({super.key});
@@ -150,7 +151,7 @@ class _PreviousStoreListScreenState extends State<PreviousStoreListScreen> with 
                                               .previousStore[index]
                                               .storeName ??
                                               "",
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                               fontSize: 17.0,
                                               color: AppColors.black,
                                               fontWeight:
@@ -250,8 +251,8 @@ class _PreviousStoreListScreenState extends State<PreviousStoreListScreen> with 
                                         // Check if user is guest - show modal and prevent state change
                                         if (isGuest.value == true) {
                                           GuestAccessModal.show(
-                                            title: "Login Required",
-                                            message: "Please login to manage favourite stores",
+                                            title: StringConstants.loginRequiredText,
+                                            message: StringConstants.loginToManageFavouriteStoresText,
                                             onContinueAsGuest: () {
                                               // Allow guest to continue - just close modal
                                             },
@@ -380,7 +381,7 @@ class _PreviousStoreListScreenState extends State<PreviousStoreListScreen> with 
                                   const EdgeInsets.fromLTRB(
                                       8.0, 8.0, 8.0, 8.0),
                                   shape: RoundedRectangleBorder(
-                                    side: const BorderSide(
+                                    side: BorderSide(
                                         width: 1.0,
                                         color: AppColors.primary),
                                     borderRadius:
@@ -413,7 +414,7 @@ class _PreviousStoreListScreenState extends State<PreviousStoreListScreen> with 
         children: [
           SizedBox(height: WidgetConstants.screenHeight *0.09,),
           Center(
-            child: Image.asset(
+            child: BrandImage.asset(
               ImageConstants.nodata,
               scale: 8,
               color: AppColors.primary,

@@ -4,6 +4,7 @@ import 'package:thegreenmall/dashboard/home/controller/manage_store_controller.d
 import 'package:thegreenmall/dashboard/home/view/store_owner/add_new_product_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/store_owner/edit_product_screen.dart';
 import 'package:thegreenmall/utils/utils.dart';
+import 'package:thegreenmall/utils/brand_image.dart';
 
 class ProductListScreen extends StatefulWidget {
   const ProductListScreen({super.key});
@@ -40,7 +41,7 @@ class _ProductListScreenState extends State<ProductListScreen> with GlobalVarMix
                       Flexible(
                         child: Text(
                           "${StringConstants.viewText} ${StringConstants.productText}s",
-                          style: const TextStyle(
+                          style: TextStyle(
                               fontSize: 18.0,
                               color: AppColors.black,
                               fontWeight: FontWeight.w600),
@@ -75,7 +76,7 @@ class _ProductListScreenState extends State<ProductListScreen> with GlobalVarMix
                           },
                           child: Row(
                             children: [
-                              const Icon(
+                              Icon(
                                 Icons.add,
                                 color: AppColors.primary,
                                 size: 18.0,
@@ -83,7 +84,7 @@ class _ProductListScreenState extends State<ProductListScreen> with GlobalVarMix
                               width2SizedBox,
                               Text(
                                 StringConstants.addNewProductText,
-                                style: const TextStyle(
+                                style: TextStyle(
                                     fontSize: 16.0,
                                     color: AppColors.primary,
                                     fontWeight: FontWeight.w500),
@@ -126,7 +127,7 @@ class _ProductListScreenState extends State<ProductListScreen> with GlobalVarMix
     return Dismissible(
                       background: Container(
                         color: AppColors.redLight,
-                        child: const Align(
+                        child: Align(
                           alignment: Alignment.centerRight,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
@@ -174,7 +175,7 @@ class _ProductListScreenState extends State<ProductListScreen> with GlobalVarMix
                       child: Container(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 10, vertical: 10),
-                        decoration: const BoxDecoration(
+                        decoration: BoxDecoration(
                             color: AppColors.greyLight,
                             borderRadius: BorderRadius.all(
                               Radius.circular(12.0),
@@ -287,7 +288,7 @@ class _ProductListScreenState extends State<ProductListScreen> with GlobalVarMix
                                                   .storeProductList[index]
                                                   .productName ??
                                               "",
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                               fontSize: 16.0,
                                               color: AppColors.black,
                                               fontWeight:
@@ -338,7 +339,7 @@ class _ProductListScreenState extends State<ProductListScreen> with GlobalVarMix
                                                 "${StringConstants.unitPriceText}: ",
                                                 overflow:
                                                     TextOverflow.visible,
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                     fontSize: 16.0,
                                                     color:
                                                         AppColors.black,
@@ -352,10 +353,10 @@ class _ProductListScreenState extends State<ProductListScreen> with GlobalVarMix
                                                             .productPrice ==
                                                         null
                                                     ? ""
-                                                    : "\$${manageStoreController.storeProductList[index].productPrice.toStringAsFixed(2)}",
+                                                    : "$currencySign${manageStoreController.storeProductList[index].productPrice.toStringAsFixed(2)}",
                                                 overflow:
                                                     TextOverflow.visible,
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                     fontSize: 16.0,
                                                     color:
                                                         AppColors.black,
@@ -387,7 +388,7 @@ class _ProductListScreenState extends State<ProductListScreen> with GlobalVarMix
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Center(
-                            child: Image.asset(
+                            child: BrandImage.asset(
                               ImageConstants.nodata,
                               scale: 8,
                               color: AppColors.primary,
@@ -432,7 +433,7 @@ class _ProductListScreenState extends State<ProductListScreen> with GlobalVarMix
                             onPressed: () {
                               Get.back(id: pageIdApp.value);
                             },
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.arrow_back,
                               color: AppColors.black,
                               size: 24.0,
@@ -445,7 +446,7 @@ class _ProductListScreenState extends State<ProductListScreen> with GlobalVarMix
                               Obx(() => Text(
                                     manageStoreController.categoryName.value,
                                     overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         fontSize: 20,
                                         color: AppColors.black,
                                         fontWeight: FontWeight.w600),

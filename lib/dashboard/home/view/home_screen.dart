@@ -23,7 +23,9 @@ import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/dashboard/payments/binding/payment_binding.dart';
 import 'package:thegreenmall/dashboard/payments/view/payment_shell_screen.dart';
 import 'customer/components/store_home_main_args.dart';
+import 'customer/components/ad_video_slide.dart';
 import 'store_owner/manage_store_main_screen.dart';
+import 'package:thegreenmall/utils/brand_image.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -141,7 +143,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
           if (homeController.isLoading.value) {
             return Container(
             color: Colors.black.withOpacity(0.2),
-            child: const Center(
+            child: Center(
               child: CircularProgressIndicator(color: AppColors.primary),
             ),);
           } else {
@@ -160,7 +162,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
           ? height0SizedBox
           : Text(
         StringConstants.featuredProductsText,
-        style: const TextStyle(
+        style: TextStyle(
             color: AppColors.black,
             fontWeight: FontWeight.w600,
             fontSize: 20),
@@ -177,56 +179,20 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
             children: [
               buildTitle(),
               height12SizedBox,
-              // The whole row scales down as one unit, so all four pills fit
-              // on screen (no scrolling) and every label keeps the same
-              // font size relative to the others.
-              // Munchies / Herbs / Payments are country-gated: the flags come
-              // from utils/app/config and the backend enforces them again on
-              // every API call, hiding a pill here is cosmetic only.
+              // Align pins the pill group to the left so with 2-3 pills they
+              // hug the start (natural width) instead of being centered by the
+              // parent Column. FittedBox scales the whole group down as one unit
+              // when all four pills are present, so they still fit on screen.
+              // Country gating lives in _shortcutAvailable.
               Obx(
-                () => FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: Row(
-                    children: [
-                      // Store category shortcuts. Munchies / Herbs reuse the same
-                      // store screens as Stores, scoped by a category filter.
-                      _payPill(
-                        icon: Icons.storefront_outlined,
-                        label: StringConstants.storesText,
-                        onTap: () => _openStores(),
-                      ),
-                      if (munchiesEnabled.value) ...[
-                        width5SizedBox,
-                        _payPill(
-                          icon: Icons.lunch_dining_outlined,
-                          label: StringConstants.munchiesText,
-                          onTap: () => _openStores(category: StringConstants.munchiesText),
-                        ),
-                      ],
-                      // Herbs is a regulated, single-licensee vertical: every
-                      // store owner could otherwise see it. Customers/guests
-                      // keep browsing it (country flag), but among store owners
-                      // only the country's licensed provider gets the pill.
-                      if (herbsEnabled.value &&
-                          (roleApp.value != Role.storeOwnerRoleText ||
-                              isHerbsLicensee.value)) ...[
-                        width5SizedBox,
-                        _payPill(
-                          icon: Icons.local_florist_outlined,
-                          label: StringConstants.herbsText,
-                          onTap: () => _openStores(category: StringConstants.herbsText),
-                        ),
-                      ],
-                      if (paymentsEnabled.value) ...[
-                        width5SizedBox,
-                        // Opens the dedicated Payments screen (P2P / P2B live there).
-                        _payPill(
-                          icon: Icons.payments_outlined,
-                          label: StringConstants.paymentsText,
-                          onTap: () => _openPaymentsHome(),
-                        ),
-                      ],
-                    ],
+                () => Align(
+                  alignment: Alignment.centerLeft,
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    alignment: Alignment.centerLeft,
+                    // Order, labels, icons, colors and visibility come from
+                    // Settings → Home screen; ids keep their fixed actions.
+                    child: Row(children: _shortcutPills()),
                   ),
                 ),
               ),
@@ -239,8 +205,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
   void _openPaymentsHome() {
     if (isGuest.value == true) {
       GuestAccessModal.show(
-        title: "Login Required",
-        message: "Please login to send or receive payments",
+        title: StringConstants.loginRequiredText,
+        message: StringConstants.loginToSendOrReceivePaymentsText,
         onContinueAsGuest: () {},
       );
       return;
@@ -261,8 +227,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
   Future<void> _openInbox() async {
     if (isGuest.value == true) {
       GuestAccessModal.show(
-        title: "Login Required",
-        message: "Please login to access inbox",
+        title: StringConstants.loginRequiredText,
+        message: StringConstants.loginToAccessInboxText,
         onContinueAsGuest: () {},
       );
       return;
@@ -339,18 +305,76 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
     }
   }
 
+  List<Widget> _shortcutPills() {
+    final pills = <Widget>[];
+    for (final shortcut in AppConfig.current.homeShortcuts) {
+      if (!shortcut.visible || !_shortcutAvailable(shortcut.id)) continue;
+      if (pills.isNotEmpty) pills.add(width5SizedBox);
+      pills.add(_payPill(
+        icon: shortcut.iconData,
+        label: shortcut.label,
+        color: shortcut.color,
+        onTap: () => _onShortcutTap(shortcut.id),
+      ));
+    }
+    return pills;
+  }
+
+  // Munchies / Herbs / Payments are country-gated: the flags come from
+  // utils/app/config and the backend enforces them again on every API call,
+  // so hiding a pill here is cosmetic only. An admin can hide a pill but never
+  // show a vertical that is off for the caller's country.
+  bool _shortcutAvailable(String id) {
+    switch (id) {
+      case 'munchies':
+        return munchiesEnabled.value;
+      case 'herbs':
+        // Herbs is a regulated, single-licensee vertical: every store owner
+        // could otherwise see it. Customers/guests keep browsing it (country
+        // flag), but among store owners only the licensed provider gets it.
+        return herbsEnabled.value &&
+            (roleApp.value != Role.storeOwnerRoleText || isHerbsLicensee.value);
+      case 'payments':
+        return paymentsEnabled.value;
+      default:
+        return true;
+    }
+  }
+
+  // Munchies / Herbs reuse the same store screens as Stores, scoped by a
+  // category filter. The category tokens are fixed constants, independent of
+  // the admin-editable pill label.
+  void _onShortcutTap(String id) {
+    switch (id) {
+      case 'munchies':
+        _openStores(category: StringConstants.munchiesText);
+        break;
+      case 'herbs':
+        _openStores(category: StringConstants.herbsText);
+        break;
+      case 'payments':
+        // Opens the dedicated Payments screen (P2P / P2B live there).
+        _openPaymentsHome();
+        break;
+      default:
+        _openStores();
+    }
+  }
+
   Widget _payPill({
     required IconData icon,
     required String label,
     required VoidCallback onTap,
+    Color? color,
   }) {
+    final accent = color ?? AppColors.primary;
     return RawMaterialButton(
       elevation: 0,
       onPressed: onTap,
       constraints: const BoxConstraints(),
       padding: const EdgeInsets.fromLTRB(2.0, 2.0, 10.0, 2.0),
       shape: RoundedRectangleBorder(
-        side: const BorderSide(width: 1.0, color: AppColors.primary),
+        side: BorderSide(width: 1.0, color: accent),
         borderRadius: BorderRadius.circular(28.0),
       ),
       fillColor: AppColors.white,
@@ -360,7 +384,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: AppColors.primary,
+              color: accent,
               borderRadius: BorderRadius.circular(100),
             ),
             child: Icon(icon, size: 18, color: AppColors.white),
@@ -385,7 +409,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
       onPressed: onTap,
       constraints: const BoxConstraints(),
       padding: const EdgeInsets.all(9.0),
-      shape: const CircleBorder(
+      shape: CircleBorder(
         side: BorderSide(width: 1.0, color: AppColors.primary),
       ),
       fillColor: AppColors.white,
@@ -415,7 +439,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
       width2SizedBox,
       // Notifications.
       _circleAction(
-        icon: const Icon(
+        icon: Icon(
           Icons.notifications_active,
           color: AppColors.primary,
           size: 20.0,
@@ -431,8 +455,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
   void _openNotifications() {
     if (isGuest.value == true) {
       GuestAccessModal.show(
-        title: "Login Required",
-        message: "Please login to view notifications",
+        title: StringConstants.loginRequiredText,
+        message: StringConstants.loginToViewNotificationsText,
         onContinueAsGuest: () {},
       );
       return;
@@ -447,8 +471,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
   void _openAccount() {
     if (isGuest.value == true) {
       GuestAccessModal.show(
-        title: "Login Required",
-        message: "Please login to access account settings",
+        title: StringConstants.loginRequiredText,
+        message: StringConstants.loginToAccessAccountSettingsText,
         onContinueAsGuest: () {},
       );
       return;
@@ -480,7 +504,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                     "${StringConstants.hiText}${firstName.value}",
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
+                    style: TextStyle(
                         fontSize: 18,
                         color: AppColors.black,
                         fontWeight: FontWeight.w600),
@@ -494,13 +518,13 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                   children: [
                     TextSpan(
                       text: StringConstants.welcomeToText,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontWeight: FontWeight.w400,
                         fontSize: 16,
                         color: AppColors.black,
                       ),
                     ),
-                    const TextSpan(
+                    TextSpan(
                       text: ' T',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
@@ -508,7 +532,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                         color: AppColors.black,
                       ),
                     ),
-                    const TextSpan(
+                    TextSpan(
                       text: 'he',
                       style: TextStyle(
                         fontWeight: FontWeight.w400,
@@ -516,7 +540,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                         color: AppColors.black,
                       ),
                     ),
-                    const TextSpan(
+                    TextSpan(
                       text: ' G',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
@@ -524,7 +548,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                         color: AppColors.black,
                       ),
                     ),
-                    const TextSpan(
+                    TextSpan(
                       text: 'reen',
                       style: TextStyle(
                         fontWeight: FontWeight.w400,
@@ -532,7 +556,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                         color: AppColors.black,
                       ),
                     ),
-                    const TextSpan(
+                    TextSpan(
                       text: ' M',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
@@ -540,7 +564,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                         color: AppColors.black,
                       ),
                     ),
-                    const TextSpan(
+                    TextSpan(
                       text: 'all',
                       style: TextStyle(
                         fontWeight: FontWeight.w400,
@@ -622,6 +646,47 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
         ]);
   }
 
+  // Advertisement tap handling. In-app navigation only, keyed off target_type:
+  //   product -> that product's detail; store/offer -> the store home.
+  Future<void> _handleAdTap(OffersList item) async {
+    final target = item.targetType ?? 'none';
+    if (target == 'none' || (item.storeId ?? "").isEmpty) {
+      return;
+    }
+    if (target == 'product') {
+      await Get.to(
+        () => StoreHomeMainScreen(
+          args: StoreHomeMainArgs(
+            storeId: item.storeId ?? "",
+            productId: item.productId ?? "",
+            invokedIndex: 2,
+            isFromMenu: true,
+            isFromFav: false,
+            isFromHome: false,
+            isFromOptions: false,
+          ),
+        ),
+        id: pageIdApp.value,
+      );
+    } else {
+      // store / offer -> store home
+      await Get.to(
+        () => StoreHomeMainScreen(
+          args: StoreHomeMainArgs(
+            storeId: item.storeId ?? "",
+            invokedIndex: 0,
+            isFromMenu: false,
+            isFromFav: false,
+            isFromHome: true,
+            isFromOptions: false,
+          ),
+        ),
+        id: pageIdApp.value,
+      );
+    }
+    await homeController.apiActiveCartApi();
+  }
+
   _buildCarouselSlider({RxList<OffersList>? offersCarouselList,
     RxList<ProductsList>? featuredProductList}) {
     print("CAROUSEL_DEBUG: isEmpty=${offersCarouselList!.isEmpty}, length=${offersCarouselList.length}, hashCode=${offersCarouselList.hashCode}");
@@ -638,12 +703,12 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset(
+                  BrandImage.asset(
                     ImageConstants.greenmall420,
                   ),
                   Text(
                     StringConstants.yourWellnessMarketPlace,
-                    style: const TextStyle(
+                    style: TextStyle(
                         fontSize: 20,
                         fontStyle: FontStyle.italic,
                         fontWeight: FontWeight.w500,
@@ -655,10 +720,15 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                 : CarouselSlider(
               items: offersCarouselList.take(5)
                   .map((item) =>
-                  Obx(() {
-                    return InkWell(
+                  InkWell(
                       onTap: () async {
                         if (homeController.isLoading.value == false) {
+                          // Advertisement slides navigate in-app by target_type
+                          // (no external URLs).
+                          if (item.isAd == true) {
+                            await _handleAdTap(item);
+                            return;
+                          }
                           if (roleApp.value == Role.customerRoleText) {
                             if (item.isOfferForStore == false) {
                               await Get.to(() =>
@@ -726,13 +796,32 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                               borderRadius: BorderRadius.circular(6.0),
                               child: Stack(
                                   children: <Widget>[
-                                    CommonWidgets.cachedNetworkImage(
-                                        item.image?.dynamicUrl.toString() ?? "",
-                                        assetImg: ImageConstants.nopicfound,
-                                        height:
-                                        WidgetConstants.screenHeight * 0.28,
-                                        width:
-                                        WidgetConstants.screenWidth * 0.85),
+                                    (item.isAd == true &&
+                                            item.mediaType == 'video' &&
+                                            (item.mediaUrl ?? "").isNotEmpty)
+                                        ? AdVideoSlide(
+                                            videoUrl: item.mediaUrl!,
+                                            thumbnailUrl: item.thumbnailUrl ??
+                                                item.image?.dynamicUrl
+                                                    ?.toString(),
+                                            height: WidgetConstants
+                                                    .screenHeight *
+                                                0.28,
+                                            width: WidgetConstants
+                                                    .screenWidth *
+                                                0.85,
+                                          )
+                                        : CommonWidgets.cachedNetworkImage(
+                                            item.image?.dynamicUrl.toString() ??
+                                                "",
+                                            assetImg:
+                                                ImageConstants.nopicfound,
+                                            height: WidgetConstants
+                                                    .screenHeight *
+                                                0.28,
+                                            width: WidgetConstants
+                                                    .screenWidth *
+                                                0.85),
                                     Positioned(
                                       bottom: 0.0,
                                       left: 0.0,
@@ -751,11 +840,16 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                                         padding: const EdgeInsets.symmetric(
                                             vertical: 10.0, horizontal: 20.0),
                                         child: Text(
-                                          offersCarouselList
-                                              .where((p0) => item == p0)
-                                              .first
-                                              .store
-                                              ?.storeName ?? "",
+                                          item.isAd == true
+                                              ? (item.title ??
+                                                  item.store?.storeName ??
+                                                  "")
+                                              : offersCarouselList
+                                                      .where((p0) => item == p0)
+                                                      .first
+                                                      .store
+                                                      ?.storeName ??
+                                                  "",
                                           style: const TextStyle(
                                             color: Colors.white,
                                             fontSize: 20.0,
@@ -764,9 +858,33 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                                         ),
                                       ),
                                     ),
+                                    // "Sponsored" marker on ad slides.
+                                    if (item.isAd == true)
+                                      Positioned(
+                                        top: 8.0,
+                                        right: 8.0,
+                                        child: Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 3.0, horizontal: 8.0),
+                                          decoration: BoxDecoration(
+                                            color: const Color.fromARGB(
+                                                160, 0, 0, 0),
+                                            borderRadius:
+                                                BorderRadius.circular(4.0),
+                                          ),
+                                          child: const Text(
+                                            "Sponsored",
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 11.0,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
                                   ]))),
-                    );
-                  }))
+                    )
+                  )
                   .toList(),
               carouselController: _controller,
               options: CarouselOptions(
@@ -922,7 +1040,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                       child: Text(
                         item.productName ?? "",
                         overflow: TextOverflow.visible,
-                        style: const TextStyle(
+                        style: TextStyle(
                             color: AppColors.black,
                             fontSize: 16,
                             fontWeight: FontWeight.w500),

@@ -9,6 +9,7 @@ import '../payment_routes.dart';
 import 'component/pay_theme.dart';
 import 'component/pay_widgets.dart';
 import 'kyc_required_sheet.dart';
+import 'package:thegreenmall/utils/app_config.dart';
 
 /// Enter the amount and an optional note before review (spec 5.3).
 class PaymentDetailsScreen extends StatefulWidget {
@@ -84,7 +85,7 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
   Widget _buildSourceStorePicker() {
     return Obx(() {
       if (c.storesLoading.value && c.ownerStores.isEmpty) {
-        return const PayCard(
+        return PayCard(
           child: Row(
             children: [
               SizedBox(
@@ -125,7 +126,7 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
                           value: s,
                           child: Row(
                             children: [
-                              const Icon(Icons.account_balance_wallet_outlined,
+                              Icon(Icons.account_balance_wallet_outlined,
                                   color: PayTheme.accent, size: 22),
                               const SizedBox(width: 12),
                               Expanded(
@@ -214,7 +215,7 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
                         const SizedBox(height: 6),
                         Row(
                           children: [
-                            const Text('\$ ', style: PayTheme.largeHeader),
+                            Text('$currencySign ', style: PayTheme.largeHeader),
                             Expanded(
                               child: TextField(
                                 controller: _amount,

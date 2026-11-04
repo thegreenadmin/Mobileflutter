@@ -140,7 +140,7 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> with GlobalVarMixin
                                   const TextStyle(color: AppColors.grey, fontSize: 14),
                               autovalidateMode: AutovalidateMode.onUserInteraction,
                               textCapitalization: TextCapitalization.words,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   color: AppColors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400),
@@ -233,7 +233,7 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> with GlobalVarMixin
                                   const TextStyle(color: AppColors.grey, fontSize: 14),
                               autovalidateMode: AutovalidateMode.onUserInteraction,
                               textCapitalization: TextCapitalization.words,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   color: AppColors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400),
@@ -272,7 +272,7 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> with GlobalVarMixin
                                 child: Text(
                                   addNewWorkerController.storeName.value,
                                   textAlign: TextAlign.center,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w500,
                                     color: AppColors.primaryLight,
@@ -299,7 +299,7 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> with GlobalVarMixin
                                   const TextStyle(color: AppColors.grey, fontSize: 14),
                               autovalidateMode: AutovalidateMode.onUserInteraction,
                               textCapitalization: TextCapitalization.words,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   color: AppColors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400),
@@ -412,7 +412,7 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> with GlobalVarMixin
                                         autovalidateMode:
                                             AutovalidateMode.onUserInteraction,
                                         textCapitalization: TextCapitalization.words,
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                             color: AppColors.black,
                                             fontSize: 16,
                                             fontWeight: FontWeight.w400),
@@ -440,7 +440,7 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> with GlobalVarMixin
                                             builder: (context, child) {
                                               return Theme(
                                                 data: ThemeData.light().copyWith(
-                                                  colorScheme: const ColorScheme.light(
+                                                  colorScheme: ColorScheme.light(
                                                       primary: AppColors.primary),
                                                   buttonTheme: const ButtonThemeData(
                                                       textTheme:
@@ -486,7 +486,7 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> with GlobalVarMixin
                                         autovalidateMode:
                                             AutovalidateMode.onUserInteraction,
                                         textCapitalization: TextCapitalization.words,
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                             color: AppColors.black,
                                             fontSize: 16,
                                             fontWeight: FontWeight.w400),
@@ -514,7 +514,7 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> with GlobalVarMixin
                                             builder: (context, child) {
                                               return Theme(
                                                 data: ThemeData.light().copyWith(
-                                                  colorScheme: const ColorScheme.light(
+                                                  colorScheme: ColorScheme.light(
                                                       primary: AppColors.primary),
                                                   buttonTheme: const ButtonThemeData(
                                                       textTheme:
@@ -630,7 +630,7 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> with GlobalVarMixin
                                 FilteringTextInputFormatter.digitsOnly,
                               ],
                               keyboardType: TextInputType.phone,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   color: AppColors.black,
                                   fontSize: 15,
                                   fontWeight: FontWeight.w400),
@@ -647,14 +647,14 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> with GlobalVarMixin
                                     color: AppColors.blackLight, fontSize: 15),
                                 border: UnderlineInputBorder(
                                   borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: const BorderSide(
+                                  borderSide: BorderSide(
                                     color: AppColors.primary,
                                     width: 1.0,
                                   ),
                                 ),
                                 errorBorder: UnderlineInputBorder(
                                   borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: const BorderSide(
+                                  borderSide: BorderSide(
                                     color: AppColors.primary,
                                     width: 1.0,
                                   ),
@@ -668,7 +668,7 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> with GlobalVarMixin
                                 ),
                                 focusedBorder: UnderlineInputBorder(
                                   borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: const BorderSide(
+                                  borderSide: BorderSide(
                                     color: AppColors.primary,
                                     width: 1.0,
                                   ),
@@ -725,21 +725,21 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> with GlobalVarMixin
                                         ),
                                         border: UnderlineInputBorder(
                                           borderRadius: BorderRadius.circular(5.0),
-                                          borderSide: const BorderSide(
+                                          borderSide: BorderSide(
                                             color: AppColors.primary,
                                             width: 1.0,
                                           ),
                                         ),
                                         focusedBorder: UnderlineInputBorder(
                                           borderRadius: BorderRadius.circular(5.0),
-                                          borderSide: const BorderSide(
+                                          borderSide: BorderSide(
                                             color: AppColors.primary,
                                             width: 1.0,
                                           ),
                                         ),
                                         errorBorder: UnderlineInputBorder(
                                           borderRadius: BorderRadius.circular(5.0),
-                                          borderSide: const BorderSide(
+                                          borderSide: BorderSide(
                                             color: AppColors.primary,
                                             width: 1.0,
                                           ),
@@ -756,7 +756,7 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> with GlobalVarMixin
                                           value: value.roleId,
                                           child: Text(
                                             value.roleName,
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                                 color: AppColors.black,
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.w500),
@@ -771,7 +771,7 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> with GlobalVarMixin
                                   ),
                             height40SizedBox,
                             CustomButton(
-                              gradient: const LinearGradient(
+                              gradient: LinearGradient(
                                 begin: Alignment.topCenter,
                                 end: Alignment.bottomCenter,
                                 colors: [AppColors.primary, AppColors.primary],
@@ -805,7 +805,7 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> with GlobalVarMixin
           return addNewWorkerController.isLoading.value
               ? Container(
             color: Colors.black.withOpacity(0.2),
-            child: const Center(
+            child: Center(
               child: CircularProgressIndicator(color: AppColors.primary),
             ),)
               : const SizedBox.shrink();
@@ -843,7 +843,7 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> with GlobalVarMixin
                                 addNewWorkerController.resetForm();
                                 Get.back(id: pageIdApp.value);
                               },
-                              icon: const Icon(
+                              icon: Icon(
                                 Icons.arrow_back,
                                 color: AppColors.black,
                                 size: 24.0,
@@ -852,7 +852,7 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> with GlobalVarMixin
                             width10SizedBox,
                             Text(
                               StringConstants.updateWorkerText,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   fontSize: 22,
                                   color: AppColors.black,
                                   fontWeight: FontWeight.w600),
@@ -870,13 +870,13 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> with GlobalVarMixin
         children: [
           TextSpan(
               text: title,
-              style: const TextStyle(
+              style: TextStyle(
                   color: AppColors.black,
                   fontSize: 16,
                   fontWeight: FontWeight.w400)),
           TextSpan(
             text:starText,
-            style: const TextStyle(
+            style: TextStyle(
                 fontSize: 16,
                 color: AppColors.red,
                 fontWeight: FontWeight.bold),

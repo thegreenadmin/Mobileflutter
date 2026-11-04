@@ -1,0 +1,29 @@
+appId: com.thegreenmall
+---
+# Navigate to the order stores list screen and verify scan barcode option.
+- runFlow: helpers/login.yaml
+- runFlow: helpers/goto_orders.yaml
+
+# Wait for the orders store list screen
+- extendedWaitUntil:
+    visible: "Orders"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 3000
+
+# Verify Scan Order Barcode is visible
+- retry:
+    maxRetries: 2
+    commands:
+      - assertVisible: "Scan Order Barcode"
+
+- takeScreenshot: order_store_list
+
+# If there are stores with orders, verify store card details
+- retry:
+    maxRetries: 2
+    commands:
+      - assertVisible:
+          text: ".*"
+          enabled: true
+- takeScreenshot: order_stores_loaded

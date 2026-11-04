@@ -6,6 +6,7 @@ import 'package:thegreenmall/utils/utils.dart';
 
 import '../../controller/add_new_worker_controller.dart';
 import '../../model/categories_model.dart';
+import 'package:thegreenmall/utils/brand_image.dart';
 
 class WorkerListScreen extends StatefulWidget {
   final String? storeId;
@@ -61,7 +62,7 @@ class _WorkerListScreenState extends State<WorkerListScreen> with GlobalVarMixin
                                 : addNewWorkerController.workerList.length > 1
                                     ? "${addNewWorkerController.workerList.length} ${StringConstants.membersText}"
                                     : "${addNewWorkerController.workerList.length} ${StringConstants.memberText}",
-                            style: const TextStyle(
+                            style: TextStyle(
                                 fontSize: 18.0,
                                 color: AppColors.black,
                                 fontWeight: FontWeight.w600),
@@ -90,7 +91,7 @@ class _WorkerListScreenState extends State<WorkerListScreen> with GlobalVarMixin
                             },
                             child: Row(
                               children: [
-                                const Icon(
+                                Icon(
                                   Icons.add,
                                   color: AppColors.primary,
                                   size: 18.0,
@@ -98,7 +99,7 @@ class _WorkerListScreenState extends State<WorkerListScreen> with GlobalVarMixin
                                 width2SizedBox,
                                 Text(
                                   StringConstants.addNewWorkerText,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                       fontSize: 16.0,
                                       color: AppColors.primary,
                                       fontWeight: FontWeight.w500),
@@ -117,7 +118,7 @@ class _WorkerListScreenState extends State<WorkerListScreen> with GlobalVarMixin
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
                                       Center(
-                                        child: Image.asset(
+                                        child: BrandImage.asset(
                                           ImageConstants.nodata,
                                           scale: 8,
                                           color: AppColors.primary,
@@ -156,7 +157,7 @@ class _WorkerListScreenState extends State<WorkerListScreen> with GlobalVarMixin
                                   return Dismissible(
                                     background: Container(
                                       color: AppColors.redLight,
-                                      child: const Align(
+                                      child: Align(
                                         alignment: Alignment.centerRight,
                                         child: Row(
                                           mainAxisAlignment: MainAxisAlignment.end,
@@ -231,7 +232,7 @@ class _WorkerListScreenState extends State<WorkerListScreen> with GlobalVarMixin
                                       child: Container(
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 10, vertical: 10),
-                                        decoration: const BoxDecoration(
+                                        decoration: BoxDecoration(
                                             color: AppColors.greyLight,
                                             borderRadius: BorderRadius.all(
                                               Radius.circular(8.0),
@@ -282,7 +283,7 @@ class _WorkerListScreenState extends State<WorkerListScreen> with GlobalVarMixin
                                                               ?.firstName
                                                               .toString() ??
                                                           "",
-                                                      style: const TextStyle(
+                                                      style: TextStyle(
                                                           fontSize: 16.0,
                                                           color: AppColors.black,
                                                           fontWeight: FontWeight.w500),
@@ -308,7 +309,7 @@ class _WorkerListScreenState extends State<WorkerListScreen> with GlobalVarMixin
                                                           child: Text(
                                                             addNewWorkerController
                                                                 .storeName.value,
-                                                            style: const TextStyle(
+                                                            style: TextStyle(
                                                                 fontSize: 12.0,
                                                                 color: AppColors.black,
                                                                 fontWeight:
@@ -459,7 +460,7 @@ class _WorkerListScreenState extends State<WorkerListScreen> with GlobalVarMixin
           return addNewWorkerController.isLoading.value
               ? Container(
             color: Colors.black.withOpacity(0.2),
-            child: const Center(
+            child: Center(
               child: CircularProgressIndicator(color: AppColors.primary),
             ),)
               : const SizedBox.shrink();
@@ -494,7 +495,7 @@ class _WorkerListScreenState extends State<WorkerListScreen> with GlobalVarMixin
                             onPressed: () {
                               Get.back(id: pageIdApp.value);
                             },
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.arrow_back,
                               color: AppColors.black,
                               size: 24.0,
@@ -506,7 +507,7 @@ class _WorkerListScreenState extends State<WorkerListScreen> with GlobalVarMixin
                             children: [
                               Text(
                                 StringConstants.manageWorkersText,
-                                style: const TextStyle(
+                                style: TextStyle(
                                     fontSize: 20,
                                     color: AppColors.black,
                                     fontWeight: FontWeight.w600),

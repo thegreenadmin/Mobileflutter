@@ -1,0 +1,134 @@
+name: Firebase Test Lab
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ['ci/*']
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  FLUTTER_VERSION: '3.41.6'
+
+jobs:
+  robo-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    environment: ANDROID_BETA_CONFIG
+    env:
+      KEYSTORE_FILE: keystore.jks
+      KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+      KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+      KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+      ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create environment file from GitHub Secrets
+        env:
+          BASE_URL_WO_API: ${{ vars.BASE_URL_WO_API_BETA }}
+          GOOGLE_MAP_KEY: ${{ secrets.GOOGLE_MAP_KEY_BETA }}
+          STRIPE_API_URL: ${{ vars.STRIPE_API_URL_BETA }}
+          STRIPE_CARD_BASIC_AUTH: ${{ secrets.STRIPE_CARD_BASIC_AUTH_BETA }}
+          STRIPE_BANK_BASIC_AUTH: ${{ secrets.STRIPE_BANK_BASIC_AUTH_BETA }}
+          STRIPE_PUBLISHABLE_KEY: ${{ secrets.STRIPE_PUBLISHABLE_KEY_BETA }}
+        run: |
+          cat > assets/env/api_key.env << EOF
+          BASE_URL_WO_API=${BASE_URL_WO_API}
+          VERSION=v1
+          GOOGLE_MAP_KEY=${GOOGLE_MAP_KEY}
+          STRIPE_API_URL=${STRIPE_API_URL}
+          STRIPE_CARD_BASIC_AUTH=${STRIPE_CARD_BASIC_AUTH}
+          STRIPE_BANK_BASIC_AUTH=${STRIPE_BANK_BASIC_AUTH}
+          STRIPE_PUBLISHABLE_KEY=${STRIPE_PUBLISHABLE_KEY}
+          EOF
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'gradle'
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+          cache: true
+
+      - name: Install Flutter dependencies
+        run: flutter pub get
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install required Android SDK components
+        run: |
+          yes | sdkmanager --licenses >/dev/null || true
+          sdkmanager "platforms;android-36" "build-tools;36.0.0"
+
+      - name: Decode keystore
+        run: |
+          if [ -z "$ANDROID_KEYSTORE_BASE64" ]; then
+            echo "ANDROID_KEYSTORE_BASE64 is not set"
+            exit 1
+          fi
+
+          printf '%s' "$ANDROID_KEYSTORE_BASE64" | base64 --decode > android/app/keystore.jks
+          chmod 600 android/app/keystore.jks
+
+      - name: Build debug APK
+        run: flutter build apk --debug
+
+      - name: Authenticate with GCP
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.FIREBASE_TEST_LAB_SA_JSON }}
+
+      - name: Setup gcloud CLI
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Run Firebase Test Lab Robo test
+        env:
+          FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+          ROBO_DIRECTIVES_TEMPLATE: ${{ secrets.ROBO_DIRECTIVES_TEMPLATE }}
+        run: |
+          gcloud firebase test android run \
+            --type=robo \
+            --app=build/app/outputs/flutter-apk/app-debug.apk \
+            --robo-directives="${ROBO_DIRECTIVES_TEMPLATE}" \
+            --device model=Pixel2.arm,version=33,locale=en,orientation=portrait \
+            --timeout=300s \
+            --results-dir="ftl-results-${GITHUB_RUN_ID}" \
+            --project="${FIREBASE_PROJECT_ID}" \
+            2>&1 | tee test-lab-output.txt
+
+      - name: Extract results bucket
+        if: always()
+        run: |
+          BUCKET_PATH=$(grep -oP 'gs://\S+' test-lab-output.txt | head -1 || true)
+          if [ -n "$BUCKET_PATH" ]; then
+            mkdir -p test-lab-results
+            gsutil -m cp -r "${BUCKET_PATH}*" test-lab-results/ || true
+          fi
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: firebase-test-lab-results
+          path: |
+            test-lab-results/
+            test-lab-output.txt
+          retention-days: 30

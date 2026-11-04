@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
 import 'package:thegreenmall/utils/utils.dart';
+import 'package:thegreenmall/utils/brand_image.dart';
 
 class StoreMenuScreen extends StatefulWidget {
   const StoreMenuScreen({super.key});
@@ -24,7 +25,7 @@ class _StoreMenuScreenState extends State<StoreMenuScreen> {
           height5SizedBox,
           Text(
             StringConstants.categoriesText,
-            style: const TextStyle(
+            style: TextStyle(
                 color: AppColors.black,
                 fontSize: 18,
                 fontWeight: FontWeight.w600),
@@ -39,7 +40,7 @@ class _StoreMenuScreenState extends State<StoreMenuScreen> {
                         children:
                         [ SizedBox(height: WidgetConstants.screenHeight *0.09,),
                           Center(
-                            child: Image.asset(
+                            child: BrandImage.asset(
                               ImageConstants.nodata,
                               scale: 8,
                               color: AppColors.primary,
@@ -102,7 +103,7 @@ class _StoreMenuScreenState extends State<StoreMenuScreen> {
                         margin: const EdgeInsets.symmetric(vertical: 4),
                         padding: const EdgeInsets.symmetric(
                             horizontal: 10, vertical: 10),
-                        decoration: const BoxDecoration(
+                        decoration: BoxDecoration(
                             color: AppColors.greyLight,
                             borderRadius: BorderRadius.all(
                               Radius.circular(10.0),
@@ -151,7 +152,7 @@ class _StoreMenuScreenState extends State<StoreMenuScreen> {
                                                 .categoriesList[index]
                                                 .categoryName ??
                                             '',
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                             fontSize: 16.0,
                                             color: AppColors.black,
                                             fontWeight: FontWeight.w500),

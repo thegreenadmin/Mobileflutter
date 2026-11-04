@@ -178,8 +178,8 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> with Global
                                           // Check if user is guest - show modal and prevent API call
                                           if (isGuest.value == true) {
                                             GuestAccessModal.show(
-                                              title: "Login Required",
-                                              message: "Please login to manage favourite stores",
+                                              title: StringConstants.loginRequiredText,
+                                              message: StringConstants.loginToManageFavouriteStoresText,
                                               onContinueAsGuest: () {
                                                 // Allow guest to continue - just close modal
                                               },
@@ -212,8 +212,8 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> with Global
                                           // Check if user is guest - show modal and prevent API call
                                           if (isGuest.value == true) {
                                             GuestAccessModal.show(
-                                              title: "Login Required",
-                                              message: "Please login to add stores to favourites",
+                                              title: StringConstants.loginRequiredText,
+                                              message: StringConstants.loginToAddStoresToFavouritesText,
                                               onContinueAsGuest: () {
                                                 // Allow guest to continue - just close modal
                                               },

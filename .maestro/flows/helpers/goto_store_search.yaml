@@ -1,0 +1,10 @@
+appId: com.thegreenmall
+---
+# Reusable subflow: from authenticated home screen, navigate to the store search screen.
+# Prerequisite: user must be logged in and on the home screen.
+- tapOn: "Stores"
+- extendedWaitUntil:
+    visible: "Search for stores"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 3000
