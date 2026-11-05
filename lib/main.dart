@@ -47,9 +47,6 @@ Future<void> main() async {
   // Start network monitoring (singleton, not recreated each time)
   NetworkService().startMonitoring();
 
-  // ✅ Notifications
-  await _initNotifications();
-
   // ✅ Dynamic Links (handled later inside app state)
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
 
@@ -67,6 +64,15 @@ Future<void> main() async {
   ));
 
   runApp(const MyApp());
+
+  // ✅ Notifications: after the first frame. On iOS 27 the permission prompt
+  // never appears while no frame is on screen, so awaiting it before runApp
+  // left first-launch users on a blank white screen forever.
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    _initNotifications().catchError((Object e, StackTrace st) {
+      AppLogger.error('Notification setup failed', error: e, stackTrace: st);
+    });
+  });
 }
 
 Future<void> _initNotifications() async {
