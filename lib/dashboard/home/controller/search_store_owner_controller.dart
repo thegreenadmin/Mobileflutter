@@ -14,6 +14,7 @@ import 'package:thegreenmall/dashboard/home/model/unclaimed_stores_model.dart';
 import 'package:thegreenmall/dashboard/offers/model/get_owner_offers_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/utils.dart';
+import 'package:thegreenmall/utils/platform_freeze.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
 class OwnerStoresController extends GetxController  with GlobalVarMixin {
@@ -236,6 +237,7 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
   Future uploadPdfToServer() async {
     try {
       final dio = mdio.Dio();
+      PlatformFreeze.attach(dio);
       mdio.FormData formData = mdio.FormData.fromMap({});
 
       Map<String, String> headers = {
@@ -481,6 +483,7 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
   Future apiUploadImage() async {
     try {
       final dio = mdio.Dio();
+      PlatformFreeze.attach(dio);
       mdio.FormData formData = mdio.FormData.fromMap({});
 
       Map<String, String> headers = {
