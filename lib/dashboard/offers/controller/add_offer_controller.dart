@@ -10,6 +10,7 @@ import 'package:thegreenmall/dashboard/offers/model/offers_model.dart';
 import 'package:thegreenmall/dashboard/offers/view/add_offer_screen.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/utils.dart';
+import 'package:thegreenmall/utils/platform_freeze.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
 class AddOffersController extends GetxController with GlobalVarMixin{
@@ -79,6 +80,7 @@ class AddOffersController extends GetxController with GlobalVarMixin{
   Future apiUploadImage() async {
     try {
       final dio = mdio.Dio();
+      PlatformFreeze.attach(dio);
       mdio.FormData formData = mdio.FormData.fromMap({});
 
       Map<String, String> headers = {

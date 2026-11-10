@@ -8,6 +8,7 @@ import 'package:thegreenmall/utils/app_config_service.dart';
 import 'package:thegreenmall/utils/brand_image.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
+import 'package:thegreenmall/utils/platform_freeze.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 /// Admin-driven app gates (Settings → App behavior): maintenance mode, a
@@ -75,12 +76,21 @@ class AppGate {
   }
 }
 
-/// Full-screen block for maintenance mode or a required update.
+/// Full-screen block for maintenance mode, a required update, or a full
+/// platform freeze (the server refused a request with PLATFORM_FROZEN).
 class AppBlockedScreen extends StatefulWidget {
-  const AppBlockedScreen.maintenance({super.key}) : forceUpdate = false;
-  const AppBlockedScreen.forceUpdate({super.key}) : forceUpdate = true;
+  const AppBlockedScreen.maintenance({super.key})
+      : forceUpdate = false,
+        frozen = false;
+  const AppBlockedScreen.forceUpdate({super.key})
+      : forceUpdate = true,
+        frozen = false;
+  const AppBlockedScreen.frozen({super.key})
+      : forceUpdate = false,
+        frozen = true;
 
   final bool forceUpdate;
+  final bool frozen;
 
   @override
   State<AppBlockedScreen> createState() => _AppBlockedScreenState();
@@ -91,6 +101,16 @@ class _AppBlockedScreenState extends State<AppBlockedScreen> {
 
   Future<void> _retry() async {
     setState(() => _checking = true);
+    if (widget.frozen) {
+      final frozen = await PlatformFreeze.stillFrozen();
+      if (!mounted) return;
+      setState(() => _checking = false);
+      if (!frozen) {
+        PlatformFreeze.lifted();
+        Get.offAll(() => const SplashScreen());
+      }
+      return;
+    }
     await AppConfigService.refresh(rebuild: false);
     if (!mounted) return;
     setState(() => _checking = false);
@@ -106,7 +126,9 @@ class _AppBlockedScreenState extends State<AppBlockedScreen> {
         : StringConstants.maintenanceTitleText;
     final message = widget.forceUpdate
         ? StringConstants.updateRequiredMessageText
-        : AppConfig.current.maintenanceMessage;
+        : widget.frozen
+            ? (PlatformFreeze.message ?? AppConfig.current.maintenanceMessage)
+            : AppConfig.current.maintenanceMessage;
     final canOpenStore =
         widget.forceUpdate && AppConfig.current.storeUrl.isNotEmpty;
 
