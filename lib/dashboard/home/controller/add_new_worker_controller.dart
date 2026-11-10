@@ -10,6 +10,7 @@ import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
+import 'package:thegreenmall/utils/platform_freeze.dart';
 import '../model/add_worker_request_model.dart' as add_worker;
 
 class AddNewWorkerController extends GetxController with GlobalVarMixin{
@@ -396,6 +397,7 @@ class AddNewWorkerController extends GetxController with GlobalVarMixin{
     try {
       isLoading.value = true;
       final dio = mdio.Dio();
+      PlatformFreeze.attach(dio);
       mdio.FormData formData = mdio.FormData.fromMap({});
 
       Map<String, String> headers = {

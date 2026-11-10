@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:thegreenmall/dashboard/home/model/model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/utils.dart';
+import 'package:thegreenmall/utils/platform_freeze.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
 class OwnerInboxDetailController extends GetxController with GlobalVarMixin {
@@ -95,6 +96,7 @@ class OwnerInboxDetailController extends GetxController with GlobalVarMixin {
   Future apiUploadImage() async {
     try {
       final dio = m_dio.Dio();
+      PlatformFreeze.attach(dio);
       m_dio.FormData formData = m_dio.FormData.fromMap({});
 
       Map<String, String> headers = {

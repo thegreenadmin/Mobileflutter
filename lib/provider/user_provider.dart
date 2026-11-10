@@ -11,6 +11,7 @@ import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
 import 'package:thegreenmall/utils/app_logger.dart';
+import 'package:thegreenmall/utils/platform_freeze.dart';
 
 class UserProvider extends GetConnect {
   static final HttpClient _httpClient = HttpClient()
@@ -42,7 +43,7 @@ class UserProvider extends GetConnect {
   }
 
   Future<Response?> getWithHeadersApi(String url, Map<String, String> headers,
-      {bool showLoading = false, bool showError = true}) async
+      {bool showLoading = false, bool showError = true, bool checkFreeze = true}) async
   {
     headers.putIfAbsent('Connection', () => 'keep-alive');
     headers.putIfAbsent('Keep-Alive', () => 'timeout=5, max=1000');
@@ -78,6 +79,12 @@ class UserProvider extends GetConnect {
       final res = await _ioClient.get(Uri.parse(url), headers: headers)  .timeout(const Duration(seconds: 30));
       if (showLoading) Get.back();
 
+      // Platform freeze: show the maintenance screen or a payments-paused
+      // message instead of letting the caller treat it as an error.
+      if (checkFreeze &&
+          PlatformFreeze.handle(res.statusCode, json.decode(res.body))) {
+        return null;
+      }
       AppLogger.logApiResponse('GET', url, res.statusCode, json.decode(res.body));
       return Response(statusCode: res.statusCode, body: json.decode(res.body));
     } on TimeoutException catch (e) {
@@ -148,6 +155,9 @@ class UserProvider extends GetConnect {
         return null;
       }
 
+      // Platform freeze: show the maintenance screen or a payments-paused
+      // message instead of letting the caller treat it as an error.
+      if (PlatformFreeze.handle(res.statusCode, json.decode(res.body))) return null;
       AppLogger.logApiResponse('POST', url, res.statusCode, json.decode(res.body));
       return Response(statusCode: res.statusCode, body: json.decode(res.body));
     } on TimeoutException catch (e) {
@@ -209,6 +219,9 @@ class UserProvider extends GetConnect {
 
         if (showLoading) Get.back();
 
+        // Platform freeze: show the maintenance screen or a payments-paused
+        // message instead of letting the caller treat it as an error.
+        if (PlatformFreeze.handle(res.statusCode, json.decode(res.body))) return null;
         AppLogger.logApiResponse('PUT', url, res.statusCode, json.decode(res.body));
         return Response(statusCode: res.statusCode, body: json.decode(res.body));
       } on SocketException catch (e) {
@@ -291,6 +304,9 @@ class UserProvider extends GetConnect {
         Utility.showAlertMessage("FCM Error", title: "Alert!");
         return null;
       }
+      // Platform freeze: show the maintenance screen or a payments-paused
+      // message instead of letting the caller treat it as an error.
+      if (PlatformFreeze.handle(res.statusCode, json.decode(res.body))) return null;
       AppLogger.logApiResponse('POST (with headers)', url, res.statusCode, json.decode(res.body));
       return Response(
           statusCode: res.statusCode,
@@ -379,6 +395,9 @@ class UserProvider extends GetConnect {
         Utility.showAlertMessage("FCM Error", title: "Alert!");
         return null;
       }
+      // Platform freeze: show the maintenance screen or a payments-paused
+      // message instead of letting the caller treat it as an error.
+      if (PlatformFreeze.handle(res.statusCode, json.decode(res.body))) return null;
       AppLogger.logApiResponse('PUT (with headers)', url, res.statusCode, json.decode(res.body));
       return Response(
           statusCode: res.statusCode,
@@ -459,6 +478,9 @@ class UserProvider extends GetConnect {
         Utility.showAlertMessage("FCM Error", title: "Alert!");
         return null;
       }
+      // Platform freeze: show the maintenance screen or a payments-paused
+      // message instead of letting the caller treat it as an error.
+      if (PlatformFreeze.handle(res.statusCode, json.decode(res.body))) return null;
       AppLogger.logApiResponse('PUT (with headers 1)', url, res.statusCode, json.decode(res.body));
       return Response(
           statusCode: res.statusCode,
@@ -539,6 +561,9 @@ class UserProvider extends GetConnect {
         Utility.showAlertMessage("FCM Error", title: "Alert!");
         return null;
       }
+      // Platform freeze: show the maintenance screen or a payments-paused
+      // message instead of letting the caller treat it as an error.
+      if (PlatformFreeze.handle(res.statusCode, json.decode(res.body))) return null;
       AppLogger.logApiResponse('DELETE (with headers)', url, res.statusCode, json.decode(res.body));
       return Response(
           statusCode: res.statusCode,

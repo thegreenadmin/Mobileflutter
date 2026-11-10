@@ -10,6 +10,7 @@ import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
 import '../view/store_owner/add_new_product_screen.dart';
+import 'package:thegreenmall/utils/platform_freeze.dart';
 import 'manage_store_controller.dart';
 
 class AddNewCategoryController extends GetxController  with GlobalVarMixin{
@@ -150,6 +151,7 @@ class AddNewCategoryController extends GetxController  with GlobalVarMixin{
   Future apiUploadImage() async {
     try {
       final dio = mdio.Dio();
+      PlatformFreeze.attach(dio);
       mdio.FormData formData = mdio.FormData.fromMap({});
 
       Map<String, String> headers = {
