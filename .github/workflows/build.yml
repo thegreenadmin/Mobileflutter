@@ -20,6 +20,11 @@ on:
         options:
           - beta
           - release
+      skip_device_test:
+        description: 'Skip the device test (urgent beta only; a store release always runs it)'
+        required: false
+        default: false
+        type: boolean
   push:
     branches: [main]
     paths:
@@ -31,6 +36,8 @@ on:
 permissions:
   contents: read
   id-token: write
+  # The device test checks whether this commit already passed.
+  actions: read
 
 # Serialize runs per ref. Build numbers are derived from "latest TestFlight
 # build + 1" at deploy time, so two concurrent runs could otherwise read the
@@ -44,8 +51,24 @@ env:
   RUBY_VERSION: '3.3'
 
 jobs:
+  # The customer and store journey on a Test Lab Android device. If it fails,
+  # nothing is built or uploaded. It ends at once, without using Test Lab
+  # quota, when the full journey already passed on this commit.
+  device-test:
+    if: inputs.environment == 'release' || !inputs.skip_device_test
+    uses: ./.github/workflows/firebase-test-lab.yml
+    with:
+      platform: android
+      flows: all
+      robo: false
+    secrets: inherit
+
   build-ios:
-    if: github.event.inputs.platform == 'ios' || github.event.inputs.platform == 'both' || github.event.inputs.platform == ''
+    needs: device-test
+    if: >-
+      !cancelled() &&
+      (needs.device-test.result == 'success' || (needs.device-test.result == 'skipped' && inputs.environment != 'release')) &&
+      (github.event.inputs.platform == 'ios' || github.event.inputs.platform == 'both' || github.event.inputs.platform == '')
     runs-on: macos-26
     timeout-minutes: 120
     environment: APP_STORE_CONFIG
@@ -168,7 +191,11 @@ jobs:
           retention-days: 30
 
   build-android:
-    if: github.event.inputs.platform == 'android' || github.event.inputs.platform == 'both' || github.event.inputs.platform == ''
+    needs: device-test
+    if: >-
+      !cancelled() &&
+      (needs.device-test.result == 'success' || (needs.device-test.result == 'skipped' && inputs.environment != 'release')) &&
+      (github.event.inputs.platform == 'android' || github.event.inputs.platform == 'both' || github.event.inputs.platform == '')
     runs-on: ubuntu-latest
     timeout-minutes: 90
     environment: ANDROID_BETA_CONFIG

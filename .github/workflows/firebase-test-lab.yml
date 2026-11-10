@@ -1,8 +1,42 @@
 name: Firebase Test Lab
+run-name: "Device test: ${{ inputs.flows || 'all' }} on ${{ inputs.platform || 'android' }}"
 
+# Runs only when asked: by hand (Actions > Firebase Test Lab > Run workflow,
+# or the admin panel's App builds page), or from build.yml right before a
+# beta or store build. Pushes and PRs don't start it: each run spends daily
+# Test Lab device quota.
 on:
+  workflow_call:
+    inputs:
+      platform:
+        type: string
+        default: android
+      ios_device:
+        type: string
+        default: iphone16pro
+      flows:
+        type: string
+        default: all
+      robo:
+        type: boolean
+        default: false
   workflow_dispatch:
     inputs:
+      flows:
+        description: 'Which part of the journey: all, guest (sign-in and browsing), customer, owner (store owner), money (wallet and payments), or none (Robo crawl only)'
+        type: choice
+        options:
+          - all
+          - guest
+          - customer
+          - owner
+          - money
+          - none
+        default: all
+      robo:
+        description: 'Android: also let Robo crawl the app for crashes (one more device test)'
+        type: boolean
+        default: true
       platform:
         description: 'android or ios: journey and Robo crawl; ios-robo, ios-journey (Test Lab), ios-sim or ios-sim-xctest (simulator in the runner): only that iPhone job'
         type: choice
@@ -18,33 +52,49 @@ on:
         description: 'Test Lab iPhone for the iOS journey and Robo crawl: iphone16pro, iphone14pro, iphone11pro, iphone8, iphonese3 or ipad10 (the run lists what Test Lab offers)'
         type: string
         default: iphone16pro
-  push:
-    branches: ['ci/*']
-    # Maestro-only changes run in maestro.yml; don't spend Test Lab quota.
-    paths-ignore:
-      - '.maestro/**'
-      - '.github/workflows/maestro.yml'
-  pull_request:
-    branches: [main]
 
 permissions:
   contents: read
   id-token: write
+  actions: read
 
-# Keyed on the branch, not the ref: a push to a branch with an open PR
-# triggers both a push and a pull_request run, and the newer one cancels the
-# older before it reaches Test Lab, so each change uses the daily device quota
-# once.
+# Every journey signs in with the same beta test accounts, and one run's
+# clean-up deletes another's product as a leftover (run 99), so runs queue
+# one at a time across all branches instead of overlapping. Not cancelled:
+# a queued run may be the check a build is waiting on.
 concurrency:
-  group: ${{ github.workflow }}-${{ github.head_ref || github.ref_name }}
-  cancel-in-progress: true
+  group: firebase-test-lab-journey
+  cancel-in-progress: false
 
 env:
   FLUTTER_VERSION: '3.41.6'
 
 jobs:
+  # A full Android journey that already passed on this exact commit (say, run
+  # by hand before a build) isn't run again: the result can't change and the
+  # quota is better spent elsewhere.
+  already-passed:
+    if: inputs.platform == 'android' && inputs.flows != 'none'
+    runs-on: ubuntu-latest
+    outputs:
+      passed: ${{ steps.lookup.outputs.passed }}
+    steps:
+      - id: lookup
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          RUN=$(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/firebase-test-lab.yml/runs?head_sha=${GITHUB_SHA}&status=success&per_page=50" \
+            --jq '[.workflow_runs[] | select(.display_title == "Device test: all on android")][0].html_url // empty' || true)
+          if [ -n "$RUN" ]; then
+            echo "The full journey already passed on ${GITHUB_SHA}: $RUN"
+            echo "passed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "passed=false" >> "$GITHUB_OUTPUT"
+          fi
+
   integration-test:
-    if: github.event_name != 'workflow_dispatch' || inputs.platform == 'android'
+    needs: already-passed
+    if: inputs.platform == 'android' && inputs.flows != 'none' && needs.already-passed.outputs.passed != 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 45
     environment: ANDROID_BETA_CONFIG
@@ -117,11 +167,16 @@ jobs:
           chmod 600 android/app/keystore.jks
 
       - name: Build app and test APKs
+        env:
+          FLOWS: ${{ inputs.flows }}
         run: |
-          flutter build apk --debug --target=integration_test/app_test.dart
+          # JOURNEY_FLOWS picks the part of the journey to run (app_test.dart).
+          flutter build apk --debug --target=integration_test/app_test.dart --dart-define=JOURNEY_FLOWS=${FLOWS}
           cd android
           ./gradlew app:assembleAndroidTest
-          ./gradlew app:assembleDebug -Ptarget="$(pwd)/../integration_test/app_test.dart"
+          # Gradle takes dart defines base64-encoded.
+          ./gradlew app:assembleDebug -Ptarget="$(pwd)/../integration_test/app_test.dart" \
+            -Pdart-defines="$(printf 'JOURNEY_FLOWS=%s' "$FLOWS" | base64 | tr -d '\n')"
 
       - name: Authenticate with GCP
         uses: google-github-actions/auth@v2
@@ -188,7 +243,7 @@ jobs:
           retention-days: 30
 
   robo-test:
-    if: github.event_name != 'workflow_dispatch' || inputs.platform == 'android'
+    if: inputs.platform == 'android' && inputs.robo
     runs-on: ubuntu-latest
     timeout-minutes: 45
     environment: ANDROID_BETA_CONFIG
@@ -332,7 +387,7 @@ jobs:
   # ROBO_TEST, which makes the OTP screen enter the demo account's code
   # itself (lib/utils/robo_test.dart): Robo can't type into the code boxes.
   ios-robo-test:
-    if: github.event_name == 'workflow_dispatch' && (inputs.platform == 'ios' || inputs.platform == 'ios-robo')
+    if: inputs.platform == 'ios' || inputs.platform == 'ios-robo'
     runs-on: macos-26
     timeout-minutes: 60
     environment: ANDROID_BETA_CONFIG
@@ -531,7 +586,7 @@ jobs:
   # requested iPhone model before anything is built, and picks its newest
   # iOS version.
   ios-test-lab-xcode:
-    if: github.event_name == 'workflow_dispatch' && (inputs.platform == 'ios' || inputs.platform == 'ios-journey')
+    if: (inputs.platform == 'ios' || inputs.platform == 'ios-journey') && inputs.flows != 'none'
     runs-on: ubuntu-latest
     environment: ANDROID_BETA_CONFIG
     outputs:
@@ -667,7 +722,8 @@ jobs:
           APPLE_TEAM_ID: ${{ vars.APPLE_TEAM_ID }}
         run: |
           # Points the app at the journey as its entry point and runs pod install.
-          flutter build ios integration_test/app_test.dart --release --no-codesign
+          flutter build ios integration_test/app_test.dart --release --no-codesign \
+            --dart-define=JOURNEY_FLOWS=${{ inputs.flows }}
           cd ios
           # No -xcconfig: it would apply the app's pod link flags to the test
           # bundle too. Runner's Release config already includes
@@ -822,7 +878,7 @@ jobs:
   # (ios-sim) or fails.
   ios-simulator-journey:
     needs: ios-integration-test
-    if: always() && github.event_name == 'workflow_dispatch' && (inputs.platform == 'ios' || inputs.platform == 'ios-sim' || inputs.platform == 'ios-sim-xctest')
+    if: always() && inputs.flows != 'none' && (inputs.platform == 'ios' || inputs.platform == 'ios-sim' || inputs.platform == 'ios-sim-xctest')
     runs-on: macos-26
     timeout-minutes: 90
     environment: ANDROID_BETA_CONFIG
@@ -897,6 +953,7 @@ jobs:
         run: |
           set -o pipefail
           flutter test integration_test/app_test.dart -d "$SIM_UDID" \
+            --dart-define=JOURNEY_FLOWS=${{ inputs.flows }} \
             --reporter expanded 2>&1 | tee journey.log
 
       - name: Run the journey as an XCTest on the simulator
@@ -905,7 +962,8 @@ jobs:
           ruby -e "require 'xcodeproj'" 2>/dev/null || gem install xcodeproj --no-document
           ruby .github/ios/add_runner_tests.rb
           # Points the app's entry at the journey and runs pod install.
-          flutter build ios --config-only --debug integration_test/app_test.dart
+          flutter build ios --config-only --debug integration_test/app_test.dart \
+            --dart-define=JOURNEY_FLOWS=${{ inputs.flows }}
           (cd ios && pod install)
           # The journey's [journey] lines come from the app process.
           xcrun simctl spawn "$SIM_UDID" log stream --style compact \

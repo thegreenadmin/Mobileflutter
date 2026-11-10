@@ -25,6 +25,7 @@
 // (Account > Switch to Customer) and switch back afterwards.
 //
 // Run locally:  flutter test integration_test/app_test.dart -d <device>
+// Part of it:   add --dart-define=JOURNEY_FLOWS=guest|customer|owner|money
 import 'dart:io';
 import 'dart:ui' as ui;
 
@@ -89,6 +90,17 @@ final _onIosSimulator = Platform.isIOS &&
 /// a test account on beta so it accepts [_testOtp].
 const _secondPhone = '3246661111';
 
+/// Which part of the journey to run, from --dart-define=JOURNEY_FLOWS.
+/// `all` runs every step; a flow also runs the steps it builds on (launch,
+/// login, and for the owner the customer's order it fulfils).
+const _journeyFlows =
+    String.fromEnvironment('JOURNEY_FLOWS', defaultValue: 'all');
+const _guest = 'guest';
+const _customer = 'customer';
+const _owner = 'owner';
+const _money = 'money';
+const _knownFlows = {'all', _guest, _customer, _owner, _money};
+
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
@@ -98,6 +110,10 @@ void main() {
   // home screen, and the next step runs. The test fails at the end if any
   // step did.
   testWidgets('maestro journey', (tester) async {
+    if (!_knownFlows.contains(_journeyFlows)) {
+      fail(
+          'JOURNEY_FLOWS=$_journeyFlows; use one of ${_knownFlows.join(', ')}');
+    }
     // main() swaps FlutterError.onError for its Crashlytics handler, which
     // swallows test failures and hangs the run. Put the test binding's
     // handler back as soon as the app has started.
@@ -132,8 +148,15 @@ void main() {
       originalOnError?.call(d);
     }
 
+    // A run can cover just part of the journey (JOURNEY_FLOWS). Each step is
+    // tagged with the flows that need it, including the setup steps another
+    // flow builds on (the customer order feeds the owner's fulfilment).
     Future<void> step(String name, Future<void> Function() body,
-        {bool critical = false}) async {
+        {bool critical = false, required Set<String> flows}) async {
+      if (_journeyFlows != 'all' && !flows.contains(_journeyFlows)) {
+        debugPrint('[journey] --- $name skipped (flows=$_journeyFlows)');
+        return;
+      }
       current = name;
       debugPrint('[journey] >>> $name');
       try {
@@ -199,7 +222,7 @@ void main() {
       FlutterError.onError = reportingOnError;
       expect(find.text(StringConstants.loginYourAccountText), findsWidgets);
       expect(find.text(StringConstants.createAnAccountText), findsWidgets);
-    }, critical: true);
+    }, critical: true, flows: const {_guest, _customer, _owner, _money});
 
     // signup_owner_validation: "Own a Store? Register Here" opens the owner
     // variant of sign-up; an empty submit shows the field errors.
@@ -211,7 +234,7 @@ void main() {
       // The submit scrolls the form, taking its back chevron off-screen.
       Get.back();
       await _waitFor(tester, find.text(StringConstants.continueAsGuestText));
-    });
+    }, flows: const {_guest});
 
     // guest_navigation
     await step('guest home', () async {
@@ -230,7 +253,7 @@ void main() {
       await _waitFor(tester, _storesPill);
       // Munchies / Herbs / Payments are country-gated pills; staging has them.
       expect(find.text('Payments'), findsWidgets);
-    }, critical: true);
+    }, critical: true, flows: const {_guest, _customer, _owner, _money});
 
     // guest_gates: every members-only entry on the home screen and the store
     // search asks a guest to log in, and Continue as Guest closes it.
@@ -259,7 +282,7 @@ void main() {
             StringConstants.loginToAccessPreviousAndFavoriteStoresText);
       }
       await _backToHome(tester);
-    });
+    }, flows: const {_guest});
 
     // more_pages: About, FAQ, Terms and Privacy open in a web view; the
     // Contact form refuses an empty submit (it is never sent).
@@ -287,7 +310,7 @@ void main() {
       await _waitFor(tester, find.text(StringConstants.contactTgmText));
       await _tapUntil(tester, find.text(BottomNavStringConstants.homeText),
           _storesPill.hitTestable());
-    });
+    }, flows: const {_guest});
 
     // login_navigation, reached the way a guest would: a members-only
     // feature prompts for login.
@@ -300,13 +323,13 @@ void main() {
       // The subtitle has a hard line break, so match its first words.
       expect(
           find.textContaining('Enter mobile number to login'), findsOneWidget);
-    }, critical: true);
+    }, critical: true, flows: const {_guest, _customer, _owner, _money});
 
     // login_with_test_account
     await step('login with test account', () async {
       await _logIn(tester);
       _loggedIn = true;
-    }, critical: true);
+    }, critical: true, flows: const {_guest, _customer, _owner, _money});
 
     // store_search_tabs (customer) / owner store list
     await step('stores', () async {
@@ -327,7 +350,7 @@ void main() {
       }
       await _tap(tester, find.byIcon(Icons.arrow_back));
       await _waitFor(tester, _storesPill.hitTestable());
-    });
+    }, flows: const {_customer, _owner});
 
     // order_history_tabs (customer) / order_store_list (owner)
     await step('orders', () async {
@@ -355,7 +378,7 @@ void main() {
                         w.data == StringConstants.receivedText),
                 description: 'owner orders screen'));
       }
-    });
+    }, flows: const {_customer, _owner});
 
     // wallet_explore, wallet_manage_screen
     await step('wallet and manage wallet', () async {
@@ -365,7 +388,7 @@ void main() {
       await _waitFor(tester, find.text(StringConstants.manageWalletText));
       await _scrollTo(
           tester, find.text(StringConstants.addCardPaymentMethodsText));
-    });
+    }, flows: const {_money});
 
     // card_validation_invalid, minus the Stripe round trip: submit the empty
     // form and expect the client-side rejection.
@@ -387,7 +410,7 @@ void main() {
         await _pumpFor(tester, const Duration(seconds: 1));
       }
       await _waitFor(tester, find.text(StringConstants.manageText));
-    });
+    }, flows: const {_money});
 
     // payment_merchant_barcode, payment_request_money
     await step('payments receive', () async {
@@ -439,7 +462,7 @@ void main() {
         await _waitFor(tester, find.textContaining('Expires in'));
       }
       await _backToHome(tester);
-    });
+    }, flows: const {_money});
 
     // payment_scanner. Last, because mobile_scanner kills the app on a
     // device without a usable camera.
@@ -454,7 +477,7 @@ void main() {
         await _tap(tester, find.text('Enter Phone'));
         await _waitFor(tester, find.text('Continue'));
         await _backToHome(tester);
-      });
+      }, flows: const {_money});
     }
 
     // Names are unique per run so a leftover from an aborted run never
@@ -526,7 +549,7 @@ void main() {
 
       await _swipeDelete(tester, find.text(offerName));
       await _waitGone(tester, find.text(offerName));
-    });
+    }, flows: const {_owner});
 
     // product_create: Stores > store > Manage Store > Manage Products >
     // first category > Add New Product. Kept until the customer has ordered
@@ -554,7 +577,7 @@ void main() {
       await _backToHome(tester);
       await _openProductList(tester);
       await _scrollUntilBuilt(tester, find.text(productName));
-    });
+    }, flows: const {_customer, _owner, _money});
 
     // product_edit: raise this run's product to $2 from its edit screen.
     await step('owner product edit', () async {
@@ -577,7 +600,7 @@ void main() {
       await _waitFor(
           tester, _near(find.text(productName), find.textContaining('2.00')));
       await _backToHome(tester);
-    });
+    }, flows: const {_owner});
 
     // category_create, category_delete: a new category (image + name) opens
     // its add-product screen; back on the list it is swiped away.
@@ -613,7 +636,7 @@ void main() {
       await _swipeDelete(tester, row);
       await _waitGone(tester, row);
       await _backToHome(tester);
-    });
+    }, flows: const {_owner});
 
     // store_settings: the owner's store screens load (read only: nothing is
     // saved, so the shared test store is left as it is).
@@ -637,12 +660,12 @@ void main() {
       await _scrollAndTap(tester, find.text(StringConstants.manageWorkersText));
       await _waitFor(tester, find.textContaining('ember'));
       await _backToHome(tester);
-    });
+    }, flows: const {_owner});
 
     await step('owner notifications', () async {
       await _switchRole(tester, toCustomer: false);
       await _checkNotifications(tester);
-    });
+    }, flows: const {_owner});
 
     await step('owner transaction history', () async {
       await _switchRole(tester, toCustomer: false);
@@ -654,7 +677,7 @@ void main() {
       await _pumpFor(tester, const Duration(seconds: 1));
       await _until(tester, 'past transactions', () => !tx.isLoading.value);
       await _backToHome(tester);
-    });
+    }, flows: const {_owner, _money});
 
     // card_add_valid, card_delete. 4242 is already on the account and the
     // form refuses a duplicate last4, so this uses the Mastercard test card
@@ -692,22 +715,22 @@ void main() {
           timeout: const Duration(seconds: 45));
       await _deleteCardEnding(tester, '4444');
       expect(_cardEnding('4444'), findsNothing);
-    });
+    }, flows: const {_money});
 
     // wallet_add_money (owner): store wallet from the saved 4242 card.
     await step('owner wallet top-up', () async {
       await _topUp(tester, '1');
-    });
+    }, flows: const {_money});
 
     await step('switch to customer', () async {
       await _switchRole(tester, toCustomer: true);
-    });
+    }, flows: const {_customer, _owner, _money});
 
     // wallet_add_money (customer)
     await step('customer wallet top-up', () async {
       await _topUp(tester, '5');
       customerWalletMoved = true;
-    });
+    }, flows: const {_customer, _owner, _money});
 
     // store_browse_and_menu, order_add_to_cart, order_view_cart,
     // order_place: the customer orders this run's product from the
@@ -717,7 +740,7 @@ void main() {
       fulfilledOrderId = await _placeOrder(tester, productName);
       customerWalletMoved = true;
       await _backToHome(tester);
-    });
+    }, flows: const {_customer, _owner, _money});
 
     // payment_p2b_phone: pay the account's own store $1 by phone. P2B to
     // one's own store is allowed (only P2P blocks self-payment), and $1 is
@@ -726,7 +749,8 @@ void main() {
       await _openPayments(tester);
       await _tap(tester, find.text('Pay to a Business'));
       await _tap(tester, find.text('Enter Phone'));
-      await _typeText(tester,
+      await _typeText(
+          tester,
           find.descendant(
               of: find.byType(IntlPhoneField),
               matching: find.byType(EditableText)),
@@ -747,7 +771,7 @@ void main() {
       }
       await _tap(tester, find.text('Continue'));
       await _payAmount(tester, '1');
-    });
+    }, flows: const {_money});
 
     // store_product_browse: the category's product grid, sorted both ways
     // from the sort menu. The server sorts by selling price.
@@ -795,7 +819,7 @@ void main() {
         }
       }
       await _backToHome(tester);
-    });
+    }, flows: const {_customer});
 
     // store_favourites: heart this run's product from the grid, find it on
     // the store's Favorite tab, unheart it there and see the server drop it.
@@ -816,7 +840,7 @@ void main() {
       // Unhearting on this tab reloads the favourites from the server.
       await _waitGone(tester, find.text(productName));
       await _backToHome(tester);
-    });
+    }, flows: const {_customer});
 
     // order_transaction_history: Account > Transactions History, both tabs.
     await step('customer transaction history', () async {
@@ -843,7 +867,7 @@ void main() {
       await _pumpFor(tester, const Duration(seconds: 1));
       await _until(tester, 'current month again', () => !tx.isLoading.value);
       await _backToHome(tester);
-    });
+    }, flows: const {_customer, _money});
 
     // profile_edit: change the nick name and put it back.
     await step('customer profile edit', () async {
@@ -885,7 +909,7 @@ void main() {
       await _tap(tester, id);
       await _waitFor(tester, find.text('${StringConstants.accountIdText}:'));
       await _backToHome(tester);
-    });
+    }, flows: const {_customer});
 
     // notification_preferences: switch inbox message alerts off and back on;
     // each change is read back from the server.
@@ -909,12 +933,12 @@ void main() {
             timeout: const Duration(seconds: 20));
       }
       await _backToHome(tester);
-    });
+    }, flows: const {_customer});
 
     await step('customer notifications', () async {
       await _switchRole(tester, toCustomer: true);
       await _checkNotifications(tester);
-    });
+    }, flows: const {_customer});
 
     // store_favourite: heart the account's own store from its page, find it
     // on the search screen's Favorite tab, then remove it again.
@@ -998,7 +1022,7 @@ void main() {
       if (!shown) {
         throw TestFailure('store page does not show the saved favourite');
       }
-    });
+    }, flows: const {_customer});
 
     // store_options: the store page's Options menu: previous orders at this
     // store (this run's order among them) and the store's contact card.
@@ -1027,7 +1051,7 @@ void main() {
         await _pumpFor(tester, const Duration(seconds: 1));
       }
       await _backToHome(tester);
-    });
+    }, flows: const {_customer});
 
     // inbox_customer: Options > Contact Store > Have issue/question? opens a
     // chat with the store; a message sent there shows in the thread.
@@ -1039,7 +1063,7 @@ void main() {
       await _sendChatMessage(tester, message);
       inboxMessage = message;
       await _backToHome(tester);
-    });
+    }, flows: const {_customer, _owner});
 
     // offers_browse: the customer Offers tab lists store offers; the first
     // one opens its product list.
@@ -1061,7 +1085,7 @@ void main() {
         }
       }
       await _backToHome(tester);
-    });
+    }, flows: const {_customer});
 
     // payment_request_money: a $1 request to the second test account shows
     // a code to scan (the text-message option is never used).
@@ -1071,7 +1095,8 @@ void main() {
       await _tap(tester, find.text('Receive'));
       await _tap(tester, find.text('Request money'));
       await _waitFor(tester, find.text('Generate barcode'));
-      await _typeText(tester,
+      await _typeText(
+          tester,
           find.descendant(
               of: find.byType(IntlPhoneField),
               matching: find.byType(EditableText)),
@@ -1084,7 +1109,7 @@ void main() {
       await _submit(tester, find.text('Generate barcode'));
       await _waitFor(tester, find.byType(QrImageView));
       await _backToHome(tester);
-    });
+    }, flows: const {_money});
 
     // store_filter_options, plus the favourite stores tab of the search
     // screen. Filtering only reads; Clear Filters puts the search back.
@@ -1155,7 +1180,7 @@ void main() {
       expect(search.mileageTextController.text, isEmpty);
       expect(search.isOpenNow.value, isEmpty);
       await _backToHome(tester);
-    });
+    }, flows: const {_customer});
 
     // wallet_auto_reload: turning the switch on opens the auto reload
     // sheet; an empty form must not save, and closing the sheet must leave
@@ -1220,7 +1245,7 @@ void main() {
       expect(wallet.isAutoRechargeEnable.value, isFalse,
           reason: 'switch still on after closing the sheet unsaved');
       await _backToHome(tester);
-    });
+    }, flows: const {_money});
 
     // order_place again, for the owner to cancel. Notes the wallet balance
     // first so the refund can be checked once the order is cancelled.
@@ -1239,11 +1264,11 @@ void main() {
       cancelledOrderId = await _placeOrder(tester, productName);
       final after = await _customerBalance(tester);
       debugPrint('[journey]   wallet $balanceBeforeCancelledOrder -> $after');
-    });
+    }, flows: const {_customer, _owner});
 
     await step('switch back to store', () async {
       await _switchRole(tester, toCustomer: false);
-    });
+    }, flows: const {_customer, _owner, _money});
 
     // wallet_payout: $1 from the store wallet to the Stripe test bank.
     await step('owner payout to test bank', () async {
@@ -1269,7 +1294,7 @@ void main() {
       await _waitGone(tester, find.text(StringConstants.payoutText),
           timeout: const Duration(seconds: 45));
       await _backToHome(tester);
-    });
+    }, flows: const {_money});
 
     // order_fulfil (owner): the first order moves through the store queue
     // to Completed. Pickup and curbside orders go Ready for Pick Up > Picked
@@ -1308,7 +1333,7 @@ void main() {
       await _showOwnerOrders(
           tester, StringConstants.completedText, fulfilledOrderId);
       await _backToHome(tester);
-    });
+    }, flows: const {_customer, _owner, _money});
 
     // order_cancel (owner): customers can't cancel in the app, so the store
     // cancels the second order; it then shows under Completed.
@@ -1329,7 +1354,7 @@ void main() {
       await _showOwnerOrders(
           tester, StringConstants.completedText, cancelledOrderId);
       await _backToHome(tester);
-    });
+    }, flows: const {_customer, _owner});
 
     // inbox_owner: the store's inbox has the customer's message; the owner
     // replies in the same thread.
@@ -1361,7 +1386,7 @@ void main() {
       await _sendChatMessage(tester, reply);
       inboxReply = reply;
       await _backToHome(tester);
-    });
+    }, flows: const {_customer, _owner});
 
     // order_history (customer): the fulfilled order is under Complete, the
     // cancelled one under Cancelled, and its price is back in the wallet.
@@ -1406,7 +1431,7 @@ void main() {
       }
       if (problems.isNotEmpty) throw TestFailure(problems.join('; '));
       await _backToHome(tester);
-    });
+    }, flows: const {_customer, _owner});
 
     await step('customer reads the store reply', () async {
       if (inboxReply.isEmpty) throw TestFailure('no reply to read');
@@ -1414,7 +1439,7 @@ void main() {
       await _openStoreChat(tester);
       await _scrollUntilBuilt(tester, find.text(inboxReply));
       await _backToHome(tester);
-    });
+    }, flows: const {_customer, _owner});
 
     // order_rate, order_return: on the fulfilled order the customer leaves a
     // 5-star review, then asks to return it (the product is returnable).
@@ -1463,7 +1488,7 @@ void main() {
           timeout: const Duration(seconds: 45));
       returnRequested = true;
       await _backToHome(tester);
-    });
+    }, flows: const {_customer, _owner, _money});
 
     // order_return_accept: the return request waits in the store's Received
     // queue; the owner accepts it.
@@ -1481,7 +1506,7 @@ void main() {
       await _tap(tester, find.text(StringConstants.yesText));
       await _waitGone(tester, accept, timeout: const Duration(seconds: 45));
       await _backToHome(tester);
-    });
+    }, flows: const {_customer, _owner, _money});
 
     // order_return_refund: the returned order's money is back in the
     // customer's wallet.
@@ -1499,7 +1524,7 @@ void main() {
         throw TestFailure('returned order $fulfilledOrderId not refunded: '
             'wallet $now, was $before');
       }
-    });
+    }, flows: const {_money});
 
     // payment_p2p_phone: send $1 to the second test account, which sends it
     // back after logout. Under the biometric and KYC thresholds.
@@ -1507,11 +1532,11 @@ void main() {
       await _switchRole(tester, toCustomer: true);
       await _payPerson(tester, _secondPhone, '1');
       sentToSecondAccount = true;
-    });
+    }, flows: const {_money});
 
     await step('switch to store for cleanup', () async {
       await _switchRole(tester, toCustomer: false);
-    });
+    }, flows: const {_customer, _owner, _money});
 
     await step('owner product delete', () async {
       if (!productCreated) return;
@@ -1528,8 +1553,7 @@ void main() {
         final stale = find
             .byWidgetPredicate(
                 (w) =>
-                    w is Text &&
-                    _isOldLeftover(w.data ?? '', 'FTL product '),
+                    w is Text && _isOldLeftover(w.data ?? '', 'FTL product '),
                 description: 'leftover FTL product')
             .hitTestable();
         if (stale.evaluate().isEmpty) break;
@@ -1545,7 +1569,7 @@ void main() {
         }
       }
       await _backToHome(tester);
-    });
+    }, flows: const {_customer, _owner, _money});
 
     // session_persistence: with the login token saved, the splash screen
     // goes straight to the logged-in home instead of the welcome screen.
@@ -1582,13 +1606,13 @@ void main() {
       // next step, or logout cuts them off mid-flight and they fail with an
       // alert over the welcome screen.
       await _pumpFor(tester, const Duration(seconds: 8));
-    });
+    }, flows: const {_guest});
 
     // logout. The Delete Account button sits right under Logout; the test
     // only ever taps the exact "Logout" text and the dialog's "Yes".
     await step('logout', () async {
       await _logOut(tester);
-    }, critical: true);
+    }, critical: true, flows: const {_guest, _customer, _owner, _money});
 
     // payment_p2p_receive: the second test account got the $1 and sends it
     // back to the main account, so neither balance drifts across runs.
@@ -1627,7 +1651,7 @@ void main() {
         }
         _loggedIn = false;
       }
-    });
+    }, flows: const {_money});
 
     // signup_validation: empty submit shows the field errors; filled fields
     // without the terms box stop at the terms alert, so no user is created.
@@ -1641,7 +1665,8 @@ void main() {
           findsOneWidget);
       await _enterField(tester, StringConstants.firstNameText, 'Ftl');
       await _enterField(tester, StringConstants.lastNameText, 'Test');
-      await _typeText(tester,
+      await _typeText(
+          tester,
           find.descendant(
               of: find.byType(IntlPhoneField),
               matching: find.byType(EditableText)),
@@ -1675,7 +1700,7 @@ void main() {
         rethrow;
       }
       await _tap(tester, find.text(StringConstants.okayText));
-    });
+    }, flows: const {_guest});
 
     // Let in-flight API calls finish. Ending the test tears the widget tree
     // down under them, and their error path (Utility.showAlertMessage ->
@@ -1687,7 +1712,7 @@ void main() {
           '${layoutIssues.join(', ')}');
     }
     if (failed.isEmpty) {
-      debugPrint('[journey] ALL STEPS PASSED');
+      debugPrint('[journey] ALL STEPS PASSED (flows=$_journeyFlows)');
     } else {
       debugPrint('[journey] ${failed.length} step(s) failed: '
           '${failed.join(', ')}');
@@ -1725,9 +1750,8 @@ Future<void> _logIn(WidgetTester tester, {String phone = _testPhone}) async {
     await _typeText(tester, phoneField.first, phone);
     await _pumpFor(tester, const Duration(milliseconds: 500));
     if (login.phoneNumber.value == phone) break;
-    final typed = (tester.widget(phoneField.first) as EditableText)
-        .controller
-        .text;
+    final typed =
+        (tester.widget(phoneField.first) as EditableText).controller.text;
     debugPrint('[journey]   phone entry $attempt: field "$typed", '
         'controller "${login.phoneNumber.value}"');
     if (attempt == 2) {
@@ -1738,7 +1762,8 @@ Future<void> _logIn(WidgetTester tester, {String phone = _testPhone}) async {
 
   await _waitFor(tester, find.byType(PinCodeTextField));
   await _pumpFor(tester, const Duration(seconds: 1));
-  await _typeText(tester,
+  await _typeText(
+      tester,
       find.descendant(
           of: find.byType(PinCodeTextField),
           matching: find.byType(EditableText)),
@@ -2010,7 +2035,8 @@ Future<void> _payPerson(
   await _openPayments(tester);
   await _tap(tester, find.text('Pay to a Person'));
   await _tap(tester, find.text('Enter Mobile'));
-  await _typeText(tester,
+  await _typeText(
+      tester,
       find.descendant(
           of: find.byType(IntlPhoneField), matching: find.byType(EditableText)),
       phone);
@@ -2028,7 +2054,8 @@ Future<void> _payAmount(WidgetTester tester, String amount) async {
     _dumpScreen();
     rethrow;
   }
-  await _typeText(tester,
+  await _typeText(
+      tester,
       find.descendant(
           of: find
               .ancestor(of: find.text('Amount'), matching: find.byType(Column))
