@@ -56,6 +56,12 @@ jobs:
           STRIPE_PUBLISHABLE_KEY=${STRIPE_PUBLISHABLE_KEY}
           EOF
 
+      - name: Use beta Firebase config
+        run: |
+          cp firebase/beta/google-services.json android/app/google-services.json
+          cp firebase/beta/GoogleService-Info.plist ios/Runner/GoogleService-Info.plist
+          echo "Firebase project: $(jq -r .project_info.project_id android/app/google-services.json)"
+
       - name: Setup Java
         uses: actions/setup-java@v4
         with:

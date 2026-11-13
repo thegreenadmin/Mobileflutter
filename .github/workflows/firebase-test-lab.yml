@@ -128,6 +128,12 @@ jobs:
           STRIPE_PUBLISHABLE_KEY=${STRIPE_PUBLISHABLE_KEY}
           EOF
 
+      - name: Use beta Firebase config
+        run: |
+          cp firebase/beta/google-services.json android/app/google-services.json
+          cp firebase/beta/GoogleService-Info.plist ios/Runner/GoogleService-Info.plist
+          echo "Firebase project: $(jq -r .project_info.project_id android/app/google-services.json)"
+
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
@@ -277,6 +283,12 @@ jobs:
           STRIPE_PUBLISHABLE_KEY=${STRIPE_PUBLISHABLE_KEY}
           EOF
 
+      - name: Use beta Firebase config
+        run: |
+          cp firebase/beta/google-services.json android/app/google-services.json
+          cp firebase/beta/GoogleService-Info.plist ios/Runner/GoogleService-Info.plist
+          echo "Firebase project: $(jq -r .project_info.project_id android/app/google-services.json)"
+
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
@@ -414,6 +426,12 @@ jobs:
           STRIPE_BANK_BASIC_AUTH=${STRIPE_BANK_BASIC_AUTH}
           STRIPE_PUBLISHABLE_KEY=${STRIPE_PUBLISHABLE_KEY}
           EOF
+
+      - name: Use beta Firebase config
+        run: |
+          cp firebase/beta/google-services.json android/app/google-services.json
+          cp firebase/beta/GoogleService-Info.plist ios/Runner/GoogleService-Info.plist
+          echo "Firebase project: $(jq -r .project_info.project_id android/app/google-services.json)"
 
       - name: Select Xcode
         uses: maxim-lobanov/setup-xcode@v1
@@ -656,6 +674,12 @@ jobs:
           STRIPE_BANK_BASIC_AUTH=${STRIPE_BANK_BASIC_AUTH}
           STRIPE_PUBLISHABLE_KEY=${STRIPE_PUBLISHABLE_KEY}
           EOF
+
+      - name: Use beta Firebase config
+        run: |
+          cp firebase/beta/google-services.json android/app/google-services.json
+          cp firebase/beta/GoogleService-Info.plist ios/Runner/GoogleService-Info.plist
+          echo "Firebase project: $(jq -r .project_info.project_id android/app/google-services.json)"
 
       # The newest Xcode that both Test Lab and this runner have.
       - name: Pick an Xcode that Test Lab supports
@@ -905,6 +929,12 @@ jobs:
           STRIPE_BANK_BASIC_AUTH=${STRIPE_BANK_BASIC_AUTH}
           STRIPE_PUBLISHABLE_KEY=${STRIPE_PUBLISHABLE_KEY}
           EOF
+
+      - name: Use beta Firebase config
+        run: |
+          cp firebase/beta/google-services.json android/app/google-services.json
+          cp firebase/beta/GoogleService-Info.plist ios/Runner/GoogleService-Info.plist
+          echo "Firebase project: $(jq -r .project_info.project_id android/app/google-services.json)"
 
       - name: Select Xcode
         uses: maxim-lobanov/setup-xcode@v1

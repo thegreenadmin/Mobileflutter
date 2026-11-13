@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyBnOOzqSwasi7XyVFTBxAwjeJ-giFpmv4w</string>
+	<string>AIzaSyBvLVdYbH6REM5YXFVXVlSTxFFrZhq-5GI</string>
 	<key>GCM_SENDER_ID</key>
-	<string>368561070805</string>
+	<string>552677409164</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.thegreenmall</string>
 	<key>PROJECT_ID</key>
-	<string>thegreenmall-6d910</string>
+	<string>stage-thegreenmall</string>
 	<key>STORAGE_BUCKET</key>
-	<string>thegreenmall-6d910.firebasestorage.app</string>
+	<string>stage-thegreenmall.firebasestorage.app</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
-	<true></true>
+	<false></false>
 	<key>IS_APPINVITE_ENABLED</key>
 	<true></true>
 	<key>IS_GCM_ENABLED</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:368561070805:ios:bb711461a31d18799a785c</string>
+	<string>1:552677409164:ios:e665279e9a17a4f2c1d6a9</string>
 </dict>
 </plist>

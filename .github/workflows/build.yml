@@ -116,6 +116,16 @@ jobs:
         with:
           xcode-version: '26'
 
+      - name: Select Firebase config (${{ env.BUILD_ENVIRONMENT }})
+        run: |
+          case "$BUILD_ENVIRONMENT" in beta|release) ;; *) echo "::error::Unknown BUILD_ENVIRONMENT '$BUILD_ENVIRONMENT'"; exit 1 ;; esac
+          SRC="firebase/$BUILD_ENVIRONMENT"
+          test -f "$SRC/google-services.json" && test -f "$SRC/GoogleService-Info.plist" || { echo "::error::Missing Firebase config in $SRC"; exit 1; }
+          cp "$SRC/google-services.json" android/app/google-services.json
+          cp "$SRC/GoogleService-Info.plist" ios/Runner/GoogleService-Info.plist
+          echo "Android Firebase project: $(jq -r .project_info.project_id android/app/google-services.json)"
+          echo "iOS Firebase project: $(grep -A1 '<key>PROJECT_ID</key>' ios/Runner/GoogleService-Info.plist | tail -1 | sed -E 's/.*<string>(.*)<\/string>.*/\1/')"
+
       - name: Setup Ruby and Fastlane
         uses: ruby/setup-ruby@v1
         with:
@@ -242,6 +252,16 @@ jobs:
           # Stripe publishable key for client-side payment operations (Google Pay, Apple Pay)
           STRIPE_PUBLISHABLE_KEY=${STRIPE_PUBLISHABLE_KEY}
           EOF
+
+      - name: Select Firebase config (${{ env.BUILD_ENVIRONMENT }})
+        run: |
+          case "$BUILD_ENVIRONMENT" in beta|release) ;; *) echo "::error::Unknown BUILD_ENVIRONMENT '$BUILD_ENVIRONMENT'"; exit 1 ;; esac
+          SRC="firebase/$BUILD_ENVIRONMENT"
+          test -f "$SRC/google-services.json" && test -f "$SRC/GoogleService-Info.plist" || { echo "::error::Missing Firebase config in $SRC"; exit 1; }
+          cp "$SRC/google-services.json" android/app/google-services.json
+          cp "$SRC/GoogleService-Info.plist" ios/Runner/GoogleService-Info.plist
+          echo "Android Firebase project: $(jq -r .project_info.project_id android/app/google-services.json)"
+          echo "iOS Firebase project: $(grep -A1 '<key>PROJECT_ID</key>' ios/Runner/GoogleService-Info.plist | tail -1 | sed -E 's/.*<string>(.*)<\/string>.*/\1/')"
 
       - name: Setup Ruby and Fastlane
         uses: ruby/setup-ruby@v1
