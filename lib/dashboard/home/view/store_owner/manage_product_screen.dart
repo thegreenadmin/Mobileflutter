@@ -4,6 +4,7 @@ import 'package:thegreenmall/dashboard/home/controller/manage_store_controller.d
 import 'package:thegreenmall/dashboard/home/view/store_owner/add_edit_category.dart';
 import 'package:thegreenmall/dashboard/home/view/store_owner/product_list_screen.dart';
 import 'package:thegreenmall/utils/utils.dart';
+import 'package:thegreenmall/utils/brand_image.dart';
 
 class MangeProductScreen extends StatefulWidget {
   final String? storeId;
@@ -23,11 +24,15 @@ class _MangeProductScreenState extends State<MangeProductScreen> with GlobalVarM
 
   @override
   initState() {
-    manageStoreController.storeId.value = widget.storeId??"";
-    manageStoreController.storeLocation.value = widget.storeLocation??"";
-    manageStoreController.storeName.value = widget.storeName??"";
-    manageStoreController.productId.value = widget.productId??"";
-    getApiData();
+    // Screens still on the stack observe this shared controller, so changing
+    // its Rx values while this route builds would rebuild them mid-build.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      manageStoreController.storeId.value = widget.storeId ?? "";
+      manageStoreController.storeLocation.value = widget.storeLocation ?? "";
+      manageStoreController.storeName.value = widget.storeName ?? "";
+      manageStoreController.productId.value = widget.productId ?? "";
+      getApiData();
+    });
     super.initState();
 
 
@@ -168,7 +173,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> with GlobalVarM
                         Flexible(
                           child: Text(
                             StringConstants.viewAndUpdateItemsText,
-                            style: const TextStyle(
+                            style: TextStyle(
                                 fontSize: 16.0,
                                 color: AppColors.black,
                                 fontWeight: FontWeight.w600),
@@ -214,7 +219,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> with GlobalVarM
                             },
                             child: Row(
                               children: [
-                                const Icon(
+                                Icon(
                                   Icons.add,
                                   color: AppColors.primary,
                                   size: 16.0,
@@ -222,7 +227,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> with GlobalVarM
                                 width2SizedBox,
                                 Text(
                                   StringConstants.addNewCategoriesText,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                       fontSize: 15.0,
                                       color: AppColors.primary,
                                       fontWeight: FontWeight.w500),
@@ -241,7 +246,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> with GlobalVarM
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Center(
-                                      child: Image.asset(
+                                      child: BrandImage.asset(
                                         ImageConstants.nodata,
                                         scale: 8,
                                         color: AppColors.primary,
@@ -267,7 +272,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> with GlobalVarM
                                 return Dismissible(
                                   background: Container(
                                     color: AppColors.redLight,
-                                    child: const Align(
+                                    child: Align(
                                       alignment: Alignment.centerRight,
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment.end,
@@ -337,7 +342,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> with GlobalVarM
                                     child: Container(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 10, vertical: 10),
-                                      decoration: const BoxDecoration(
+                                      decoration: BoxDecoration(
                                           color: AppColors.greyLight,
                                           borderRadius: BorderRadius.all(
                                             Radius.circular(8.0),
@@ -382,7 +387,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> with GlobalVarM
                                                                   .categoriesList[index]
                                                                   .categoryName ??
                                                               "",
-                                                          style: const TextStyle(
+                                                          style: TextStyle(
                                                               fontSize: 16.0,
                                                               color: AppColors.black,
                                                               fontWeight:
@@ -512,7 +517,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> with GlobalVarM
           return manageStoreController.isLoading.value
               ? Container(
             color: Colors.black.withOpacity(0.2),
-            child: const Center(
+            child: Center(
               child: CircularProgressIndicator(color: AppColors.primary),
             ),)
               : const SizedBox.shrink();
@@ -537,6 +542,11 @@ class _MangeProductScreenState extends State<MangeProductScreen> with GlobalVarM
                         children: [
                           Row(
                             children: [
+                              Image.asset(
+                                ImageConstants.homeMall,
+                                scale: 4,
+                              ),
+                              width10SizedBox,
                               IconButton(
                                 padding: EdgeInsets.all(5),
                                 constraints: const BoxConstraints(),
@@ -544,7 +554,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> with GlobalVarM
                                   Get.delete<ManageStoreController>();
                                   Get.back(id: pageIdApp.value);
                                 },
-                                icon: const Icon(
+                                icon: Icon(
                                   Icons.arrow_back,
                                   color: AppColors.black,
                                   size: 24.0,
@@ -556,7 +566,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> with GlobalVarM
                                     child: Text(
                                       manageStoreController.storeName.value,
                                       overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                           fontSize: 22,
                                           color: AppColors.black,
                                           fontWeight: FontWeight.w600),
@@ -564,10 +574,6 @@ class _MangeProductScreenState extends State<MangeProductScreen> with GlobalVarM
                                   )),
                             ],
                           ),
-                          Image.asset(
-                            ImageConstants.homeMall,
-                            scale: 4,
-                          )
                         ]),
                   ],
                 )),

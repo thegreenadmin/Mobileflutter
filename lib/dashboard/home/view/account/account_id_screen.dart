@@ -35,6 +35,11 @@ class _AccountIdScreenState extends State<AccountIdScreen> with GlobalVarMixin{
                           children: [
                             Row(
                               children: [
+                                Image.asset(
+                                  ImageConstants.homeMall,
+                                  scale: 4,
+                                ),
+                                width10SizedBox,
                                 IconButton(
                                   padding: EdgeInsets.zero,
                                   constraints: const BoxConstraints(),
@@ -42,7 +47,7 @@ class _AccountIdScreenState extends State<AccountIdScreen> with GlobalVarMixin{
                                     Get.back(id: pageIdApp.value);
                                     //Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
                                   },
-                                  icon: const Icon(
+                                  icon: Icon(
                                     Icons.arrow_back,
                                     color: AppColors.black,
                                     size: 24.0,
@@ -51,17 +56,13 @@ class _AccountIdScreenState extends State<AccountIdScreen> with GlobalVarMixin{
                                 width10SizedBox,
                                 Text(
                                   StringConstants.accountIdText,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                       fontSize: 20,
                                       color: AppColors.black,
                                       fontWeight: FontWeight.w600),
                                 ),
                               ],
                             ),
-                            Image.asset(
-                              ImageConstants.homeMall,
-                              scale: 5,
-                            )
                           ]),
                     ],
                   )),
@@ -89,7 +90,7 @@ class _AccountIdScreenState extends State<AccountIdScreen> with GlobalVarMixin{
                             children: [
                               Obx(() => Text(
                                     "${accountController.firstName!.value} ${accountController.lastName!.value}",
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         color: AppColors.black,
                                         fontSize: 20,
                                         fontWeight: FontWeight.w500),

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/owner_inbox_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/inbox/store_owner_Inbox/owner_inbox_detail_screen.dart';
+import 'package:thegreenmall/utils/guest_access_modal.dart';
 import 'package:thegreenmall/utils/utils.dart';
+import 'package:thegreenmall/utils/brand_image.dart';
 
 class OwnerInboxScreen extends StatefulWidget {
   const OwnerInboxScreen({Key? key}) : super(key: key);
@@ -14,6 +16,26 @@ class OwnerInboxScreen extends StatefulWidget {
 class _OwnerInboxScreenState extends State<OwnerInboxScreen> with GlobalVarMixin{
   final OwnerInboxController ownerInboxController =
       Get.put(OwnerInboxController());
+
+  @override
+  void initState() {
+    // Check if user is guest - show modal for account-based features
+    if (isGuest.value == true) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        GuestAccessModal.show(
+          title: StringConstants.loginRequiredText,
+          message: StringConstants.loginToAccessInboxText,
+          onContinueAsGuest: () {
+            // Allow guest to continue - just close modal and go back
+            Get.back();
+          },
+        );
+      });
+      super.initState();
+      return;
+    }
+    super.initState();
+  }
 
   Container _messageTab() {
     return Container(
@@ -130,13 +152,18 @@ class _OwnerInboxScreenState extends State<OwnerInboxScreen> with GlobalVarMixin
                                   children: [
                                     Row(
                                       children: [
+                                        Image.asset(
+                                          ImageConstants.homeMall,
+                                          scale: 4,
+                                        ),
+                                        width10SizedBox,
                                         IconButton(
                                           padding: EdgeInsets.all(10),
                                           constraints: const BoxConstraints(),
                                           onPressed: () {
                                             Get.back(id: pageIdApp.value);
                                           },
-                                          icon: const Icon(
+                                          icon: Icon(
                                             Icons.arrow_back,
                                             color: AppColors.black,
                                             size: 24.0,
@@ -145,17 +172,13 @@ class _OwnerInboxScreenState extends State<OwnerInboxScreen> with GlobalVarMixin
                                         width10SizedBox,
                                         Text(
                                           StringConstants.inboxText,
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                               fontSize: 22,
                                               color: AppColors.black,
                                               fontWeight: FontWeight.w600),
                                         ),
                                       ],
                                     ),
-                                    Image.asset(
-                                      ImageConstants.homeMall,
-                                      scale: 4,
-                                    )
                                   ]),
                             ],
                           )),
@@ -175,7 +198,7 @@ class _OwnerInboxScreenState extends State<OwnerInboxScreen> with GlobalVarMixin
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
                                       Center(
-                                        child: Image.asset(
+                                        child: BrandImage.asset(
                                           ImageConstants.nodata,
                                           scale: 8,
                                           color: AppColors.primary,
@@ -201,7 +224,7 @@ class _OwnerInboxScreenState extends State<OwnerInboxScreen> with GlobalVarMixin
                                   return Container(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 10, vertical: 10),
-                                    decoration: const BoxDecoration(
+                                    decoration: BoxDecoration(
                                         color: AppColors.greyLight,
                                         borderRadius: BorderRadius.all(
                                           Radius.circular(8.0),
@@ -262,7 +285,7 @@ class _OwnerInboxScreenState extends State<OwnerInboxScreen> with GlobalVarMixin
                                                                           ?.offerName ??
                                                                       ""
                                                                   : "${ownerInboxController.inboxList[index].user?.firstName ?? ""} ${ownerInboxController.inboxList[index].user?.lastName ?? ""}",
-                                                              style: const TextStyle(
+                                                              style: TextStyle(
                                                                   fontSize: 16.0,
                                                                   color: AppColors.black,
                                                                   fontWeight:
@@ -295,7 +318,7 @@ class _OwnerInboxScreenState extends State<OwnerInboxScreen> with GlobalVarMixin
                                                                           ? " - ${StringConstants.offerIdText.toUpperCase()} "
                                                                               "#${ownerInboxController.inboxList[index].offerId}"
                                                                           : "",
-                                                              style: const TextStyle(
+                                                              style: TextStyle(
                                                                   fontSize: 16.0,
                                                                   color: AppColors.black,
                                                                   fontWeight:
@@ -381,7 +404,7 @@ class _OwnerInboxScreenState extends State<OwnerInboxScreen> with GlobalVarMixin
                                                       padding: const EdgeInsets.fromLTRB(
                                                           16.0, 8.0, 16.0, 8.0),
                                                       shape: RoundedRectangleBorder(
-                                                        side: const BorderSide(
+                                                        side: BorderSide(
                                                             width: 1.0,
                                                             color: AppColors.primary),
                                                         borderRadius:
@@ -434,7 +457,7 @@ class _OwnerInboxScreenState extends State<OwnerInboxScreen> with GlobalVarMixin
                                                             const EdgeInsets.fromLTRB(
                                                                 18.0, 8.0, 18.0, 8.0),
                                                         shape: RoundedRectangleBorder(
-                                                          side: const BorderSide(
+                                                          side: BorderSide(
                                                               width: 1.0,
                                                               color: AppColors.primary),
                                                           borderRadius:
@@ -443,7 +466,7 @@ class _OwnerInboxScreenState extends State<OwnerInboxScreen> with GlobalVarMixin
                                                         fillColor: AppColors.white,
                                                         child: Text(
                                                           StringConstants.completeText,
-                                                          style: const TextStyle(
+                                                          style: TextStyle(
                                                               fontWeight: FontWeight.w500,
                                                               fontSize: 14.0,
                                                               color: AppColors.black),
@@ -471,7 +494,7 @@ class _OwnerInboxScreenState extends State<OwnerInboxScreen> with GlobalVarMixin
               return ownerInboxController.isLoading.value
                   ? Container(
                 color: Colors.black.withOpacity(0.2),
-                child: const Center(
+                child: Center(
                   child: CircularProgressIndicator(color: AppColors.primary),
                 ),)
                   : const SizedBox.shrink();

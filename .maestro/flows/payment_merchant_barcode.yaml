@@ -1,0 +1,32 @@
+appId: com.thegreenmall
+---
+# Payments -> Receive -> payment code screen. Store owners get
+# "Receive to my business" (code for a store + amount); customers get
+# "Show my code". Only opens the screen; no code is generated.
+- runFlow: helpers/login.yaml
+- tapOn: "Payments"
+- extendedWaitUntil:
+    visible: "Receive"
+    timeout: 10000
+- tapOn: "Receive"
+- extendedWaitUntil:
+    visible: "Get paid"
+    timeout: 8000
+- runFlow:
+    when:
+      visible: "Receive to my business.*"
+    commands:
+      - tapOn: "Receive to my business.*"
+      - extendedWaitUntil:
+          visible: "Generate a payment code.*"
+          timeout: 10000
+      - assertVisible: "Generate code"
+- runFlow:
+    when:
+      visible: "Show my code.*"
+    commands:
+      - tapOn: "Show my code.*"
+      - extendedWaitUntil:
+          visible: "My Payment Code.*"
+          timeout: 10000
+- takeScreenshot: merchant_barcode_screen

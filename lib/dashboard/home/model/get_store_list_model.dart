@@ -53,6 +53,8 @@ class Stores {
   Images? logo;
   String? storeName;
   String? storeEin;
+  // Business vertical: general / munchies / herbs
+  String? storeType;
   List<StoreAddresses>? storeAddresses;
 
   Stores(
@@ -61,6 +63,7 @@ class Stores {
       this.logo,
       this.storeName,
       this.storeEin,
+      this.storeType,
       this.storeAddresses});
 
   Stores.fromJson(Map<String, dynamic> json) {
@@ -69,6 +72,7 @@ class Stores {
     logo = json['logo'] != null ? Images.fromJson(json['logo']) : null;
     storeName = json['store_name'];
     storeEin = json['store_ein'];
+    storeType = json['store_type'];
     if (json['store_addresses'] != null) {
       storeAddresses = <StoreAddresses>[];
       json['store_addresses'].forEach((v) {
@@ -88,6 +92,7 @@ class Stores {
     }
     data['store_name'] = storeName;
     data['store_ein'] = storeEin;
+    data['store_type'] = storeType;
     if (storeAddresses != null) {
       data['store_addresses'] = storeAddresses!.map((v) => v.toJson()).toList();
     }

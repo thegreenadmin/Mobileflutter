@@ -1,5 +1,5 @@
 # Uncomment this line to define a global platform for your project
-platform :ios, '14.0'
+platform :ios, '15.0'
 
 # CocoaPods analytics sends network stats synchronously affecting flutter build latency.
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
@@ -37,9 +37,26 @@ end
 post_install do |installer|
   installer.pods_project.targets.each do |target|
     flutter_additional_ios_build_settings(target)
+    target.build_configurations.each do |config|
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '15.0'
+      if target.name.include?('DKPhotoGallery')
+        config.build_settings['ASSETCATALOG_COMPILER_APPICON_NAME'] = ''
+        config.build_settings['ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME'] = ''
+        # Remove asset catalog from resources to avoid runtime version mismatch
+        target.build_phases.each do |build_phase|
+          if build_phase.is_a?(Xcodeproj::Project::Object::PBXResourcesBuildPhase)
+            build_phase.files.each do |file_ref|
+              if file_ref.file_ref.path.include?('.xcassets')
+                build_phase.files.delete(file_ref)
+              end
+            end
+          end
+        end
+      end
+    end
 
     # Start of the permission_handler configuration
-        target.build_configurations.each do |config|
+    target.build_configurations.each do |config|
 
           # You can enable the permissions needed here. For example to enable camera
           # permission, just remove the `#` character in front so it looks like this:
@@ -102,5 +119,9 @@ post_install do |installer|
 
         end
         # End of the permission_handler configuration
+  end
+  
+  installer.pods_project.build_configurations.each do |config|
+    config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '15.0'
   end
 end

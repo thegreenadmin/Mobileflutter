@@ -107,7 +107,7 @@ class CustomInputFieldState extends State<CustomInputField> {
         readOnly: widget.readOnly ?? false,
         textAlign: widget.textAlign ?? TextAlign.start,
         style: widget.style ??
-            const TextStyle(
+            TextStyle(
                 color: AppColors.black,
                 fontSize: 16,
                 fontWeight: FontWeight.w400),
@@ -138,7 +138,7 @@ class CustomInputFieldState extends State<CustomInputField> {
               ),
           filled: true,
           fillColor: widget.fillColor ?? AppColors.transparent,
-          errorStyle: const TextStyle(color: AppColors.red),
+          errorStyle: TextStyle(color: AppColors.red),
           errorMaxLines: widget.errorMaxLines ?? 4,
           errorBorder: widget.isBorderOutline == true
               ? CommonWidgets.outlineInputBorder(

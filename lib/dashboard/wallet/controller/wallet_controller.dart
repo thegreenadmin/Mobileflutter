@@ -4,12 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:thegreenmall/bottomNavigation/bottom_nav_controller.dart';
 import 'package:thegreenmall/dashboard/home/controller/search_store_user_controller.dart';
 import 'package:thegreenmall/dashboard/home/model/categories_model.dart';
 import 'package:thegreenmall/dashboard/home/model/user_store_details_response.dart'
     as store;
 import 'package:thegreenmall/dashboard/wallet/model/wallet_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
+import 'package:thegreenmall/utils/email_required_modal.dart';
+import 'package:thegreenmall/utils/stripe_error_mapper.dart';
 import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
@@ -22,6 +25,9 @@ class WalletController extends GetxController with GlobalVarMixin{
   RxString? nickName = "".obs;
   RxString? role = "".obs;
   RxString email = "".obs;
+  // Whether the logged-in user has an email on file (backend-driven). Wallet /
+  // Stripe features are gated until this is true for the no-email user.
+  RxBool hasEmail = true.obs;
   RxString phone = "".obs;
   RxString day = "".obs;
   RxInt amount = 0.obs;
@@ -121,25 +127,84 @@ class WalletController extends GetxController with GlobalVarMixin{
   @override
   void onInit() {
     super.onInit();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (Get.parameters["isController"] != "no") {
-        if (roleApp.value == Role.customerRoleText) {
-          searchStoreUserController.apiActiveCartApi();
-        }
 
-        getPage();
+    // Sync local firstName/lastName with global variables
+    if (firstName != null) {
+      ever(firstName!, (String val) => this.firstName?.value = val);
+    }
+    if (lastName != null) {
+      ever(lastName!, (String val) => this.lastName?.value = val);
+    }
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Skip API calls for guest users
+      if (isGuest.value == true) {
+        return;
       }
+      if (roleApp.value == Role.customerRoleText) {
+        searchStoreUserController.apiActiveCartApi();
+      }
+      getPage();
     });
   }
 
+  /// Reliable entry point used by the bottom-nav tap handler to (re)load
+  /// wallet data whenever the Wallet tab is selected.
+  ///
+  /// Previously the tap handler called [onInit] manually, which deferred the
+  /// fetch to a post-frame callback, re-checked the (already-cleared) guest
+  /// flag, and re-registered the `ever` listeners on every tap. After a guest
+  /// was converted to a customer/store-owner this raced and the balance often
+  /// stayed at the default "0.00" until the user opened Add Money and returned
+  /// (that flow calls the balance API directly). Fetching here unconditionally
+  /// keeps the displayed balance consistent on the very first visit.
+  Future<void> refreshWallet() async {
+    if (isGuest.value == true) {
+      return;
+    }
+    if (roleApp.value == Role.customerRoleText) {
+      searchStoreUserController.apiActiveCartApi();
+    }
+    await getPage();
+  }
+
   getPage() async {
+    // Gate: a logged-in user without an email cannot use wallet/Stripe features
+    // (Stripe rejects an empty email). Block here — the single choke point for
+    // both customer and store-owner data loads — and prompt them to add an email.
+    if (!await _userHasEmail()) {
+      hasEmail.value = false;
+      update();
+      // Only prompt while the Wallet tab is actually active. The email check is
+      // async, so if the user already moved on (e.g. tapped "Maybe Later" which
+      // returns Home) a stale callback must not pop the modal over another tab.
+      if (_isWalletTabActive()) {
+        // Re-run the gate when the user returns from the profile edit form so the
+        // wallet loads immediately once an email has been saved. "Maybe Later"
+        // sends them back to Home — wallet stays inaccessible until email added.
+        EmailRequiredModal.show(
+          onUpdated: () => getPage(),
+          onLater: () {
+            if (Get.isRegistered<BottomNavController>()) {
+              Get.find<BottomNavController>().onItemTapped(0);
+            }
+          },
+        );
+      }
+      return;
+    }
+    hasEmail.value = true;
+
     firstName?.value =
         await SharedPreferenceStorage.getData(StringConstants.firstNameText) ??
             "";
     lastName?.value =
         await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
             "";
-    role?.value = roleApp.value;
+    // Read role directly from SharedPrefs — roleApp.value may still be ""
+    // on real devices when this runs (slower SharedPrefs vs simulator).
+    final roleData = await SharedPreferenceStorage.getData(Role.role) ?? "";
+    role?.value = roleData.isNotEmpty ? roleData : roleApp.value;
     autoChargeType.value = "threshold";
     if (role?.value == Role.customerRoleText) {
       // if (Get.parameters['isFromCartScreen'] != "false") {
@@ -148,18 +213,42 @@ class WalletController extends GetxController with GlobalVarMixin{
       // }
       getApiData();
     } else {
-      await apiGetCardList();
-      await apiGetBankAccountList();
-      await apiGetStoreList();
-      await apiGetAccountDetails();
+      // All four are independent — run in parallel
+      await Future.wait([
+        apiGetCardList(),
+        apiGetBankAccountList(),
+        apiGetStoreList(),
+        apiGetAccountDetails(),
+      ]);
     }
     update();
   }
 
+  /// Whether the logged-in user has an email on file. Uses the value already
+  /// cached locally from the Home user-details fetch (and refreshed when the
+  /// user saves their profile) — no extra backend call is made here, and no
+  /// wallet/Stripe APIs are hit while the email is missing. Guests are treated
+  /// as "has email" so the existing guest gate — not this one — handles them.
+  Future<bool> _userHasEmail() async {
+    if (isGuest.value == true) return true;
+    final cached =
+        await SharedPreferenceStorage.getData(StringConstants.emailText);
+    return cached != null && cached.toString().trim().isNotEmpty;
+  }
+
+  /// True only when the Wallet tab is the currently selected bottom-nav tab.
+  bool _isWalletTabActive() {
+    if (!Get.isRegistered<BottomNavController>()) return true;
+    return Get.find<BottomNavController>().selectedIndex.value == 1;
+  }
+
   getApiData() async {
-    await apiGetCardList();
-    await apiGetUserWalletBalance();
-    await apiGetAutoRechargeDetail();
+    // All three are independent — run in parallel
+    await Future.wait([
+      apiGetCardList(),
+      apiGetUserWalletBalance(),
+      apiGetAutoRechargeDetail(),
+    ]);
   }
 
   monthDays() {
@@ -316,7 +405,7 @@ class WalletController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -347,7 +436,7 @@ class WalletController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -394,7 +483,7 @@ class WalletController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -410,9 +499,10 @@ class WalletController extends GetxController with GlobalVarMixin{
     var month = parts[0].trim();
     var year = parts[1].trim();
     try {
+      isLoading.value = true;
       var headers = {
         StringConstants.authorizationText:
-            'Basic cGtfdGVzdF81MU1uYUpkRlZuTW1IaGtHWW55ZFp2bENoMVhXMlhzNUllczhVc3hiajdNWVhQcUdQTkRuV3BBaDIzR1cyTUg3WUcxRnhjM0p6M2pUYjZkZlRuMjRsSjE0VTAwU3hETEJwSnI6',
+            'Bearer ${ServerCommunicator.stripePublishableKey}',
         'Content-Type': 'application/x-www-form-urlencoded'
       };
       var request = http.Request(
@@ -431,9 +521,15 @@ class WalletController extends GetxController with GlobalVarMixin{
         stripeToken.value = parsed['id'].toString();
         await apiCreateCard();
       } else {
-               }
+        isLoading.value = false;
+        Utility.showAlertMessage(StripeErrorMapper.fromResponseBody(
+            streamResponse.body,
+            fallback: StripeErrorMapper.defaultCardMessage));
+      }
     } catch (error) {
-           }
+      isLoading.value = false;
+      Utility.showAlertMessage(StripeErrorMapper.defaultCardMessage);
+    }
   }
 
   ///Api Create Card
@@ -494,7 +590,7 @@ class WalletController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear(); isLoading.value = false;
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else { isLoading.value = false;
         if (value?.body['message']
                 .toString()
@@ -509,9 +605,15 @@ class WalletController extends GetxController with GlobalVarMixin{
 
   /// Add Money to stripe wallet
   Future apiAddMoneyToWallet() async {
+    final String finalStripeCardId = userStripeCardId?.value.toString().trim() ?? "";
+    if (finalStripeCardId.isEmpty) {
+      Utility.showAlertMessage(AlertStringConstants.pleaseSelectCardText);
+      return;
+    }
+
     isLoading.value = true;
          Map body = {
-      "user_stripe_card_id": userStripeCardId!.value,
+      "user_stripe_card_id": finalStripeCardId,
       "amount": amountTextController.text.trim()
     };
 
@@ -582,7 +684,7 @@ class WalletController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();isLoading.value = false;
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -621,7 +723,7 @@ class WalletController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else { isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -657,7 +759,7 @@ class WalletController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
         String msg = value?.body["message"].toString().toLowerCase() ?? "";
         if (msg.contains("store not found")) {  isLoading.value = false;
@@ -677,7 +779,7 @@ class WalletController extends GetxController with GlobalVarMixin{
     try {
       var headers = {
         StringConstants.authorizationText:
-            'Basic c2tfdGVzdF81MU1uYUpkRlZuTW1IaGtHWTFQU3dCRkZGakdGT29EWUt0Z2Z0aVNtUkdKdDJzY0lTSlBaT1o2YXkyeWlMSmlMMW5Kb2cyaEFpZDRDNU5SNGFTMVZVZmZvNDAwN3hBVG03eU46',
+            'Bearer ${ServerCommunicator.stripePublishableKey}',
         'Content-Type': 'application/x-www-form-urlencoded'
       };
       var request =
@@ -701,15 +803,14 @@ class WalletController extends GetxController with GlobalVarMixin{
         bankToken.value = parsed['id'].toString();
         isLoading.value = false;
         apiCreateStoreStripeAccount();
-      } else if (response.statusCode == 400) {  isLoading.value = false;
-        var parsed = jsonDecode(streamResponse.body);
-        Utility.showAlertMessage(parsed['error']['message'].toString());
       } else {  isLoading.value = false;
-        var parsed = jsonDecode(streamResponse.body);
-        Utility.showAlertMessage(parsed['error']['message'].toString());
+        Utility.showAlertMessage(StripeErrorMapper.fromResponseBody(
+            streamResponse.body,
+            fallback: StripeErrorMapper.defaultBankMessage));
       }
     } catch (error) {  isLoading.value = false;
-           }
+      Utility.showAlertMessage(StripeErrorMapper.defaultBankMessage);
+    }
   }
 
   Future apiCreateStoreStripeAccount() async {
@@ -746,7 +847,7 @@ class WalletController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();isLoading.value = false;
         Get.parameters.clear();
-        await Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else if (value?.body["status"] == ApiConstants.statusCode409) {isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
       } else {isLoading.value = false;
@@ -782,7 +883,7 @@ class WalletController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {  isLoading.value = false;
         if (value?.body['message']
                 .toString()
@@ -823,7 +924,7 @@ class WalletController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        await Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {  isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -884,7 +985,7 @@ class WalletController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        await Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else if (value?.body["status"] == ApiConstants.statusCode409) { isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
       } else { isLoading.value = false;
@@ -980,7 +1081,7 @@ class WalletController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        await Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -1046,7 +1147,7 @@ class WalletController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        await Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else if (value?.body["status"] == ApiConstants.statusCode409) {isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
       } else {isLoading.value = false;
@@ -1090,7 +1191,7 @@ class WalletController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        await Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -1125,7 +1226,7 @@ class WalletController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
       }

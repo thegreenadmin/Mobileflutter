@@ -19,6 +19,9 @@ class ServerCommunicator {
   static String get baseUrl => '${baseUrlWithoutApi}api/v1/';
   static String get baseUrlWithoutV1 => '${baseUrlWithoutApi}api/';
   static String get kGoogleApiKey => dotenv.env['GOOGLE_MAP_KEY'] ?? '';
+  static String get stripeCardBasicAuth => dotenv.env['STRIPE_CARD_BASIC_AUTH'] ?? '';
+  static String get stripeBankBasicAuth => dotenv.env['STRIPE_BANK_BASIC_AUTH'] ?? '';
+  static String get stripePublishableKey => dotenv.env['STRIPE_PUBLISHABLE_KEY'] ?? '';
 
 
   // String baseUrl = "https://cn3m3t9wyd.execute-api.us-east-1.amazonaws.com/api/v1/";
@@ -31,6 +34,7 @@ class ServerCommunicator {
   // Prod API URL:    https://cn3m3t9wyd.execute-api.us-east-1.amazonaws.com
   // Local API URL:    http://172.24.0.53:8080
 //A
+  static const appConfig = 'utils/app/config';
 
 //B
 //C
@@ -48,9 +52,9 @@ class ServerCommunicator {
   static const createFavouriteStore = 'user/store/favourite/create';
   static const createFavouriteProduct = 'user/product/favourite/create';
   static const cancelOrder = 'order/cancel/create';
-  static const createStripeToken = 'https://api.stripe.com/v1/tokens';
+  static String get createStripeToken => dotenv.env['STRIPE_API_URL'] ?? 'https://api.stripe.com/v1/tokens';
   static const createCard = 'user/stripe/card/create';
-  static const createBankToken = 'https://api.stripe.com/v1/tokens';
+  static String get createBankToken => dotenv.env['STRIPE_API_URL'] ?? 'https://api.stripe.com/v1/tokens';
   static const claimStoreRequest = "shop/store/claim/create";
 
 //D
@@ -182,6 +186,7 @@ class ServerCommunicator {
   static const unclaimedStoreList = 'store/unclaimed';
   static const userDetail = 'user/details';
   static const updateUser = 'user/details/update';
+  static const updateDeviceToken = 'user/device/token/update';
   static const userStore = 'store/list';
   static const updateCart = 'shop/store/cart/item/update';
   static const userProof = 'user/proof/verification/create';
@@ -207,6 +212,16 @@ class ServerCommunicator {
   static const userDelete = 'user/delete';
   static const userStripeConnectedAccountDetails = 'user/stripe/connected/account/details';
   static const userPaymentMethod = "user/wallet/recharge/paymentMethod";
+
+  // P2P & P2B barcode payments
+  static const paymentRecipientLookup = 'user/payment/recipient/lookup';
+  static const paymentQrGenerate = 'user/payment/qr/generate';
+  static const paymentQrDecode = 'user/payment/qr/decode';
+  static const paymentRequestSms = 'user/payment/request/sms';
+  static const paymentCreate = 'user/payment/create';
+  static const paymentConfirm = 'user/payment/confirm';
+  static const paymentCancel = 'user/payment/cancel';
+  static const paymentStatus = 'user/payment/status';
 
 //V
 //W

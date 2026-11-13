@@ -5,12 +5,16 @@ import 'package:thegreenmall/dashboard/home/view/store_owner/add_new_store_scree
 import 'package:thegreenmall/dashboard/home/view/store_owner/claim_store_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/store_owner/manage_store_main_screen.dart';
 import 'package:thegreenmall/utils/utils.dart';
+import 'package:thegreenmall/utils/brand_image.dart';
 
 class OwnerStoresListScreen extends StatefulWidget {
   final String? firstName;
   final String? lastName;
   final bool? isFromHome;
-  const OwnerStoresListScreen({super.key, this.firstName, this.lastName, this.isFromHome});
+  // Optional store category filter (e.g. Munchies / Herbs) selected from the
+  // home screen pills. Null means show all stores.
+  final String? category;
+  const OwnerStoresListScreen({super.key, this.firstName, this.lastName, this.isFromHome, this.category});
 
   @override
   State<OwnerStoresListScreen> createState() => _OwnerStoresListScreenState();
@@ -24,6 +28,15 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> with Glob
   void initState() {
     // ownerStoresController.isFromHome.value =widget.isFromHome;
     super.initState();
+    // Scope the list to the vertical picked on the home pills (if any) and
+    // re-fetch so the filter is applied to fresh data.
+    ownerStoresController.ownerStoreTypeFilter.value =
+        widget.category == StringConstants.munchiesText
+            ? "munchies"
+            : widget.category == StringConstants.herbsText
+                ? "herbs"
+                : "";
+    ownerStoresController.apiGetStoreList();
   }
 
   @override
@@ -62,7 +75,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> with Glob
           return ownerStoresController.isLoading.value
               ? Container(
             color: Colors.black.withOpacity(0.2),
-            child: const Center(
+            child: Center(
               child: CircularProgressIndicator(color: AppColors.primary),
             ),)
               : const SizedBox.shrink();
@@ -87,7 +100,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> with Glob
     return Dismissible(
           background: Container(
             color: AppColors.redLight,
-            child: const Align(
+            child: Align(
               alignment: Alignment.centerRight,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -140,7 +153,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> with Glob
             child: Container(
               padding:
                   const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                   color: AppColors.primaryLight,
                   borderRadius: BorderRadius.all(
                     Radius.circular(8.0),
@@ -179,10 +192,29 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> with Glob
                               ownerStoresController
                                       .storeList[index].storeName ??
                                   "",
-                              style: const TextStyle(
+                              style: TextStyle(
                                   fontSize: 16.0,
                                   color: AppColors.black,
                                   fontWeight: FontWeight.w500),
+                            ),
+                          ),
+                          height4SizedBox,
+                          // Store-type badge so mixed lists stay distinguishable.
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 2),
+                            decoration: BoxDecoration(
+                              color: AppColors.primary,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Text(
+                              StringConstants.storeTypeLabel(
+                                  ownerStoresController
+                                      .storeList[index].storeType),
+                              style: const TextStyle(
+                                  fontSize: 10.0,
+                                  color: AppColors.white,
+                                  fontWeight: FontWeight.w600),
                             ),
                           ),
                           height8SizedBox,
@@ -259,7 +291,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> with Glob
                                                           .storeAddresses![i]
                                                           .city ??
                                                       "",
-                                                  style: const TextStyle(
+                                                  style: TextStyle(
                                                       color: AppColors.black,
                                                       fontWeight:
                                                           FontWeight.w600,
@@ -294,7 +326,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> with Glob
                                                           .state!
                                                           .stateName ??
                                                       "",
-                                                  style: const TextStyle(
+                                                  style: TextStyle(
                                                       color: AppColors.black,
                                                       fontWeight:
                                                           FontWeight.w600,
@@ -334,7 +366,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> with Glob
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Center(
-          child: Image.asset(
+          child: BrandImage.asset(
             ImageConstants.nodata,
             scale: 8,
             color: AppColors.primary,
@@ -369,13 +401,18 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> with Glob
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          Image.asset(
+                            ImageConstants.homeMall,
+                            scale: 4,
+                          ),
+                          width10SizedBox,
                           IconButton(
                             padding: EdgeInsets.all(5),
                             constraints: const BoxConstraints(),
                             onPressed: () {
                               Get.back(id: pageIdApp.value);
                             },
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.arrow_back,
                               color: AppColors.black,
                               size: 24.0,
@@ -387,16 +424,16 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> with Glob
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                  "${StringConstants.hiText}${widget.firstName} ${widget.lastName}",
-                                  style: const TextStyle(
+                                  "${StringConstants.hiText}${widget.firstName}",
+                                  style: TextStyle(
                                       fontSize: 20,
                                       color: AppColors.black,
                                       fontWeight: FontWeight.w600),
                                 ),
 
                               Text(
-                                StringConstants.searchForStoreText,
-                                style: const TextStyle(
+                                StringConstants.storeListTitle(widget.category),
+                                style: TextStyle(
                                     fontSize: 18,
                                     color: AppColors.black,
                                     fontWeight: FontWeight.w400),
@@ -405,10 +442,6 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> with Glob
                           ),
                         ],
                       ),
-                      Image.asset(
-                        ImageConstants.homeMall,
-                        scale: 4,
-                      )
                     ]),
                 height15SizedBox,
               ],
@@ -445,35 +478,39 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> with Glob
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                CustomButton(
-                  border: Border.all(
-                    color: AppColors.primary,
-                  ),
-                  gradient: const LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [AppColors.white, AppColors.white],
-                  ),
-                  onTap: () {
+                // Herbs is one-store-per-country: once a herbs store exists,
+                // the licensee can only edit it, so hide the add button here.
+                if (!(widget.category == StringConstants.herbsText &&
+                    herbsStoreId.value.isNotEmpty))
+                  CustomButton(
+                    border: Border.all(
+                      color: AppColors.primary,
+                    ),
+                    gradient: const LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [AppColors.white, AppColors.white],
+                    ),
+                    onTap: () {
 
-                    Get.to(() => const AddNewStoreScreen(), id: pageIdApp.value)!
-                        .then((value) => ownerStoresController.apiGetStoreList());
-                  },
-                  height: 50,
-                  text: StringConstants.addANewStoreText,
-                  textColor: AppColors.primary,
-                  borderRadius: 14,
-                  fontWeight: FontWeight.w600,
-                  iconL: false,
-                  iconR: false,
-                  fontSize: 16,
-                ),
+                      Get.to(() => AddNewStoreScreen(category: widget.category), id: pageIdApp.value)!
+                          .then((value) => ownerStoresController.apiGetStoreList());
+                    },
+                    height: 50,
+                    text: StringConstants.addANewStoreText,
+                    textColor: AppColors.primary,
+                    borderRadius: 14,
+                    fontWeight: FontWeight.w600,
+                    iconL: false,
+                    iconR: false,
+                    fontSize: 16,
+                  ),
                 height10SizedBox,
                 InkWell(
                   onTap: () {
                     Get.to(() => const ClaimStoreScreen(), id: pageIdApp.value);
                   },
-                  child: const Text.rich(
+                  child: Text.rich(
                     textAlign: TextAlign.center,
                     softWrap: true,
                     TextSpan(

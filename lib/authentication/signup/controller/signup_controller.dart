@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:thegreenmall/authentication/otpverification/view/otp_verification_screen.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/utils.dart';
@@ -14,7 +13,6 @@ class SignupController extends GetxController {
   TextEditingController emailTextController = TextEditingController();
   TextEditingController phoneNumberTextController = TextEditingController();
   TextEditingController ageTextController = TextEditingController();
-  TextEditingController dateTextController = TextEditingController();
 
   RxString firstName = "".obs;
   RxString lastName = "".obs;
@@ -26,125 +24,13 @@ class SignupController extends GetxController {
   Rx<Locale> cL = const Locale("en", "IN").obs;
 
   RxBool isTermsAccepted = false.obs;
-  late RxString dateOfEvent = "".obs;
-  late RxString timeOfEvent = "".obs;
-  var date = DateTime(2022, 5, 6);
-  var today = DateTime.now();
+  RxBool isAgeVerified = false.obs;
 
   RxString selectedCountryCode = "".obs;
   RxString selectedRegion = "".obs;
-  String? formattedDate;
   RxBool autoValidate = false.obs;
   RxBool isLoading = false.obs;
   RxBool isFromOwner = false.obs;
-
-  void ageAlertDailogue(
-    context,
-  ) {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            height10SizedBox,
-            Image.asset("assets/greenmall420.png"),
-            height10SizedBox,
-            Text(
-              "${StringConstants.alertText}!",
-              style: const TextStyle(
-                  color: AppColors.primaryDark,
-                  fontSize: 22,
-                  fontWeight: FontWeight.w600),
-              textAlign: TextAlign.start,
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            Text(
-              AlertStringConstants.above18Text,
-              style: TextStyle(
-                  color: AppColors.blackLight,
-                  fontSize: 16,
-                  height: 1.6,
-                  fontWeight: FontWeight.w400),
-              textAlign: TextAlign.start,
-            ),
-            height25SizedBox,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                InkWell(
-                  onTap: () {
-                    Get.back();
-                  },
-                  child: Container(
-                    height: 50.0,
-                    width: 100.0,
-                    decoration: BoxDecoration(
-                      color: AppColors.primary,
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
-                    child: Center(
-                      child: Text(
-                        StringConstants.okayText,
-                        style: const TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 16.0,
-                            color: Colors.white),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  width: 20,
-                ),
-                InkWell(
-                  onTap: () {
-                    Get.back();
-                  },
-                  child: Container(
-                    height: 50.0,
-                    width: 100.0,
-                    decoration: BoxDecoration(
-                      color: AppColors.white,
-                      border: Border.all(color: AppColors.primary),
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
-                    child: Center(
-                      child: Text(
-                        StringConstants.cancelText,
-                        style: const TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 16.0,
-                            color: AppColors.primary),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-        actions: const <Widget>[],
-      ),
-    );
-  }
-
-  /// Method to check user above 18 or not!
-  bool isAdultCheck(String dob) {
-    final dateOfBirth = DateFormat("yyyy-MM-dd").parse(dob);
-    final now = DateTime.now();
-    final eighteenYearsAgo = DateTime(
-      now.year - 18,
-      now.month,
-      now.day + 1, // add day to return true on birthday
-    );
-    return dateOfBirth.isBefore(eighteenYearsAgo);
-  }
 
   bool validateAndSave() {
     final form = formKey.currentState;
@@ -163,14 +49,16 @@ class SignupController extends GetxController {
           StringConstants.firstNameText, firstName.value.trim());
       SharedPreferenceStorage.setData(
           StringConstants.lastNameText, lastName.value.trim());
-      SharedPreferenceStorage.setData(
-          StringConstants.emailText, email.value.trim());
+      if (email.value.trim().isNotEmpty) {
+        SharedPreferenceStorage.setData(
+            StringConstants.emailText, email.value.trim());
+      }
       try {
-        if (dateTextController.text.isEmpty) {
-          Utility.showAlertMessage(AlertStringConstants.pleaseSelectAge);
-        } else if (isTermsAccepted.value == false) {
+        if (isTermsAccepted.value == false) {
           Utility.showAlertMessage(
               AlertStringConstants.pleaseEnterTermsAndConditions);
+        } else if (isAgeVerified.value == false) {
+          Utility.showAlertMessage(AlertStringConstants.pleaseConfirmAgeVerification);
         } else {
           apiCreateUser(isFromOwner: isFromOwner);
         }
@@ -186,22 +74,23 @@ class SignupController extends GetxController {
     Map data = {
       "first_name": firstNameTextController.text.trim(),
       "last_name": lastNameTextController.text.trim(),
-      "email": emailTextController.text.trim(),
       "phone": phoneNumber.value.trim(),
       "phone_code": countryCode.value.trim(),
-      "dob": dateTextController.text.trim(),
       "has_store_access": isFromOwner,
       "is_store_owner": isFromOwner,
+      "is_age_verified": isAgeVerified.value,
     };
-    debugPrint("CREATE USER BODY********** ${jsonEncode(data)}");
-    debugPrint(
-        "CREATE USER URL**********${ServerCommunicator.baseUrl}${ServerCommunicator.createUser}");
+
+    // Only include email if provided
+    if (emailTextController.text.trim().isNotEmpty) {
+      data["email"] = emailTextController.text.trim();
+    }
+
     UserProvider()
         .postApi(data,
             ServerCommunicator.baseUrl + ServerCommunicator.createUser,
             showLoading: false)
         .then((value) async {
-      debugPrint("CREATE USER RESPONSE *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         isLoading.value = false;
@@ -222,15 +111,11 @@ class SignupController extends GetxController {
   ///Login Api
   Future apiGenerateOtp() async {
     Map data = {"phone": phoneNumber.value, "phone_code": countryCode.value};
-    debugPrint("LOGIN BODY********** $data");
-    debugPrint(
-        "LOGIN URL**********${ServerCommunicator.baseUrl}${ServerCommunicator.generateOtp}");
     UserProvider()
         .postApi(data,
             ServerCommunicator.baseUrl + ServerCommunicator.generateOtp,
             showLoading: false)
         .then((value) async {
-      debugPrint("LOGIN RESPONSE *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         phoneNumberTextController.clear();
@@ -244,8 +129,8 @@ class SignupController extends GetxController {
         firstNameTextController.clear();
         lastNameTextController.clear();
         emailTextController.clear();
-        dateTextController.clear();
         isTermsAccepted.value = false;
+        isAgeVerified.value = false;
         isFromOwner.value = false;
         phoneNumberTextController.clear();
       } else if (value?.body["status"] == ApiConstants.statusCode409) {

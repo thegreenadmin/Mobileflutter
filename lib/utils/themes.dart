@@ -3,7 +3,7 @@ import 'app_colors.dart';
 
 class Themes {
   static final light = ThemeData.light().copyWith(
-    iconTheme: const IconThemeData(
+    iconTheme: IconThemeData(
       color: AppColors.black,
     ),
     brightness: Brightness
@@ -28,7 +28,7 @@ class Themes {
     scaffoldBackgroundColor: AppColors.black,
     // textTheme:
     //     CustomTextTheme.textThemeDark, //Setting the Text Theme to DarkTextTheme
-    appBarTheme: const AppBarTheme(
+    appBarTheme: AppBarTheme(
       iconTheme: IconThemeData(
         color: AppColors.white,
       ),

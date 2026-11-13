@@ -1,28 +1,76 @@
+import 'dart:ui';
+
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:thegreenmall/navigation/deep_link_service.dart';
 import 'package:thegreenmall/navigation/router.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:thegreenmall/provider/network_service.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/push_notifications/push_notifications.dart';
+import 'package:thegreenmall/push_notifications/device_token_service.dart';
 import 'package:thegreenmall/splash_screen.dart';
+import 'package:thegreenmall/utils/app_gate.dart';
 import 'package:thegreenmall/utils/utils.dart';
+import 'package:thegreenmall/utils/app_logger.dart';
+import 'package:thegreenmall/utils/navigation_observer.dart';
 
 RemoteMessage? initialRemoteMessage;
+
+// ✅ Firebase Analytics (used by the whole app + navigator observer)
+final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+
 Future<void> main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
-
 
   // ✅ Initialize services in sequence to avoid socket spikes
   await dotenv.load(fileName: 'assets/env/api_key.env');
   await Firebase.initializeApp();
   await GetStorage.init();
+
+  // Admin-managed theme / branding / text from the last session, applied
+  // before the first frame; SplashScreen fetches the latest.
+  AppConfigService.loadCached();
+
+  // ✅ Crashlytics — report crashes (including backend/database call
+  // failures surfaced via AppLogger.error/fatal, see app_logger.dart) to
+  // the Firebase console. Collection is disabled in debug builds so local
+  // development noise doesn't pollute the dashboard.
+  await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(!kDebugMode);
+
+  // Catch Flutter framework errors (widget build/layout/render errors, and
+  // errors thrown inside API/database calls that bubble up uncaught).
+  FlutterError.onError = (details) {
+    AppLogger.fatal('Flutter Error', error: details.exception, stackTrace: details.stack);
+    FlutterError.presentError(details);
+    FirebaseCrashlytics.instance.recordFlutterFatalError(details);
+  };
+
+  // Catch async errors thrown outside the Flutter framework (e.g. inside
+  // unawaited Futures from network/database calls) that would otherwise
+  // crash the app silently.
+  PlatformDispatcher.instance.onError = (error, stack) {
+    AppLogger.fatal('Uncaught Error', error: error, stackTrace: stack);
+    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    return true;
+  };
+
+  // Test logging
+  AppLogger.info('App initialized successfully');
+  AppLogger.debug('Debug mode enabled');
+
+  // ✅ Make sure Analytics collection is on (auto-collected events like
+  // first_open / screen_view flow once the SDK is present).
+  await analytics.setAnalyticsCollectionEnabled(true);
 
 
   // Start network monitoring (singleton, not recreated each time)
@@ -40,8 +88,6 @@ Future<void> main() async {
   // Initial push message if app opened from terminated state
   initialRemoteMessage = await checkForInitialFirebaseMessage();
 
-  runApp(const MyApp());
-
   // Transparent status bar
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
@@ -49,13 +95,7 @@ Future<void> main() async {
     systemNavigationBarIconBrightness: Brightness.light,
   ));
 
-
   runApp(const MyApp());
-
-  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-      statusBarIconBrightness: Brightness.light,
-      systemNavigationBarIconBrightness: Brightness.light));
 }
 
 Future<void> _initNotifications() async {
@@ -111,6 +151,10 @@ Future<void> _initNotifications() async {
   // ✅ Keep your custom notification handlers
   getNotificationOpenedApp();
   getNotification();
+
+  // ✅ Re-register the FCM token with the backend whenever it rotates so a
+  // long-lived logged-in session never ends up with a stale (dead) token.
+  DeviceTokenService.instance.init();
 }
 
 
@@ -129,6 +173,22 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
     // ✅ Don’t clear storage blindly at startup (optional)
     clearData();
+
+    // Country feature flags + admin app config are fetched by SplashScreen
+    // (awaited there so the version / maintenance gates can run first).
+
+    // Universal links (payment QR: https://thegreenmall.net/pay/<token>).
+    DeepLinkService.init();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    // Re-fetch on resume so an admin kill switch reaches live users without
+    // an app restart.
+    if (state == AppLifecycleState.resumed) {
+      AppConfigService.refresh().then((_) => AppGate.enforce());
+    }
   }
 
   clearData() async {
@@ -146,6 +206,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
     // ✅ Cleanup global clients to avoid leaks
     UserProvider.disposeClient(); // <-- close IOClient safely
+    DeepLinkService.dispose();
     super.dispose();
   }
 
@@ -155,13 +216,19 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       title: StringConstants.theGreenMallTitleText,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        fontFamily: StringConstants.interFamilyText,
+        fontFamily: AppConfig.current.fontFamily,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: const SplashScreen(),
       getPages: Routers.route,
       themeMode: ThemeMode.system,
       initialRoute: '/splashView',
+      // ✅ App navigation observer + automatic screen-view tracking for
+      // Firebase Analytics (a single navigatorObservers list is required).
+      navigatorObservers: [
+        NavigationObserver(),
+        FirebaseAnalyticsObserver(analytics: analytics),
+      ],
     );
   }
 }

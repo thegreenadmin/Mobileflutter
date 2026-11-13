@@ -14,6 +14,7 @@ import 'package:thegreenmall/dashboard/home/model/unclaimed_stores_model.dart';
 import 'package:thegreenmall/dashboard/offers/model/get_owner_offers_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/utils.dart';
+import 'package:thegreenmall/utils/platform_freeze.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
 class OwnerStoresController extends GetxController  with GlobalVarMixin {
@@ -61,6 +62,8 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
   RxString? storeAddressId = "".obs;
   RxString storeId = "".obs;
   RxString storeName = "".obs;
+  // Vertical of the store currently being viewed/edited (general/munchies/herbs).
+  RxString storeTypeValue = "general".obs;
   RxString storeLocation = "".obs;
   RxString? storeImage = "".obs;
   RxString? storeLogo = "".obs;
@@ -88,6 +91,9 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
 
   late GetStoreListModel getStoreListModel = GetStoreListModel();
   RxList<Stores> storeList = <Stores>[].obs;
+  // Store vertical scope (munchies / herbs) from the home pills; empty
+  // shows all of the owner's stores.
+  RxString ownerStoreTypeFilter = "".obs;
 
   late UnclaimedStoresModel unclaimedStoresModel = UnclaimedStoresModel();
   RxList<UnclaimedStoreList> unclaimedStoreList = <UnclaimedStoreList>[].obs;
@@ -180,17 +186,28 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
 
   Future<void> getCurrentLocation() async {
 
-    await apiGetDeliveryServices();
     if (storeId.value != "") {
+      // Edit: store details drive the per-type delivery fetch + reconciliation
+      // (apiGetParticularStore knows the store type, then loads its services).
       await apiGetParticularStore();
+    } else {
+      await apiGetDeliveryServices();
     }
     await getApiData();
-    await Utility.fetchCurrentLocation().then((currentLocation) async {
+    // Nashville default — used when GPS is unavailable (e.g. simulator, denied
+    // service, or a timed-out fix) so the unclaimed-store list still loads and
+    // the loader is always cleared, instead of the .then callback never firing.
+    currentLat = 36.1627;
+    currentLng = -86.7816;
+    try {
+      final currentLocation = await Utility.fetchCurrentLocation();
       currentLat = currentLocation.latitude;
       currentLng = currentLocation.longitude;
-      isDataComing.value = false;
-      await apiGetUnClaimStoreList();
-    });
+    } catch (e) {
+      print("DEBUG: getCurrentLocation fallback to Nashville: $e");
+    }
+    isDataComing.value = false;
+    await apiGetUnClaimStoreList();
   }
 
   Future<void> getApiData() async {
@@ -220,6 +237,7 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
   Future uploadPdfToServer() async {
     try {
       final dio = mdio.Dio();
+      PlatformFreeze.attach(dio);
       mdio.FormData formData = mdio.FormData.fromMap({});
 
       Map<String, String> headers = {
@@ -362,7 +380,7 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        await Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       }
     });
   }
@@ -402,7 +420,7 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
 
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -452,7 +470,7 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -465,6 +483,7 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
   Future apiUploadImage() async {
     try {
       final dio = mdio.Dio();
+      PlatformFreeze.attach(dio);
       mdio.FormData formData = mdio.FormData.fromMap({});
 
       Map<String, String> headers = {
@@ -536,12 +555,16 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
         getStoreListModel = GetStoreListModel.fromJson(value?.body);
         storeList.clear();
         storeList.addAll(getStoreListModel.data!.stores as Iterable<Stores>);
+        if (ownerStoreTypeFilter.value.isNotEmpty) {
+          storeList.removeWhere(
+              (s) => (s.storeType ?? "general") != ownerStoreTypeFilter.value);
+        }
         Get.parameters["storeCount"] = storeList.length.toString();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -581,7 +604,7 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -591,6 +614,28 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
   }
 
   ///Get DeliveryServices Api
+  // Mark the store's saved delivery services as selected within the current
+  // (per-store-type) list and rebuild the summary text.
+  void _applySelectedDeliveryServices() {
+    var concatenate = StringBuffer();
+    if (storeDeliveryServices.isNotEmpty) {
+      for (var sData in storeDeliveryServices) {
+        for (var element in deliveryServices) {
+          if (element.id == sData["delivery_service_id"]) {
+            if (element.name != null) {
+              concatenate.write(element.name ?? "");
+              concatenate.write(', ');
+              element.isSelected = sData["is_enabled"];
+            }
+          }
+        }
+      }
+    }
+    deliveryServicesTextController.text = concatenate.toString();
+    deliveryServices.refresh();
+    update();
+  }
+
   Future apiGetDeliveryServices() async {
     deliveryServices.clear();
     isLoading.value = true;
@@ -600,8 +645,8 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
     };
          UserProvider()
         .getWithHeadersApi(
-            ServerCommunicator.baseUrl +
-                ServerCommunicator.deliveryServiceList,
+            // Delivery options are per store type; fetch the set for this store.
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.deliveryServiceList}?store_type=${storeTypeValue.value}",
             headers,
             showLoading: false)
         .then((value) async {
@@ -612,14 +657,13 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
             DeliveryServicesResponse.fromJson(value?.body);
         deliveryServices.value =
             deliveryServicesResponse.data?.deliveryServices ?? [];
-        if (storeId.value.isNotEmpty && storeId.value != "") {
-          await apiGetParticularStore();
-        }
+        // Mark the store's saved services as selected within this list.
+        _applySelectedDeliveryServices();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -654,6 +698,8 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
             value?.body["data"]['store']['logo']["orignal_url"] ?? "";
         storeNameTextController.text =
             storeName.value = value?.body["data"]['store']['store_name'] ?? "";
+        storeTypeValue.value =
+            value?.body["data"]['store']['store_type'] ?? "general";
         einTextController.text =
             value?.body["data"]['store']['store_ein'] ?? "";
         nickNameTextController.text =
@@ -786,21 +832,9 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
             }
           }
         }
-        var concatenate = StringBuffer();
-        if (storeDeliveryServices.isNotEmpty) {
-          for (var sData in storeDeliveryServices) {
-            for (var element in deliveryServices) {
-              if (element.id == sData["delivery_service_id"]) {
-                if (element.name != null) {
-                  concatenate.write(element.name ?? "");
-                  concatenate.write(', ');
-                  element.isSelected = sData["is_enabled"];
-                }
-              }
-            }
-          }
-        }
-        deliveryServicesTextController.text = concatenate.toString();
+        // Now that the store type is known, (re)fetch the per-type delivery
+        // list; its .then reconciles the store's saved selections.
+        await apiGetDeliveryServices();
         List storePages = value?.body["data"]['store']['store_pages'] ?? [];
 
         if (storePages.isNotEmpty) {
@@ -898,9 +932,6 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
       ]
     };
 
-    debugPrint("Update Store Details data ******************");
-    debugPrint(data.toString());
-
     UserProvider()
         .putWithHeadersApi(
             data,
@@ -935,7 +966,7 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -1048,7 +1079,7 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -1071,7 +1102,7 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
             height10SizedBox,
             Text(
               StringConstants.enterEinNumberText,
-              style: const TextStyle(
+              style: TextStyle(
                   color: AppColors.primaryDark,
                   fontSize: 20,
                   fontWeight: FontWeight.w600),
@@ -1094,7 +1125,7 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
                     }
                     return null;
                   },
-                  style: const TextStyle(
+                  style: TextStyle(
                       color: AppColors.black,
                       fontSize: 16,
                       fontWeight: FontWeight.w400),
@@ -1107,21 +1138,21 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
                     fillColor: Colors.white,
                     border: UnderlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
-                      borderSide: const BorderSide(
+                      borderSide: BorderSide(
                         color: AppColors.primary,
                         width: 1.0,
                       ),
                     ),
                     errorBorder: UnderlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
-                      borderSide: const BorderSide(
+                      borderSide: BorderSide(
                         color: AppColors.primary,
                         width: 1.0,
                       ),
                     ),
                     focusedBorder: UnderlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
-                      borderSide: const BorderSide(
+                      borderSide: BorderSide(
                         color: AppColors.primary,
                         width: 1.0,
                       ),
@@ -1212,7 +1243,7 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
           Utility.showAlertMessage(value?.body['message']);
           storage.clearData();
           Get.parameters.clear();
-          Get.offAll(const StartJourneyScreen());
+          Utility.handle401Error();
         } else if (value?.body["status"] == ApiConstants.statusCode409) {
           Utility.showAlertMessage(value?.body['message']);
           einNumberTextController.clear();

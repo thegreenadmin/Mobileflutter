@@ -5,10 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/search_store_user_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/store_home_main_screen.dart';
+import 'package:thegreenmall/utils/guest_access_modal.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
 import '../../controller/store_home_main_controller.dart';
 import 'components/store_home_main_args.dart';
+import 'package:thegreenmall/utils/brand_image.dart';
 
 class NearbyStoreListScreen extends StatefulWidget {
   const NearbyStoreListScreen({super.key});
@@ -145,7 +147,7 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> with Glob
                                           .store
                                           ?.storeName ??
                                           "",
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                           fontSize: 17.0,
                                           color: AppColors.black,
                                           fontWeight:
@@ -236,6 +238,18 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> with Glob
 
                                 return InkWell(
                                   onTap: () {
+                                    // Check if user is guest - show modal and prevent state change
+                                    if (isGuest.value == true) {
+                                      GuestAccessModal.show(
+                                        title: StringConstants.loginRequiredText,
+                                        message: StringConstants.loginToManageFavouriteStoresText,
+                                        onContinueAsGuest: () {
+                                          // Allow guest to continue - just close modal
+                                        },
+                                      );
+                                      return; // Don't toggle or make API call
+                                    }
+
                                     if (searchStoreUserController.isLoading.value) return;
 
                                     if (isFav) {
@@ -407,7 +421,7 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> with Glob
           children: [
             SizedBox(height: WidgetConstants.screenHeight *0.09,),
             Center(
-              child: Image.asset(
+              child: BrandImage.asset(
                 ImageConstants.nodata,
                 scale: 8,
                 color: AppColors.primary,

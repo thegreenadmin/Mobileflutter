@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "552677409164",
+    "project_id": "stage-thegreenmall",
+    "storage_bucket": "stage-thegreenmall.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:552677409164:android:56c1dbd315dd9b01c1d6a9",
+        "android_client_info": {
+          "package_name": "com.thegreenmall"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBDfvkhdH-CjLZXZT4l8GnPOmow22NI7rk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -11,6 +11,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:permission_handler/permission_handler.dart' as permission;
 import 'package:thegreenmall/dashboard/home/model/model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
+import 'package:thegreenmall/utils/guest_access_modal.dart';
 import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
@@ -24,6 +25,9 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
   // TextEditingController searchController = TextEditingController();
   TextEditingController deliveryServicesController = TextEditingController();
   TextEditingController einNumberTextController = TextEditingController();
+  // Store vertical filter (munchies / herbs) coming from the home pills;
+  // empty means all verticals the caller's country allows.
+  RxString storeTypeFilter = "".obs;
   late NearbyStoreListResponse nearbyStoreListResponse = NearbyStoreListResponse();
   late PreviousStoreResponse previousStoreListResponse = PreviousStoreResponse();
   late FavouriteStoreResponse favouriteStoreListResponse = FavouriteStoreResponse();
@@ -114,10 +118,14 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
 
   @override
   void onClose() {
-    // Always dispose controllers to prevent leaks
-    nearByStoresScrollController.dispose();
-    previousStoresScrollController.dispose();
-    favouriteStoresScrollController.dispose();
+    // The scroll controllers are not disposed here: several controllers
+    // Get.put this one, so GetX can close it with the route that created it
+    // while the store lists still hold these controllers, and they then fail
+    // with "A ScrollController was used after being disposed". Without
+    // listeners they hold nothing and are collected with this controller.
+    nearByStoresScrollController.removeListener(_nearbyScrollListener);
+    previousStoresScrollController.removeListener(_previousScrollListener);
+    favouriteStoresScrollController.removeListener(_favouriteScrollListener);
     super.onClose();
   }
 
@@ -203,9 +211,20 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
 
   // --- Map Updates ---
   Future<void> updateCurrentLocation() async {
-    final currentLocation = await Utility.fetchCurrentLocation();
-    lat.value = currentLocation.latitude;
-    lng.value = currentLocation.longitude;
+    // Nashville default — used when GPS is unavailable (e.g. simulator, denied
+    // service, or a timed-out fix) so the nearby-stores call always has usable
+    // coordinates instead of falling through to the "Location or postal code is
+    // required." guard. Mirrors HomeController.getCurrentLocation().
+    lat.value = 36.1627;
+    lng.value = -86.7816;
+
+    try {
+      final currentLocation = await Utility.fetchCurrentLocation();
+      lat.value = currentLocation.latitude;
+      lng.value = currentLocation.longitude;
+    } catch (e) {
+      print("DEBUG: updateCurrentLocation fallback to Nashville: $e");
+    }
 
     await updateMap(lat.value, lng.value);
   }
@@ -299,7 +318,13 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
     CameraPosition kLake =
         CameraPosition(bearing: 192.8334901395799, target: LatLng(latitude, longitude), tilt: 0.0, zoom: 14.15);
     final GoogleMapController controller = await googleMapController.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(kLake));
+    // A location lookup can finish after the map has been disposed (the user
+    // left the store search), and the camera call then throws.
+    try {
+      await controller.animateCamera(CameraUpdate.newCameraPosition(kLake));
+    } on PlatformException catch (e) {
+      log('updateMap: map gone, camera not moved: ${e.message}');
+    }
     lat.value = latitude;
     lng.value = longitude;
     type.value = 0;
@@ -364,6 +389,10 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
  ///---------------------------------------------------------------------------------
   ///Get Active Cart Api
   Future apiActiveCartApi() async {
+    // Skip API call for guest users
+    if (isGuest.value == true) {
+      return;
+    }
     isLoading.value = true;
          Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -373,7 +402,7 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
         .getWithHeadersApi("${ServerCommunicator.baseUrl}${ServerCommunicator.shopCartActive}", headers,
             showLoading: false)
         .then((value) async {
-
+      isLoading.value = false;
              if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
         activeCartModel = ActiveCartModel.fromJson(value?.body);
                           cartCount.value = activeCartModel.data!.cartItems!.length;
@@ -385,19 +414,20 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
           isOrderDeliverable.value = activeCartModel.data!.isOrderDeliverable!;
           storeIdValue.value = activeCartModel.data!.storeId.toString();
         }
-        isLoading.value = false;
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         isLoading.value = false;
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
                isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
       }
+    }).catchError((error, stackTrace) {
+      isLoading.value = false;
     });
   }
 
@@ -424,7 +454,7 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -447,7 +477,7 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
             height10SizedBox,
             Text(
               StringConstants.enterEinNumberText,
-              style: const TextStyle(color: AppColors.primaryDark, fontSize: 20, fontWeight: FontWeight.w600),
+              style: TextStyle(color: AppColors.primaryDark, fontSize: 20, fontWeight: FontWeight.w600),
               textAlign: TextAlign.start,
             ),
             height15SizedBox,
@@ -467,7 +497,7 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
                     }
                     return null;
                   },
-                  style: const TextStyle(color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w400),
+                  style: TextStyle(color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w400),
                   controller: einNumberTextController,
                   keyboardType: TextInputType.phone,
                   decoration: InputDecoration(
@@ -477,21 +507,21 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
                     fillColor: Colors.white,
                     border: UnderlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
-                      borderSide: const BorderSide(
+                      borderSide: BorderSide(
                         color: AppColors.primary,
                         width: 1.0,
                       ),
                     ),
                     errorBorder: UnderlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
-                      borderSide: const BorderSide(
+                      borderSide: BorderSide(
                         color: AppColors.primary,
                         width: 1.0,
                       ),
                     ),
                     focusedBorder: UnderlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
-                      borderSide: const BorderSide(
+                      borderSide: BorderSide(
                         color: AppColors.primary,
                         width: 1.0,
                       ),
@@ -586,8 +616,11 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      StringConstants.authorizationText: "${StringConstants.bearerText} ${authToken.value}",
     };
+    // Only include authorization header for authenticated users
+    if (!isGuest.value) {
+      headers[StringConstants.authorizationText] = "${StringConstants.bearerText} ${authToken.value}";
+    }
 
     Map data = {
       "q": "",
@@ -600,20 +633,24 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
       "state":  state.value,
       "country":  country.value,
       "postal_code":  zipCodeTextController.text != "" ? zipCodeTextController.text : null,
-      "mileage": miles.value,
+      // Fall back to the default radius when the Miles field is blank so the
+      // distance filter is always applied (an empty mileage makes the backend
+      // return every store nationwide).
+      "mileage": miles.value.trim().isEmpty ? "50" : miles.value.trim(),
       "is_open_now": isOpenNow.value == ""
           ? null
           : isOpenNow.value == "Open Now"
               ? true
               : false,
       "opening_time": openingTimeTextController.text != ""
-          ? Utility.formatDateTime(openingTimeTextController.text, firstFormat: "hh:mm a", secFormat: "HH:mm:ss")
+          ? Utility.formatDateTime(openingTimeTextController.text, firstFormat: "HH:mm", secFormat: "HH:mm:ss")
           : null,
       "closing_time": closingTimeTextController.text != ""
-          ? Utility.formatDateTime(closingTimeTextController.text, firstFormat: "hh:mm a", secFormat: "HH:mm:ss")
+          ? Utility.formatDateTime(closingTimeTextController.text, firstFormat: "HH:mm", secFormat: "HH:mm:ss")
           : null,
       // "is_favourite_store": type.value == 2 ? true : null,
       // "show_previous_stores": type.value == 1 ? true : null,
+      "store_type": storeTypeFilter.value.isEmpty ? null : storeTypeFilter.value,
       "delivery_services": deliveryServicesList
     };
 
@@ -638,10 +675,10 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
               ? true
               : false,
       "opening_time": openingTimeTextController.text != ""
-          ? Utility.formatDateTime(openingTimeTextController.text, firstFormat: "hh:mm a", secFormat: "HH:mm:ss")
+          ? Utility.formatDateTime(openingTimeTextController.text, firstFormat: "HH:mm", secFormat: "HH:mm:ss")
           : null,
       "closing_time": closingTimeTextController.text != ""
-          ? Utility.formatDateTime(closingTimeTextController.text, firstFormat: "hh:mm a", secFormat: "HH:mm:ss")
+          ? Utility.formatDateTime(closingTimeTextController.text, firstFormat: "HH:mm", secFormat: "HH:mm:ss")
           : null,
       "is_favourite_store": type.value == 2 ? true : null,
       "show_previous_stores": type.value == 1 ? true : null,
@@ -702,14 +739,23 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
           initialIndex.value = 0;
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-                isClicked.value = false;
-                isLoading.value = false;
-                isFavLoading.value = false;
-                isDataLoading.value = false;
-        Utility.showAlertMessage(value?.body['message']);
-        storage.clearData();
-        Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        if (!isGuest.value) {
+          isClicked.value = false;
+          isLoading.value = false;
+          isFavLoading.value = false;
+          isDataLoading.value = false;
+          Utility.showAlertMessage(value?.body['message']);
+          storage.clearData();
+          Get.parameters.clear();
+          Utility.handle401Error();
+        } else {
+          isClicked.value = false;
+          isLoading.value = false;
+          isFavLoading.value = false;
+          isDataLoading.value = false;
+          // Log 401 error for guests for debugging
+          print('Guest user received 401 error in nearby stores search: ${value?.body['message']}');
+        }
       } else {
                 isClicked.value = false;
                 isLoading.value = false;
@@ -732,6 +778,22 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
     bool isFilter = false,
   }) async
   {
+    // Check if user is guest - show modal for login
+    if (isGuest.value == true) {
+      isLoading.value = false;
+      isDataLoading.value = false;
+      previousStore.clear();
+      update();
+      GuestAccessModal.show(
+        title: StringConstants.loginRequiredText,
+        message: StringConstants.loginToViewPreviousStoresText,
+        onContinueAsGuest: () {
+          // Allow guest to continue - just close modal
+        },
+      );
+      return;
+    }
+
     isClicked.value = true;
     isDataLoading.value = true;
     if (page.value == 1) {
@@ -750,7 +812,7 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
 
          UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator.baseUrl}${ServerCommunicator.previousStoreList}?page=${page.value.toString()}&page_size=5",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.previousStoreList}?page=${page.value.toString()}&page_size=5${storeTypeFilter.value.isEmpty ? "" : "&store_type=${storeTypeFilter.value}"}",
             headers,
             showLoading: false)
         .then((value) async {
@@ -777,12 +839,15 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
+        // Non-auth failure (e.g. server-side 409): fall back to the empty
+        // state instead of surfacing a raw backend message in an alert.
         isClicked.value = false;
-        if (value?.body['message'] != null) {
-          Utility.showAlertMessage(value?.body['message']);
+        if (page.value == 1) {
+          previousStore.clear();
         }
+        update();
       }
     });
   }
@@ -791,6 +856,18 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
   Future apiGetFavoriteStores({
     bool isFilter = false,
   }) async {
+    // Check if user is guest - show modal for login
+    if (isGuest.value == true) {
+      GuestAccessModal.show(
+        title: StringConstants.loginRequiredText,
+        message: StringConstants.loginToViewFavouriteStoresText,
+        onContinueAsGuest: () {
+          // Allow guest to continue - just close modal
+        },
+      );
+      return;
+    }
+
     isClicked.value = true;
     if (page.value == 1) {
       favouriteStore.clear();
@@ -809,7 +886,7 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
 
          UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator.baseUrl}${ServerCommunicator.favouriteStoreList}?page=${page.value.toString()}&page_size=5",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.favouriteStoreList}?page=${page.value.toString()}&page_size=5${storeTypeFilter.value.isEmpty ? "" : "&store_type=${storeTypeFilter.value}"}",
             headers,
             showLoading: false)
         .then((value) async {
@@ -836,18 +913,25 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
+        // Non-auth failure (e.g. server-side 409): fall back to the empty
+        // state instead of surfacing a raw backend message in an alert.
         isClicked.value = false;
-        if (value?.body['message'] != null) {
-          Utility.showAlertMessage(value?.body['message']);
+        if (page.value == 1) {
+          favouriteStore.clear();
         }
+        update();
       }
     });
   }
 
   ///Create Favourite Store Api
   Future apiCreateFavouriteStore(String? id) async {
+    // Skip API call for guest users
+    if (isGuest.value == true) {
+      return;
+    }
     isLoading.value = true;
      
     Map<String, String> headers = {
@@ -883,7 +967,7 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
 
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
         if (type.value == 2) {
           favouriteStore.where((p0) => p0.storeId == id).first.isFavouriteStore?.value = false;
@@ -901,6 +985,10 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
 
   ///Remove Favourite Store Api
   Future apiRemoveFavouriteStore(String? id) async {
+    // Skip API call for guest users
+    if (isGuest.value == true) {
+      return;
+    }
     isLoading.value = true;
      
     Map<String, String> headers = {
@@ -944,7 +1032,7 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
         if (type.value == 2) {
           favouriteStore.where((p0) => p0.storeId == id).first.isFavouriteStore?.value = true;
@@ -1004,7 +1092,7 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);

@@ -1,9 +1,13 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/orders/controller/orders_home_main_controller.dart';
+import 'package:thegreenmall/dashboard/orders/model/order_detail_model.dart'
+    show OrderItem;
 import 'package:thegreenmall/utils/utils.dart';
 
 import 'component/order_status_enum.dart';
+import 'package:thegreenmall/utils/brand_image.dart';
 
 class MarkOrderStatusScreen extends StatefulWidget {
   final String? orderId;
@@ -17,7 +21,7 @@ class MarkOrderStatusScreen extends StatefulWidget {
   State<MarkOrderStatusScreen> createState() => _MarkOrderStatusScreenState();
 }
 
-class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with GlobalVarMixin {
+class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with GlobalVarMixin, RouteAware {
   final OrdersHomeMainController ordersHomeMainController =
   Get.put(OrdersHomeMainController());
 
@@ -29,11 +33,14 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
       ordersHomeMainController.orderStatus.value = widget.orderStatus ?? "";
       ordersHomeMainController.isFromNotification.value = widget.isFromNotification ?? false;
       if (ordersHomeMainController.isFromNotification.value ) {
-        if(widget.orderStatus== "delivered"){
+        // Backend sends the DB status name ('completed' for a delivered order);
+        // keep the legacy UI aliases too. A delivered/completed order opens the
+        // read-only completed tab (index 3) rather than the fulfillment view.
+        if(widget.orderStatus== "delivered" || widget.orderStatus== "completed"){
           ordersHomeMainController.selectedIndex.value = 3;
         }else if(widget.orderStatus== "received"){
           ordersHomeMainController.selectedIndex.value = 0;
-        }else if(widget.orderStatus== "pickup"){
+        }else if(widget.orderStatus== "pickup" || widget.orderStatus== "ready for pickup"){
           ordersHomeMainController.selectedIndex.value = 2;
         }
 
@@ -42,6 +49,35 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
       }
     });
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Subscribe to the nested navigator's route observer so didPopNext fires
+    // when a screen pushed above this one is popped.
+    final route = ModalRoute.of(context);
+    if (route is PageRoute) {
+      appRouteObserver.subscribe(this, route);
+    }
+  }
+
+  @override
+  void dispose() {
+    appRouteObserver.unsubscribe(this);
+    super.dispose();
+  }
+
+  @override
+  void didPopNext() {
+    // Returned to this screen (e.g. after tapping a popup notification). The
+    // order may have advanced/completed in the meantime, so re-fetch so the
+    // items move to the right tab and stale action buttons like "Picked up"
+    // no longer appear for an already-completed order.
+    if (ordersHomeMainController.orderId.value != "") {
+      ordersHomeMainController.apiGetStoreDetails();
+      ordersHomeMainController.apiGetStoreOrderDetail();
+    }
   }
 
 
@@ -58,7 +94,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
             return ordersHomeMainController.isLoading.value
                 ? Container(
               color: Colors.black.withOpacity(0.2),
-              child: const Center(
+              child: Center(
                 child: CircularProgressIndicator(color: AppColors.primary),
               ),)
                 : const SizedBox.shrink();
@@ -120,7 +156,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
                                           ordersHomeMainController
                                               .customerName.value
                                               .toTitleCase(),
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                               color: AppColors.black,
                                               fontWeight: FontWeight.w600,
                                               fontSize: 16)),
@@ -141,7 +177,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
                                               child: Text(
                                                   ordersHomeMainController
                                                       .orderDate.value,
-                                                  style: const TextStyle(
+                                                  style: TextStyle(
                                                       overflow:
                                                       TextOverflow.ellipsis,
                                                       color: AppColors.black,
@@ -171,7 +207,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
                                                       ?.deliveryService
                                                       ?.name ??
                                                       "",
-                                                  style: const TextStyle(
+                                                  style: TextStyle(
                                                       overflow:
                                                       TextOverflow.ellipsis,
                                                       color: AppColors.black,
@@ -192,8 +228,8 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
                                                   fontSize: 14)),
                                           Obx(() =>
                                               Text(
-                                                "\$${ordersHomeMainController.orderAmount.value}",
-                                                style: const TextStyle(
+                                                "$currencySign${ordersHomeMainController.orderAmount.value}",
+                                                style: TextStyle(
                                                     color: AppColors.black,
                                                     fontWeight: FontWeight.w500,
                                                     fontSize: 14),
@@ -217,6 +253,117 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
     );
   }
 
+  bool get isDeliveryOrder =>
+      ordersHomeMainController.getStoreOrderDetailModel.value.data?.order
+          ?.deliveryService?.id ==
+      "2";
+
+  /// A delivery order that was prepared (in progress) but not yet shipped.
+  /// The in-progress tab is hidden, so these surface on the Pickup tab and
+  /// need the "Order Shipped" action there.
+  bool get isDeliveryAwaitingShipment =>
+      ordersHomeMainController.selectedIndex.value == 2 &&
+      isDeliveryOrder &&
+      ordersHomeMainController.orderHistories.isNotEmpty &&
+      ordersHomeMainController
+              .orderHistories.last.orderStatus?.orderStatusName ==
+          OrderStatusEnum.inProgress.statusName;
+
+  bool isItemSelectable(OrderItem item) {
+    final status = item.orderItemStatus;
+    switch (ordersHomeMainController.selectedIndex.value) {
+      case 0:
+        return status == OrderStatusEnum.receivedOrder.statusName;
+      case 1:
+        return status == OrderStatusEnum.inProgress.statusName ||
+            status == OrderStatusEnum.receivedOrder.statusName;
+      case 2:
+        return status == OrderStatusEnum.inTransit.statusName ||
+            status == OrderStatusEnum.readyForPickup.statusName ||
+            status == OrderStatusEnum.receivedOrder.statusName ||
+            status == OrderStatusEnum.inProgress.statusName;
+      default:
+        return false;
+    }
+  }
+
+  Widget buildSelectAllRow() {
+    final selectableItems = ordersHomeMainController.getOrderItems
+        .where(isItemSelectable)
+        .toList();
+    if (ordersHomeMainController.selectedIndex.value != 0 ||
+        selectableItems.length < 2) {
+      return height0SizedBox;
+    }
+    final selectedCount =
+        selectableItems.where((item) => item.isSelected == true).length;
+    final bool allSelected = selectedCount == selectableItems.length;
+    void toggleAll() {
+      setState(() {
+        for (var item in selectableItems) {
+          item.isSelected = !allSelected;
+        }
+      });
+    }
+
+    // Mirrors the item card's flex layout (image 2 : content 7) so the
+    // checkbox lands in the same column as the per-item checkboxes.
+    return Padding(
+      padding: const EdgeInsets.only(left: 10, right: 10, bottom: 8),
+      child: Row(
+        children: [
+          const Flexible(
+            flex: 2,
+            child: SizedBox(width: 70),
+          ),
+          width10SizedBox,
+          Flexible(
+            flex: 7,
+            child: InkWell(
+              onTap: toggleAll,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(StringConstants.selectAllText,
+                      style: TextStyle(
+                          color: AppColors.blackLight,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14)),
+                  width4SizedBox,
+                  SizedBox(
+                    height: 20,
+                    width: 30,
+                    child: Checkbox(
+                      side: WidgetStateBorderSide.resolveWith(
+                        (states) => BorderSide(
+                            width: 1.0,
+                            color: AppColors.primary.withOpacity(0.5)),
+                      ),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(6.0)),
+                      activeColor: AppColors.primary,
+                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      tristate: true,
+                      value: allSelected
+                          ? true
+                          : selectedCount == 0
+                          ? false
+                          : null,
+                      onChanged: (bool? value) {
+                        toggleAll();
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Obx buildOrderItems() {
     return Obx(() =>
         Expanded(
@@ -228,7 +375,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Center(
-                  child: Image.asset(
+                  child: BrandImage.asset(
                     ImageConstants.nodata,
                     scale: 8,
                     color: AppColors.primary,
@@ -246,7 +393,10 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
                 ),
               ],
             )
-                : ListView.separated(
+                : Column(children: [
+              buildSelectAllRow(),
+              Expanded(
+                  child: ListView.separated(
                 separatorBuilder: (BuildContext context, int index) {
                   return height8SizedBox;
                 },
@@ -336,7 +486,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
                                               .product!
                                               .productName ??
                                               "",
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                               color:
                                               AppColors.black,
                                               fontWeight:
@@ -346,7 +496,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
                                             () =>
                                         ordersHomeMainController
                                             .selectedIndex
-                                            .value == 3
+                                            .value != 0
                                             ? height0SizedBox
                                             : Flexible(
                                           flex: 1,
@@ -377,40 +527,10 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
                                                 onChanged:
                                                     (bool?
                                                 value) {
-                                                  if (ordersHomeMainController.selectedIndex.value ==
-                                                      0 &&
-                                                      ordersHomeMainController.getOrderItems[index].orderItemStatus ==
-                                                          OrderStatusEnum
-                                                              .receivedOrder.statusName) {
-                                                    setState(
-                                                            () {
-                                                          ordersHomeMainController.getOrderItems
-                                                              .elementAt(index)
-                                                              .isSelected =
-                                                              value;
-                                                        });
-                                                  } else if (ordersHomeMainController.selectedIndex.value == 1 &&
-                                                      ordersHomeMainController.getOrderItems[index].orderItemStatus ==
-                                                          OrderStatusEnum.inProgress.statusName ||
-                                                      ordersHomeMainController.selectedIndex.value == 1 &&
-                                                          ordersHomeMainController.getOrderItems[index].orderItemStatus ==
-                                                              OrderStatusEnum.receivedOrder.statusName) {
-                                                    setState(
-                                                            () {
-                                                          ordersHomeMainController.getOrderItems
-                                                              .elementAt(index)
-                                                              .isSelected =
-                                                              value;
-                                                        });
-                                                  } else if (ordersHomeMainController.selectedIndex.value == 2 &&
-                                                      (ordersHomeMainController.getOrderItems[index].orderItemStatus ==
-                                                          OrderStatusEnum.inTransit.statusName ||
-                                                          ordersHomeMainController.getOrderItems[index].orderItemStatus ==
-                                                              OrderStatusEnum.readyForPickup.statusName ||
-                                                          ordersHomeMainController.getOrderItems[index].orderItemStatus ==
-                                                              OrderStatusEnum.receivedOrder.statusName ||
-                                                          ordersHomeMainController.getOrderItems[index].orderItemStatus ==
-                                                              OrderStatusEnum.inProgress.statusName)) {
+                                                  if (isItemSelectable(
+                                                      ordersHomeMainController
+                                                          .getOrderItems[
+                                                      index])) {
                                                     setState(
                                                             () {
                                                           ordersHomeMainController.getOrderItems
@@ -517,7 +637,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
                                                   .padLeft(2, '0'),
                                               overflow: TextOverflow
                                                   .visible,
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                   color: AppColors
                                                       .black,
                                                   fontWeight:
@@ -540,10 +660,10 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
                                                       .w500,
                                                   fontSize: 14)),
                                           Text(
-                                              "\$${ordersHomeMainController.getOrderItems[index].offerPrice.toStringAsFixed(2) ?? "0.00"}",
+                                              "$currencySign${ordersHomeMainController.getOrderItems[index].offerPrice.toStringAsFixed(2) ?? "0.00"}",
                                               overflow: TextOverflow
                                                   .visible,
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                   color: AppColors
                                                       .black,
                                                   fontWeight:
@@ -576,14 +696,15 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
                       child: Text(
                           StringConstants
                               .customerInStoreForPickupText,
-                          style: const TextStyle(
+                          style: TextStyle(
                               color: AppColors.black,
                               fontWeight: FontWeight.w600,
                               fontSize: 16)),
                     );
                   }
                   return height0SizedBox;
-                })));
+                }))
+            ])));
   }
 
   Divider buildDivider() {
@@ -608,7 +729,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
           Container(
             padding: const EdgeInsets.symmetric(
                 horizontal: 10, vertical: 5),
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
                 color: AppColors.greyLight,
                 borderRadius: BorderRadius.all(
                   Radius.circular(10.0),
@@ -637,7 +758,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
                     width8SizedBox,
                     Text(
                         StringConstants.identityProofText,
-                        style: const TextStyle(
+                        style: TextStyle(
                             color: AppColors.black,
                             fontWeight: FontWeight.w600,
                             fontSize: 16)),
@@ -664,7 +785,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
                                   onTap: () {
                                     Get.back(); // Navigator.pop(_);
                                   },
-                                  child: const Icon(
+                                  child: Icon(
                                     Icons.clear,
                                     color: AppColors.primary,
                                     size: 24.0,
@@ -722,7 +843,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
                     }
                   },
                   child: Text(StringConstants.viewText,
-                      style: const TextStyle(
+                      style: TextStyle(
                           decoration:
                           TextDecoration.underline,
                           color: AppColors.primary,
@@ -795,38 +916,46 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
                       border: Border.all(
                         color: AppColors.primary,
                       ),
-                      gradient: const LinearGradient(
+                      gradient: LinearGradient(
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
                         colors: [AppColors.primary, AppColors.primary],
                       ),
                       onTap: () {
+                        if (ordersHomeMainController.selectedIndex.value == 1 ||
+                            ordersHomeMainController.selectedIndex.value == 2) {
+                          // No per-item selection on these tabs; the action
+                          // always moves every product to the next status.
+                          for (var item
+                          in ordersHomeMainController.getOrderItems) {
+                            item.isSelected = true;
+                          }
+                        }
                         if (ordersHomeMainController.getOrderItems
                             .any((element) => element.isSelected == true)) {
                           ordersHomeMainController.selectedIndex.value == 0
+                              // Pickup/curb-side orders jump straight to
+                              // ready-for-pickup; delivery orders stay
+                              // two-step (prepare now, ship later from the
+                              // Pickup tab).
+                              ? (isDeliveryOrder
                               ? ordersHomeMainController.apiMarkOrderReady()
+                              : ordersHomeMainController
+                              .apiPrepareAndMoveToPickup())
                               : ordersHomeMainController.selectedIndex.value ==
                               1
+                              ? isDeliveryOrder
                               ? ordersHomeMainController
-                              .getStoreOrderDetailModel
-                              .value
-                              .data
-                              ?.order
-                              ?.deliveryService
-                              ?.id !=
-                              "2"
-                              ? ordersHomeMainController
-                              .apiMarkReadyForPickUp()
-                              : ordersHomeMainController
                               .apiMarkReadyForShipping()
+                              : ordersHomeMainController
+                              .apiMarkReadyForPickUp()
                               : ordersHomeMainController
                               .selectedIndex.value ==
                               2
-                              ?
-                          // add method
-                          alertTOCancelRemainingItems()
-
-
+                              ? (isDeliveryAwaitingShipment
+                              ? ordersHomeMainController
+                              .apiMarkReadyForShipping()
+                              : alertTOCancelRemainingItems())
                               : ordersHomeMainController
                               .selectedIndex.value ==
                               3
@@ -841,7 +970,12 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
                       },
                       height: 50,
                       text: ordersHomeMainController.selectedIndex.value == 0
+                          // Pickup orders jump straight to ready-for-pickup,
+                          // so the label reflects the destination; delivery
+                          // orders still just get prepared here.
+                          ? (isDeliveryOrder
                           ? StringConstants.prepareOrderText
+                          : StringConstants.readyForPickUpText)
                           : ordersHomeMainController.selectedIndex.value == 1 &&
                           ordersHomeMainController
                               .getStoreOrderDetailModel
@@ -861,6 +995,8 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
                               ?.deliveryService
                               ?.id ==
                               "2"
+                          ? StringConstants.orderShippedText
+                          : isDeliveryAwaitingShipment
                           ? StringConstants.orderShippedText
                           : ordersHomeMainController.selectedIndex.value == 2 &&
                           ordersHomeMainController
@@ -931,27 +1067,29 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
       children: [
         Obx(() =>
             Container(
-              height: WidgetConstants.screenHeight * 0.24,
+              // A minimum, not a fixed height: on short screens a long address
+              // needs more room than 24% of the screen.
+              constraints: BoxConstraints(
+                  minHeight: WidgetConstants.screenHeight * 0.24),
               decoration: BoxDecoration(
                 color: const Color(0xff7c94b6),
                 image: DecorationImage(
                   fit: BoxFit.cover,
                   colorFilter: const ColorFilter.mode(
                       Colors.black45, BlendMode.darken),
-                  image: ordersHomeMainController.storeDetailsResponse.value
-                      .data?.store?.image?.dynamicUrl ==
-                      null ||
-                      ordersHomeMainController.storeDetailsResponse
-                          .value.data!.store!.image!.dynamicUrl!.isEmpty
-                      ? const AssetImage(ImageConstants.storeicon)
-                  as ImageProvider
-                      : NetworkImage(ordersHomeMainController
-                      .storeDetailsResponse
-                      .value
-                      .data!
-                      .store!
-                      .image!
-                      .dynamicUrl!),
+                  image: () {
+                    final url = ordersHomeMainController
+                        .storeDetailsResponse
+                        .value
+                        .data
+                        ?.store
+                        ?.image
+                        ?.dynamicUrl;
+                    return (url == null || url.isEmpty)
+                        ? const AssetImage(ImageConstants.storeicon)
+                            as ImageProvider
+                        : CachedNetworkImageProvider(url);
+                  }(),
                 ),
               ),
               child: Column(
@@ -1038,7 +1176,8 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
                                   child: Text(
                                       ordersHomeMainController
                                           .storeLocation.value,
-                                      overflow: TextOverflow.visible,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
                                       style: const TextStyle(
                                           overflow: TextOverflow.visible,
                                           color: AppColors.white,

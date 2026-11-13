@@ -12,6 +12,7 @@ import 'package:thegreenmall/dashboard/home/view/customer/store_home_screen.dart
 import 'package:thegreenmall/dashboard/home/view/customer/store_menu_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/user_product_list_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/view_pdf_screen.dart';
+import 'package:thegreenmall/utils/guest_access_modal.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
 import 'components/store_home_main_args.dart';
@@ -24,12 +25,11 @@ class StoreHomeMainScreen extends StatefulWidget {
   State<StoreHomeMainScreen> createState() => _StoreHomeMainScreenState();
 }
 
-class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
+class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> with GlobalVarMixin {
   final StoreHomeMainController storeHomeMainController =
   Get.isRegistered<StoreHomeMainController>()
       ? Get.find<StoreHomeMainController>()
       : Get.put(StoreHomeMainController());
-
 
   RxList horizontalTabList = [
     StringConstants.storeText,
@@ -52,6 +52,14 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
       controller.applyArgs(widget.args);
       controller.handleInitialFlow();
     });
+  }
+
+  @override
+  void dispose() {
+    if (Get.isRegistered<StoreHomeMainController>()) {
+      Get.delete<StoreHomeMainController>();
+    }
+    super.dispose();
   }
 
   /*
@@ -139,7 +147,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
             height10SizedBox,
             Text(
               StringConstants.welcomeText,
-              style: const TextStyle(
+              style: TextStyle(
                   color: AppColors.primary,
                   fontSize: 22,
                   fontWeight: FontWeight.w600),
@@ -150,7 +158,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
               storeHomeMainController
                       .storeDetailsResponse.value.data?.store?.storeName ??
                   "",
-              style: const TextStyle(
+              style: TextStyle(
                   color: AppColors.black,
                   fontSize: 18,
                   fontWeight: FontWeight.w600),
@@ -159,7 +167,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
             height15SizedBox,
             Text(
               "${StringConstants.contactUsText} " "at:",
-              style: const TextStyle(
+              style: TextStyle(
                   color: AppColors.black,
                   fontSize: 16,
                   height: 1.6,
@@ -180,7 +188,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
             height15SizedBox,
             Text(
               "${StringConstants.emailText} " "at:",
-              style: const TextStyle(
+              style: TextStyle(
                   color: AppColors.black,
                   fontSize: 16,
                   height: 1.6,
@@ -286,6 +294,18 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                   onTap: () {
                     // _applyArgs();
 
+                    // Check if user is guest trying to access favourites (index 2)
+                    if (i == 2 && isGuest.value == true) {
+                      GuestAccessModal.show(
+                        title: StringConstants.loginRequiredText,
+                        message: StringConstants.loginToViewFavouriteProductsText,
+                        onContinueAsGuest: () {
+                          // Allow guest to continue - just close modal
+                        },
+                      );
+                      return; // Don't change the tab index
+                    }
+
                     storeHomeMainController.applyArgs(widget.args);
                     storeHomeMainController.onIndexChange(i);
                   },
@@ -367,140 +387,113 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
   }
 
   List<PopupMenuEntry<String>>? createOptionsPopUpList(ctx) {
-    if (storeHomeMainController
-        .storeDetailsResponse.value.data?.store != null && storeHomeMainController
-        .storeDetailsResponse.value.data!.store!.storePages!.any((element) =>
-            element.storePageType == "privacy" &&
-            element.storePageContent?.dynamicUrl != null &&
-            storeHomeMainController.listIndex.value < 4)) {
-      storeHomeMainController.listIndex.value =
-          storeHomeMainController.listIndex.value + 1;
-    }
-    if (storeHomeMainController
-        .storeDetailsResponse.value.data?.store != null && storeHomeMainController
-        .storeDetailsResponse.value.data!.store!.storePages!
-        .any((element) =>
-            element.storePageType == "terms" &&
-            element.storePageContent?.dynamicUrl != null &&
-            storeHomeMainController.listIndex.value < 4)) {
-      storeHomeMainController.listIndex.value =
-          storeHomeMainController.listIndex.value + 1;
-    }
-    return List.generate(storeHomeMainController.listIndex.value, (index) {
-      if (index == 0) {
-        return PopupMenuItem<String>(
-          value: StringConstants.previousOrdersText,
-          child: Column(
+    final pages = storeHomeMainController
+            .storeDetailsResponse.value.data?.store?.storePages ?? [];
+    final hasPrivacy = pages.any((el) =>
+        el.storePageType == "privacy" &&
+        el.storePageContent?.dynamicUrl != null);
+    final hasTerms = pages.any((el) =>
+        el.storePageType == "terms" &&
+        el.storePageContent?.dynamicUrl != null);
+    return [
+      PopupMenuItem<String>(
+        value: StringConstants.previousOrdersText,
+        child: Column(
+          children: [
+            SizedBox(
+              width: 120,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    StringConstants.previousOrdersText,
+                    style: TextStyle(
+                        color: AppColors.black, fontFamily: "", fontSize: 14),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        onTap: () async {
+          // Check if user is guest - show modal and prevent navigation
+          if (isGuest.value == true) {
+            GuestAccessModal.show(
+              title: StringConstants.loginRequiredText,
+              message: StringConstants.loginToViewPreviousOrdersText,
+              onContinueAsGuest: () {
+                // Allow guest to continue - just close modal
+              },
+            );
+            return; // Don't navigate
+          }
+          storeHomeMainController.popUpMenuChange(0);
+        },
+      ),
+      PopupMenuItem<String>(
+        value: StringConstants.contactText,
+        child: SizedBox(
+          width: 100,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                width: 120,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      StringConstants.previousOrdersText,
-                      style: const TextStyle(
-                          color: AppColors.black, fontFamily: "", fontSize: 14),
-                    ),
-                  ],
-                ),
+              Text(
+                StringConstants.contactText,
+                style: TextStyle(
+                    color: AppColors.black, fontFamily: "", fontSize: 14),
               ),
             ],
           ),
-          onTap: () async {
-            storeHomeMainController.popUpMenuChange(index);
-          },
-        );
-      } else if (index == 1) {
-        return PopupMenuItem<String>(
-          value: StringConstants.contactText,
+        ),
+        onTap: () {
+          contactAlertDialog(ctx);
+        },
+      ),
+      if (hasPrivacy)
+        PopupMenuItem<String>(
+          value: StringConstants.storePolicyText,
           child: SizedBox(
             width: 100,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  StringConstants.contactText,
-                  style: const TextStyle(
-                      color: AppColors.black, fontFamily: "", fontSize: 14),
+                  StringConstants.storePolicyText,
+                  style: TextStyle(
+                      color: AppColors.black,
+                      fontFamily: "",
+                      fontSize: 14),
                 ),
               ],
             ),
           ),
           onTap: () {
-            storeHomeMainController.applyArgs(widget.args);
-
-            contactAlertDialog(ctx);
+            storeHomeMainController.popUpMenuChange(2);
           },
-        );
-      } else if (index == 2) {
-        return storeHomeMainController
-                .storeDetailsResponse.value.data!.store!.storePages!
-                .any((element) =>
-                    element.storePageType == "privacy" &&
-                    element.storePageContent?.dynamicUrl != null)
-            ? PopupMenuItem<String>(
-                value: StringConstants.storePolicyText,
-                child: SizedBox(
-                  width: 100,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        StringConstants.storePolicyText,
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontFamily: "",
-                            fontSize: 14),
-                      ),
-                    ],
-                  ),
+        ),
+      if (hasTerms)
+        PopupMenuItem<String>(
+          value: StringConstants.termsAndConditionsText,
+          child: SizedBox(
+            width: 136,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  StringConstants.termsAndConditionsText,
+                  style: TextStyle(
+                      color: AppColors.black,
+                      fontFamily: "",
+                      fontSize: 14),
                 ),
-                onTap: () {
-                  storeHomeMainController.popUpMenuChange(index);
-                },
-              )
-            : PopupMenuItem<String>(
-                value: StringConstants.storePolicyText,
-                child: const SizedBox(
-                  width: 100,
-                ),
-              );
-      } else {
-        return storeHomeMainController
-                .storeDetailsResponse.value.data!.store!.storePages!
-                .any((element) =>
-                    element.storePageType == "terms" &&
-                    element.storePageContent?.dynamicUrl != null)
-            ? PopupMenuItem<String>(
-                value: StringConstants.termsAndConditionsText,
-                child: SizedBox(
-                  width: 136,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        StringConstants.termsAndConditionsText,
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontFamily: "",
-                            fontSize: 14),
-                      ),
-                    ],
-                  ),
-                ),
-                onTap: () {
-                  storeHomeMainController.popUpMenuChange(index);
-                },
-              )
-            : PopupMenuItem<String>(
-                value: StringConstants.storePolicyText,
-                child: const SizedBox(
-                  width: 100,
-                ),
-              );
-      }
-    });
+              ],
+            ),
+          ),
+          onTap: () {
+            storeHomeMainController.popUpMenuChange(3);
+          },
+        ),
+    ];
   }
 
   @override
@@ -552,30 +545,38 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                     case 0:
                       return const Expanded(child: PreviousOrdersScreen());
                     case 2:
-                      if (storeHomeMainController
-                          .storeDetailsResponse.value.data!.store!
-                          .storePages!.first.storePageContent!.dynamicUrl == null) {
+                      final privacyPage = storeHomeMainController
+                          .storeDetailsResponse.value.data?.store?.storePages
+                          ?.firstWhere(
+                            (page) => page.storePageType == "privacy",
+                            orElse: () => storeHomeMainController
+                              .storeDetailsResponse.value.data!.store!.storePages!.first,
+                          );
+                      if (privacyPage?.storePageContent?.dynamicUrl == null) {
                         return const Expanded(child: StoreHomeScreen());
                       } else {
                         return Expanded(
                           child: PdfViewScreen(
                             isShowPrivacy: true,
-                            url: storeHomeMainController.storeDetailsResponse.value
-                                .data!.store!.storePages!.first.storePageContent!.dynamicUrl.toString(),
+                            url: privacyPage!.storePageContent!.dynamicUrl.toString(),
                           ),
                         );
                       }
                     case 3:
-                      if (storeHomeMainController
-                          .storeDetailsResponse.value.data!
-                          .store!.storePages!.first.storePageContent!.dynamicUrl == null) {
+                      final termsPage = storeHomeMainController
+                          .storeDetailsResponse.value.data?.store?.storePages
+                          ?.firstWhere(
+                            (page) => page.storePageType == "terms",
+                            orElse: () => storeHomeMainController
+                              .storeDetailsResponse.value.data!.store!.storePages!.first,
+                          );
+                      if (termsPage?.storePageContent?.dynamicUrl == null) {
                         return const Expanded(child: StoreHomeScreen());
                       } else {
                         return Expanded(
                           child: PdfViewScreen(
                             isShowPrivacy: false,
-                            url: storeHomeMainController.storeDetailsResponse.value.data!
-                                .store!.storePages!.first.storePageContent!.dynamicUrl.toString(),
+                            url: termsPage!.storePageContent!.dynamicUrl.toString(),
                           ),
                         );
                       }
@@ -616,7 +617,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                   return storeHomeMainController.isLoading.value
                       ? Container(
                     color: Colors.black.withOpacity(0.2),
-                    child: const Center(
+                    child: Center(
                       child: CircularProgressIndicator(color: AppColors.primary),
                     ),)
                       : const SizedBox.shrink();

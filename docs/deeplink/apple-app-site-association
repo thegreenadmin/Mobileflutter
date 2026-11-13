@@ -1,0 +1,15 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["6F246JUX8A.com.thegreenmall"],
+        "components": [
+          {
+            "/": "/pay/*",
+            "comment": "Payment QR universal links open the app"
+          }
+        ]
+      }
+    ]
+  }
+}

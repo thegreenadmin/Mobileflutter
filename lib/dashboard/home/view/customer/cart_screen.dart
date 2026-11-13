@@ -1,9 +1,11 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:thegreenmall/authentication/login/view/login_screen.dart';
 import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/account/personal_info_edit_screen.dart';
 import 'package:thegreenmall/dashboard/wallet/view/add_money_to_wallet_customer.dart';
+import 'package:thegreenmall/utils/guest_access_modal.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
 class CartScreen extends StatefulWidget {
@@ -23,11 +25,43 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
   @override
    initState()  {
     super.initState();
+    
+    // Check if user is guest - show modal for account-based features
+    if (isGuest.value == true) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        GuestAccessModal.show(
+          title: StringConstants.loginRequiredText,
+          message: StringConstants.loginToAccessYourCartText,
+          onContinueAsGuest: () {
+            // Allow guest to continue - just close modal and go back
+            Get.back();
+          },
+        );
+      });
+      return;
+    }
+    
     storeHomeMainController = Get.put(StoreHomeMainController());
 
-    // Just set params here (no API calls!)
-    storeHomeMainController.storeId.value = widget.storeId ?? "0";
+    storeHomeMainController.storeId.value = (widget.storeId != null && widget.storeId!.isNotEmpty) ? widget.storeId! : "0";
     storeHomeMainController.isFromAddProduct.value = widget.isFromAddProduct ?? false;
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      // The shipping/pickup address section reads selectedUserAddress,
+      // which is only populated by apiGetUserDetailsApi — never called on
+      // a cold cart open, so the address stayed blank until the user
+      // tapped around (T2-409). Guarded so a re-open doesn't clobber an
+      // address the user already picked this session.
+      if (storeHomeMainController.userAddress.isEmpty) {
+        storeHomeMainController.apiGetUserDetailsApi();
+      }
+      // Loads the wallet balance and chains the active-cart, cart-list and
+      // store-details fetches, so the cart works no matter where it's
+      // opened from (tab bar, wallet cart icon, store page). Calling
+      // apiActiveCartApi directly here left walletBalance at 0.0, showing
+      // a bogus "insufficient funds" banner.
+      await storeHomeMainController.apiGetUserWalletBalance();
+    });
 
   }
 
@@ -51,6 +85,11 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
                               children: [
                                 Row(
                                   children: [
+                                    Image.asset(
+                                      ImageConstants.homeMall,
+                                      scale: 4,
+                                    ),
+                                    width10SizedBox,
                                     IconButton(
                                       padding: EdgeInsets.all(5),
                                       constraints: const BoxConstraints(),
@@ -69,7 +108,7 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
 
 
                                       },
-                                      icon: const Icon(
+                                      icon: Icon(
                                         Icons.arrow_back,
                                         color: AppColors.black,
                                         size: 24.0,
@@ -78,17 +117,13 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
                                     width10SizedBox,
                                     Text(
                                       StringConstants.cartText,
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                           fontSize: 22,
                                           color: AppColors.black,
                                           fontWeight: FontWeight.w600),
                                     ),
                                   ],
                                 ),
-                                Image.asset(
-                                  ImageConstants.homeMall,
-                                  scale: 4,
-                                )
                               ]),
                         ],
                       )),
@@ -103,7 +138,7 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
                           children: [
                             Text(
                               StringConstants.itemsText,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   color: AppColors.black,
                                   fontSize: 18,
                                   fontWeight: FontWeight.w600),
@@ -124,7 +159,7 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
                                     return Container(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 10, vertical: 15),
-                                      decoration: const BoxDecoration(
+                                      decoration: BoxDecoration(
                                           color: AppColors.primaryLight,
                                           borderRadius: BorderRadius.all(
                                             Radius.circular(8.0),
@@ -164,7 +199,7 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
                                                             .cartItems[i]
                                                             .product
                                                             ?.productName ?? "",
-                                                    style: const TextStyle(
+                                                    style: TextStyle(
                                                         fontSize: 16.0,
                                                         color: AppColors.black,
                                                         fontWeight:
@@ -182,7 +217,7 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
                                                                   .cartItems[i]
                                                                   .product
                                                                   ?.description ?? "",
-                                                          style: const TextStyle(
+                                                          style: TextStyle(
                                                               fontSize: 14.0,
                                                               color:
                                                                   AppColors.black,
@@ -209,14 +244,14 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
                                                             TextSpan(
                                                                 text:
                                                                     "${StringConstants.unitPriceText}:",
-                                                                style: const TextStyle(
+                                                                style: TextStyle(
                                                                     color: AppColors.black,
                                                                     fontWeight: FontWeight.w400,
                                                                     fontSize: 14)),
                                                             TextSpan(
                                                               text:
-                                                                  ' \$${storeHomeMainController.cartItems[i].product?.productPrice?.toStringAsFixed(2) ?? "0"}',
-                                                              style: const TextStyle(
+                                                                  ' $currencySign${storeHomeMainController.cartItems[i].product?.productPrice?.toStringAsFixed(2) ?? "0"}',
+                                                              style: TextStyle(
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .w600,
@@ -239,10 +274,11 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
                                                                     !storeHomeMainController
                                                                         .isLoading.value
                                                                 ? storeHomeMainController.apiUpdateCart(
-                                                                    cartItemId: int.parse(
-                                                                        storeHomeMainController
+                                                                    cartItemId: (storeHomeMainController
                                                                                 .cartItems[i]
-                                                                                .cartItemId ?? "0"),
+                                                                                .cartItemId?.isNotEmpty == true)
+                                                                            ? int.parse(storeHomeMainController.cartItems[i].cartItemId!)
+                                                                            : 0,
                                                                     quantity: storeHomeMainController
                                                                             .cartItems[i].itemsCount! - 1)
                                                                 : null;
@@ -267,7 +303,7 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
                                                                 .cartItems[i]
                                                                 .itemsCount
                                                                 .toString(),
-                                                        style: const TextStyle(
+                                                        style: TextStyle(
                                                             fontWeight:
                                                                 FontWeight.w600,
                                                             fontSize: 14,
@@ -279,12 +315,12 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
                                                           !storeHomeMainController
                                                                   .isLoading.value
                                                               ? storeHomeMainController.apiUpdateCart(
-                                                                  cartItemId: int.parse(
-                                                                      storeHomeMainController
+                                                                  cartItemId: (storeHomeMainController
                                                                               .cartItems[
                                                                                   i]
-                                                                              .cartItemId ??
-                                                                          "0"),
+                                                                              .cartItemId?.isNotEmpty == true)
+                                                                          ? int.parse(storeHomeMainController.cartItems[i].cartItemId!)
+                                                                          : 0,
                                                                   quantity: storeHomeMainController
                                                                           .cartItems[
                                                                               i]
@@ -312,12 +348,12 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
                                                           .deleteText, okayTap: () {
                                                     storeHomeMainController
                                                         .apiDeleteCart(
-                                                            cartItemId: int.parse(
-                                                                storeHomeMainController
+                                                            cartItemId: (storeHomeMainController
                                                                         .cartItems[
                                                                             i]
-                                                                        .cartItemId ??
-                                                                    "0"));
+                                                                        .cartItemId?.isNotEmpty == true)
+                                                                    ? int.parse(storeHomeMainController.cartItems[i].cartItemId!)
+                                                                    : 0);
                                                   });
                                                 },
                                                 child: Image.asset(
@@ -333,7 +369,7 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
                             height10SizedBox,
                             Text(
                               StringConstants.orderType,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   color: AppColors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600),
@@ -529,7 +565,7 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
                                         storeHomeMainController.selectedDeliveryService.value == "3"
                                     ? StringConstants.pickUpLocationText
                                     : StringConstants.shippingAddressText,
-                                style: const TextStyle(
+                                style: TextStyle(
                                     color: AppColors.black,
                                     fontSize: 16,
                                     fontWeight: FontWeight.w600),
@@ -544,7 +580,7 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
                                       width: WidgetConstants.screenWidth,
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 4, vertical: 12),
-                                      decoration: const BoxDecoration(
+                                      decoration: BoxDecoration(
                                           color: AppColors.primaryLight,
                                           borderRadius: BorderRadius.all(
                                             Radius.circular(8.0),
@@ -571,7 +607,7 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
                                   : Container(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 4, vertical: 8),
-                                      decoration: const BoxDecoration(
+                                      decoration: BoxDecoration(
                                           color: AppColors.primaryLight,
                                           borderRadius: BorderRadius.all(
                                             Radius.circular(8.0),
@@ -612,7 +648,7 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
                                                                 .addAddressText
                                                             : "${storeHomeMainController.selectedUserAddress.value.addressLine1 ?? ""},${storeHomeMainController.selectedUserAddress.value.city ?? ""},"
                                                                 "${storeHomeMainController.selectedUserAddress.value.state?.stateName ?? ""},${storeHomeMainController.selectedUserAddress.value.state?.country?.countryName ?? ""},",
-                                                        style: const TextStyle(
+                                                        style: TextStyle(
                                                             overflow: TextOverflow
                                                                 .visible,
                                                             color: AppColors.black,
@@ -682,7 +718,7 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
                                                     child: Center(
                                                         child: Text(
                                                         StringConstants.addText,
-                                                        style: const TextStyle(
+                                                        style: TextStyle(
                                                             fontWeight:
                                                                 FontWeight.w500,
                                                             fontSize: 14.0,
@@ -700,7 +736,7 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
                             height10SizedBox,
                             Text(
                               StringConstants.orderSummaryText,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   color: AppColors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600),
@@ -719,12 +755,12 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            buildRow(StringConstants.subtotalText, "\$${storeHomeMainController.cartData.value.cartSubTotal?.toStringAsFixed(2) ?? "0.00"}"),
-                                            buildRow(StringConstants.discountText, "\$${storeHomeMainController.cartData.value.cartTotalDiscount?.toStringAsFixed(2) ?? "0.00"}"),
-                                            buildRow(StringConstants.deliveryChargeText, "\$${storeHomeMainController.cartData.value.cartDeliveryServiceCharge?.toStringAsFixed(2) ?? "0.00"}"),
-                                            buildRow(StringConstants.serviceFeesText, "\$${storeHomeMainController.cartData.value.cartTotalServiceCharged?.toStringAsFixed(2) ?? "0.00"}"),
-                                            buildRow(StringConstants.taxText, "\$${storeHomeMainController.cartData.value.cartTotalTax?.toStringAsFixed(2) ?? "0.00"}"),
-                                            buildRow(StringConstants.totalText, "\$${storeHomeMainController.cartData.value.cartTotalPrice?.toStringAsFixed(2) ?? "0.00"}",
+                                            buildRow(StringConstants.subtotalText, "$currencySign${storeHomeMainController.cartData.value.cartSubTotal?.toStringAsFixed(2) ?? "0.00"}"),
+                                            buildRow(StringConstants.discountText, "$currencySign${storeHomeMainController.cartData.value.cartTotalDiscount?.toStringAsFixed(2) ?? "0.00"}"),
+                                            buildRow(StringConstants.deliveryChargeText, "$currencySign${storeHomeMainController.cartData.value.cartDeliveryServiceCharge?.toStringAsFixed(2) ?? "0.00"}"),
+                                            buildRow(StringConstants.serviceFeesText, "$currencySign${storeHomeMainController.cartData.value.cartTotalServiceCharged?.toStringAsFixed(2) ?? "0.00"}"),
+                                            buildRow(StringConstants.taxText, "$currencySign${storeHomeMainController.cartData.value.cartTotalTax?.toStringAsFixed(2) ?? "0.00"}"),
+                                            buildRow(StringConstants.totalText, "$currencySign${storeHomeMainController.cartData.value.cartTotalPrice?.toStringAsFixed(2) ?? "0.00"}",
                                                 fontWeight: FontWeight.w600),
                                           ]),
                                     )),
@@ -769,11 +805,11 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
                               children: [
                                 Expanded(
                                   child: Obx(() => Text(
-                                        "${StringConstants.inSufficientFundText}(\$${storeHomeMainController.walletBalance.value.toStringAsFixed(2)})",
+                                        "${StringConstants.inSufficientFundText}($currencySign${storeHomeMainController.walletBalance.value.toStringAsFixed(2)})",
                                         // "Cart Total Price- ${storeHomeMainController
                                         //     .cartData.value.cartTotalPrice} Wallet Balance- (\$${storeHomeMainController.walletBalance.value})",
                                     overflow: TextOverflow.visible,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                             color: AppColors.red,
                                             fontSize: 14,
                                             fontWeight: FontWeight.w500),
@@ -792,7 +828,7 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
                                   },
                                   child: Text(
                                     StringConstants.addFundText,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         decoration: TextDecoration.underline,
                                         color: AppColors.red,
                                         fontSize: 14,
@@ -815,15 +851,15 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
                               children: [
                                 Text(
                                   StringConstants.amountToPayText,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                       color: AppColors.black,
                                       fontSize: 14,
                                       fontWeight: FontWeight.w500),
                                 ),
                                 Obx(
                                   () => Text(
-                                    "\$${storeHomeMainController.cartData.value.cartTotalPrice?.toStringAsFixed(2) ?? "0"}",
-                                    style: const TextStyle(
+                                    "$currencySign${storeHomeMainController.cartData.value.cartTotalPrice?.toStringAsFixed(2) ?? "0"}",
+                                    style: TextStyle(
                                         color: AppColors.black,
                                         fontSize: 18,
                                         fontWeight: FontWeight.w600),
@@ -845,7 +881,7 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
                                 ),
                                 onTap: () async {
                                   if (storeHomeMainController.cartData.value.cartTotalPrice == null  || storeHomeMainController.cartData.value.cartTotalPrice == 0) {
-                                    Utility.showConfirmAlertMessage("Order can not be proceed, Order amount is \$0",okayTap: (){
+                                    Utility.showConfirmAlertMessage("Order can not be proceed, Order amount is ${currencySign}0",okayTap: (){
                                       Get.back(id: pageIdApp.value);
                                     });
                                     return;
@@ -919,7 +955,7 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
               return storeHomeMainController.isLoading.value
                   ? Container(
                 color: Colors.black.withOpacity(0.2),
-                child: const Center(
+                child: Center(
                   child: CircularProgressIndicator(color: AppColors.primary),
                 ),)
                   : const SizedBox.shrink();
@@ -936,7 +972,7 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
                       MainAxisAlignment.spaceBetween,
                   children: [
                     Text(text,
-                      style: const TextStyle(
+                      style: TextStyle(
                           color: AppColors.black,
                           fontSize: 16,
                           fontWeight: FontWeight.w500),

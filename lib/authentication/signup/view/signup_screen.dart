@@ -2,7 +2,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:thegreenmall/authentication/login/view/login_screen.dart';
 import 'package:thegreenmall/authentication/signup/controller/signup_controller.dart';
@@ -21,9 +20,6 @@ class SignupScreen extends StatefulWidget {
 class _SignupScreenState extends State<SignupScreen> {
   final SignupController signupController = Get.put(SignupController());
 
-  String? formattedDate;
-  String? formattedDateToCompare;
-  TimeOfDay selectedTime = TimeOfDay.now();
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +45,8 @@ class _SignupScreenState extends State<SignupScreen> {
                       height25SizedBox,
                       _buildInputFields(),
                       height20SizedBox,
+                      _buildAgeVerification(),
+                      height15SizedBox,
                       _buildTermsAndConditions(),
                       height30SizedBox,
                       _buildSignupButton(),
@@ -86,7 +84,7 @@ class _SignupScreenState extends State<SignupScreen> {
   Widget _buildTitle() {
     return Text(
       StringConstants.createAccountText,
-      style: const TextStyle(
+      style: TextStyle(
         color: AppColors.primary,
         fontSize: 30,
         fontWeight: FontWeight.w600,
@@ -123,19 +121,15 @@ class _SignupScreenState extends State<SignupScreen> {
                 : null),
         height15SizedBox,
         _buildCustomInputField(signupController.emailTextController,
-            StringConstants.emailText, ImageConstants.email,
+            "${StringConstants.emailText} (Optional)", ImageConstants.email,
             validator: (value) {
-              if (value!.trim().isEmpty) {
-                return AlertStringConstants.pleaseEnterEmailText;
-              } else if (!GetUtils.isEmail(value.trim())) {
+              if (value!.trim().isNotEmpty && !GetUtils.isEmail(value.trim())) {
                 return AlertStringConstants.pleaseEnterValidEmailText;
               }
               return null;
             }),
         height15SizedBox,
         _buildPhoneField(),
-        height8SizedBox,
-        _buildDateField(),
       ],
     );
   }
@@ -166,7 +160,7 @@ class _SignupScreenState extends State<SignupScreen> {
       controller: signupController.phoneNumberTextController,
       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
       keyboardType: TextInputType.phone,
-      style: const TextStyle(color: AppColors.black, fontSize: 15, fontWeight: FontWeight.w400),
+      style: TextStyle(color: AppColors.black, fontSize: 15, fontWeight: FontWeight.w400),
       showDropdownIcon: false,
       flagsButtonMargin: const EdgeInsets.all(10),
       textInputAction: TextInputAction.done,
@@ -201,41 +195,6 @@ class _SignupScreenState extends State<SignupScreen> {
     );
   }
 
-  /// Date of Birth Input Field (Date Picker Unchanged)
-  Widget _buildDateField() {
-    return CustomInputField(
-      isBorderOutline: true,
-      controller: signupController.dateTextController,
-      hintText: StringConstants.dobText,
-      labelText: StringConstants.dobText,
-      prefixIcon: Image.asset(ImageConstants.calendar, scale: 2.8),
-      validator: (value) =>
-      value!.trim().isEmpty ? AlertStringConstants.pleaseSelectDateText : null,
-      onTap: () async {
-        FocusScope.of(context).unfocus();
-        DateTime? date = await showDatePicker(
-          context: Get.context!,
-          initialDate: DateTime.now(),
-          firstDate: DateTime.utc(1200, 1, 1),
-          lastDate: DateTime.now(),
-          builder: (BuildContext context, Widget? child) {
-            return Theme(
-              data: ThemeData.light().copyWith(
-                colorScheme: const ColorScheme.light(primary: AppColors.primary),
-              ),
-              child: child!,
-            );
-          },
-        );
-
-        if (date != null) {
-          final DateFormat formatter = DateFormat('yyyy-MM-dd');
-          signupController.dateTextController.text = formatter.format(date);
-        }
-      },
-    );
-  }
-
   /// Terms & Conditions Checkbox (Unchanged)
   Widget _buildTermsAndConditions() {
     return Row(
@@ -263,6 +222,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 _buildLinkText(StringConstants.termsAndConditionsText, "terms"),
                 TextSpan(text: StringConstants.acknowledgeText),
                 _buildLinkText(StringConstants.privacyPolicyText, StringConstants.privacyText),
+                TextSpan(text: StringConstants.messageRatesDisclaimerText),
               ],
             ),
           ),
@@ -273,9 +233,14 @@ class _SignupScreenState extends State<SignupScreen> {
 
   /// Link Text for Terms & Conditions
   TextSpan _buildLinkText(String text, String page) {
+    final url = Uri.parse(ServerCommunicator.baseUrlWithoutApi +
+            (page == "terms"
+                ? ServerCommunicator.pageTerms
+                : ServerCommunicator.pagePolicy))
+        .toString();
     return TextSpan(
       recognizer: TapGestureRecognizer()
-        ..onTap = () => Get.to(() => WebviewPageScreen(isFrom: page, url: 'URL')),
+        ..onTap = () => Get.to(() => WebviewPageScreen(isFrom: page, url: url)),
       text: text,
       style: const TextStyle(
         fontWeight: FontWeight.w600,
@@ -284,10 +249,43 @@ class _SignupScreenState extends State<SignupScreen> {
     );
   }
 
+  /// Age Verification Checkbox
+  Widget _buildAgeVerification() {
+    return Row(
+      children: [
+        Obx(
+          () => Checkbox(
+            side: WidgetStateBorderSide.resolveWith(
+              (states) => BorderSide(
+                width: 1.0,
+                color: AppColors.primary.withOpacity(0.5),
+              ),
+            ),
+            value: signupController.isAgeVerified.value,
+            onChanged: (value) => signupController.isAgeVerified.value = value!,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(6.0),
+            ),
+            activeColor: AppColors.primary,
+          ),
+        ),
+        Expanded(
+          child: Text(
+            "I am 18 years old or older",
+            style: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   /// Signup Button
   Widget _buildSignupButton() {
     return CustomButton(
-      gradient: const LinearGradient(colors: [AppColors.primary, AppColors.primary]),
+      gradient: LinearGradient(colors: [AppColors.primary, AppColors.primary]),
       onTap: () => signupController.validateAndSubmit(isFromOwner: widget.isFromOwner),
       height: 50,
       text: StringConstants.signUpText,
@@ -306,7 +304,7 @@ class _SignupScreenState extends State<SignupScreen> {
       child: Center(
         child: Text(
           StringConstants.loginYourAccountText,
-          style: const TextStyle(color: AppColors.primary, fontSize: 16, fontWeight: FontWeight.w600),
+          style: TextStyle(color: AppColors.primary, fontSize: 16, fontWeight: FontWeight.w600),
         ),
       ),
     );
@@ -317,7 +315,7 @@ class _SignupScreenState extends State<SignupScreen> {
     return Obx(() => signupController.isLoading.value
         ? Container(
       color: Colors.black.withOpacity(0.2),
-      child: const Center(child: CircularProgressIndicator(color: AppColors.primary)),
+      child: Center(child: CircularProgressIndicator(color: AppColors.primary)),
     )
         : const SizedBox.shrink());
   }

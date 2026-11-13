@@ -48,7 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   decoration: BoxDecoration(
                                       border: Border.all(),
                                       borderRadius: const BorderRadius.all(Radius.circular(20))),
-                                  child: const Icon(
+                                  child: Icon(
                                     Icons.chevron_left,
                                     color: AppColors.primary,
                                   ),
@@ -57,7 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               height40SizedBox,
                               Text(
                                 StringConstants.loginYourAccountText,
-                                style: const TextStyle(
+                                style: TextStyle(
                                     color: AppColors.primary,
                                     fontWeight: FontWeight.w600,
                                     fontSize: 30),
@@ -80,7 +80,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ],
                                 enabled: true,
                                 keyboardType: TextInputType.phone,
-                                style: const TextStyle(
+                                style: TextStyle(
                                     color: AppColors.black,
                                     fontSize: 15,
                                     fontWeight: FontWeight.w400),
@@ -94,14 +94,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                   hintStyle: const TextStyle(fontSize: 15),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(5.0),
-                                    borderSide: const BorderSide(
+                                    borderSide: BorderSide(
                                       color: AppColors.primary,
                                       width: 1.0,
                                     ),
                                   ),
                                   errorBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(5.0),
-                                    borderSide: const BorderSide(
+                                    borderSide: BorderSide(
                                       color: AppColors.primary,
                                       width: 1.0,
                                     ),
@@ -115,7 +115,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(5.0),
-                                    borderSide: const BorderSide(
+                                    borderSide: BorderSide(
                                       color: AppColors.primary,
                                       width: 1.0,
                                     ),
@@ -134,7 +134,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                               height40SizedBox,
                               CustomButton(
-                                  gradient: const LinearGradient(
+                                  gradient: LinearGradient(
                                     begin: Alignment.topCenter,
                                     end: Alignment.bottomCenter,
                                     colors: [AppColors.primary, AppColors.primary],
@@ -164,7 +164,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 return loginController.isLoading.value
                     ? Container(
                   color: Colors.black.withOpacity(0.2),
-                  child: const Center(
+                  child: Center(
                     child: CircularProgressIndicator(color: AppColors.primary),
                   ),
                 )

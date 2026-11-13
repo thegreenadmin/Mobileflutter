@@ -18,6 +18,7 @@ class OffersController extends GetxController with GlobalVarMixin{
   RxString? nickName = "".obs;
   RxString? email = "".obs;
   RxString? phone = "".obs;
+  RxBool isTestAccount = false.obs;
   Rx<Offer> offerObj = Offer().obs;
   RxString? storeId = "".obs;
   RxString? offerId = "".obs;
@@ -57,20 +58,60 @@ class OffersController extends GetxController with GlobalVarMixin{
   RxInt pageCustomer = 1.obs;
   ScrollController scrollController1 = ScrollController();
 
+  // BottomNavController calls onInit() MANUALLY on the (already-registered)
+  // instance on every Offers-tab tap, so guard listener registration to avoid
+  // attaching duplicate workers each time.
+  bool _listenersInitialized = false;
+
   @override
   void onInit() {
     super.onInit();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      var roleData = await SharedPreferenceStorage.getData(Role.role) ??"";
-      role.value = roleData;
-      if (Get.parameters["isController"] != "no") {
-        if (role.value == Role.customerRoleText) {
-          searchStoreUserController.apiActiveCartApi();
-        }
-        // isFromNotification.value =
-        //     Get.parameters["isFromNotification"] == "true" ? true : false;
-        getData();
+
+    if (!_listenersInitialized) {
+      _listenersInitialized = true;
+
+      // Sync local firstName/lastName with global variables
+      if (firstName != null) {
+        ever(firstName!, (String val) => this.firstName?.value = val);
       }
+      if (lastName != null) {
+        ever(lastName!, (String val) => this.lastName?.value = val);
+      }
+
+      // The Offers tab is built eagerly inside the BottomNavigation IndexedStack,
+      // so this controller is created (and getData() runs) while the user may
+      // still be a guest. When the guest logs in (isGuest: true → false) nothing
+      // re-triggers the load on this already-created instance, so the offers /
+      // offer-products stay stale (or empty). Mirror HomeController/OrdersController
+      // and reload on the guest → authenticated transition.
+      ever(isGuest, (bool guestStatus) async {
+        if (!guestStatus && authToken.value.isNotEmpty) {
+          page.value = 1;
+          await getData();
+        }
+      });
+
+      // Profile switch (customer <-> store owner) only flips the global
+      // roleApp.value synchronously; the SharedPrefs write isn't awaited and,
+      // on real devices, lags. The Offers tab lives in the BottomNavigation
+      // IndexedStack and isn't rebuilt on switch, so without this worker the
+      // controller keeps the previous role's data and view — making both
+      // profiles show the same offers screen. Reload for the new role.
+      ever(roleApp, (String newRole) async {
+        if (newRole.isEmpty) return;
+        role.value = newRole;
+        page.value = 1;
+        await getData();
+      });
+    }
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      var roleData = await SharedPreferenceStorage.getData(Role.role) ?? "";
+      role.value = roleApp.value.isNotEmpty ? roleApp.value : roleData;
+      if (role.value == Role.customerRoleText && !isGuest.value) {
+        searchStoreUserController.apiActiveCartApi();
+      }
+      getData();
     });
   }
 
@@ -81,9 +122,16 @@ class OffersController extends GetxController with GlobalVarMixin{
     lastName?.value =
         await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
             "";
+    phone?.value =
+        await SharedPreferenceStorage.getData("userPhone") ?? "";
+    isTestAccount.value =
+        await SharedPreferenceStorage.getData("isTestAccount") ?? false;
 
-    var roleData = await SharedPreferenceStorage.getData(Role.role) ??"";
-    role.value = roleData;
+    // Prefer the global roleApp.value (set synchronously on login / profile
+    // switch) over the SharedPrefs read, which lags on real devices and can
+    // otherwise load the previous profile's offers.
+    var roleData = await SharedPreferenceStorage.getData(Role.role) ?? "";
+    role.value = roleApp.value.isNotEmpty ? roleApp.value : roleData;
     if (role.value == Role.customerRoleText) {
       await getCurrentLocation();
     } else {
@@ -94,9 +142,26 @@ class OffersController extends GetxController with GlobalVarMixin{
   }
 
   getCurrentLocation() async {
-    Position currentLocation = await Utility.fetchCurrentLocation();
-    lat = currentLocation.latitude;
-    lng = currentLocation.longitude;
+    // Backend-flagged test accounts (e.g. the Apple review login) skip GPS and
+    // use the Nashville default. Toggled from the admin panel, so the review
+    // phone number can change without an app release.
+    if (isTestAccount.value == true) {
+      lat = 36.1627; // Nashville, Tennessee latitude
+      lng = -86.7816; // Nashville, Tennessee longitude
+    } else {
+      // Nashville default — used when GPS is unavailable (e.g. simulator, denied
+      // service, or a timed-out fix) so offers still load instead of the fetch
+      // throwing an unhandled TimeoutException and skipping the call.
+      lat = 36.1627;
+      lng = -86.7816;
+      try {
+        Position currentLocation = await Utility.fetchCurrentLocation();
+        lat = currentLocation.latitude;
+        lng = currentLocation.longitude;
+      } catch (e) {
+        print("DEBUG: getCurrentLocation fallback to Nashville: $e");
+      }
+    }
     apiGetUserOffersList();
     setupScrollController1();
   }
@@ -127,6 +192,10 @@ class OffersController extends GetxController with GlobalVarMixin{
 
   ///Get Offers List Api [OWNER]
   Future apiGetOwnerOffersList() async {
+    // Skip API call for guest users
+    if (isGuest.value == true) {
+      return;
+    }
     if (page.value == 1) {
       isLoading.value = true;
       getOwnerOfferList.clear();
@@ -135,9 +204,12 @@ class OffersController extends GetxController with GlobalVarMixin{
 
          Map<String, String> headers = {
       'Content-Type': 'application/json',
-      StringConstants.authorizationText:
-          "${StringConstants.bearerText} ${authToken.value}",
     };
+    // Only add authorization header if not guest user
+    if (!isGuest.value) {
+      headers[StringConstants.authorizationText] =
+          "${StringConstants.bearerText} ${authToken.value}";
+    }
          Map body = {
       "store_id": null,
       "page": page.value,
@@ -174,7 +246,7 @@ class OffersController extends GetxController with GlobalVarMixin{
         storage.clearData();
         isLoading.value = false;
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -194,9 +266,12 @@ class OffersController extends GetxController with GlobalVarMixin{
      
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      StringConstants.authorizationText:
-          "${StringConstants.bearerText} ${authToken.value}",
     };
+    // Only add authorization header if not guest user
+    if (!isGuest.value) {
+      headers[StringConstants.authorizationText] =
+          "${StringConstants.bearerText} ${authToken.value}";
+    }
          UserProvider()
         .getWithHeadersApi(
             "${ServerCommunicator.baseUrl}${ServerCommunicator.shopOffersList}?longitude=$lng&latitude=$lat&mileage=1000&page=1&page_size=20",
@@ -223,7 +298,7 @@ class OffersController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();  isLoading.value = false;
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {  isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -261,7 +336,7 @@ class OffersController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();  isLoading.value = false;
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {  isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -274,11 +349,14 @@ class OffersController extends GetxController with GlobalVarMixin{
   Future apiGetOffersProducts(
       {String storeId = "", String offerId = ""}) async {
     isLoading.value = true;
-         Map<String, String> headers = {
+    Map<String, String> headers = {
       'Content-Type': 'application/json',
-      StringConstants.authorizationText:
-          "${StringConstants.bearerText} ${authToken.value}",
     };
+    // Only include authorization header for authenticated users
+    if (!isGuest.value) {
+      headers[StringConstants.authorizationText] =
+          "${StringConstants.bearerText} ${authToken.value}";
+    }
     Map data = {
       "q": "",
       "store_id": storeId,
@@ -292,7 +370,7 @@ class OffersController extends GetxController with GlobalVarMixin{
       "offer_id": offerId,
       "filters": []
     };
-              UserProvider()
+              return UserProvider()
         .postWithHeadersApi(
             data,
             ServerCommunicator.baseUrl +
@@ -310,11 +388,16 @@ class OffersController extends GetxController with GlobalVarMixin{
             userFeaturedProductModel.data?.products ??[];
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value?.body['message']);
-        storage.clearData();
-        Get.parameters.clear(); isLoading.value = false;
-        Get.offAll(const StartJourneyScreen());
-      } else { isLoading.value = false;
+        // Guest users should never hit 401 — only clear session for logged-in users
+        if (!isGuest.value) {
+          Utility.showAlertMessage(value?.body['message']);
+          storage.clearData();
+          Get.parameters.clear();
+          isLoading.value = false;
+          Utility.handle401Error();
+        }
+      } else {
+        isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
